@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -24,13 +24,10 @@ app.include_router(bookings.router)
 app.include_router(payments.router)
 app.include_router(admin.router)
 
-
+# create route to render index.html
 @app.get("/")
-async def home():
-    return {
-        "message": "Welcome to Kari Vari Uganda API"
-    }
-
+def read_root(request: Request):
+    return templates.TemplateResponse(request, "index.html")
 
 @app.get("/health")
 async def health_check():
