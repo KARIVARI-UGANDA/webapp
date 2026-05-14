@@ -1,0 +1,416 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Vehicle Listings | Kari Vari Uganda</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#ffdeac",
+                      "outline": "#72796e",
+                      "secondary-fixed-dim": "#ffba35",
+                      "inverse-surface": "#2f3133",
+                      "on-background": "#1a1c1e",
+                      "on-secondary-fixed": "#281900",
+                      "soft-gray": "#F5F5F5",
+                      "surface-dim": "#dadadc",
+                      "secondary-container": "#ffb61e",
+                      "on-surface-variant": "#42493e",
+                      "primary-fixed": "#bcf0ae",
+                      "on-error": "#ffffff",
+                      "outline-variant": "#c2c9bb",
+                      "on-primary-fixed-variant": "#23501e",
+                      "slate-dark": "#1A1C1E",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#2d5a27",
+                      "tertiary-fixed-dim": "#adc6ff",
+                      "secondary": "#7e5700",
+                      "surface": "#f9f9fc",
+                      "tertiary": "#00377a",
+                      "on-secondary": "#ffffff",
+                      "primary-fixed-dim": "#a1d494",
+                      "tertiary-fixed": "#d8e2ff",
+                      "on-surface": "#1a1c1e",
+                      "status-pending": "#B45309",
+                      "on-secondary-container": "#6c4a00",
+                      "inverse-on-surface": "#f0f0f3",
+                      "on-primary-fixed": "#002201",
+                      "status-success": "#15803D",
+                      "on-primary-container": "#9dd090",
+                      "surface-container": "#eeeef0",
+                      "surface-tint": "#3b6934",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed-variant": "#004494",
+                      "surface-container-highest": "#e2e2e5",
+                      "primary": "#154212",
+                      "safari-green": "#2D5A27",
+                      "surface-container-high": "#e8e8ea",
+                      "surface-bright": "#f9f9fc",
+                      "on-tertiary-fixed": "#001a41",
+                      "error-container": "#ffdad6",
+                      "inverse-primary": "#a1d494",
+                      "surface-container-low": "#f3f3f6",
+                      "on-tertiary-container": "#a8c3ff",
+                      "surface-variant": "#e2e2e5",
+                      "on-secondary-fixed-variant": "#5f4100",
+                      "tertiary-container": "#004da6",
+                      "ugandan-sun": "#F9B115",
+                      "background": "#f9f9fc",
+                      "on-error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "48px",
+                      "gutter": "24px",
+                      "base": "8px",
+                      "margin-mobile": "16px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Inter"],
+                      "headline-lg-mobile": ["Montserrat"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Montserrat"],
+                      "label-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-xl": ["Montserrat"],
+                      "headline-lg": ["Montserrat"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}[type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select{-webkit-appearance:none;appearance:none;background-color:#fff;border-color:#6b7280;border-width:1px;border-radius:0px;padding-top:0.5rem;padding-right:0.75rem;padding-bottom:0.5rem;padding-left:0.75rem;font-size:1rem;line-height:1.5rem;--tw-shadow:0 0 #0000;}[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);border-color:#2563eb}input::placeholder,textarea::placeholder{color:#6b7280;opacity:1}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-date-and-time-value{min-height:1.5em;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field{padding-top:0;padding-bottom:0}select{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");background-position:right 0.5rem center;background-repeat:no-repeat;background-size:1.5em 1.5em;padding-right:2.5rem;print-color-adjust:exact}[multiple],[size]:where(select:not([size="1"])){background-image:initial;background-position:initial;background-repeat:unset;background-size:initial;padding-right:0.75rem;print-color-adjust:unset}[type='checkbox'],[type='radio']{-webkit-appearance:none;appearance:none;padding:0;print-color-adjust:exact;display:inline-block;vertical-align:middle;background-origin:border-box;-webkit-user-select:none;user-select:none;flex-shrink:0;height:1rem;width:1rem;color:#2563eb;background-color:#fff;border-color:#6b7280;border-width:1px;--tw-shadow:0 0 #0000}[type='checkbox']{border-radius:0px}[type='radio']{border-radius:100%}[type='checkbox']:focus,[type='radio']:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:2px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[type='checkbox']:checked,[type='radio']:checked{border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat}[type='checkbox']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='checkbox']:checked{-webkit-appearance:auto;appearance:auto}}[type='radio']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='radio']:checked{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:checked:hover,[type='checkbox']:checked:focus,[type='radio']:checked:hover,[type='radio']:checked:focus{border-color:transparent;background-color:currentColor}[type='checkbox']:indeterminate{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e");border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat;}@media (forced-colors: active) {[type='checkbox']:indeterminate{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:indeterminate:hover,[type='checkbox']:indeterminate:focus{border-color:transparent;background-color:currentColor}[type='file']{background:unset;border-color:inherit;border-width:0;border-radius:0;padding:0;font-size:unset;line-height:inherit}[type='file']:focus{outline:1px solid ButtonText;outline:1px auto -webkit-focus-ring-color}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.bottom-4{bottom:1rem}.left-4{left:1rem}.right-4{right:1rem}.top-0{top:0px}.top-24{top:6rem}.top-4{top:1rem}.bottom-8{bottom:2rem}.right-8{right:2rem}.z-50{z-index:50}.z-40{z-index:40}.mx-auto{margin-left:auto;margin-right:auto}.mb-2{margin-bottom:0.5rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mt-12{margin-top:3rem}.mt-16{margin-top:4rem}.block{display:block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-10{height:2.5rem}.h-5{height:1.25rem}.h-64{height:16rem}.h-full{height:100%}.w-10{width:2.5rem}.w-5{width:1.25rem}.w-full{width:100%}.max-w-container-max{max-width:1280px}.max-w-md{max-width:28rem}.flex-shrink-0{flex-shrink:0}.flex-grow{flex-grow:1}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-12{gap:3rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-gutter{gap:24px}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-b-2{border-bottom-width:2px}.border-t{border-top-width:1px}.border-none{border-style:none}.border-outline-variant{--tw-border-opacity:1;border-color:rgb(194 201 187 / var(--tw-border-opacity, 1))}.border-outline-variant\/30{border-color:rgb(194 201 187 / 0.3)}.border-primary{--tw-border-opacity:1;border-color:rgb(21 66 18 / var(--tw-border-opacity, 1))}.border-slate-dark{--tw-border-opacity:1;border-color:rgb(26 28 30 / var(--tw-border-opacity, 1))}.border-white\/10{border-color:rgb(255 255 255 / 0.1)}.bg-background{--tw-bg-opacity:1;background-color:rgb(249 249 252 / var(--tw-bg-opacity, 1))}.bg-on-background{--tw-bg-opacity:1;background-color:rgb(26 28 30 / var(--tw-bg-opacity, 1))}.bg-primary{--tw-bg-opacity:1;background-color:rgb(21 66 18 / var(--tw-bg-opacity, 1))}.bg-primary-container{--tw-bg-opacity:1;background-color:rgb(45 90 39 / var(--tw-bg-opacity, 1))}.bg-status-pending{--tw-bg-opacity:1;background-color:rgb(180 83 9 / var(--tw-bg-opacity, 1))}.bg-status-success{--tw-bg-opacity:1;background-color:rgb(21 128 61 / var(--tw-bg-opacity, 1))}.bg-surface-container{--tw-bg-opacity:1;background-color:rgb(238 238 240 / var(--tw-bg-opacity, 1))}.bg-surface-container-lowest{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-surface\/80{background-color:rgb(249 249 252 / 0.8)}.bg-transparent{background-color:transparent}.bg-ugandan-sun{--tw-bg-opacity:1;background-color:rgb(249 177 21 / var(--tw-bg-opacity, 1))}.bg-white\/20{background-color:rgb(255 255 255 / 0.2)}.bg-safari-green{--tw-bg-opacity:1;background-color:rgb(45 90 39 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-1{padding:0.25rem}.p-2{padding:0.5rem}.p-6{padding:1.5rem}.p-4{padding:1rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-margin-mobile{padding-left:16px;padding-right:16px}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-8{padding-top:2rem;padding-bottom:2rem}.pb-1{padding-bottom:0.25rem}.pr-8{padding-right:2rem}.pt-4{padding-top:1rem}.pr-2{padding-right:0.5rem}.pt-8{padding-top:2rem}.font-body-md{font-family:Inter}.font-headline-lg{font-family:Montserrat}.font-headline-md{font-family:Montserrat}.font-label-lg{font-family:Inter}.font-label-sm{font-family:Inter}.text-\[12px\]{font-size:12px}.text-\[14px\]{font-size:14px}.text-base{font-size:1rem;line-height:1.5rem}.text-body-md{font-size:16px;line-height:24px;font-weight:400}.text-headline-lg{font-size:32px;line-height:40px;letter-spacing:-0.01em;font-weight:700}.text-headline-md{font-size:24px;line-height:32px;font-weight:600}.text-label-lg{font-size:14px;line-height:20px;letter-spacing:0.05em;font-weight:600}.text-label-sm{font-size:12px;line-height:16px;font-weight:500}.font-bold{font-weight:700}.uppercase{text-transform:uppercase}.tracking-wider{letter-spacing:0.05em}.tracking-widest{letter-spacing:0.1em}.text-on-background{--tw-text-opacity:1;color:rgb(26 28 30 / var(--tw-text-opacity, 1))}.text-on-primary-container{--tw-text-opacity:1;color:rgb(157 208 144 / var(--tw-text-opacity, 1))}.text-on-surface{--tw-text-opacity:1;color:rgb(26 28 30 / var(--tw-text-opacity, 1))}.text-on-surface-variant{--tw-text-opacity:1;color:rgb(66 73 62 / var(--tw-text-opacity, 1))}.text-primary{--tw-text-opacity:1;color:rgb(21 66 18 / var(--tw-text-opacity, 1))}.text-safari-green{--tw-text-opacity:1;color:rgb(45 90 39 / var(--tw-text-opacity, 1))}.text-secondary{--tw-text-opacity:1;color:rgb(126 87 0 / var(--tw-text-opacity, 1))}.text-slate-dark{--tw-text-opacity:1;color:rgb(26 28 30 / var(--tw-text-opacity, 1))}.text-ugandan-sun{--tw-text-opacity:1;color:rgb(249 177 21 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-surface-variant{--tw-text-opacity:1;color:rgb(226 226 229 / var(--tw-text-opacity, 1))}.accent-safari-green{accent-color:#2D5A27}.shadow-\[0px_4px_20px_rgba\(0\2c 0\2c 0\2c 0\.05\)\]{--tw-shadow:0px 4px 20px rgba(0,0,0,0.05);--tw-shadow-colored:0px 4px 20px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-200{transition-duration:200ms}.duration-300{transition-duration:300ms}.duration-500{transition-duration:500ms}.ease-in-out{transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1)}.hover\:scale-110:hover{--tw-scale-x:1.1;--tw-scale-y:1.1;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.hover\:border-primary:hover{--tw-border-opacity:1;border-color:rgb(21 66 18 / var(--tw-border-opacity, 1))}.hover\:bg-slate-dark:hover{--tw-bg-opacity:1;background-color:rgb(26 28 30 / var(--tw-bg-opacity, 1))}.hover\:bg-surface-container:hover{--tw-bg-opacity:1;background-color:rgb(238 238 240 / var(--tw-bg-opacity, 1))}.hover\:bg-white\/40:hover{background-color:rgb(255 255 255 / 0.4)}.hover\:text-secondary:hover{--tw-text-opacity:1;color:rgb(126 87 0 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.hover\:text-ugandan-sun:hover{--tw-text-opacity:1;color:rgb(249 177 21 / var(--tw-text-opacity, 1))}.hover\:shadow-lg:hover{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.hover\:shadow-xl:hover{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:ring-0:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-safari-green:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(45 90 39 / var(--tw-ring-opacity, 1))}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:scale-105{--tw-scale-x:1.05;--tw-scale-y:1.05;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:text-primary{--tw-text-opacity:1;color:rgb(21 66 18 / var(--tw-text-opacity, 1))}.dark\:bg-black:is(.dark *){--tw-bg-opacity:1;background-color:rgb(0 0 0 / var(--tw-bg-opacity, 1))}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:flex{display:flex}.md\:w-80{width:20rem}.md\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:items-center{align-items:center}.md\:px-margin-desktop{padding-left:48px;padding-right:48px}}@media (min-width: 1024px){.lg\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}}</style></head>
+<body class="bg-background text-on-background font-body-md" data-mode="connect">
+<!-- TopNavBar -->
+<nav class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/80 backdrop-blur-md shadow-sm">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary">Kari Vari Uganda</span>
+<div class="hidden md:flex gap-6">
+<a class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-1 transition-all duration-200 ease-in-out" href="#">Listings</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors transition-all duration-200 ease-in-out" href="#">How it Works</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors transition-all duration-200 ease-in-out" href="#">About</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors transition-all duration-200 ease-in-out" href="#">Contact</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors">Sign In</button>
+<button class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Register</button>
+</div>
+</nav>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8">
+<div class="flex flex-col md:flex-row gap-gutter">
+<!-- Left Sidebar Filters -->
+<aside class="w-full md:w-80 flex-shrink-0">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/30 sticky top-24">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline-md text-headline-md text-primary">Filters</h2>
+<button class="text-label-sm text-secondary font-bold">Clear All</button>
+</div>
+<!-- Price Range -->
+<div class="mb-8">
+<h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Price Range (USD/Day)</h3>
+<div class="space-y-4">
+<input class="w-full accent-safari-green" max="500" min="50" type="range">
+<div class="flex justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>$50</span>
+<span>$500+</span>
+</div>
+</div>
+</div>
+<!-- Vehicle Type -->
+<div class="mb-8">
+<h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Vehicle Type</h3>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">4x4 SUVs</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Luxury Sedans</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Safari Vans</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Camping Trucks</span>
+</label>
+</div>
+</div>
+<!-- Features -->
+<div class="mb-8">
+<h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Key Features</h3>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="rounded border-outline-variant text-safari-green w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface-variant">Air Conditioning</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="rounded border-outline-variant text-safari-green w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface-variant">Driver Included</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="rounded border-outline-variant text-safari-green w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface-variant">Roof Hatch</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="rounded border-outline-variant text-safari-green w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface-variant">GPS Navigation</span>
+</label>
+</div>
+</div>
+<!-- Fuel Type -->
+<div class="mb-6">
+<h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Fuel Type</h3>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Diesel</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Petrol</button>
+<button class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container text-label-sm font-label-sm">Hybrid</button>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Results Area -->
+<section class="flex-grow">
+<!-- Sorting and Meta -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-background">Explore Uganda</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Showing 142 premium vehicles available for your journey</p>
+</div>
+<div class="flex items-center gap-3 bg-surface-container p-1 rounded-lg">
+<span class="px-3 py-1 font-label-lg text-label-lg text-on-surface-variant">Sort by:</span>
+<select class="bg-transparent border-none focus:ring-0 font-label-lg text-label-lg text-primary cursor-pointer pr-8">
+<option>Most Popular</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+<option>Top Rated</option>
+</select>
+</div>
+</div>
+<!-- Grid of Vehicle Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Vehicle Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A rugged dark green Toyota Land Cruiser V8 driving through a lush Ugandan savanna at sunset. The lighting is warm and golden, highlighting the vehicle's sturdy build. In the background, rolling hills and acacia trees create a sense of vast wilderness and adventure. Professional automotive photography style with deep shadows and vibrant earth tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAneIaWIZP1uYK-voei4N7Q4gbOFyWq6encAeLWtYwQ3Jjp8sNGq96r-Laxg5PL3b6WhjnD4qO1MOw3VkJ-iRELes1TdjEOPNx8YWZ-3QdzPXe4ZgK5RQ0SyqFqQhOEg-0tWa4wrVrRGX5_sHkThTP7KTj8z54wHvY4Xj95M_29kpDapCwoe5tNJqtUkWt5kbHjx-sw2JT_pkmrvaKN4KmKVHrzlGHB84tK7PdpwSB3IYvxdN4uC8gUTk08yrHldP1qIk-6lXpUqzw">
+<div class="absolute top-4 left-4">
+<span class="bg-status-success text-white text-[12px] font-bold px-3 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider">
+<span class="material-symbols-outlined text-[14px]">verified</span> Driver Included
+                                </span>
+</div>
+<div class="absolute bottom-4 right-4 flex gap-2">
+<div class="bg-white/20 backdrop-blur-md p-2 rounded-full text-white cursor-pointer hover:bg-white/40">
+<span class="material-symbols-outlined">chevron_left</span>
+</div>
+<div class="bg-white/20 backdrop-blur-md p-2 rounded-full text-white cursor-pointer hover:bg-white/40">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Toyota Land Cruiser V8</h3>
+<div class="flex items-center gap-1 text-ugandan-sun">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">4.9</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> 7 Seats</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">settings</span> Manual/Auto</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">local_gas_station</span> Diesel</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">ac_unit</span> A/C</span>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
+<div>
+<span class="font-headline-md text-headline-md text-primary">$120</span>
+<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
+</div>
+<button class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all">View Details</button>
+</div>
+</div>
+</div>
+<!-- Vehicle Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean silver safari customized Toyota Hiace van parked near a modern boutique lodge in Entebbe. Bright midday sun creates clean lines and high-contrast highlights. The background features tropical greenery and a clear blue sky, emphasizing a high-end, reliable travel experience. Corporate modern aesthetic with airy whitespace and vibrant greens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgW5LuRM28B07XNKMn1CWLDs0pySHOcRgONtGjQfIXp6wuSp4HB1JeMvM46wyAJ6c9EvxA6JmibaeNsQSz8GjjvN7UdLNG9nXhwNLs46ECwp-bcT6gLFYaYSi3CLKqWRsD-42EMgreKV3phC_1I1ewQgtv5dc1Gb_VN7r1C09qhUvBd7J8BxWuU8oCoDjANNxZoxrGobEORvniZYDaE63wtQixO4cvXcaV727HjKpBfHxPtINfsmI72mMFBB5ByiyHDoOGDoWDhlA">
+<div class="absolute top-4 left-4">
+<span class="bg-status-pending text-white text-[12px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Pop-up Roof</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Toyota Hiace Safari Van</h3>
+<div class="flex items-center gap-1 text-ugandan-sun">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">4.7</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> 9 Seats</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">visibility</span> Pop-up Roof</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">local_gas_station</span> Diesel</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">wifi</span> Free WiFi</span>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
+<div class="">
+<span class="font-headline-md text-headline-md text-primary">$85</span>
+<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
+</div>
+<button class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all">View Details</button>
+</div>
+</div>
+</div>
+<!-- Vehicle Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sleek white Toyota RAV4 hybrid parked on a paved road overlooking the source of the Nile in Jinja. Soft morning light creates a peaceful and refreshing atmosphere. The vehicle looks polished and modern against the deep blue water and lush riverbanks. Minimalist and clean visual style with a focus on reliability and fuel efficiency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmflxoaeVcuaywDTqEmdcxQ0uMINy7kvVRP0Y8aFmuw6P8Aa-1rIGmidxSQfp2SNw3L6y6wE2swUIzj25DxMaD_TFpJLumQrL45bVtW7Un4WTMmBU0tmvCt-D8JXzNS5ZnQ-BIPpNeIoeaQ14EZbqIGqz8pbFhJOORg2yB7EXVFmQfchqHiru7OOddsgQnQWndkQzM6s6jH-Q1ZXH4JboeCVCDPa9eob0zBc2599LzTb-DhNx_WB3jjfKLbxViwxvIpc01VYAlFgY">
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Toyota RAV4 Hybrid</h3>
+<div class="flex items-center gap-1 text-ugandan-sun">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">4.8</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> 5 Seats</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">eco</span> Hybrid Fuel</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">luggage</span> 2 Large Bags</span>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
+<div>
+<span class="font-headline-md text-headline-md text-primary">$65</span>
+<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
+</div>
+<button class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all">View Details</button>
+</div>
+</div>
+</div>
+<!-- Vehicle Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A powerful Toyota Land Cruiser Prado TXL in metallic bronze parked on a red dirt road in Bwindi Impenetrable Forest. Mist hangs low in the canopy, creating a moody and epic jungle atmosphere. The vehicle's high ground clearance and all-terrain tires are emphasized. Professional adventure travel photography with rich textures and cool shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRzTlHUf-THK1zpWPuSyzW8hX4MbFnZJ62IVcMDoRB6xv-oOD7Uc9eaC9OsYHheBjglsqa7HhxUPiziEaPJ3rjPRvHxXAOVyHCgBJuMUUwCPsUCdRxPTDLJzoKeaaKNpakFdYr6pym1z9UMMQPrzFDi-1aPCj110fPjlgVLl3iNvi_9qPEoTv4JQEsTujpJosy1rvX4rdeZ1SfcpCS-PeQVUU32997L7ZrA-c1cQOyNrvQ3wYtVr1I3Ui_GFhbZ1R3EX08M05BR08">
+<div class="absolute top-4 left-4">
+<span class="bg-status-success text-white text-[12px] font-bold px-3 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider">
+<span class="material-symbols-outlined text-[14px]">verified</span> Driver Included
+                                </span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Toyota Prado TXL</h3>
+<div class="flex items-center gap-1 text-ugandan-sun">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">5.0</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> 5 Seats</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">terrain</span> 4x4 Drive</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">local_gas_station</span> Diesel</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">cool_to_dry</span> Sunroof</span>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
+<div>
+<span class="font-headline-md text-headline-md text-primary">$105</span>
+<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
+</div>
+<button class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all">View Details</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-12 flex justify-center items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors font-bold">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors font-bold">3</button>
+<span class="text-on-surface-variant">...</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors font-bold">12</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-margin-mobile md:px-margin-desktop mt-16 bg-on-background dark:bg-black">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="md:col-span-2">
+<span class="font-headline-lg text-headline-lg font-bold text-ugandan-sun block mb-4">Kari Vari Uganda</span>
+<p class="text-surface-variant font-body-md text-body-md max-w-md">The Pearl of Africa's premier vehicle rental and safari logistics platform. Reliability, comfort, and local expertise for your journey.</p>
+</div>
+<div>
+<h4 class="text-white font-label-lg text-label-lg mb-6 uppercase tracking-widest">Resources</h4>
+<ul class="space-y-4">
+<li><a class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" href="#">Partner Program</a></li>
+<li><a class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" href="#">Careers</a></li>
+<li><a class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" href="#">Rental Policy</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-label-lg text-label-lg mb-6 uppercase tracking-widest">Legal</h4>
+<ul class="space-y-4">
+<li><a class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" href="#">Privacy Policy</a></li>
+<li><a class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" href="#">Terms of Service</a></li>
+<li><a class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" href="#">Cookie Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-surface-variant font-label-sm text-label-sm">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+<div class="flex gap-6">
+<a class="text-surface-variant hover:text-ugandan-sun" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-surface-variant hover:text-ugandan-sun" href="#"><span class="material-symbols-outlined">mail</span></a>
+<a class="text-surface-variant hover:text-ugandan-sun" href="#"><span class="material-symbols-outlined">call</span></a>
+</div>
+</div>
+</footer>
+<!-- FAB (Suppressed as per rules for Details/Settings/etc, but kept for main Listings focus if needed) -->
+<button class="fixed bottom-8 right-8 bg-safari-green text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all z-40 flex items-center gap-2">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-lg text-label-lg pr-2">Need Help?</span>
+</button>
+</body></html>
