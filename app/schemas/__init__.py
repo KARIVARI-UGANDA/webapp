@@ -20,11 +20,14 @@ from .trip import TripLocationLogCreate, TripLocationLogRead
 from .user import UserCreate, UserRead
 from .vehicle import (
     VehicleAvailabilityRead,
-    VehicleCreate,
     VehicleDocumentRead,
     VehicleInspectionRead,
     VehiclePhotoRead,
     VehicleRead,
+    VehicleSubmit,
+    VehicleUpdate,
+    VehicleWithPhotos,
+    VerificationDecision,
 )
 
 __all__ = [
@@ -69,9 +72,12 @@ __all__ = [
     "UserCreate",
     "UserRead",
     "VehicleAvailabilityRead",
-    "VehicleCreate",
+    "VerificationDecision",
     "VehicleDocumentRead",
     "VehicleInspectionRead",
     "VehiclePhotoRead",
     "VehicleRead",
+    "VehicleSubmit",
+    "VehicleUpdate",
+    "VehicleWithPhotos",
 ]

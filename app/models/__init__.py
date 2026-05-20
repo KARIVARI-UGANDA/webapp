@@ -7,12 +7,15 @@ from .corporate import CorporateAccount
 from .dispute import Dispute, DisputeEvidence
 from .driver import DriverProfile, DriverVehicleAssignment
 from .emergency import EmergencyAlert
+from .kyc import PasswordResetToken, RefreshToken, TouristKYC
+from .message import Message
 from .notification import Notification
 from .payment import Payment, Payout
 from .promotion import Promotion
 from .refund import Refund
 from .review import Review
 from .support import SupportMessage, SupportTicket
+from .training import DriverTrainingProgress, TrainingModule
 from .trip import TripLocationLog
 from .user import User, UserIdentityVerification, UserSession
 from .vehicle import Vehicle, VehicleAvailability, VehicleDocument, VehicleInspection, VehiclePhoto
@@ -30,16 +33,22 @@ __all__ = [
     "DisputeEvidence",
     "Dispute",
     "DriverProfile",
+    "DriverTrainingProgress",
     "DriverVehicleAssignment",
     "EmergencyAlert",
+    "Message",
     "Notification",
+    "PasswordResetToken",
     "Payment",
     "Payout",
     "Promotion",
+    "RefreshToken",
     "Refund",
     "Review",
     "SupportMessage",
     "SupportTicket",
+    "TouristKYC",
+    "TrainingModule",
     "TripLocationLog",
     "UserIdentityVerification",
     "UserSession",

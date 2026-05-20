@@ -1,56 +1,57 @@
-# generate route for users
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
+from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Depends
-from sqlalchemy.orm import Session      
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
+from sqlalchemy.orm import Session
+
 from app.database import get_db
+from app.deps import get_current_user, require_role
 from app.models import User
-from app.schemas import UserCreate, UserRead
-from app.utils import hash_password
+from app.schemas.user import UserRead
 
 router = APIRouter(prefix="/users", tags=["users"])
 
-@router.post("/", response_model=UserRead)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    # Check if user with the same email already exists
-    existing_user = db.query(User).filter(User.email == user.email).first()
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    
-    # Hash the password before storing
-    hashed_password = hash_password(user.password)
-    
-    # Create new user instance
-    new_user = User(
-        id=str(uuid.uuid4()),
-        full_name=user.full_name,
-        email=user.email,
-        phone_number=user.phone_number,
-        password_hash=hashed_password,
-        role=user.role,
-        account_type=user.account_type,
-        profile_photo_url=user.profile_photo_url,
-        preferred_language=user.preferred_language,
-        corporate_id=user.corporate_id,
-        two_fa_enabled=user.two_fa_enabled,
-        two_fa_secret=user.two_fa_secret,
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow()
-    )
-    
-    # Add to database and commit
-    db.add(new_user)
+
+class UserUpdate(BaseModel):
+    full_name: Optional[str] = None
+    phone_number: Optional[str] = None
+    preferred_language: Optional[str] = None
+    profile_photo_url: Optional[str] = None
+
+
+@router.get("/me", response_model=UserRead)
+def get_me(current_user: User = Depends(get_current_user)):
+    return current_user
+
+
+@router.patch("/me", response_model=UserRead)
+def update_me(payload: UserUpdate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    for field, value in payload.model_dump(exclude_none=True).items():
+        setattr(current_user, field, value)
+    current_user.updated_at = datetime.now(timezone.utc).replace(tzinfo=None)
+    db.add(current_user)
     db.commit()
-    db.refresh(new_user)
-    
-    return new_user
+    db.refresh(current_user)
+    return current_user
+
+
+@router.post("/me/avatar", response_model=UserRead)
+def upload_avatar(current_user: User = Depends(get_current_user)):
+    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 4")
+
 
 @router.get("/{user_id}", response_model=UserRead)
-def read_user(user_id: str, db: Session = Depends(get_db)):
+def get_user(
+    user_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if current_user.role != "admin" and current_user.id != user_id:
+        raise HTTPException(status_code=403, detail="Access denied")
+
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
-
-

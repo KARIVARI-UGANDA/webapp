@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Kari Vari Uganda</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/static/css/index.css">
+  <style>
+    .sidebar { width: 240px; min-height: 100vh; background: #1a1c1e; }
+    .sidebar .nav-link { color: rgba(255,255,255,0.7); font-weight: 600; font-size: 0.9rem; padding: 0.65rem 1.25rem; border-radius: 8px; margin-bottom: 2px; }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active { color: #fff; background: rgba(255,255,255,0.1); }
+    .sidebar .nav-link i { width: 1.4rem; }
+    .stat-card { border: none; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+    .page-header { font-size: 1.5rem; font-weight: 700; color: #1a1c1e; }
+    .admin-badge { background: rgba(26,28,30,0.08); color: #1a1c1e; border-radius: 20px; padding: 4px 14px; font-size: 0.8rem; font-weight: 600; }
+    .pending-dot { width: 8px; height: 8px; border-radius: 50%; background: #F9B115; display: inline-block; }
+    @media (max-width: 768px) { .sidebar { width: 100%; min-height: auto; } }
+  </style>
+</head>
+<body style="background:#f9f9fc;">
+
+<div class="d-flex">
+  <!-- Sidebar -->
+  <nav class="sidebar d-flex flex-column p-3 gap-1 flex-shrink-0">
+    <a class="navbar-brand text-white fw-bold fs-5 mb-4 px-2" href="/">Kari Vari Uganda</a>
+    <a class="nav-link active" href="/admin/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="#"><i class="bi bi-people"></i> Users</a>
+    <a class="nav-link" href="#" id="navVerifications">
+      <i class="bi bi-patch-check"></i> Verifications
+      <span class="pending-dot ms-1" id="pendingDot" style="display:none;"></span>
+    </a>
+    <a class="nav-link" href="#"><i class="bi bi-calendar3"></i> Bookings</a>
+    <a class="nav-link" href="#"><i class="bi bi-exclamation-triangle"></i> Disputes</a>
+    <a class="nav-link" href="#"><i class="bi bi-bar-chart-line"></i> Analytics</a>
+    <div class="mt-auto pt-3 border-top border-white border-opacity-25">
+      <a class="nav-link" style="color:rgba(255,150,150,0.85);" href="#" id="logoutBtn">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow-1 p-4 p-lg-5">
+
+    <!-- Header -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-5 gap-3">
+      <div>
+        <span class="admin-badge mb-2 d-inline-block">ADMIN PORTAL</span>
+        <h1 class="page-header mb-1">Admin Dashboard</h1>
+        <p class="text-secondary small mb-0">Monitor platform activity, verify users, and manage the fleet.</p>
+      </div>
+      <a href="/api/docs" target="_blank" class="btn btn-dark px-4 fw-bold">
+        <i class="bi bi-code-slash me-2"></i>API Docs
+      </a>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row g-4 mb-5">
+      <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:rgba(26,28,30,0.08);color:#1a1c1e;">
+              <i class="bi bi-people"></i>
+            </div>
+            <div>
+              <div class="text-secondary small fw-semibold">TOTAL USERS</div>
+              <div class="fs-3 fw-bold" id="statUsers">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:rgba(249,177,21,0.12);color:#b07d00;">
+              <i class="bi bi-hourglass-split"></i>
+            </div>
+            <div>
+              <div class="text-secondary small fw-semibold">PENDING VERIFICATIONS</div>
+              <div class="fs-3 fw-bold" id="statPending">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:rgba(21,66,18,0.1);color:var(--primary);">
+              <i class="bi bi-truck"></i>
+            </div>
+            <div>
+              <div class="text-secondary small fw-semibold">ACTIVE VEHICLES</div>
+              <div class="fs-3 fw-bold" id="statVehicles">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:rgba(186,26,26,0.08);color:#ba1a1a;">
+              <i class="bi bi-exclamation-triangle"></i>
+            </div>
+            <div>
+              <div class="text-secondary small fw-semibold">OPEN DISPUTES</div>
+              <div class="fs-3 fw-bold" id="statDisputes">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mb-5">
+      <h5 class="fw-bold mb-3">Quick Actions</h5>
+      <div class="d-flex flex-wrap gap-3">
+        <button class="btn btn-outline-secondary px-4" id="btnVerifications">
+          <i class="bi bi-patch-check me-2"></i>Review Pending Verifications
+        </button>
+        <button class="btn btn-outline-secondary px-4">
+          <i class="bi bi-people me-2"></i>Manage Users
+        </button>
+        <button class="btn btn-outline-secondary px-4">
+          <i class="bi bi-mortarboard me-2"></i>Training Modules
+        </button>
+      </div>
+    </div>
+
+    <!-- Pending Verifications -->
+    <div class="card border-0 rounded-4 shadow-sm mb-4">
+      <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+        <h6 class="fw-bold mb-0">Pending Vehicle Verifications</h6>
+        <span class="badge bg-warning bg-opacity-15 text-warning fw-semibold" id="pendingCount">Loading…</span>
+      </div>
+      <div class="card-body" id="verificationsList">
+        <div class="text-center py-4 text-secondary">
+          <div class="spinner-border spinner-border-sm me-2"></div>Loading…
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Users -->
+    <div class="card border-0 rounded-4 shadow-sm">
+      <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+        <h6 class="fw-bold mb-0">Recent Users</h6>
+        <span class="badge bg-secondary bg-opacity-10 text-secondary">Phase 13</span>
+      </div>
+      <div class="card-body text-center py-5 text-secondary">
+        <i class="bi bi-people fs-1 opacity-25 d-block mb-3"></i>
+        Full user management coming in Phase 13.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const token = localStorage.getItem('access_token');
+  const role  = localStorage.getItem('role');
+  if (!token) { window.location.href = '/login'; }
+  else if (role && role !== 'admin') { window.location.href = '/'; }
+
+  document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    try {
+      await fetch('/api/auth/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
+    } catch (_) {}
+    localStorage.clear();
+    window.location.href = '/login';
+  });
+
+  // Load users count
+  (async () => {
+    if (!token) return;
+    try {
+      const res = await fetch('/api/admin/users?page_size=1', { headers: { 'Authorization': 'Bearer ' + token } });
+      if (res.ok) {
+        const data = await res.json();
+        document.getElementById('statUsers').textContent = Array.isArray(data) ? data.length : '—';
+      }
+    } catch (_) {}
+  })();
+
+  // Load pending verifications
+  (async () => {
+    if (!token) return;
+    const el = document.getElementById('verificationsList');
+    const countEl = document.getElementById('pendingCount');
+    const statEl = document.getElementById('statPending');
+    try {
+      const res = await fetch('/api/admin/verifications/pending?type=vehicle&page_size=5', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (res.ok) {
+        const list = await res.json();
+        statEl.textContent = list.length;
+        countEl.textContent = list.length + ' pending';
+        if (list.length === 0) {
+          el.innerHTML = '<div class="text-center py-4 text-secondary">No pending verifications.</div>';
+        } else {
+          document.getElementById('pendingDot').style.display = 'inline-block';
+          el.innerHTML = list.map(v => `
+            <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
+              <div>
+                <span class="fw-semibold">${v.make} ${v.model}</span>
+                <span class="text-secondary ms-2 small">${v.registration_plate}</span>
+              </div>
+              <span class="badge bg-warning bg-opacity-15 text-warning">Pending</span>
+            </div>`).join('');
+        }
+      } else {
+        el.innerHTML = '<div class="text-center py-4 text-secondary">Could not load verifications.</div>';
+        countEl.textContent = '—';
+      }
+    } catch (_) {
+      el.innerHTML = '<div class="text-center py-4 text-secondary">Could not load verifications.</div>';
+    }
+  })();
+</script>
+</body>
+</html>

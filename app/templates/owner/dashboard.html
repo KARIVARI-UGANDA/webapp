@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owner Dashboard | Kari Vari Uganda</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/static/css/index.css">
+  <style>
+    .sidebar { width: 240px; min-height: 100vh; background: var(--primary); }
+    .sidebar .nav-link { color: rgba(255,255,255,0.75); font-weight: 600; font-size: 0.9rem; padding: 0.65rem 1.25rem; border-radius: 8px; margin-bottom: 2px; }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active { color: #fff; background: rgba(255,255,255,0.12); }
+    .sidebar .nav-link i { width: 1.4rem; }
+    .stat-card { border: none; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+    .page-header { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+    .welcome-badge { background: rgba(21,66,18,0.08); color: var(--primary); border-radius: 20px; padding: 4px 14px; font-size: 0.8rem; font-weight: 600; }
+    @media (max-width: 768px) { .sidebar { width: 100%; min-height: auto; } .d-flex.flex-md-nowrap { flex-direction: column; } }
+  </style>
+</head>
+<body style="background:#f9f9fc;">
+
+<div class="d-flex">
+  <!-- Sidebar -->
+  <nav class="sidebar d-flex flex-column p-3 gap-1 flex-shrink-0">
+    <a class="navbar-brand text-white fw-bold fs-5 mb-4 px-2" href="/">Kari Vari Uganda</a>
+    <a class="nav-link active" href="/owner/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="#"><i class="bi bi-truck"></i> My Vehicles</a>
+    <a class="nav-link" href="#"><i class="bi bi-calendar-check"></i> Bookings</a>
+    <a class="nav-link" href="#"><i class="bi bi-cash-stack"></i> Earnings</a>
+    <a class="nav-link" href="#"><i class="bi bi-person-circle"></i> Profile</a>
+    <div class="mt-auto pt-3 border-top border-white border-opacity-25">
+      <a class="nav-link" style="color:rgba(255,150,150,0.85);" href="#" id="logoutBtn">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow-1 p-4 p-lg-5">
+
+    <!-- Header -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-5 gap-3">
+      <div>
+        <span class="welcome-badge mb-2 d-inline-block">OWNER PORTAL</span>
+        <h1 class="page-header mb-1">Welcome back, <span id="ownerName">—</span></h1>
+        <p class="text-secondary small mb-0">Manage your fleet and track your bookings from here.</p>
+      </div>
+      <a href="/api/docs" target="_blank" class="btn btn-accent px-4 fw-bold">
+        <i class="bi bi-plus-lg me-2"></i>Add New Vehicle
+      </a>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row g-4 mb-5">
+      <div class="col-sm-6 col-xl-4">
+        <div class="card stat-card p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:rgba(21,66,18,0.1);color:var(--primary);">
+              <i class="bi bi-truck"></i>
+            </div>
+            <div>
+              <div class="text-secondary small fw-semibold">MY VEHICLES</div>
+              <div class="fs-3 fw-bold" id="statVehicles">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-4">
+        <div class="card stat-card p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:rgba(249,177,21,0.12);color:#b07d00;">
+              <i class="bi bi-hourglass-split"></i>
+            </div>
+            <div>
+              <div class="text-secondary small fw-semibold">PENDING BOOKINGS</div>
+              <div class="fs-3 fw-bold" id="statPending">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-4">
+        <div class="card stat-card p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:rgba(21,128,61,0.1);color:#15803d;">
+              <i class="bi bi-cash-stack"></i>
+            </div>
+            <div>
+              <div class="text-secondary small fw-semibold">EARNINGS THIS MONTH</div>
+              <div class="fs-3 fw-bold" id="statEarnings">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mb-5">
+      <h5 class="fw-bold mb-3">Quick Actions</h5>
+      <div class="d-flex flex-wrap gap-3">
+        <a href="/api/docs#/vehicles/submit_vehicle_api_vehicles__post" target="_blank" class="btn btn-outline-secondary px-4">
+          <i class="bi bi-plus-circle me-2"></i>Submit a Vehicle
+        </a>
+        <button class="btn btn-outline-secondary px-4">
+          <i class="bi bi-calendar3 me-2"></i>View All Bookings
+        </button>
+        <button class="btn btn-outline-secondary px-4">
+          <i class="bi bi-bar-chart-line me-2"></i>Earnings Report
+        </button>
+      </div>
+    </div>
+
+    <!-- Vehicles Table placeholder -->
+    <div class="card border-0 rounded-4 shadow-sm">
+      <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+        <h6 class="fw-bold mb-0">My Vehicles</h6>
+        <span class="badge bg-secondary bg-opacity-10 text-secondary">Phase 6</span>
+      </div>
+      <div class="card-body text-center py-5 text-secondary">
+        <i class="bi bi-truck fs-1 opacity-25 d-block mb-3"></i>
+        Your listed vehicles will appear here.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const token = localStorage.getItem('access_token');
+  const role  = localStorage.getItem('role');
+  if (!token) { window.location.href = '/login'; }
+  else if (role && role !== 'owner') { window.location.href = '/'; }
+
+  const storedName = localStorage.getItem('full_name');
+  if (storedName) document.getElementById('ownerName').textContent = storedName;
+
+  document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    try {
+      await fetch('/api/auth/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
+    } catch (_) {}
+    localStorage.clear();
+    window.location.href = '/login';
+  });
+
+  // Load vehicle count from API
+  (async () => {
+    if (!token) return;
+    try {
+      const res = await fetch('/api/vehicles/mine', { headers: { 'Authorization': 'Bearer ' + token } });
+      if (res.ok) {
+        const data = await res.json();
+        document.getElementById('statVehicles').textContent = Array.isArray(data) ? data.length : (data.total ?? '—');
+      }
+    } catch (_) {}
+  })();
+</script>
+</body>
+</html>

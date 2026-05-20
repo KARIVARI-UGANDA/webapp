@@ -19,9 +19,11 @@ class DriverProfile(Base):
     first_aid_cert_url = Column(Text)
     police_clearance_url = Column(Text)
     police_clearance_exp = Column(Date)
-    verification_status = Column(String, nullable=False)
+    verification_status = Column(String, nullable=False, default="pending")
     total_trips = Column(Integer, nullable=False, default=0)
     average_rating = Column(Numeric)
+    training_completed = Column(BOOLEAN, nullable=False, default=False)
+    training_completed_at = Column(DateTime)
     created_at = Column(DateTime, nullable=False)
     updated_at = Column(DateTime, nullable=False)
 

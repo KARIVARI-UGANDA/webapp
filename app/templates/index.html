@@ -1,651 +1,254 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
-
+<html lang="en">
 <head>
-        <meta charset="utf-8">
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Montserrat:wght@600;700;800&amp;display=swap"
-                rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-                rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-                rel="stylesheet">
-        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-        <script id="tailwind-config">
-                tailwind.config = {
-                        darkMode: "class",
-                        theme: {
-                                extend: {
-                                        "colors": {
-                                                "secondary-fixed": "#ffdeac",
-                                                "outline": "#72796e",
-                                                "secondary-fixed-dim": "#ffba35",
-                                                "inverse-surface": "#2f3133",
-                                                "on-background": "#1a1c1e",
-                                                "on-secondary-fixed": "#281900",
-                                                "soft-gray": "#F5F5F5",
-                                                "surface-dim": "#dadadc",
-                                                "secondary-container": "#ffb61e",
-                                                "on-surface-variant": "#42493e",
-                                                "primary-fixed": "#bcf0ae",
-                                                "on-error": "#ffffff",
-                                                "outline-variant": "#c2c9bb",
-                                                "on-primary-fixed-variant": "#23501e",
-                                                "slate-dark": "#1A1C1E",
-                                                "on-primary": "#ffffff",
-                                                "primary-container": "#2d5a27",
-                                                "tertiary-fixed-dim": "#adc6ff",
-                                                "secondary": "#7e5700",
-                                                "surface": "#f9f9fc",
-                                                "tertiary": "#00377a",
-                                                "on-secondary": "#ffffff",
-                                                "primary-fixed-dim": "#a1d494",
-                                                "tertiary-fixed": "#d8e2ff",
-                                                "on-surface": "#1a1c1e",
-                                                "status-pending": "#B45309",
-                                                "on-secondary-container": "#6c4a00",
-                                                "inverse-on-surface": "#f0f0f3",
-                                                "on-primary-fixed": "#002201",
-                                                "status-success": "#15803D",
-                                                "on-primary-container": "#9dd090",
-                                                "surface-container": "#eeeef0",
-                                                "surface-tint": "#3b6934",
-                                                "on-tertiary": "#ffffff",
-                                                "surface-container-lowest": "#ffffff",
-                                                "error": "#ba1a1a",
-                                                "on-tertiary-fixed-variant": "#004494",
-                                                "surface-container-highest": "#e2e2e5",
-                                                "primary": "#154212",
-                                                "safari-green": "#2D5A27",
-                                                "surface-container-high": "#e8e8ea",
-                                                "surface-bright": "#f9f9fc",
-                                                "on-tertiary-fixed": "#001a41",
-                                                "error-container": "#ffdad6",
-                                                "inverse-primary": "#a1d494",
-                                                "surface-container-low": "#f3f3f6",
-                                                "on-tertiary-container": "#a8c3ff",
-                                                "surface-variant": "#e2e2e5",
-                                                "on-secondary-fixed-variant": "#5f4100",
-                                                "tertiary-container": "#004da6",
-                                                "ugandan-sun": "#F9B115",
-                                                "background": "#f9f9fc",
-                                                "on-error-container": "#93000a"
-                                        },
-                                        "borderRadius": {
-                                                "DEFAULT": "0.25rem",
-                                                "lg": "0.5rem",
-                                                "xl": "0.75rem",
-                                                "full": "9999px"
-                                        },
-                                        "spacing": {
-                                                "margin-desktop": "48px",
-                                                "gutter": "24px",
-                                                "base": "8px",
-                                                "margin-mobile": "16px",
-                                                "container-max": "1280px"
-                                        },
-                                        "fontFamily": {
-                                                "label-sm": ["Inter"],
-                                                "headline-lg-mobile": ["Montserrat"],
-                                                "body-lg": ["Inter"],
-                                                "headline-md": ["Montserrat"],
-                                                "label-lg": ["Inter"],
-                                                "body-md": ["Inter"],
-                                                "headline-xl": ["Montserrat"],
-                                                "headline-lg": ["Montserrat"]
-                                        },
-                                        "fontSize": {
-                                                "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
-                                                "headline-lg-mobile": ["28px", { "lineHeight": "34px", "fontWeight": "700" }],
-                                                "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
-                                                "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
-                                                "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
-                                                "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                                                "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                                                "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
-                                        }
-                                },
-                        },
-                }
-        </script>
-        <style>
-                .material-symbols-outlined {
-                        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-                }
-        </style>
-        <style data-stitch-cursor=""></style>
-        <style data-stitch-scroll-lock=""></style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kari Vari Uganda | Premium Vehicle Rentals</title>
+  <!-- Bootstrap 5 CSS (no external fonts, no Tailwind) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Separate custom CSS file -->
+  <link rel="stylesheet" href="/static/css/index.css">
 </head>
+<body>
 
-<body class="bg-background text-on-background antialiased">
-        <!-- Top Navigation Bar -->
-        <nav
-                class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/80 backdrop-blur-md shadow-sm">
-                <div class="font-headline-md text-headline-md font-bold text-primary">Kari Vari Uganda</div>
-                <div class="hidden md:flex space-x-8 items-center">
-                        <a class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-1 transition-all duration-200 ease-in-out"
-                                href="#">Listings</a>
-                        <a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors"
-                                href="#">How it Works</a>
-                        <a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors"
-                                href="#">About</a>
-                        <a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors"
-                                href="#">Contact</a>
-                </div>
-                <div class="flex items-center space-x-4">
-                        <button
-                                class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors">Sign
-                                In</button>
-                        <button
-                                class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:brightness-110 transition-all">Register</button>
-                </div>
-        </nav>
-        <main>
-                <!-- Hero Section -->
-                <section class="relative h-[870px] flex items-center justify-center overflow-hidden">
-                        <div class="absolute inset-0 z-0">
-                                <img alt="Safari Landscape" class="w-full h-full object-cover"
-                                        data-alt="A wide panoramic shot of the Ugandan savannah at golden hour, featuring a majestic acacia tree silhouetted against a vibrant orange and yellow sky. The foreground shows tall golden grasses and a rugged dirt trail leading into the horizon. The lighting is warm and cinematic, evoking a sense of adventure and the premium quality of a high-end travel service."
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoNvUOLWO8-7uyGYwUNScCjXZaQWTC8SiQtoLkAJcWgNHB0hb21WHdS2-pd1qcQoY-QfRGkRD_P2rWepG_OEdlA6KjjBQWW9C63uVyeEqab86KTf_jgl3SGM7LIcpNOoTyW1d3Jdkf3TC0hRmcK70f5yzRY05SOJfYxGT5xa-RZzF2e79js7U1b_ONv6z2-uUfvvF2IeLyucdAB1RvXZEkN70zfF5bNtedCENkklT5-Kp78KlJy0GMbCE7NY5MOerlhP2jzICEL4M">
-                                <div class="absolute inset-0 bg-black/30"></div>
-                        </div>
-                        <div class="relative z-10 w-full px-margin-mobile md:px-margin-desktop max-w-container-max">
-                                <div class="max-w-3xl mb-12">
-                                        <h1 class="text-white font-headline-xl text-headline-xl mb-4 leading-tight">
-                                                Explore the Pearl of Africa at Your Own Pace</h1>
-                                        <p class="text-white/90 font-body-lg text-body-lg">Premium vehicle rentals for
-                                                safaris, business trips, and local adventures across Uganda.</p>
-                                </div>
-                                <!-- Search Bar Container -->
-                                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg Level 2 max-w-5xl">
-                                        <form class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
-                                                <div class="space-y-2">
-                                                        <label
-                                                                class="font-label-sm text-label-sm text-outline flex items-center gap-2">
-                                                                <span class="material-symbols-outlined text-safari-green"
-                                                                        style="font-size: 18px;">location_on</span>
-                                                                PICK-UP LOCATION
-                                                        </label>
-                                                        <input class="w-full border-outline-variant rounded-lg focus:ring-safari-green focus:border-safari-green text-body-md font-body-md"
-                                                                placeholder="City, address, or airport (e.g. Kampala, Entebbe)"
-                                                                type="text">
-                                                </div>
-                                                <div class="space-y-2">
-                                                        <label
-                                                                class="font-label-sm text-label-sm text-outline flex items-center gap-2">
-                                                                <span class="material-symbols-outlined text-safari-green"
-                                                                        style="font-size: 18px;">calendar_today</span>
-                                                                DATES
-                                                        </label>
-                                                        <input class="w-full border-outline-variant rounded-lg focus:ring-safari-green focus:border-safari-green text-body-md font-body-md"
-                                                                placeholder="Nov 12 - Nov 19" type="text">
-                                                </div>
-                                                <div class="space-y-2">
-                                                        <label
-                                                                class="font-label-sm text-label-sm text-outline flex items-center gap-2">
-                                                                <span class="material-symbols-outlined text-safari-green"
-                                                                        style="font-size: 18px;">directions_car</span>
-                                                                VEHICLE TYPE
-                                                        </label>
-                                                        <select
-                                                                class="w-full border-outline-variant rounded-lg focus:ring-safari-green focus:border-safari-green text-body-md font-body-md">
-                                                                <option>All Vehicles</option>
-                                                                <option>4x4 Safari Land Cruiser</option>
-                                                                <option>SUV / Rav4</option>
-                                                                <option>Luxury Sedan</option>
-                                                        </select>
-                                                </div>
-                                                <button
-                                                        class="bg-ugandan-sun text-slate-dark h-[48px] rounded-lg font-bold text-label-lg hover:shadow-md transition-all flex items-center justify-center gap-2">
-                                                        <span class="material-symbols-outlined">search</span>
-                                                        FIND A VEHICLE
-                                                </button>
-                                        </form>
-                                </div>
-                        </div>
-                </section>
-                <!-- Featured Vehicles -->
-                <section class="py-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-                        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
-                                <div>
-                                        <span class="text-safari-green font-label-lg text-label-lg tracking-widest">OUR
-                                                FLEET</span>
-                                        <h2 class="font-headline-lg text-headline-lg mt-2">Featured Vehicles</h2>
-                                </div>
-                                <button
-                                        class="text-primary font-label-lg text-label-lg flex items-center gap-1 hover:underline underline-offset-4">
-                                        View All Listings <span class="material-symbols-outlined">arrow_forward</span>
-                                </button>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-                                <!-- Car Card 1 -->
-                                <div
-                                        class="bg-white rounded-xl shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
-                                        <div class="relative h-64">
-                                                <img alt="Land Cruiser" class="w-full h-full object-cover"
-                                                        data-alt="A clean, white Toyota Land Cruiser 4x4 modified for safari with a pop-up roof, parked on a lush green lawn with tropical Ugandan foliage in the background. The lighting is bright and clear morning sun, highlighting the rugged durability and pristine condition of the vehicle. The overall aesthetic is professional and high-quality."
-                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp9OVflvqjA4TyTDvlQjumG9XERVYciqSy3hXCx42KsmWM25FeBhkQSvKCx831HNxjeRJy0IkmBc51ZWP1m0A5E4Mi4xgQaI6n9RrL7jvxiaiaDcq4SvkcTmX_gWR7x4YEZhpFCo6VeIgcnz93SS4sAk-AGy_QttCOhQdTZU-ZXquAiuTmJlqcNhQTa3ri6ap_v4ibUz_k_zNMnmEXN2-kYa5Jqioyc-jsUxYwyqZ2Z72LQ-sAQM5xf0d6fZVX9iKLxT49lKxOR9k">
-                                                <span
-                                                        class="absolute top-4 left-4 bg-status-success text-white text-[12px] font-bold px-3 py-1 rounded-full uppercase">Available</span>
-                                        </div>
-                                        <div class="p-6">
-                                                <div class="flex justify-between items-start mb-4">
-                                                        <div>
-                                                                <h3
-                                                                        class="font-headline-md text-headline-md text-slate-dark">
-                                                                        Toyota Land Cruiser V8</h3>
-                                                                <p class="text-outline font-label-sm text-label-sm">4x4
-                                                                        Safari Edition</p>
-                                                        </div>
-                                                        <div class="text-right">
-                                                                <p class="text-safari-green font-bold text-headline-md">
-                                                                        $120</p>
-                                                                <p class="text-outline font-label-sm text-label-sm">/
-                                                                        day</p>
-                                                        </div>
-                                                </div>
-                                                <div class="flex items-center gap-6 mb-6 text-on-surface-variant">
-                                                        <div class="flex items-center gap-1">
-                                                                <span
-                                                                        class="material-symbols-outlined text-[20px]">group</span>
-                                                                <span class="text-label-lg font-label-lg">7 Seats</span>
-                                                        </div>
-                                                        <div class="flex items-center gap-1">
-                                                                <span
-                                                                        class="material-symbols-outlined text-[20px]">settings</span>
-                                                                <span class="text-label-lg font-label-lg">Manual</span>
-                                                        </div>
-                                                        <div class="flex items-center gap-1">
-                                                                <span
-                                                                        class="material-symbols-outlined text-[20px]">local_gas_station</span>
-                                                                <span class="text-label-lg font-label-lg">Diesel</span>
-                                                        </div>
-                                                </div>
-                                                <button
-                                                        class="w-full bg-safari-green text-white py-3 rounded-lg font-bold text-label-lg hover:brightness-110 transition-all">Book
-                                                        Now</button>
-                                        </div>
-                                </div>
-                                <!-- Car Card 2 -->
-                                <div
-                                        class="bg-white rounded-xl shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
-                                        <div class="relative h-64">
-                                                <img alt="SUV" class="w-full h-full object-cover"
-                                                        data-alt="A sleek silver Toyota RAV4 SUV parked in an urban Kampala setting with modern buildings and palm trees in the background. The lighting is mid-afternoon sun with soft shadows, giving it a clean, corporate, and reliable look. The vehicle appears well-maintained and perfect for city driving or light adventures."
-                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6S_v4dn8gVSrYc9GpIcVc63gJZ94lrqf3xTGV3TDC0fJo4Sz1jGviLv_Uy3Qy1MjyZANBOwalfSXR6CMS8m5bYM4R-FbOSwhoizUUhHW4YXYgaTrcOi2MYYSnr2Jcmy6al8R9LFhRRRpJr2Yf6i3Td8ULd5vsDskkUxXlDdvXe2A8opADKAbj43oCr1QLtBIET0bZkHW25ZJKi58dsqtyrCsK7gcSZptjGvC5v0ZlVMXLHcozigeYhmm2M1mANXPoAJOGelfI5pE">
-                                        </div>
-                                        <div class="p-6">
-                                                <div class="flex justify-between items-start mb-4">
-                                                        <div>
-                                                                <h3
-                                                                        class="font-headline-md text-headline-md text-slate-dark">
-                                                                        Toyota RAV4</h3>
-                                                                <p class="text-outline font-label-sm text-label-sm">
-                                                                        Compact SUV</p>
-                                                        </div>
-                                                        <div class="text-right">
-                                                                <p class="text-safari-green font-bold text-headline-md">
-                                                                        $55</p>
-                                                                <p class="text-outline font-label-sm text-label-sm">/
-                                                                        day</p>
-                                                        </div>
-                                                </div>
-                                                <div class="flex items-center gap-6 mb-6 text-on-surface-variant">
-                                                        <div class="flex items-center gap-1">
-                                                                <span
-                                                                        class="material-symbols-outlined text-[20px]">group</span>
-                                                                <span class="text-label-lg font-label-lg">5 Seats</span>
-                                                        </div>
-                                                        <div class="flex items-center gap-1">
-                                                                <span
-                                                                        class="material-symbols-outlined text-[20px]">settings</span>
-                                                                <span
-                                                                        class="text-label-lg font-label-lg">Automatic</span>
-                                                        </div>
-                                                        <div class="flex items-center gap-1">
-                                                                <span
-                                                                        class="material-symbols-outlined text-[20px]">local_gas_station</span>
-                                                                <span class="text-label-lg font-label-lg">Petrol</span>
-                                                        </div>
-                                                </div>
-                                                <button
-                                                        class="w-full bg-safari-green text-white py-3 rounded-lg font-bold text-label-lg hover:brightness-110 transition-all">Book
-                                                        Now</button>
-                                        </div>
-                                </div>
-                                <!-- Car Card 3 -->
-                                <div
-                                        class="bg-white rounded-xl shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
-                                        <div class="relative h-64">
-                                                <img alt="Minibus" class="w-full h-full object-cover"
-                                                        data-alt="A clean, white Toyota Hiace Safari Minibus with large windows and a heavy-duty roof rack, parked near a safari lodge in Murchison Falls National Park. The background shows dry savannah shrubs and a clear blue sky. The lighting is bright and inviting, showcasing the vehicle as the ideal choice for group travel and NGO missions."
-                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSyG99pNBSVE-ZWgcOSjuX8XdgdJWF9g9zfwGbKPnNRqNbKaRKMw8gjBEbnrJYYMLzs-s0XA-usTul-BYrtVhnPir66aetuwW1rOYkcF9hV-1DroTijRvGVTFqG8xAD11JKONyrCPXly-KJ7O835k6pyGRwoivdn7LOQnLjGmhCMOHqsvPe63xVPsw1muLwEBGwK--K2UftxnxqufROjlG4JloNGc5qi2gQCe_9fDmblsX0xl6YnIFtFZBDEXP0SVlggcUGOL4bF4">
-                                        </div>
-                                        <div class="p-6">
-                                                <div class="flex justify-between items-start mb-4">
-                                                        <div>
-                                                                <h3
-                                                                        class="font-headline-md text-headline-md text-slate-dark">
-                                                                        Safari Minibus</h3>
-                                                                <p class="text-outline font-label-sm text-label-sm">
-                                                                        Group Travel</p>
-                                                        </div>
-                                                        <div class="text-right">
-                                                                <p class="text-safari-green font-bold text-headline-md">
-                                                                        $85</p>
-                                                                <p class="text-outline font-label-sm text-label-sm">/
-                                                                        day</p>
-                                                        </div>
-                                                </div>
-                                                <div class="flex items-center gap-6 mb-6 text-on-surface-variant">
-                                                        <div class="flex items-center gap-1">
-                                                                <span
-                                                                        class="material-symbols-outlined text-[20px]">group</span>
-                                                                <span class="text-label-lg font-label-lg">10
-                                                                        Seats</span>
-                                                        </div>
-                                                        <div class="flex items-center gap-1">
-                                                                <span
-                                                                        class="material-symbols-outlined text-[20px]">settings</span>
-                                                                <span class="text-label-lg font-label-lg">Manual</span>
-                                                        </div>
-                                                        <div class="flex items-center gap-1">
-                                                                <span
-                                                                        class="material-symbols-outlined text-[20px]">local_gas_station</span>
-                                                                <span class="text-label-lg font-label-lg">Diesel</span>
-                                                        </div>
-                                                </div>
-                                                <button
-                                                        class="w-full bg-safari-green text-white py-3 rounded-lg font-bold text-label-lg hover:brightness-110 transition-all">Book
-                                                        Now</button>
-                                        </div>
-                                </div>
-                        </div>
-                </section>
-                <!-- Popular Destinations (Bento Grid) -->
-                <section class="py-20 bg-surface-container-low">
-                        <div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-                                <div class="text-center mb-16">
-                                        <span class="text-safari-green font-label-lg text-label-lg tracking-widest">DISCOVER
-                                                UGANDA</span>
-                                        <h2 class="font-headline-lg text-headline-lg mt-2">Popular Destinations</h2>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[600px]">
-                                        <div
-                                                class="md:col-span-2 md:row-span-2 relative rounded-xl overflow-hidden group cursor-pointer">
-                                                <img alt="Bwindi"
-                                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                                        data-alt="A breathtaking view of Bwindi Impenetrable Forest in Uganda, with thick mist rolling over deep green, layered mountain ridges. Sunlight filters through the clouds in soft rays. The image captures the primeval and mysterious beauty of the gorilla habitat, using a lush green color palette that emphasizes the 'Safari Green' brand identity."
-                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMw5tbUi-Y6wOXCUayytfzreDMu4lxAA1s3cDdFD80OamJPGWCCFAqsGtXUQi0zV6nACslT06JHYCQ4noHOCxGCQRiHoBz07-SWzRXe7jM_CLobh_vvL2GFR4PP05q_OdD5MvqkfKO0OCA2mzWIM0tBxJGchrgJXbQi-YeEzj1ZdHopVjTf8L2m9Wq-lA4Ym9PcCE2xZ1RSfSHy7jsjE6PdBGnlufZhAKGxv99k4CAJ1gQPOJ5LO19AGilPwbI5qH20M8FKHo3tmA">
-                                                <div
-                                                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8">
-                                                        <h4 class="text-white font-headline-lg text-headline-lg">Bwindi
-                                                                Impenetrable Forest</h4>
-                                                        <p class="text-white/80 font-body-md text-body-md">Home of the
-                                                                Mountain Gorillas</p>
-                                                </div>
-                                        </div>
-                                        <div
-                                                class="md:col-span-2 relative rounded-xl overflow-hidden group cursor-pointer">
-                                                <img alt="Murchison Falls"
-                                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                                        data-alt="A dramatic close-up of Murchison Falls where the Nile River squeezes through a narrow gorge, creating massive white spray and rainbows in the mist. The surrounding rocks are dark and wet, and the sky is a clear safari blue. The power and energy of the water are palpable in this high-definition travel photograph."
-                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAC8ygWs6kF80v5E_AwB9hl4kzaJ5v4c4wgwugXurPt6PMTgHYYmWIH0DmqDJ-fWtq9dUFKTdrUNaAoNPBxje-fKNhVL64DqLS84Go2WiBc1_ElWezufiym5dVHdOMEh0R4HKA5dR_NWQxX8xtOJn4thNYst7lSQi_kDXsMiqCGwKczFD9dzH7qJ_IStzcpszHeX9m_IHe6OrUBBtRBmJ8mh_m1PonbkcPrejb3WhHRD5k_KKyRoDTH25XwTxoT9KlHbN0ZyMqVok">
-                                                <div
-                                                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
-                                                        <h4 class="text-white font-headline-md text-headline-md">
-                                                                Murchison Falls</h4>
-                                                        <p class="text-white/80 font-body-md text-body-md">Uganda's
-                                                                Largest National Park</p>
-                                                </div>
-                                        </div>
-                                        <div class="relative rounded-xl overflow-hidden group cursor-pointer">
-                                                <img alt="Lake Bunyonyi"
-                                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                                        data-alt="A peaceful morning scene at Lake Bunyonyi, with a traditional wooden dugout canoe floating on glass-like water. Several small, lush green islands are scattered across the lake under a soft, hazy sunrise sky. The mood is serene and tranquil, reflecting the relaxing side of Ugandan tourism."
-                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDawMm3YVRNCPzt6Qjne_3AOWYDardEjH65DX0Md83_B24zjtcm5g_o7wYqSFgjVBdJHGm-UcrvBOwo2hRLxHBWWgsUc6EMLr31dRplX0k186SZ8icq1X_N3cu0FKv3ICFyI7pD1ai9w-6f7OUcR6bJFbKfpIkKbfGEsiee6gb0BjbHdqS_n61gTZ0pRBEBnb-7aRQGloAF57Svi0NPO5UTx2cQwZHELPgHg_9WTCJWq6olxUKQRgoWqY3bODceERHycYifTABoCk0">
-                                                <div
-                                                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
-                                                        <h4 class="text-white font-headline-md text-headline-md">Lake
-                                                                Bunyonyi</h4>
-                                                </div>
-                                        </div>
-                                        <div class="relative rounded-xl overflow-hidden group cursor-pointer">
-                                                <img alt="Kidepo Valley"
-                                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                                        data-alt="The vast, arid plains of Kidepo Valley National Park with a lone ostrich walking across the yellowed grass. In the far distance, rugged purple mountains frame the horizon under a massive, cloudless sky. The lighting is harsh but beautiful, highlighting the wild and remote character of this unique destination."
-                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvAIOPM_eUQWM_ljnwShDWi8ex6JkyReweVzhSzWMGzRtu-LIaWRiH8OAF8KxwYFoYggK9TC50u36T67uhzq_uv5iKl0OHbsTFP-k6J0iHs70mkRm9qRxEP2EetLtTkkbEmy_MUsOgUFKWc78EHwBvaJv-RstmmxUnNXDwru1DdhlWGtA0o74-gS57X1O6_xkc281PWtox-ahbXnrQHtbc8VTrtV5GU4YvMN_ru5VGzFJiHUNErT1k0ASqONCtmNbn4mxYL0xLgxg">
-                                                <div
-                                                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
-                                                        <h4 class="text-white font-headline-md text-headline-md">Kidepo
-                                                                Valley</h4>
-                                                </div>
-                                        </div>
-                                </div>
-                        </div>
-                </section>
-                <!-- How it Works -->
-                <section class="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                                <div>
-                                        <span class="text-safari-green font-label-lg text-label-lg tracking-widest">TRANSPARENT
-                                                PROCESS</span>
-                                        <h2 class="font-headline-lg text-headline-lg mt-2 mb-8">How Kari Vari Works</h2>
-                                        <div class="space-y-12">
-                                                <div class="flex gap-6">
-                                                        <div
-                                                                class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center shrink-0">
-                                                                <span
-                                                                        class="material-symbols-outlined text-on-secondary-container">search</span>
-                                                        </div>
-                                                        <div>
-                                                                <h4 class="font-headline-md text-headline-md">1. Browse
-                                                                        &amp; Compare</h4>
-                                                                <p class="text-outline font-body-md text-body-md mt-2">
-                                                                        Filter through hundreds of verified vehicles
-                                                                        from professional owners across Uganda. Check
-                                                                        ratings, amenities, and real-time availability.
-                                                                </p>
-                                                        </div>
-                                                </div>
-                                                <div class="flex gap-6">
-                                                        <div
-                                                                class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center shrink-0">
-                                                                <span
-                                                                        class="material-symbols-outlined text-on-secondary-container">event_available</span>
-                                                        </div>
-                                                        <div>
-                                                                <h4 class="font-headline-md text-headline-md">2. Secure
-                                                                        Booking</h4>
-                                                                <p class="text-outline font-body-md text-body-md mt-2">
-                                                                        Book with confidence using our secure payment
-                                                                        gateway. We hold the funds until you've
-                                                                        successfully picked up the vehicle.</p>
-                                                        </div>
-                                                </div>
-                                                <div class="flex gap-6">
-                                                        <div
-                                                                class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center shrink-0">
-                                                                <span
-                                                                        class="material-symbols-outlined text-on-secondary-container">key</span>
-                                                        </div>
-                                                        <div>
-                                                                <h4 class="font-headline-md text-headline-md">3. Pick Up
-                                                                        &amp; Drive</h4>
-                                                                <p class="text-outline font-body-md text-body-md mt-2">
-                                                                        Meet your host or have the vehicle delivered to
-                                                                        Entebbe Airport or your hotel in Kampala. Your
-                                                                        Ugandan adventure starts here.</p>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                </div>
-                                <div class="relative">
-                                        <div
-                                                class="absolute -top-10 -left-10 w-40 h-40 bg-ugandan-sun rounded-full opacity-20 blur-3xl">
-                                        </div>
-                                        <img alt="Mobile App" class="relative z-10 rounded-2xl shadow-xl w-full"
-                                                data-alt="A hand holding a high-end smartphone displaying a clean, modern vehicle booking interface with map and car listings. The background is a soft-focus view of a sunny outdoor terrace with tropical plants. The lighting is bright and airy, emphasizing the technology and ease of use of the platform."
-                                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwUp_plWVqFzO-l1nQSBRoIpelvYsL2YY2cZXqSjt0MOayT2GtgwgDUyrALyYDmK8gaXYbqLb6LQDSNYND7tsBzJ2cjzPAki5mdwJopGKNjnAn9n0QWp4coPhxu5tk7nQuYG-DEAGTAs9hQoxlxGcyDmv9-jzVy1lS9BR39fLSvZzb5bP89VcDW8uLFOwSj3AbFKrBUSSBo0ktf_cqWJsbJhgRo3AlLHIHJvKxs6hQrjiYCXbZ50ASGq_-dge9HHMeOWkPjJGI3F0">
-                                </div>
-                        </div>
-                </section>
-                <!-- Testimonials -->
-                <section class="py-20 bg-primary text-white">
-                        <div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-                                <div class="text-center mb-16">
-                                        <span
-                                                class="text-ugandan-sun font-label-lg text-label-lg tracking-widest">TESTIMONIALS</span>
-                                        <h2 class="font-headline-lg text-headline-lg mt-2">What Our Clients Say</h2>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-                                        <div class="bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20">
-                                                <div class="flex gap-1 mb-4">
-                                                        <span class="material-symbols-outlined text-ugandan-sun"
-                                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                                        <span class="material-symbols-outlined text-ugandan-sun"
-                                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                                        <span class="material-symbols-outlined text-ugandan-sun"
-                                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                                        <span class="material-symbols-outlined text-ugandan-sun"
-                                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                                        <span class="material-symbols-outlined text-ugandan-sun"
-                                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                                </div>
-                                                <p class="font-body-lg text-body-lg italic mb-6">"Kari Vari made our
-                                                        family safari seamless. The Land Cruiser was in perfect
-                                                        condition, and having the airport pickup was a lifesaver after a
-                                                        12-hour flight."</p>
-                                                <div class="flex items-center gap-4">
-                                                        <div
-                                                                class="w-12 h-12 rounded-full bg-slate-400 overflow-hidden">
-                                                                <img alt="Sarah"
-                                                                        data-alt="A portrait of a smiling middle-aged man with short hair, wearing a casual linen shirt, outdoors in soft evening light. The look is friendly and satisfied."
-                                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGIZZP7yOXL862TRNWgIIos_lemO4LlT25Ejubd7F8uCOF7C6Fm9wQOGyOWUeDR1bYBoS0obQlvXi7WSc2pwIRjr_7eI9RiJkl1_yqS0StRqY1lUkMUJ-QT_1_3cxlhCp8aXhMS_-ksmjzJL3nDBz8-EJTCDsu7kket2Rkw7YLrr_N52tugCMOS97Xey7lm7-uFrrxRajUfqsBzHJ9_zk2GzAKvZThA4_fGV8vBw1kw86b4VXMho2EnG1S0dLCLxKuVDtMbTZZe14">
-                                                        </div>
-                                                        <div>
-                                                                <h5 class="font-label-lg text-label-lg">Mark Henderson
-                                                                </h5>
-                                                                <p class="text-white/60 text-label-sm font-label-sm">
-                                                                        Travel Blogger, UK</p>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                        <div class="bg-white/10 backdrop-blur-md p-8 rounded-xl border border-white/20">
-                                                <div class="flex gap-1 mb-4">
-                                                        <span class="material-symbols-outlined text-ugandan-sun"
-                                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                                        <span class="material-symbols-outlined text-ugandan-sun"
-                                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                                        <span class="material-symbols-outlined text-ugandan-sun"
-                                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                                        <span class="material-symbols-outlined text-ugandan-sun"
-                                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                                        <span class="material-symbols-outlined text-ugandan-sun"
-                                                                style="font-variation-settings: 'FILL' 1;">star</span>
-                                                </div>
-                                                <p class="font-body-lg text-body-lg italic mb-6">"As an NGO coordinator,
-                                                        reliability is everything. We've used Kari Vari for our field
-                                                        missions for a year now and have never been let down.
-                                                        Exceptional service."</p>
-                                                <div class="flex items-center gap-4">
-                                                        <div
-                                                                class="w-12 h-12 rounded-full bg-slate-400 overflow-hidden">
-                                                                <img alt="Aisha"
-                                                                        data-alt="A portrait of a professional African woman with a warm, confident smile, wearing a smart-casual blazer. The lighting is soft and corporate, reflecting trust and reliability."
-                                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUzDVoBDnlfIpZnLHYPYf-i38M84d9PMSQARIsrvMvEjgt4ABH0oL_VIhq7WCD79iqCZfDG_B5e_9kIYBTt2DYrLsSQjQTpn8GLQ-csO3ebDUhqIapfomlAPHXHrjRRnUXT1_gcc1GGeeg_iEUE1V2R3MNs6gsESXMGSUu3TysjtoSpg1DSKV0VQGC5aHML3nmI3OFwgMYra5QHYU6XzWdXJ78OTaKO3UCNAxBDPieTkkzlOXjPAjg6WubsgorLCQaw-8rvv6NEnk">
-                                                        </div>
-                                                        <div>
-                                                                <h5 class="font-label-lg text-label-lg">Aisha Namukasa
-                                                                </h5>
-                                                                <p class="text-white/60 text-label-sm font-label-sm">
-                                                                        Regional Director, Health First</p>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                </div>
-                        </div>
-                </section>
-                <!-- CTA Section -->
-                <section class="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto text-center">
-                        <div class="bg-soft-gray rounded-3xl py-20 px-8 relative overflow-hidden">
-                                <div
-                                        class="absolute top-0 right-0 w-64 h-64 bg-safari-green opacity-5 rounded-full -translate-y-1/2 translate-x-1/2">
-                                </div>
-                                <h2 class="font-headline-xl text-headline-xl mb-6 text-slate-dark">Ready to Start Your
-                                        Journey?</h2>
-                                <p class="font-body-lg text-body-lg text-outline max-w-2xl mx-auto mb-10">Whether you're
-                                        looking for the perfect safari rig or want to earn extra income by listing your
-                                        own vehicle, we're here to help.</p>
-                                <div class="flex flex-col md:flex-row justify-center gap-4">
-                                        <button
-                                                class="bg-safari-green text-white px-10 py-4 rounded-lg font-bold text-label-lg hover:shadow-lg transition-all">Rent
-                                                a Vehicle</button>
-                                        <button
-                                                class="bg-ugandan-sun text-slate-dark px-10 py-4 rounded-lg font-bold text-label-lg hover:shadow-lg transition-all">List
-                                                Your Vehicle</button>
-                                </div>
-                        </div>
-                </section>
-        </main>
-        <!-- Footer -->
-        <footer
-                class="w-full py-12 px-margin-mobile md:px-margin-desktop mt-16 bg-on-background dark:bg-black text-white">
-                <div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                        <div class="col-span-1 md:col-span-1">
-                                <div class="font-headline-lg text-headline-lg font-bold text-ugandan-sun mb-4">Kari Vari
-                                </div>
-                                <p class="text-surface-variant text-body-md font-body-md">Your trusted partner for
-                                        exploring the beauty of Uganda with safety and reliability.</p>
-                        </div>
-                        <div>
-                                <h6 class="font-bold mb-6 text-ugandan-sun uppercase tracking-widest text-label-sm">
-                                        Links</h6>
-                                <ul class="space-y-4">
-                                        <li class=""><a class="text-surface-variant hover:text-ugandan-sun transition-colors text-label-sm"
-                                                        href="#">Privacy Policy</a></li>
-                                        <li class=""><a class="text-surface-variant hover:text-ugandan-sun transition-colors text-label-sm"
-                                                        href="#">Terms of Service</a></li>
-                                        <li class=""><a class="text-surface-variant hover:text-ugandan-sun transition-colors text-label-sm"
-                                                        href="#">Partner Program</a></li>
-                                        <li class=""><a class="text-surface-variant hover:text-ugandan-sun transition-colors text-label-sm"
-                                                        href="#">Careers</a></li>
-                                </ul>
-                        </div>
-                        <div>
-                                <h6 class="font-bold mb-6 text-ugandan-sun uppercase tracking-widest text-label-sm">
-                                        Destinations</h6>
-                                <ul class="space-y-4">
-                                        <li class=""><a class="text-surface-variant hover:text-ugandan-sun transition-colors text-label-sm"
-                                                        href="#">Kampala</a></li>
-                                        <li class=""><a class="text-surface-variant hover:text-ugandan-sun transition-colors text-label-sm"
-                                                        href="#">Entebbe</a></li>
-                                        <li class=""><a class="text-surface-variant hover:text-ugandan-sun transition-colors text-label-sm"
-                                                        href="#">Jinja</a></li>
-                                        <li class=""><a class="text-surface-variant hover:text-ugandan-sun transition-colors text-label-sm"
-                                                        href="#">Fort Portal</a></li>
-                                </ul>
-                        </div>
-                        <div>
-                                <h6 class="font-bold mb-6 text-ugandan-sun uppercase tracking-widest text-label-sm">
-                                        Connect</h6>
-                                <div class="flex gap-4">
-                                        <span
-                                                class="material-symbols-outlined cursor-pointer hover:text-ugandan-sun">Notebook</span>
-                                        <span
-                                                class="material-symbols-outlined cursor-pointer hover:text-ugandan-sun">share</span>
-                                        <span
-                                                class="material-symbols-outlined cursor-pointer hover:text-ugandan-sun">mail</span>
-                                </div>
-                        </div>
-                </div>
-                <div class="pt-8 border-t border-white/10 text-center">
-                        <p class="font-label-sm text-label-sm text-surface-variant">© 2024 Kari Vari Uganda. Exploring
-                                the Pearl of Africa.</p>
-                </div>
-        </footer>
+<!-- Top Navigation Bar -->
+<nav class="navbar navbar-expand-lg sticky-top py-3">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">Kari Vari Uganda</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-4">
+        <li class="nav-item"><a class="nav-link active" href="#">Listings</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">How it Works</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+      </ul>
+      <div class="d-flex gap-3" id="authButtons">
+        <a class="btn btn-link text-decoration-none" href="/login">Sign In</a>
+        <a class="btn btn-accent px-4" href="/register">Register</a>
+      </div>
+      <div class="d-flex gap-3 align-items-center" id="userButtons" style="display: none;">
+        <span class="text-dark" id="userName"></span>
+        <button class="btn btn-accent px-4" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
 
+<main>
+  <!-- Hero Section -->
+  <section class="hero-section position-relative d-flex align-items-center">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative z-2 py-5">
+      <div class="row">
+        <div class="col-lg-8 mb-5">
+          <h1 class="hero-title text-white mb-4">Explore the Pearl of Africa at Your Own Pace</h1>
+          <p class="hero-subtitle text-white-50">Premium vehicle rentals for safaris, business trips, and local adventures across Uganda.</p>
+        </div>
+      </div>
+      <!-- Search Bar Card -->
+      <div class="search-card bg-white p-4 p-lg-5 rounded-4 shadow-lg">
+        <form class="row g-4 align-items-end">
+          <div class="col-md-3">
+            <label class="form-label small fw-semibold text-secondary">
+              <i class="bi bi-geo-alt-fill me-1" style="color: #2d5a27;"></i> PICK-UP LOCATION
+            </label>
+            <input type="text" class="form-control form-control-lg" placeholder="City, address, or airport (e.g. Kampala, Entebbe)">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small fw-semibold text-secondary">
+              <i class="bi bi-calendar3 me-1" style="color: #2d5a27;"></i> DATES
+            </label>
+            <input type="text" class="form-control form-control-lg" placeholder="Nov 12 - Nov 19">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small fw-semibold text-secondary">
+              <i class="bi bi-car-front-fill me-1" style="color: #2d5a27;"></i> VEHICLE TYPE
+            </label>
+            <select class="form-select form-select-lg">
+              <option>All Vehicles</option>
+              <option>4x4 Safari Land Cruiser</option>
+              <option>SUV / Rav4</option>
+              <option>Luxury Sedan</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <button class="btn btn-accent w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
+              <i class="bi bi-search"></i> FIND A VEHICLE
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
 
+  <!-- Featured Vehicles -->
+  <section class="container py-5 my-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-5">
+      <div>
+        <span class="badge-soft-success">OUR FLEET</span>
+        <h2 class="display-6 fw-bold mt-2">Featured Vehicles</h2>
+      </div>
+      <button class="btn btn-link text-decoration-none p-0 d-flex align-items-center gap-1">
+        View All Listings <i class="bi bi-arrow-right"></i>
+      </button>
+    </div>
+    <div class="row g-4" id="vehicleCardsContainer">
+      <!-- Vehicle cards will be loaded here by JavaScript -->
+    </div>
+  </section>
+
+  <!-- Popular Destinations (Bento Grid) -->
+  <section class="bg-light py-5">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <span class="badge-soft-success">DISCOVER UGANDA</span>
+        <h2 class="display-6 fw-bold mt-2">Popular Destinations</h2>
+      </div>
+      <div class="destinations-grid">
+        <div class="grid-item grid-item-main">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMw5tbUi-Y6wOXCUayytfzreDMu4lxAA1s3cDdFD80OamJPGWCCFAqsGtXUQi0zV6nACslT06JHYCQ4noHOCxGCQRiHoBz07-SWzRXe7jM_CLobh_vvL2GFR4PP05q_OdD5MvqkfKO0OCA2mzWIM0tBxJGchrgJXbQi-YeEzj1ZdHopVjTf8L2m9Wq-lA4Ym9PcCE2xZ1RSfSHy7jsjE6PdBGnlufZhAKGxv99k4CAJ1gQPOJ5LO19AGilPwbI5qH20M8FKHo3tmA" alt="Bwindi Impenetrable Forest">
+          <div class="grid-overlay">
+            <h3>Bwindi Impenetrable Forest</h3>
+            <p>Home of the Mountain Gorillas</p>
+          </div>
+        </div>
+        <div class="grid-item">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAC8ygWs6kF80v5E_AwB9hl4kzaJ5v4c4wgwugXurPt6PMTgHYYmWIH0DmqDJ-fWtq9dUFKTdrUNaAoNPBxje-fKNhVL64DqLS84Go2WiBc1_ElWezufiym5dVHdOMEh0R4HKA5dR_NWQxX8xtOJn4thNYst7lSQi_kDXsMiqCGwKczFD9dzH7qJ_IStzcpszHeX9m_IHe6OrUBBtRBmJ8mh_m1PonbkcPrejb3WhHRD5k_KKyRoDTH25XwTxoT9KlHbN0ZyMqVok" alt="Murchison Falls">
+          <div class="grid-overlay">
+            <h4>Murchison Falls</h4>
+            <p>Uganda's Largest Park</p>
+          </div>
+        </div>
+        <div class="grid-item">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDawMm3YVRNCPzt6Qjne_3AOWYDardEjH65DX0Md83_B24zjtcm5g_o7wYqSFgjVBdJHGm-UcrvBOwo2hRLxHBWWgsUc6EMLr31dRplX0k186SZ8icq1X_N3cu0FKv3ICFyI7pD1ai9w-6f7OUcR6bJFbKfpIkKbfGEsiee6gb0BjbHdqS_n61gTZ0pRBEBnb-7aRQGloAF57Svi0NPO5UTx2cQwZHELPgHg_9WTCJWq6olxUKQRgoWqY3bODceERHycYifTABoCk0" alt="Lake Bunyonyi">
+          <div class="grid-overlay"><h4>Lake Bunyonyi</h4></div>
+        </div>
+        <div class="grid-item">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvAIOPM_eUQWM_ljnwShDWi8ex6JkyReweVzhSzWMGzRtu-LIaWRiH8OAF8KxwYFoYggK9TC50u36T67uhzq_uv5iKl0OHbsTFP-k6J0iHs70mkRm9qRxEP2EetLtTkkbEmy_MUsOgUFKWc78EHwBvaJv-RstmmxUnNXDwru1DdhlWGtA0o74-gS57X1O6_xkc281PWtox-ahbXnrQHtbc8VTrtV5GU4YvMN_ru5VGzFJiHUNErT1k0ASqONCtmNbn4mxYL0xLgxg" alt="Kidepo Valley">
+          <div class="grid-overlay"><h4>Kidepo Valley</h4></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it Works + App mockup -->
+  <section class="container py-5 my-4">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <span class="badge-soft-success">TRANSPARENT PROCESS</span>
+        <h2 class="display-6 fw-bold mt-2 mb-4">How Kari Vari Works</h2>
+        <div class="d-flex gap-4 mb-4">
+          <div class="icon-circle"><i class="bi bi-search fs-4"></i></div>
+          <div><h5 class="fw-bold">1. Browse & Compare</h5><p class="text-secondary">Filter through hundreds of verified vehicles from professional owners across Uganda.</p></div>
+        </div>
+        <div class="d-flex gap-4 mb-4">
+          <div class="icon-circle"><i class="bi bi-calendar-check fs-4"></i></div>
+          <div><h5 class="fw-bold">2. Secure Booking</h5><p class="text-secondary">Book with confidence using our secure payment gateway. Funds held until pickup.</p></div>
+        </div>
+        <div class="d-flex gap-4">
+          <div class="icon-circle"><i class="bi bi-key fs-4"></i></div>
+          <div><h5 class="fw-bold">3. Pick Up & Drive</h5><p class="text-secondary">Meet your host or get delivery to Entebbe Airport or your hotel.</p></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="position-relative text-center">
+          <div class="app-glow"></div>
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwUp_plWVqFzO-l1nQSBRoIpelvYsL2YY2cZXqSjt0MOayT2GtgwgDUyrALyYDmK8gaXYbqLb6LQDSNYND7tsBzJ2cjzPAki5mdwJopGKNjnAn9n0QWp4coPhxu5tk7nQuYG-DEAGTAs9hQoxlxGcyDmv9-jzVy1lS9BR39fLSvZzb5bP89VcDW8uLFOwSj3AbFKrBUSSBo0ktf_cqWJsbJhgRo3AlLHIHJvKxs6hQrjiYCXbZ50ASGq_-dge9HHMeOWkPjJGI3F0" alt="Mobile app interface" class="img-fluid rounded-4 shadow-lg">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonial-section py-5">
+    <div class="container py-4">
+      <div class="text-center mb-5">
+        <span class="badge-gold">TESTIMONIALS</span>
+        <h2 class="display-6 fw-bold mt-2 text-white">What Our Clients Say</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="testimonial-card">
+            <div class="text-warning mb-3">★★★★★</div>
+            <p class="fst-italic">"Kari Vari made our family safari seamless. The Land Cruiser was in perfect condition, and having airport pickup was a lifesaver."</p>
+            <div class="d-flex align-items-center gap-3 mt-3">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGIZZP7yOXL862TRNWgIIos_lemO4LlT25Ejubd7F8uCOF7C6Fm9wQOGyOWUeDR1bYBoS0obQlvXi7WSc2pwIRjr_7eI9RiJkl1_yqS0StRqY1lUkMUJ-QT_1_3cxlhCp8aXhMS_-ksmjzJL3nDBz8-EJTCDsu7kket2Rkw7YLrr_N52tugCMOS97Xey7lm7-uFrrxRajUfqsBzHJ9_zk2GzAKvZThA4_fGV8vBw1kw86b4VXMho2EnG1S0dLCLxKuVDtMbTZZe14" alt="Client" class="rounded-circle" width="48" height="48">
+              <div><strong>Mark Henderson</strong><br><small class="opacity-75">Travel Blogger, UK</small></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="testimonial-card">
+            <div class="text-warning mb-3">★★★★★</div>
+            <p class="fst-italic">"As an NGO coordinator, reliability is everything. We've used Kari Vari for field missions for a year and have never been let down."</p>
+            <div class="d-flex align-items-center gap-3 mt-3">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUzDVoBDnlfIpZnLHYPYf-i38M84d9PMSQARIsrvMvEjgt4ABH0oL_VIhq7WCD79iqCZfDG_B5e_9kIYBTt2DYrLsSQjQTpn8GLQ-csO3ebDUhqIapfomlAPHXHrjRRnUXT1_gcc1GGeeg_iEUE1V2R3MNs6gsESXMGSUu3TysjtoSpg1DSKV0VQGC5aHML3nmI3OFwgMYra5QHYU6XzWdXJ78OTaKO3UCNAxBDPieTkkzlOXjPAjg6WubsgorLCQaw-8rvv6NEnk" alt="Client" class="rounded-circle" width="48" height="48">
+              <div><strong>Aisha Namukasa</strong><br><small class="opacity-75">Regional Director, Health First</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="container py-5 my-4">
+    <div class="cta-banner p-5 p-lg-6 rounded-4 text-center">
+      <h2 class="display-5 fw-bold mb-3">Ready to Start Your Journey?</h2>
+      <p class="lead text-secondary mb-4 mx-auto" style="max-width: 600px;">Whether you need the perfect safari rig or want to earn by listing your own vehicle, we're here to help.</p>
+      <div class="d-flex flex-wrap gap-3 justify-content-center">
+        <button class="btn btn-primary btn-lg px-5">Rent a Vehicle</button>
+        <button class="btn btn-accent btn-lg px-5">List Your Vehicle</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer-dark pt-5 pb-4 mt-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-3">
+        <h4 class="text-accent mb-3">Kari Vari</h4>
+        <p class="small opacity-75">Your trusted partner for exploring the beauty of Uganda with safety and reliability.</p>
+      </div>
+      <div class="col-md-3">
+        <h6 class="text-uppercase small fw-bold text-accent mb-3">Links</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Privacy Policy</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Terms of Service</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Partner Program</a></li>
+          <li><a href="#" class="text-light text-decoration-none opacity-75">Careers</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h6 class="text-uppercase small fw-bold text-accent mb-3">Destinations</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Kampala</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Entebbe</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Jinja</a></li>
+          <li><a href="#" class="text-light text-decoration-none opacity-75">Fort Portal</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h6 class="text-uppercase small fw-bold text-accent mb-3">Connect</h6>
+        <div class="d-flex gap-3 fs-5">
+          <i class="bi bi-journal-bookmark-fill text-light opacity-75"></i>
+          <i class="bi bi-share-fill text-light opacity-75"></i>
+          <i class="bi bi-envelope-fill text-light opacity-75"></i>
+        </div>
+      </div>
+    </div>
+    <hr class="opacity-25 mt-4">
+    <div class="text-center small opacity-50">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

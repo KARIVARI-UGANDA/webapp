@@ -1,37 +1,90 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from app.routers import auth,users,vehicles,bookings,payments,admin
-
-app = FastAPI(
-    title="Kari Vari Uganda",
-    description="Car Rental Marketplace Platform",
-    version="1.0.0"
+from app.config import settings
+from app.routers import (
+    admin,
+    auth,
+    bookings,
+    drivers,
+    kyc,
+    messages,
+    notifications,
+    payments,
+    reviews,
+    users,
+    vehicles,
 )
 
-# Static files
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app = FastAPI(
+    title="Karivari Uganda",
+    description="4×4 vehicle marketplace connecting international tourists with verified Ugandan vehicles and drivers.",
+    version="1.0.0",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json",
+)
 
-# Templates
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Static files and templates
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 templates = Jinja2Templates(directory="app/templates")
 
-# Include routers
-app.include_router(auth.router)
-app.include_router(users.router)
-app.include_router(vehicles.router)
-app.include_router(bookings.router)
-app.include_router(payments.router)
-app.include_router(admin.router)
+# API routers — all under /api
+API = "/api"
+app.include_router(auth.router, prefix=API)
+app.include_router(users.router, prefix=API)
+app.include_router(vehicles.router, prefix=API)
+app.include_router(bookings.router, prefix=API)
+app.include_router(payments.router, prefix=API)
+app.include_router(drivers.router, prefix=API)
+app.include_router(reviews.router, prefix=API)
+app.include_router(messages.router, prefix=API)
+app.include_router(notifications.router, prefix=API)
+app.include_router(kyc.router, prefix=API)
+app.include_router(admin.router, prefix=API)
 
-# create route to render index.html
+
+@app.get("/api/health", tags=["health"])
+async def health_check():
+    return {"status": "ok", "version": app.version}
+
+
 @app.get("/")
 def read_root(request: Request):
     return templates.TemplateResponse(request, "index.html")
 
-@app.get("/health")
-async def health_check():
-    return {
-        "status": "ok",
-        "message": "Server is running"
-    }
+
+@app.get("/login")
+def login_page(request: Request):
+    return templates.TemplateResponse(request, "auth/login.html")
+
+
+@app.get("/register")
+def register_page(request: Request):
+    return templates.TemplateResponse(request, "auth/register.html")
+
+
+@app.get("/owner/dashboard")
+def owner_dashboard(request: Request):
+    return templates.TemplateResponse(request, "owner/dashboard.html")
+
+
+@app.get("/admin/dashboard")
+def admin_dashboard(request: Request):
+    return templates.TemplateResponse(request, "admin/dashboard.html")
+
+
+@app.get("/driver/dashboard")
+def driver_dashboard(request: Request):
+    return templates.TemplateResponse(request, "driver/dashboard.html")
