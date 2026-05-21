@@ -6,19 +6,8 @@
   <title>Driver Dashboard | Kari Vari Uganda</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="/static/css/index.css">
-  <style>
-    .sidebar { width: 240px; min-height: 100vh; background: var(--primary); }
-    .sidebar .nav-link { color: rgba(255,255,255,0.75); font-weight: 600; font-size: 0.9rem; padding: 0.65rem 1.25rem; border-radius: 8px; margin-bottom: 2px; }
-    .sidebar .nav-link:hover, .sidebar .nav-link.active { color: #fff; background: rgba(255,255,255,0.12); }
-    .sidebar .nav-link i { width: 1.4rem; }
-    .stat-card { border: none; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-    .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
-    .page-header { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
-    .driver-badge { background: rgba(21,66,18,0.08); color: var(--primary); border-radius: 20px; padding: 4px 14px; font-size: 0.8rem; font-weight: 600; }
-    .progress-thin { height: 6px; border-radius: 3px; }
-    @media (max-width: 768px) { .sidebar { width: 100%; min-height: auto; } }
-  </style>
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
 <body style="background:#f9f9fc;">
 
@@ -32,7 +21,7 @@
     <a class="nav-link" href="#"><i class="bi bi-star"></i> Reviews</a>
     <a class="nav-link" href="#"><i class="bi bi-person-circle"></i> Profile</a>
     <div class="mt-auto pt-3 border-top border-white border-opacity-25">
-      <a class="nav-link" style="color:rgba(255,150,150,0.85);" href="#" id="logoutBtn">
+      <a class="nav-link nav-link-danger" href="#" id="logoutBtn">
         <i class="bi bi-box-arrow-right"></i> Logout
       </a>
     </div>
@@ -44,7 +33,7 @@
     <!-- Header -->
     <div class="d-flex flex-wrap align-items-center justify-content-between mb-5 gap-3">
       <div>
-        <span class="driver-badge mb-2 d-inline-block">DRIVER PORTAL</span>
+        <span class="portal-badge portal-badge-driver mb-2 d-inline-block">DRIVER PORTAL</span>
         <h1 class="page-header mb-1">Welcome, <span id="driverName">—</span></h1>
         <p class="text-secondary small mb-0">Track your trips, complete training, and manage your profile.</p>
       </div>
@@ -123,80 +112,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  const token = localStorage.getItem('access_token');
-  const role  = localStorage.getItem('role');
-  if (!token) { window.location.href = '/login'; }
-  else if (role && role !== 'driver') { window.location.href = '/'; }
-
-  const storedName = localStorage.getItem('full_name');
-  if (storedName) document.getElementById('driverName').textContent = storedName;
-
-  document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-    e.preventDefault();
-    try {
-      await fetch('/api/auth/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
-    } catch (_) {}
-    localStorage.clear();
-    window.location.href = '/login';
-  });
-
-  // Load driver profile + training
-  (async () => {
-    if (!token) return;
-    try {
-      const [profileRes, trainingRes] = await Promise.all([
-        fetch('/api/drivers/me/profile', { headers: { 'Authorization': 'Bearer ' + token } }),
-        fetch('/api/drivers/me/training', { headers: { 'Authorization': 'Bearer ' + token } }),
-      ]);
-
-      if (profileRes.ok) {
-        const profile = await profileRes.json();
-        const statusEl = document.getElementById('verificationStatus');
-        const colors = { verified: 'success', pending: 'warning', rejected: 'danger' };
-        const color = colors[profile.verification_status] || 'secondary';
-        statusEl.innerHTML = `<span class="badge bg-${color} bg-opacity-15 text-${color} fw-semibold px-3 py-2">
-          <i class="bi bi-patch-check me-1"></i>${profile.verification_status.toUpperCase()}
-        </span>`;
-        document.getElementById('statCompleted').textContent = profile.total_trips ?? '0';
-      }
-
-      if (trainingRes.ok) {
-        const modules = await trainingRes.json();
-        const completed = modules.filter(m => m.completed).length;
-        const total = modules.length;
-        document.getElementById('statTraining').textContent = `${completed}/${total}`;
-        document.getElementById('trainingBadge').textContent = completed === total && total > 0 ? 'Complete' : `${completed} of ${total} done`;
-
-        const trainingEl = document.getElementById('trainingList');
-        if (total === 0) {
-          trainingEl.innerHTML = '<div class="text-center py-4 text-secondary">No training modules available yet.</div>';
-        } else {
-          trainingEl.innerHTML = modules.map(m => `
-            <div class="d-flex align-items-center gap-3 py-3 border-bottom">
-              <i class="bi ${m.completed ? 'bi-check-circle-fill text-success' : 'bi-circle text-secondary'} fs-5"></i>
-              <div class="flex-grow-1">
-                <div class="fw-semibold">${m.title}</div>
-                ${m.description ? `<div class="text-secondary small">${m.description}</div>` : ''}
-              </div>
-              ${m.completed ? '<span class="badge bg-success bg-opacity-10 text-success">Done</span>' : '<span class="badge bg-secondary bg-opacity-10 text-secondary">Pending</span>'}
-            </div>`).join('');
-        }
-      }
-    } catch (_) {}
-  })();
-
-  // Load trip counts
-  (async () => {
-    if (!token) return;
-    try {
-      const res = await fetch('/api/drivers/me/trips?status=upcoming', { headers: { 'Authorization': 'Bearer ' + token } });
-      if (res.ok) {
-        const data = await res.json();
-        document.getElementById('statUpcoming').textContent = data.total ?? '0';
-      }
-    } catch (_) {}
-  })();
-</script>
+<script src="/static/js/shared.js"></script>
+<script src="/static/js/driver/dashboard.js"></script>
 </body>
 </html>

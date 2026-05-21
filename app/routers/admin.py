@@ -51,6 +51,25 @@ def _write_audit(
 # Verifications — Vehicles
 # ---------------------------------------------------------------------------
 
+@router.get("/stats")
+def admin_stats(current_user=Depends(_admin), db: Session = Depends(get_db)):
+    """Live platform-wide counts for the admin dashboard."""
+    from sqlalchemy import func
+    from app.models.dispute import Dispute
+
+    total_users = db.query(func.count(User.id)).scalar() or 0
+    active_vehicles = db.query(func.count(Vehicle.id)).filter(Vehicle.status == "verified").scalar() or 0
+    pending_verifications = db.query(func.count(Vehicle.id)).filter(Vehicle.status == "pending_review").scalar() or 0
+    open_disputes = db.query(func.count(Dispute.id)).filter(Dispute.status == "open").scalar() or 0
+
+    return {
+        "total_users": total_users,
+        "active_vehicles": active_vehicles,
+        "pending_verifications": pending_verifications,
+        "open_disputes": open_disputes,
+    }
+
+
 @router.get("/verifications/pending")
 def list_pending_verifications(
     type: Optional[str] = Query("vehicle", regex="^(vehicle|owner|driver)$"),

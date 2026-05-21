@@ -1,96 +1,6 @@
-/* Custom CSS for Kari Vari Uganda Vehicle Rentals */
+/* Landing page styles — requires base.css */
 
-:root {
-  --primary: #154212;
-  --primary-light: #2d5a27;
-  --safari-green: #2d5a27;
-  --ugandan-sun: #F9B115;
-  --slate-dark: #1A1C1E;
-  --outline: #72796e;
-  --on-surface-variant: #42493e;
-  --surface-variant: #e2e2e5;
-  --soft-gray: #F5F5F5;
-  --status-success: #15803D;
-  --error: #ba1a1a;
-}
-
-body {
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-  background-color: #f9f9fc;
-  color: #1a1c1e;
-}
-
-.navbar {
-  background-color: rgba(249, 249, 252, 0.8);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.navbar-brand {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary) !important;
-}
-
-.nav-link {
-  font-weight: 600;
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
-  color: #1a1c1e !important;
-  transition: color 0.2s;
-}
-
-.nav-link.active {
-  color: var(--primary) !important;
-  border-bottom: 2px solid var(--primary);
-  padding-bottom: 0.5rem;
-}
-
-.nav-link:hover {
-  color: var(--safari-green) !important;
-}
-
-.btn-link {
-  color: var(--slate-dark);
-  font-weight: 600;
-  font-size: 0.875rem;
-}
-
-.btn-link:hover {
-  color: var(--primary);
-}
-
-.btn-accent {
-  background-color: var(--ugandan-sun);
-  color: var(--slate-dark);
-  font-weight: 700;
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
-  transition: all 0.2s;
-}
-
-.btn-accent:hover {
-  background-color: #e5a010;
-  color: var(--slate-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(249, 177, 21, 0.3);
-}
-
-.btn-primary {
-  background-color: var(--safari-green) !important;
-  border-color: var(--safari-green) !important;
-  font-weight: 700;
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
-  transition: all 0.2s;
-}
-
-.btn-primary:hover {
-  background-color: #1e4519 !important;
-  border-color: #1e4519 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(45, 90, 39, 0.3);
-}
+/* ── Hero ─────────────────────────────────────────────────── */
 
 .hero-section {
   min-height: 870px;
@@ -102,10 +12,7 @@ body {
 
 .hero-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: linear-gradient(0deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 100%);
   z-index: 1;
 }
@@ -123,14 +30,11 @@ body {
 }
 
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 32px;
-    line-height: 40px;
-  }
-  .hero-section {
-    min-height: 700px;
-  }
+  .hero-section  { min-height: 700px; }
+  .hero-title    { font-size: 32px; line-height: 40px; }
 }
+
+/* ── Search card ──────────────────────────────────────────── */
 
 .search-card {
   background: white;
@@ -140,46 +44,12 @@ body {
   position: relative;
 }
 
-.form-label {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  color: var(--outline);
-  margin-bottom: 0.5rem;
+@media (max-width: 768px) {
+  .search-card   { padding: 1.25rem !important; }
+  .display-6     { font-size: 1.75rem; }
 }
 
-.form-control, .form-select {
-  border-color: #c2c9bb;
-  border-radius: 0.5rem;
-  font-size: 16px;
-}
-
-.form-control:focus, .form-select:focus {
-  border-color: var(--safari-green);
-  box-shadow: 0 0 0 0.2rem rgba(45, 90, 39, 0.25);
-}
-
-.badge-soft-success {
-  background-color: rgba(45, 90, 39, 0.1);
-  color: var(--safari-green);
-  padding: 0.25rem 0.75rem;
-  border-radius: 2rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  display: inline-block;
-}
-
-.badge-gold {
-  background-color: rgba(249, 177, 21, 0.15);
-  color: var(--ugandan-sun);
-  padding: 0.25rem 0.75rem;
-  border-radius: 2rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  display: inline-block;
-}
+/* ── Vehicle cards ────────────────────────────────────────── */
 
 .vehicle-card {
   background: white;
@@ -229,6 +99,8 @@ body {
   color: var(--safari-green);
 }
 
+/* ── Destinations bento grid ──────────────────────────────── */
+
 .destinations-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -255,9 +127,7 @@ body {
   transition: transform 0.5s ease;
 }
 
-.grid-item:hover img {
-  transform: scale(1.05);
-}
+.grid-item:hover img { transform: scale(1.05); }
 
 .grid-overlay {
   position: absolute;
@@ -269,14 +139,10 @@ body {
   color: white;
 }
 
-.grid-overlay h3, .grid-overlay h4 {
-  margin: 0;
-  font-weight: 700;
-}
+.grid-overlay h3,
+.grid-overlay h4 { margin: 0; font-weight: 700; }
 
-.grid-overlay h3 {
-  font-size: 1.5rem;
-}
+.grid-overlay h3  { font-size: 1.5rem; }
 
 .grid-overlay p {
   margin: 0.25rem 0 0;
@@ -285,14 +151,11 @@ body {
 }
 
 @media (max-width: 768px) {
-  .destinations-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-auto-rows: 200px;
-  }
-  .grid-item-main {
-    grid-column: span 2;
-  }
+  .destinations-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 200px; }
+  .grid-item-main    { grid-column: span 2; }
 }
+
+/* ── How it works ─────────────────────────────────────────── */
 
 .icon-circle {
   width: 48px;
@@ -319,9 +182,9 @@ body {
   z-index: 0;
 }
 
-.testimonial-section {
-  background-color: var(--primary);
-}
+/* ── Testimonials ─────────────────────────────────────────── */
+
+.testimonial-section { background-color: var(--primary); }
 
 .testimonial-card {
   background: rgba(255,255,255,0.1);
@@ -333,9 +196,9 @@ body {
   transition: all 0.2s;
 }
 
-.testimonial-card:hover {
-  background: rgba(255,255,255,0.15);
-}
+.testimonial-card:hover { background: rgba(255,255,255,0.15); }
+
+/* ── CTA banner ───────────────────────────────────────────── */
 
 .cta-banner {
   background-color: var(--soft-gray);
@@ -355,32 +218,9 @@ body {
   border-radius: 50%;
 }
 
+/* ── Footer ───────────────────────────────────────────────── */
+
 .footer-dark {
   background-color: #1a1c1e;
   color: white;
-}
-
-.text-accent {
-  color: var(--ugandan-sun) !important;
-}
-
-.opacity-75 {
-  opacity: 0.75;
-}
-
-.opacity-50 {
-  opacity: 0.5;
-}
-
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2rem;
-    line-height: 1.2;
-  }
-  .search-card {
-    padding: 1.25rem !important;
-  }
-  .display-6 {
-    font-size: 1.75rem;
-  }
 }

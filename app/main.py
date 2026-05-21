@@ -75,16 +75,44 @@ def register_page(request: Request):
     return templates.TemplateResponse(request, "auth/register.html")
 
 
+# Owner portal
+@app.get("/owner/login")
+def owner_login_page(request: Request):
+    return templates.TemplateResponse(request, "owner/login.html")
+
+
+@app.get("/owner/register")
+def owner_register_page(request: Request):
+    return templates.TemplateResponse(request, "owner/register.html")
+
+
 @app.get("/owner/dashboard")
 def owner_dashboard(request: Request):
     return templates.TemplateResponse(request, "owner/dashboard.html")
 
 
-@app.get("/admin/dashboard")
-def admin_dashboard(request: Request):
-    return templates.TemplateResponse(request, "admin/dashboard.html")
+# Driver portal
+@app.get("/driver/login")
+def driver_login_page(request: Request):
+    return templates.TemplateResponse(request, "driver/login.html")
+
+
+@app.get("/driver/register")
+def driver_register_page(request: Request):
+    return templates.TemplateResponse(request, "driver/register.html")
 
 
 @app.get("/driver/dashboard")
 def driver_dashboard(request: Request):
     return templates.TemplateResponse(request, "driver/dashboard.html")
+
+
+# Admin portal
+@app.get("/admin/login")
+def admin_login_page(request: Request):
+    return templates.TemplateResponse(request, "admin/login.html")
+
+
+@app.get("/admin/dashboard")
+def admin_dashboard(request: Request):
+    return templates.TemplateResponse(request, "admin/dashboard.html")

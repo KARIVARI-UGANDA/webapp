@@ -1,0 +1,150 @@
+/* Shared design tokens and base styles used on every page */
+
+:root {
+  --primary: #154212;
+  --primary-light: #2d5a27;
+  --safari-green: #2d5a27;
+  --ugandan-sun: #F9B115;
+  --slate-dark: #1A1C1E;
+  --outline: #72796e;
+  --on-surface-variant: #42493e;
+  --surface-variant: #e2e2e5;
+  --soft-gray: #F5F5F5;
+  --status-success: #15803D;
+  --error: #ba1a1a;
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background-color: #f9f9fc;
+  color: #1a1c1e;
+}
+
+/* ── Navbar ───────────────────────────────────────────────── */
+
+.navbar {
+  background-color: rgba(249, 249, 252, 0.8);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary) !important;
+}
+
+.nav-link {
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  color: #1a1c1e !important;
+  transition: color 0.2s;
+}
+
+.nav-link.active {
+  color: var(--primary) !important;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 0.5rem;
+}
+
+.nav-link:hover {
+  color: var(--safari-green) !important;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+
+.btn-link {
+  color: var(--slate-dark);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.btn-link:hover {
+  color: var(--primary);
+}
+
+.btn-accent {
+  background-color: var(--ugandan-sun);
+  color: var(--slate-dark);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+}
+
+.btn-accent:hover {
+  background-color: #e5a010;
+  color: var(--slate-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(249, 177, 21, 0.3);
+}
+
+.btn-primary {
+  background-color: var(--safari-green) !important;
+  border-color: var(--safari-green) !important;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #1e4519 !important;
+  border-color: #1e4519 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(45, 90, 39, 0.3);
+}
+
+/* ── Forms ────────────────────────────────────────────────── */
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--outline);
+  margin-bottom: 0.5rem;
+}
+
+.form-control,
+.form-select {
+  border-color: #c2c9bb;
+  border-radius: 0.5rem;
+  font-size: 16px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--safari-green);
+  box-shadow: 0 0 0 0.2rem rgba(45, 90, 39, 0.25);
+}
+
+/* ── Badges ───────────────────────────────────────────────── */
+
+.badge-soft-success {
+  background-color: rgba(45, 90, 39, 0.1);
+  color: var(--safari-green);
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  display: inline-block;
+}
+
+.badge-gold {
+  background-color: rgba(249, 177, 21, 0.15);
+  color: var(--ugandan-sun);
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  display: inline-block;
+}
+
+/* ── Utilities ────────────────────────────────────────────── */
+
+.text-accent { color: var(--ugandan-sun) !important; }
+.opacity-75  { opacity: 0.75; }
+.opacity-50  { opacity: 0.5; }

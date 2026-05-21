@@ -76,6 +76,22 @@ def list_vehicles(
     return result
 
 
+@router.get("/mine", response_model=List[VehicleWithPhotos])
+def my_vehicles(
+    current_user=Depends(_owner_or_admin),
+    db: Session = Depends(get_db),
+):
+    """Owner retrieves their own vehicles regardless of status."""
+    vehicles = db.query(Vehicle).filter(Vehicle.owner_id == current_user.id).all()
+    result = []
+    for v in vehicles:
+        photos = db.query(VehiclePhoto).filter(VehiclePhoto.vehicle_id == v.id).all()
+        vwp = VehicleWithPhotos.model_validate(v)
+        vwp.photos = [VehiclePhotoRead.model_validate(p) for p in photos]
+        result.append(vwp)
+    return result
+
+
 @router.get("/{vehicle_id}", response_model=VehicleWithPhotos)
 def get_vehicle(vehicle_id: str, db: Session = Depends(get_db)):
     v = db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()

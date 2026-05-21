@@ -36,6 +36,8 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
+
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -216,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+.claude/
+
+.vscode/
