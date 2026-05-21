@@ -3,41 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Sign In — Karivari Uganda</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Sign In — Kari Vari Uganda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="/static/css/index.css">
+  <link rel="stylesheet" href="static/css/auth/signin.css">
 </head>
-<body class="auth-page d-flex align-items-center justify-content-center min-vh-100">
-<div class="auth-card card shadow p-4 p-md-5">
-  <a href="/" class="text-decoration-none mb-2 d-inline-block">
-    <span class="fw-bold fs-5" style="color:#2d5a27">Karivari Uganda</span>
-  </a>
-  <div class="auth-role-badge mb-3">
-    <i class="bi bi-person-fill me-1"></i> Customer Portal
-  </div>
-  <h4 class="mb-1 fw-bold">Welcome back</h4>
-  <p class="text-secondary small mb-4">Sign in to your customer account</p>
-  <div id="loginAlert" class="alert d-none" role="alert"></div>
-  <form id="loginForm">
-    <div class="mb-3">
-      <label class="form-label">Email address</label>
-      <input type="email" name="email" class="form-control" placeholder="you@example.com" required>
+<body>
+<div class="app-wrapper">
+  <header class="main-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <span class="logo-text">Kari Vari Uganda</span>
+      </div>
+      <a href="/" class="back-home-link">
+        <span class="material-symbols-outlined">arrow_back</span>
+        Back to Home
+      </a>
     </div>
-    <div class="mb-4">
-      <label class="form-label">Password</label>
-      <input type="password" name="password" class="form-control" required>
+  </header>
+
+  <main class="main-grid">
+    <section class="hero-panel">
+      <div class="hero-image"></div>
+      <div class="hero-gradient"></div>
+      <div class="hero-content">
+        <h1 class="hero-heading">Your Gateway to the Pearl of Africa.</h1>
+        <p class="hero-text">
+          Access your account to manage your bookings, payments, and upcoming adventures through Uganda's most reliable travel network.
+        </p>
+        <div class="trust-badge">
+          <div class="badge-icon">
+            <span class="material-symbols-outlined">verified_user</span>
+          </div>
+          <div class="badge-text">
+            <span class="badge-title">Safe & Secure</span>
+            <span class="badge-sub">Verified Safari Partners</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="form-panel">
+      <div class="form-wrapper">
+        <div class="form-header">
+          <h2 class="form-heading">Welcome Back</h2>
+          <p class="form-subheading">Sign in to Kari Vari to continue your journey.</p>
+        </div>
+
+        <div class="social-logins">
+          <button type="button" class="social-btn" id="googleLoginBtn">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' width='20px' height='20px'%3E%3Cpath fill='%23FFC107' d='M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z'/%3E%3Cpath fill='%23FF3D00' d='M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z'/%3E%3Cpath fill='%234CAF50' d='M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z'/%3E%3Cpath fill='%231976D2' d='M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z'/%3E%3C/svg%3E" alt="Google" class="social-icon">
+            <span>Google</span>
+          </button>
+          <button type="button" class="social-btn" id="facebookLoginBtn">
+            <svg class="social-icon" fill="#1877F2" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span>Facebook</span>
+          </button>
+        </div>
+
+        <div class="divider">
+          <span class="divider-line"></span>
+          <span class="divider-text">Or continue with</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <div id="loginAlert" class="alert-message" style="display: none;"></div>
+
+        <form id="loginForm" novalidate>
+          <div class="input-field">
+            <label class="field-label" for="email">Email Address</label>
+            <div class="input-icon-wrapper">
+              <span class="material-symbols-outlined input-icon">mail</span>
+              <input type="email" id="email" name="email" class="form-control-icon" placeholder="john@example.com" required>
+            </div>
+          </div>
+
+          <div class="input-field">
+            <label class="field-label" for="password">Password</label>
+            <div class="input-icon-wrapper">
+              <span class="material-symbols-outlined input-icon">lock</span>
+              <input type="password" id="password" name="password" class="form-control-icon" placeholder="••••••••" required>
+              <button type="button" class="password-eye" id="togglePassword">
+                <span class="material-symbols-outlined">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-label">
+              <input type="checkbox" id="rememberMe" class="checkbox-input">
+              <span>Remember Me</span>
+            </label>
+            <a href="#" class="forgot-link">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="submit-button">
+            Sign In
+            <span class="material-symbols-outlined">login</span>
+          </button>
+        </form>
+
+        <div class="register-prompt">
+          <p>Don't have an account? <a href="/register" class="register-link">Register</a></p>
+        </div>
+
+        <div class="role-divider">
+          <hr class="separator-line">
+          <p class="role-links">
+            Are you a <a href="/owner/login" class="role-link">Vehicle Owner</a> or
+            <a href="/driver/login" class="role-link">Driver</a>?
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <div class="footer-container">
+      <p class="footer-copyright">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+      <div class="footer-links">
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <a href="#" class="footer-link">Terms of Service</a>
+        <a href="#" class="footer-link">Support</a>
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Sign In</button>
-  </form>
-  <p class="mt-3 text-center small">Don't have an account? <a href="/register" class="text-decoration-none fw-semibold" style="color:#2d5a27">Register</a></p>
-  <hr class="my-3 opacity-25">
-  <p class="text-center small text-secondary mb-0">
-    Are you a <a href="/owner/login" class="text-decoration-none">Vehicle Owner</a> or
-    <a href="/driver/login" class="text-decoration-none">Driver</a>?
-  </p>
+  </footer>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/static/js/app.js"></script>
+
+<script src="static/js/auth/signin.js"></script>
 </body>
 </html>

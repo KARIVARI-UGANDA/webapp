@@ -1,135 +1,331 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Owner Dashboard | Kari Vari Uganda</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="/static/css/base.css">
-  <link rel="stylesheet" href="/static/css/dashboard.css">
+  <!-- Bootstrap CSS — needed for the Add Vehicle modal -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "outline":                  "#72796e",
+            "on-background":            "#1a1c1e",
+            "on-surface-variant":       "#42493e",
+            "outline-variant":          "#c2c9bb",
+            "slate-dark":               "#1A1C1E",
+            "on-primary":               "#ffffff",
+            "primary-container":        "#2d5a27",
+            "secondary":                "#7e5700",
+            "surface":                  "#f9f9fc",
+            "on-surface":               "#1a1c1e",
+            "status-pending":           "#B45309",
+            "on-secondary-container":   "#6c4a00",
+            "status-success":           "#15803D",
+            "on-primary-container":     "#9dd090",
+            "surface-container":        "#eeeef0",
+            "surface-container-low":    "#f3f3f6",
+            "surface-container-high":   "#e8e8ea",
+            "surface-container-highest":"#e2e2e5",
+            "surface-container-lowest": "#ffffff",
+            "surface-bright":           "#f9f9fc",
+            "error":                    "#ba1a1a",
+            "error-container":          "#ffdad6",
+            "secondary-container":      "#ffb61e",
+            "primary":                  "#154212",
+            "safari-green":             "#2D5A27",
+            "ugandan-sun":              "#F9B115",
+            "background":               "#f9f9fc",
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg:      "0.5rem",
+            xl:      "0.75rem",
+            full:    "9999px"
+          },
+          spacing: {
+            "margin-desktop":  "48px",
+            "gutter":          "24px",
+            "container-max":   "1280px",
+          },
+          fontFamily: {
+            "label-sm":     ["Inter"],
+            "label-lg":     ["Inter"],
+            "body-md":      ["Inter"],
+            "headline-md":  ["Montserrat"],
+            "headline-lg":  ["Montserrat"],
+            "headline-xl":  ["Montserrat"],
+          },
+          fontSize: {
+            "label-sm":    ["12px", {lineHeight:"16px",  fontWeight:"500"}],
+            "label-lg":    ["14px", {lineHeight:"20px",  letterSpacing:"0.05em", fontWeight:"600"}],
+            "body-md":     ["16px", {lineHeight:"24px",  fontWeight:"400"}],
+            "headline-md": ["24px", {lineHeight:"32px",  fontWeight:"600"}],
+            "headline-lg": ["32px", {lineHeight:"40px",  letterSpacing:"-0.01em", fontWeight:"700"}],
+            "headline-xl": ["48px", {lineHeight:"56px",  letterSpacing:"-0.02em", fontWeight:"700"}],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .chart-bar { transition: height 0.3s ease; }
+    /* Keep Bootstrap modal above Tailwind resets */
+    .modal        { z-index: 1055 !important; }
+    .modal-backdrop { z-index: 1050 !important; }
+    /* Image drop zone hover */
+    #imageDropZone.drag-over { border-color: #2D5A27; background:#f0fdf4; }
+  </style>
 </head>
-<body style="background:#f9f9fc;">
+<body class="bg-background text-on-background font-body-md text-body-md">
 
-<div class="d-flex">
-  <!-- Sidebar -->
-  <nav class="sidebar d-flex flex-column p-3 gap-1 flex-shrink-0">
-    <a class="navbar-brand text-white fw-bold fs-5 mb-4 px-2" href="/">Kari Vari Uganda</a>
-    <a class="nav-link active" href="/owner/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
-    <a class="nav-link" href="#"><i class="bi bi-truck"></i> My Vehicles</a>
-    <a class="nav-link" href="#"><i class="bi bi-calendar-check"></i> Bookings</a>
-    <a class="nav-link" href="#"><i class="bi bi-cash-stack"></i> Earnings</a>
-    <a class="nav-link" href="#"><i class="bi bi-person-circle"></i> Profile</a>
-    <div class="mt-auto pt-3 border-top border-white border-opacity-25">
-      <a class="nav-link nav-link-danger" href="#" id="logoutBtn">
-        <i class="bi bi-box-arrow-right"></i> Logout
-      </a>
-    </div>
+<!-- ───────────────────────── Sidebar ───────────────────────── -->
+<aside class="hidden md:flex h-screen w-64 fixed left-0 top-0 bg-surface-container-low shadow-md flex-col p-6 space-y-4 z-40">
+  <div class="mb-8">
+    <h1 class="font-headline-md text-headline-md font-bold text-primary">Kari Vari</h1>
+    <p class="font-label-sm text-label-sm text-on-surface-variant">Vehicle Owner Portal</p>
+  </div>
+  <nav class="flex-grow space-y-2">
+    <a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all" href="/owner/dashboard">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="font-label-lg text-label-lg">Dashboard</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200" href="#">
+      <span class="material-symbols-outlined">directions_car</span>
+      <span class="font-label-lg text-label-lg">My Fleet</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200" href="#">
+      <span class="material-symbols-outlined">notification_important</span>
+      <span class="font-label-lg text-label-lg">Booking Requests</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200" href="#">
+      <span class="material-symbols-outlined">payments</span>
+      <span class="font-label-lg text-label-lg">Earnings</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200" href="#">
+      <span class="material-symbols-outlined">fact_check</span>
+      <span class="font-label-lg text-label-lg">Inspections</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200" href="#">
+      <span class="material-symbols-outlined">settings</span>
+      <span class="font-label-lg text-label-lg">Settings</span>
+    </a>
   </nav>
+  <div class="pt-6 border-t border-outline-variant">
+    <a class="flex items-center gap-3 px-4 py-3 text-error hover:bg-error-container/20 rounded-lg transition-all" href="#" id="logoutBtn">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="font-label-lg text-label-lg">Log Out</span>
+    </a>
+  </div>
+</aside>
 
-  <!-- Main Content -->
-  <main class="flex-grow-1 p-4 p-lg-5">
+<!-- ───────────────────────── Main Content ───────────────────────── -->
+<main class="md:ml-64 p-4 md:p-12 min-h-screen pb-24 md:pb-12">
 
-    <!-- Header -->
-    <div class="d-flex flex-wrap align-items-center justify-content-between mb-5 gap-3">
-      <div>
-        <span class="portal-badge portal-badge-owner mb-2 d-inline-block">OWNER PORTAL</span>
-        <h1 class="page-header mb-1">Welcome back, <span id="ownerName">...</span></h1>
-        <p class="text-secondary small mb-0">Manage your fleet and track your bookings from here.</p>
-      </div>
-      <button class="btn btn-accent px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#addVehicleModal">
-        <i class="bi bi-plus-lg me-2"></i>Add New Vehicle
-      </button>
+  <!-- Top Bar -->
+  <header class="flex flex-wrap justify-between items-center mb-8 gap-4">
+    <div>
+      <span class="inline-block px-3 py-1 mb-2 bg-ugandan-sun/20 border border-ugandan-sun/30 text-secondary rounded-full font-label-sm text-label-sm uppercase tracking-wider">
+        Owner Portal
+      </span>
+      <h2 class="font-headline-lg text-headline-lg text-primary">Welcome back, <span id="ownerName">…</span></h2>
+      <p class="text-on-surface-variant">Manage your fleet and track performance from here.</p>
     </div>
+    <button class="bg-safari-green text-white px-6 py-3 rounded-lg flex items-center gap-2 hover:shadow-lg hover:brightness-105 transition-all"
+            data-bs-toggle="modal" data-bs-target="#addVehicleModal">
+      <span class="material-symbols-outlined">add_circle</span>
+      <span class="font-label-lg text-label-lg">Add New Vehicle</span>
+    </button>
+  </header>
 
-    <!-- Stats Row -->
-    <div class="row g-4 mb-5">
-      <div class="col-sm-6 col-xl-4">
-        <div class="card stat-card p-4">
-          <div class="d-flex align-items-center gap-3">
-            <div class="stat-icon" style="background:rgba(21,66,18,0.1);color:var(--primary);">
-              <i class="bi bi-truck"></i>
-            </div>
-            <div>
-              <div class="text-secondary small fw-semibold">MY VEHICLES</div>
-              <div class="fs-3 fw-bold" id="statVehicles">—</div>
-            </div>
-          </div>
-        </div>
+  <!-- Stats Grid -->
+  <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-ugandan-sun">
+      <p class="text-on-surface-variant font-label-lg text-label-lg">Total Revenue</p>
+      <div class="flex items-end justify-between mt-2">
+        <h3 class="font-headline-lg text-headline-lg" id="statEarnings">UGX —</h3>
+        <span class="text-status-success font-label-sm text-label-sm flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">trending_up</span>
+        </span>
       </div>
-      <div class="col-sm-6 col-xl-4">
-        <div class="card stat-card p-4">
-          <div class="d-flex align-items-center gap-3">
-            <div class="stat-icon" style="background:rgba(249,177,21,0.12);color:#b07d00;">
-              <i class="bi bi-hourglass-split"></i>
-            </div>
-            <div>
-              <div class="text-secondary small fw-semibold">PENDING BOOKINGS</div>
-              <div class="fs-3 fw-bold" id="statPending">—</div>
-            </div>
-          </div>
-        </div>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-safari-green">
+      <p class="text-on-surface-variant font-label-lg text-label-lg">My Vehicles</p>
+      <div class="flex items-end justify-between mt-2">
+        <h3 class="font-headline-lg text-headline-lg" id="statVehicles">—</h3>
+        <span class="text-on-surface-variant font-label-sm text-label-sm">In fleet</span>
       </div>
-      <div class="col-sm-6 col-xl-4">
-        <div class="card stat-card p-4">
-          <div class="d-flex align-items-center gap-3">
-            <div class="stat-icon" style="background:rgba(21,128,61,0.1);color:#15803d;">
-              <i class="bi bi-cash-stack"></i>
-            </div>
-            <div>
-              <div class="text-secondary small fw-semibold">EARNINGS THIS MONTH</div>
-              <div class="fs-3 fw-bold" id="statEarnings">—</div>
-            </div>
-          </div>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-primary">
+      <p class="text-on-surface-variant font-label-lg text-label-lg">Fleet Utilization</p>
+      <div class="flex items-end justify-between mt-2">
+        <h3 class="font-headline-lg text-headline-lg">—%</h3>
+        <div class="w-16 h-2 bg-surface-container rounded-full overflow-hidden mb-2">
+          <div class="bg-primary h-full" style="width:0%"></div>
         </div>
       </div>
     </div>
-
-    <!-- Quick Actions -->
-    <div class="mb-5">
-      <h5 class="fw-bold mb-3">Quick Actions</h5>
-      <div class="d-flex flex-wrap gap-3">
-        <button class="btn btn-outline-secondary px-4" data-bs-toggle="modal" data-bs-target="#addVehicleModal">
-          <i class="bi bi-plus-circle me-2"></i>Submit a Vehicle
-        </button>
-        <button class="btn btn-outline-secondary px-4">
-          <i class="bi bi-calendar3 me-2"></i>View All Bookings
-        </button>
-        <button class="btn btn-outline-secondary px-4">
-          <i class="bi bi-bar-chart-line me-2"></i>Earnings Report
-        </button>
+    <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-secondary-container">
+      <p class="text-on-surface-variant font-label-lg text-label-lg">Pending Bookings</p>
+      <div class="flex items-end justify-between mt-2">
+        <h3 class="font-headline-lg text-headline-lg" id="statPending">—</h3>
+        <span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-[10px] font-bold">REVIEW</span>
       </div>
     </div>
+  </section>
 
-    <!-- Vehicles Table -->
-    <div class="card border-0 rounded-4 shadow-sm">
-      <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
-        <h6 class="fw-bold mb-0">My Vehicles</h6>
-      </div>
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead class="table-light">
-            <tr>
-              <th class="ps-4">Vehicle</th>
-              <th>Plate</th>
-              <th>Status</th>
-              <th>Daily Rate</th>
-              <th>Service Area</th>
-            </tr>
-          </thead>
-          <tbody id="vehiclesTableBody">
-            <tr><td colspan="5" class="text-center py-4 text-secondary">
-              <div class="spinner-border spinner-border-sm me-2"></div>Loading…
-            </td></tr>
-          </tbody>
-        </table>
-      </div>
+  <!-- Main Dashboard Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- Left Column (2/3) -->
+    <div class="lg:col-span-2 space-y-6">
+
+      <!-- Earnings Chart -->
+      <section class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)]">
+        <div class="flex justify-between items-center mb-8">
+          <h4 class="font-headline-md text-headline-md">Earnings Trend</h4>
+          <select class="bg-surface border border-outline-variant rounded-lg font-label-sm text-label-sm p-2 outline-none focus:border-safari-green">
+            <option>Last 30 Days</option>
+            <option>Last Quarter</option>
+          </select>
+        </div>
+        <div class="h-64 flex items-end justify-between gap-2 px-4">
+          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:40%"></div>
+          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:60%"></div>
+          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:35%"></div>
+          <div class="w-full bg-safari-green       rounded-t chart-bar" style="height:85%"></div>
+          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:50%"></div>
+          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:75%"></div>
+          <div class="w-full bg-ugandan-sun         rounded-t chart-bar" style="height:95%"></div>
+          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:45%"></div>
+          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:30%"></div>
+          <div class="w-full bg-safari-green        rounded-t chart-bar" style="height:70%"></div>
+        </div>
+        <div class="flex justify-between mt-4 text-[10px] text-on-surface-variant font-label-sm uppercase px-4">
+          <span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span>
+        </div>
+      </section>
+
+      <!-- My Vehicles Table -->
+      <section class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden">
+        <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center">
+          <h4 class="font-headline-md text-headline-md">My Vehicles</h4>
+          <button class="text-primary font-label-lg text-label-lg hover:underline bg-transparent border-none cursor-pointer"
+                  data-bs-toggle="modal" data-bs-target="#addVehicleModal">
+            + Add Vehicle
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="bg-surface font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+              <tr>
+                <th class="px-6 py-4">Vehicle</th>
+                <th class="px-6 py-4">Plate</th>
+                <th class="px-6 py-4">Status</th>
+                <th class="px-6 py-4">Daily Rate</th>
+                <th class="px-6 py-4">Service Area</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-outline-variant/20" id="vehiclesTableBody">
+              <tr>
+                <td colspan="5" class="text-center py-6 text-on-surface-variant">
+                  <div class="spinner-border spinner-border-sm me-2"></div>Loading…
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
 
-  </main>
-</div>
+    <!-- Right Column (1/3) -->
+    <div class="space-y-6">
 
-<!-- Add Vehicle Modal -->
+      <!-- Fleet Status -->
+      <section class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)]">
+        <h4 class="font-headline-md text-headline-md mb-6">Fleet Status</h4>
+        <div class="relative w-44 h-44 mx-auto mb-8">
+          <div class="absolute inset-0 rounded-full border-[12px] border-surface-container"></div>
+          <div class="absolute inset-0 rounded-full border-[12px] border-safari-green border-t-transparent border-l-transparent transform rotate-45"></div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="font-headline-lg text-headline-lg" id="fleetTotal">—</span>
+            <span class="text-on-surface-variant font-label-sm uppercase text-[10px]">Total Cars</span>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-safari-green"></div>
+              <span class="font-label-lg text-label-lg">Verified</span>
+            </div>
+            <span class="font-bold" id="fleetVerified">—</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-ugandan-sun"></div>
+              <span class="font-label-lg text-label-lg">Pending Review</span>
+            </div>
+            <span class="font-bold" id="fleetPending">—</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-error"></div>
+              <span class="font-label-lg text-label-lg">Rejected</span>
+            </div>
+            <span class="font-bold" id="fleetRejected">—</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Actions / Activity Feed -->
+      <section class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)]">
+        <h4 class="font-headline-md text-headline-md mb-6">Quick Actions</h4>
+        <div class="space-y-4">
+          <button data-bs-toggle="modal" data-bs-target="#addVehicleModal"
+                  class="w-full flex items-center gap-3 px-4 py-3 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors text-left">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-container flex items-center justify-center">
+              <span class="material-symbols-outlined text-on-primary-container text-[18px]">add_circle</span>
+            </div>
+            <div>
+              <p class="font-label-lg text-label-lg">Submit a Vehicle</p>
+              <p class="text-[12px] text-on-surface-variant">Add to your fleet</p>
+            </div>
+          </button>
+          <button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors text-left">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
+              <span class="material-symbols-outlined text-on-secondary-container text-[18px]">calendar_month</span>
+            </div>
+            <div>
+              <p class="font-label-lg text-label-lg">View Bookings</p>
+              <p class="text-[12px] text-on-surface-variant">Manage all rentals</p>
+            </div>
+          </button>
+          <button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors text-left">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-surface-container flex items-center justify-center">
+              <span class="material-symbols-outlined text-on-surface-variant text-[18px]">bar_chart</span>
+            </div>
+            <div>
+              <p class="font-label-lg text-label-lg">Earnings Report</p>
+              <p class="text-[12px] text-on-surface-variant">View revenue breakdown</p>
+            </div>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- ───────────────────────── Add Vehicle Modal ───────────────────────── -->
 <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
@@ -271,7 +467,23 @@
 
           <!-- Description -->
           <h6 class="fw-bold text-secondary text-uppercase small mb-3">Description</h6>
-          <textarea name="description" class="form-control mb-2" rows="3" placeholder="Describe your vehicle — condition, extras, safari history, etc."></textarea>
+          <textarea name="description" class="form-control mb-4" rows="3"
+                    placeholder="Describe your vehicle — condition, extras, safari history, etc."></textarea>
+
+          <!-- ── Vehicle Images (upload feature) ── -->
+          <h6 class="fw-bold text-secondary text-uppercase small mb-3">Vehicle Images</h6>
+          <div class="mb-3">
+            <div id="imageDropZone"
+                 class="border border-2 border-dashed rounded-3 p-4 text-center"
+                 style="cursor:pointer; background:#f9f9fc; border-color:#c2c9bb;"
+                 onclick="document.getElementById('vehicleImages').click()">
+              <i class="bi bi-images fs-1 text-secondary mb-2 d-block"></i>
+              <p class="fw-semibold text-secondary mb-1">Drag & drop photos here, or click to browse</p>
+              <p class="text-secondary small mb-0">JPG, PNG &mdash; up to 5 files, 5 MB each</p>
+              <input type="file" name="images" id="vehicleImages" accept="image/*" multiple style="display:none">
+            </div>
+            <div class="row g-2 mt-2" id="imagePreviewGrid"></div>
+          </div>
 
         </form>
       </div>
@@ -288,8 +500,127 @@
   </div>
 </div>
 
+<!-- ───────────────────────── Footer ───────────────────────── -->
+<footer class="w-full py-12 px-4 md:px-12 mt-16 bg-on-background md:ml-64">
+  <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+    <div class="text-center md:text-left">
+      <span class="font-headline-lg text-headline-lg font-bold text-ugandan-sun">Kari Vari Uganda</span>
+      <p class="text-surface-bright/50 font-label-sm text-label-sm mt-2">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+    </div>
+    <div class="flex gap-6 flex-wrap justify-center">
+      <a class="text-surface-bright/60 font-label-sm text-label-sm hover:text-ugandan-sun transition-colors" href="#">Privacy Policy</a>
+      <a class="text-surface-bright/60 font-label-sm text-label-sm hover:text-ugandan-sun transition-colors" href="#">Terms of Service</a>
+      <a class="text-surface-bright/60 font-label-sm text-label-sm hover:text-ugandan-sun transition-colors" href="#">Partner Program</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ───────────────────────── Mobile Bottom Nav ───────────────────────── -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-low border-t border-outline-variant flex justify-around py-3 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+  <a class="flex flex-col items-center gap-1 text-primary" href="/owner/dashboard">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span>
+    <span class="text-[10px] font-bold">Dashboard</span>
+  </a>
+  <a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+    <span class="material-symbols-outlined">directions_car</span>
+    <span class="text-[10px]">Fleet</span>
+  </a>
+  <a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+    <span class="material-symbols-outlined">notification_important</span>
+    <span class="text-[10px]">Requests</span>
+  </a>
+  <a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#" id="mobileLogoutBtn">
+    <span class="material-symbols-outlined">logout</span>
+    <span class="text-[10px]">Logout</span>
+  </a>
+</nav>
+
+<!-- ───────────────────────── Scripts ───────────────────────── -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/shared.js"></script>
 <script src="/static/js/owner/dashboard.js"></script>
+
+<script>
+  // ── Fleet status cards (populated after dashboard.js loads vehicles) ──
+  const _origLoadVehicles = window._kvFleetHook;
+  document.addEventListener('kv:vehiclesLoaded', (e) => {
+    const vehicles = e.detail || [];
+    const verified  = vehicles.filter(v => v.status === 'verified').length;
+    const pending   = vehicles.filter(v => v.status === 'pending_review').length;
+    const rejected  = vehicles.filter(v => v.status === 'rejected').length;
+    const el = (id) => document.getElementById(id);
+    if (el('fleetTotal'))    el('fleetTotal').textContent    = vehicles.length;
+    if (el('fleetVerified')) el('fleetVerified').textContent = verified;
+    if (el('fleetPending'))  el('fleetPending').textContent  = pending;
+    if (el('fleetRejected')) el('fleetRejected').textContent = rejected;
+  });
+
+  // ── Image upload preview ──
+  const vehicleImages   = document.getElementById('vehicleImages');
+  const imagePreview    = document.getElementById('imagePreviewGrid');
+  const dropZone        = document.getElementById('imageDropZone');
+
+  if (vehicleImages && imagePreview) {
+    vehicleImages.addEventListener('change', renderPreviews);
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      const dt = new DataTransfer();
+      Array.from(e.dataTransfer.files)
+        .filter(f => f.type.startsWith('image/'))
+        .slice(0, 5)
+        .forEach(f => dt.items.add(f));
+      vehicleImages.files = dt.files;
+      renderPreviews({ target: vehicleImages });
+    });
+  }
+
+  function renderPreviews(e) {
+    imagePreview.innerHTML = '';
+    Array.from(e.target.files).slice(0, 5).forEach((file, i) => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const col = document.createElement('div');
+        col.className = 'col-4 col-sm-2';
+        col.innerHTML = `
+          <div class="position-relative">
+            <img src="${ev.target.result}"
+                 class="img-thumbnail rounded"
+                 style="width:100%;height:72px;object-fit:cover;border-color:#c2c9bb">
+            <button type="button"
+                    class="btn-close btn-close-sm position-absolute top-0 end-0 bg-white rounded-circle p-1"
+                    style="font-size:8px"
+                    onclick="removePreview(${i})"></button>
+          </div>`;
+        imagePreview.appendChild(col);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function removePreview(index) {
+    const dt = new DataTransfer();
+    Array.from(vehicleImages.files)
+      .filter((_, i) => i !== index)
+      .forEach(f => dt.items.add(f));
+    vehicleImages.files = dt.files;
+    renderPreviews({ target: vehicleImages });
+  }
+
+  // ── Mobile logout mirror ──
+  const mobileLogout = document.getElementById('mobileLogoutBtn');
+  if (mobileLogout) {
+    mobileLogout.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('logoutBtn').click();
+    });
+  }
+</script>
 </body>
 </html>

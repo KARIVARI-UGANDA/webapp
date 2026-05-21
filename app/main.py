@@ -107,6 +107,12 @@ def driver_dashboard(request: Request):
     return templates.TemplateResponse(request, "driver/dashboard.html")
 
 
+# Customer portal
+@app.get("/dashboard")
+def customer_dashboard(request: Request):
+    return templates.TemplateResponse(request, "customer/dashboard.html")
+
+
 # Admin portal
 @app.get("/admin/login")
 def admin_login_page(request: Request):

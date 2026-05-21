@@ -220,5 +220,6 @@ __marimo__/
 .streamlit/secrets.toml
 
 .claude/
-
 .vscode/
+.agents/
+skills-lock.json

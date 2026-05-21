@@ -49,16 +49,28 @@ body {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-image: url('https://lh3.googleusercontent.com/aida/ADBb0ujlpGgBlkteKfXQL6q2vYZ50jEB8lKQQ0AXsxb1XgHMkSK1Ww6w_axlh202FFtxEj6ggQ6L79rlbXHv0ZNfx4dq66ZhyVWdWFvnYWmnBgHLhdR6w2Miv5QMaSzOhIFI5A96w2z0ES1yn_OtL9s4_KYbllxoN4ZptOMKxShcN0aHyxdfKPkYdg73toVVFlABEeX1SB1QeHBQgJQ8PQX7b_CRW2qpB3ixZHletoZBVi-AbrlP17jsQiSH1RI');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background:
+    radial-gradient(ellipse at 30% 80%, rgba(249, 177, 21, 0.28) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 20%, rgba(45, 107, 37, 0.5) 0%, transparent 55%),
+    radial-gradient(ellipse at 15% 30%, rgba(10, 35, 7, 0.7) 0%, transparent 45%),
+    linear-gradient(165deg, #0a1f08 0%, #122e0f 25%, #1e5018 50%, #2d7028 70%, #15390f 90%, #071505 100%);
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.3), transparent);
+  background: linear-gradient(to top, rgba(5, 14, 4, 0.88) 0%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0.08) 100%);
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+  background-size: 28px 28px;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .hero-content {
@@ -299,10 +311,25 @@ body {
   margin-bottom: 6px;
 }
 
+.input-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field-icon {
+  position: absolute;
+  left: 16px;
+  font-size: 20px;
+  color: #72796e;
+  pointer-events: none;
+  z-index: 1;
+}
+
 .form-input {
   width: 100%;
   padding: 14px 16px;
-  background-color: #ffffff;
+  background-color: #f9f9fc;
   border: 1px solid #c2c9bb;
   border-radius: 12px;
   font-family: 'Inter', sans-serif;
@@ -311,9 +338,14 @@ body {
   outline: none;
 }
 
+.form-input.has-icon {
+  padding-left: 48px;
+}
+
 .form-input:focus {
   border-color: #2d5a27;
   box-shadow: 0 0 0 2px rgba(45,90,39,0.2);
+  background-color: #ffffff;
 }
 
 .phone-wrapper {
@@ -356,6 +388,12 @@ body {
 
 .password-wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper .form-input.has-icon {
+  padding-right: 48px;
 }
 
 .password-toggle {
@@ -370,6 +408,7 @@ body {
   align-items: center;
   color: #72796e;
   transition: color 0.2s;
+  z-index: 1;
 }
 
 .password-toggle:hover {
