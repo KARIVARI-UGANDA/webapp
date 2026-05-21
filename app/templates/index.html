@@ -15,7 +15,10 @@
 <!-- Top Navigation Bar -->
 <nav class="navbar navbar-expand-lg sticky-top py-3">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="#">Kari Vari Uganda</a>
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
+      Kari Vari Uganda
+      <span class="portal-badge">Customer Portal</span>
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -26,7 +29,7 @@
         <li class="nav-item"><a class="nav-link" href="#">About</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
       </ul>
-      <div class="d-flex gap-3" id="authButtons">
+      <div class="d-flex gap-3 align-items-center" id="authButtons">
         <a class="btn btn-link text-decoration-none" href="/login">Sign In</a>
         <a class="btn btn-accent px-4" href="/register">Register</a>
       </div>
@@ -37,6 +40,12 @@
     </div>
   </div>
 </nav>
+
+<!-- Customer Portal Strip -->
+<div class="portal-strip d-flex align-items-center justify-content-center gap-2">
+  <i class="bi bi-person-check-fill"></i>
+  <span>Welcome to the <strong>Customer Portal</strong> — Browse, Book &amp; Manage Your Rentals</span>
+</div>
 
 <main>
   <!-- Hero Section -->

@@ -1,5 +1,31 @@
 /* Landing page styles — requires base.css */
 
+/* ── Portal indicators ────────────────────────────────────── */
+
+.portal-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: rgba(45, 90, 39, 0.12);
+  color: #2d5a27;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.3em 0.8em;
+  border-radius: 2rem;
+  border: 1px solid rgba(45, 90, 39, 0.3);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.portal-strip {
+  background-color: #f0f7ee;
+  color: #2d5a27;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid #d4e8cf;
+}
+
 /* ── Hero ─────────────────────────────────────────────────── */
 
 .hero-section {

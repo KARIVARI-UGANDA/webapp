@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		signup({
 			full_name:    form.full_name.value,
 			email:        form.email.value,
-			phone_number: form.phone_number.value,
+			phone_number: form.country_code.value + form.phone_local.value.trim(),
 			password:     form.password.value,
 			role:         'driver',
 		}, 'driverRegisterAlert');

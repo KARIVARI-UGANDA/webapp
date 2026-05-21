@@ -3,51 +3,328 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Register — Karivari Uganda</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Register | Kari Vari Uganda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="/static/css/base.css">
-  <link rel="stylesheet" href="/static/css/auth.css">
+  <link rel="stylesheet" href="static/css/customer/register.css">
 </head>
-<body class="auth-page d-flex align-items-center justify-content-center min-vh-100 py-5">
-<div class="auth-card card shadow p-4 p-md-5">
-  <a href="/" class="text-decoration-none mb-2 d-inline-block">
-    <span class="fw-bold fs-5" style="color:#2d5a27">Karivari Uganda</span>
-  </a>
-  <div class="auth-role-badge mb-3">
-    <i class="bi bi-person-fill me-1"></i> Customer Portal
-  </div>
-  <h4 class="mb-1 fw-bold">Create your account</h4>
-  <p class="text-secondary small mb-4">Book safari vehicles across Uganda</p>
-  <div id="registerAlert" class="alert d-none" role="alert"></div>
-  <form id="registerTravelerForm" method="post">
-    <div class="mb-3">
-      <label class="form-label">Full Name</label>
-      <input type="text" name="full_name" class="form-control" placeholder="John Doe" required>
+<body>
+<div class="app-container">
+  <main class="main-layout">
+    <section class="hero-section">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="brand-logo">
+          <span class="brand-name">Kari Vari Uganda</span>
+        </div>
+        <div class="hero-badge">
+          <span class="badge-text">AUTHENTIC UGANDA</span>
+        </div>
+        <h1 class="hero-title">Join the Adventure</h1>
+        <p class="hero-description">
+          Unlock the Pearl of Africa. From misty mountain gorillas to the sun-drenched savannas, your premium journey across Uganda starts with a single step.
+        </p>
+        <div class="trust-stats">
+          <div class="stat-item">
+            <span class="stat-number">150+</span>
+            <span class="stat-label">Luxury Fleet</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">12k+</span>
+            <span class="stat-label">Happy Travelers</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="form-section">
+      <div class="form-container">
+        <div class="form-header">
+          <h2 class="form-title">Create an account</h2>
+          <p class="form-subtitle">Start your seamless travel experience today.</p>
+        </div>
+
+        <div class="social-buttons">
+          <button class="social-btn" id="googleSignupBtn" type="button">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' width='20px' height='20px'%3E%3Cpath fill='%23FFC107' d='M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z'/%3E%3Cpath fill='%23FF3D00' d='M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z'/%3E%3Cpath fill='%234CAF50' d='M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z'/%3E%3Cpath fill='%231976D2' d='M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z'/%3E%3C/svg%3E" alt="Google" class="social-icon">
+            <span>Google</span>
+          </button>
+          <button class="social-btn" id="facebookSignupBtn" type="button">
+            <svg class="social-icon" fill="#1877F2" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span>Facebook</span>
+          </button>
+        </div>
+
+        <div class="divider">
+          <span class="divider-line"></span>
+          <span class="divider-text">Or with email</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <div id="registerAlert" class="alert-message" style="display: none;"></div>
+
+        <form id="registerTravelerForm" method="post" novalidate>
+          <div class="input-group">
+            <label class="input-label" for="full_name">Full Name</label>
+            <input type="text" id="full_name" name="full_name" class="form-input" placeholder="John Doe" required>
+          </div>
+          <div class="input-group">
+            <label class="input-label" for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="john@example.com" required>
+          </div>
+          <div class="input-group">
+            <label class="input-label" for="phone_number">Phone Number</label>
+            <div class="phone-wrapper">
+              <select id="country_code" class="phone-prefix phone-country-select" aria-label="Country code">
+                <option value="+256" selected>🇺🇬 Uganda (+256)</option>
+                <option value="+93">🇦🇫 Afghanistan (+93)</option>
+                <option value="+355">🇦🇱 Albania (+355)</option>
+                <option value="+213">🇩🇿 Algeria (+213)</option>
+                <option value="+376">🇦🇩 Andorra (+376)</option>
+                <option value="+244">🇦🇴 Angola (+244)</option>
+                <option value="+1268">🇦🇬 Antigua (+1268)</option>
+                <option value="+54">🇦🇷 Argentina (+54)</option>
+                <option value="+374">🇦🇲 Armenia (+374)</option>
+                <option value="+61">🇦🇺 Australia (+61)</option>
+                <option value="+43">🇦🇹 Austria (+43)</option>
+                <option value="+994">🇦🇿 Azerbaijan (+994)</option>
+                <option value="+1242">🇧🇸 Bahamas (+1242)</option>
+                <option value="+973">🇧🇭 Bahrain (+973)</option>
+                <option value="+880">🇧🇩 Bangladesh (+880)</option>
+                <option value="+1246">🇧🇧 Barbados (+1246)</option>
+                <option value="+375">🇧🇾 Belarus (+375)</option>
+                <option value="+32">🇧🇪 Belgium (+32)</option>
+                <option value="+501">🇧🇿 Belize (+501)</option>
+                <option value="+229">🇧🇯 Benin (+229)</option>
+                <option value="+975">🇧🇹 Bhutan (+975)</option>
+                <option value="+591">🇧🇴 Bolivia (+591)</option>
+                <option value="+387">🇧🇦 Bosnia (+387)</option>
+                <option value="+267">🇧🇼 Botswana (+267)</option>
+                <option value="+55">🇧🇷 Brazil (+55)</option>
+                <option value="+673">🇧🇳 Brunei (+673)</option>
+                <option value="+359">🇧🇬 Bulgaria (+359)</option>
+                <option value="+226">🇧🇫 Burkina Faso (+226)</option>
+                <option value="+257">🇧🇮 Burundi (+257)</option>
+                <option value="+855">🇰🇭 Cambodia (+855)</option>
+                <option value="+237">🇨🇲 Cameroon (+237)</option>
+                <option value="+1">🇨🇦 Canada (+1)</option>
+                <option value="+238">🇨🇻 Cape Verde (+238)</option>
+                <option value="+236">🇨🇫 C. African Rep. (+236)</option>
+                <option value="+235">🇹🇩 Chad (+235)</option>
+                <option value="+56">🇨🇱 Chile (+56)</option>
+                <option value="+86">🇨🇳 China (+86)</option>
+                <option value="+57">🇨🇴 Colombia (+57)</option>
+                <option value="+269">🇰🇲 Comoros (+269)</option>
+                <option value="+242">🇨🇬 Congo (+242)</option>
+                <option value="+243">🇨🇩 Congo DRC (+243)</option>
+                <option value="+506">🇨🇷 Costa Rica (+506)</option>
+                <option value="+385">🇭🇷 Croatia (+385)</option>
+                <option value="+53">🇨🇺 Cuba (+53)</option>
+                <option value="+357">🇨🇾 Cyprus (+357)</option>
+                <option value="+420">🇨🇿 Czech Republic (+420)</option>
+                <option value="+45">🇩🇰 Denmark (+45)</option>
+                <option value="+253">🇩🇯 Djibouti (+253)</option>
+                <option value="+1767">🇩🇲 Dominica (+1767)</option>
+                <option value="+1809">🇩🇴 Dominican Rep. (+1809)</option>
+                <option value="+593">🇪🇨 Ecuador (+593)</option>
+                <option value="+20">🇪🇬 Egypt (+20)</option>
+                <option value="+503">🇸🇻 El Salvador (+503)</option>
+                <option value="+240">🇬🇶 Equatorial Guinea (+240)</option>
+                <option value="+291">🇪🇷 Eritrea (+291)</option>
+                <option value="+372">🇪🇪 Estonia (+372)</option>
+                <option value="+268">🇸🇿 Eswatini (+268)</option>
+                <option value="+251">🇪🇹 Ethiopia (+251)</option>
+                <option value="+679">🇫🇯 Fiji (+679)</option>
+                <option value="+358">🇫🇮 Finland (+358)</option>
+                <option value="+33">🇫🇷 France (+33)</option>
+                <option value="+241">🇬🇦 Gabon (+241)</option>
+                <option value="+220">🇬🇲 Gambia (+220)</option>
+                <option value="+995">🇬🇪 Georgia (+995)</option>
+                <option value="+49">🇩🇪 Germany (+49)</option>
+                <option value="+233">🇬🇭 Ghana (+233)</option>
+                <option value="+30">🇬🇷 Greece (+30)</option>
+                <option value="+1473">🇬🇩 Grenada (+1473)</option>
+                <option value="+502">🇬🇹 Guatemala (+502)</option>
+                <option value="+224">🇬🇳 Guinea (+224)</option>
+                <option value="+245">🇬🇼 Guinea-Bissau (+245)</option>
+                <option value="+592">🇬🇾 Guyana (+592)</option>
+                <option value="+509">🇭🇹 Haiti (+509)</option>
+                <option value="+504">🇭🇳 Honduras (+504)</option>
+                <option value="+36">🇭🇺 Hungary (+36)</option>
+                <option value="+354">🇮🇸 Iceland (+354)</option>
+                <option value="+91">🇮🇳 India (+91)</option>
+                <option value="+62">🇮🇩 Indonesia (+62)</option>
+                <option value="+98">🇮🇷 Iran (+98)</option>
+                <option value="+964">🇮🇶 Iraq (+964)</option>
+                <option value="+353">🇮🇪 Ireland (+353)</option>
+                <option value="+972">🇮🇱 Israel (+972)</option>
+                <option value="+39">🇮🇹 Italy (+39)</option>
+                <option value="+1876">🇯🇲 Jamaica (+1876)</option>
+                <option value="+81">🇯🇵 Japan (+81)</option>
+                <option value="+962">🇯🇴 Jordan (+962)</option>
+                <option value="+7">🇰🇿 Kazakhstan (+7)</option>
+                <option value="+254">🇰🇪 Kenya (+254)</option>
+                <option value="+686">🇰🇮 Kiribati (+686)</option>
+                <option value="+965">🇰🇼 Kuwait (+965)</option>
+                <option value="+996">🇰🇬 Kyrgyzstan (+996)</option>
+                <option value="+856">🇱🇦 Laos (+856)</option>
+                <option value="+371">🇱🇻 Latvia (+371)</option>
+                <option value="+961">🇱🇧 Lebanon (+961)</option>
+                <option value="+266">🇱🇸 Lesotho (+266)</option>
+                <option value="+231">🇱🇷 Liberia (+231)</option>
+                <option value="+218">🇱🇾 Libya (+218)</option>
+                <option value="+423">🇱🇮 Liechtenstein (+423)</option>
+                <option value="+370">🇱🇹 Lithuania (+370)</option>
+                <option value="+352">🇱🇺 Luxembourg (+352)</option>
+                <option value="+261">🇲🇬 Madagascar (+261)</option>
+                <option value="+265">🇲🇼 Malawi (+265)</option>
+                <option value="+60">🇲🇾 Malaysia (+60)</option>
+                <option value="+960">🇲🇻 Maldives (+960)</option>
+                <option value="+223">🇲🇱 Mali (+223)</option>
+                <option value="+356">🇲🇹 Malta (+356)</option>
+                <option value="+692">🇲🇭 Marshall Islands (+692)</option>
+                <option value="+222">🇲🇷 Mauritania (+222)</option>
+                <option value="+230">🇲🇺 Mauritius (+230)</option>
+                <option value="+52">🇲🇽 Mexico (+52)</option>
+                <option value="+691">🇫🇲 Micronesia (+691)</option>
+                <option value="+373">🇲🇩 Moldova (+373)</option>
+                <option value="+377">🇲🇨 Monaco (+377)</option>
+                <option value="+976">🇲🇳 Mongolia (+976)</option>
+                <option value="+382">🇲🇪 Montenegro (+382)</option>
+                <option value="+212">🇲🇦 Morocco (+212)</option>
+                <option value="+258">🇲🇿 Mozambique (+258)</option>
+                <option value="+95">🇲🇲 Myanmar (+95)</option>
+                <option value="+264">🇳🇦 Namibia (+264)</option>
+                <option value="+674">🇳🇷 Nauru (+674)</option>
+                <option value="+977">🇳🇵 Nepal (+977)</option>
+                <option value="+31">🇳🇱 Netherlands (+31)</option>
+                <option value="+64">🇳🇿 New Zealand (+64)</option>
+                <option value="+505">🇳🇮 Nicaragua (+505)</option>
+                <option value="+227">🇳🇪 Niger (+227)</option>
+                <option value="+234">🇳🇬 Nigeria (+234)</option>
+                <option value="+389">🇲🇰 North Macedonia (+389)</option>
+                <option value="+850">🇰🇵 North Korea (+850)</option>
+                <option value="+47">🇳🇴 Norway (+47)</option>
+                <option value="+968">🇴🇲 Oman (+968)</option>
+                <option value="+92">🇵🇰 Pakistan (+92)</option>
+                <option value="+680">🇵🇼 Palau (+680)</option>
+                <option value="+970">🇵🇸 Palestine (+970)</option>
+                <option value="+507">🇵🇦 Panama (+507)</option>
+                <option value="+675">🇵🇬 Papua New Guinea (+675)</option>
+                <option value="+595">🇵🇾 Paraguay (+595)</option>
+                <option value="+51">🇵🇪 Peru (+51)</option>
+                <option value="+63">🇵🇭 Philippines (+63)</option>
+                <option value="+48">🇵🇱 Poland (+48)</option>
+                <option value="+351">🇵🇹 Portugal (+351)</option>
+                <option value="+974">🇶🇦 Qatar (+974)</option>
+                <option value="+40">🇷🇴 Romania (+40)</option>
+                <option value="+7">🇷🇺 Russia (+7)</option>
+                <option value="+250">🇷🇼 Rwanda (+250)</option>
+                <option value="+1869">🇰🇳 Saint Kitts (+1869)</option>
+                <option value="+1758">🇱🇨 Saint Lucia (+1758)</option>
+                <option value="+1784">🇻🇨 Saint Vincent (+1784)</option>
+                <option value="+685">🇼🇸 Samoa (+685)</option>
+                <option value="+378">🇸🇲 San Marino (+378)</option>
+                <option value="+239">🇸🇹 São Tomé (+239)</option>
+                <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
+                <option value="+221">🇸🇳 Senegal (+221)</option>
+                <option value="+381">🇷🇸 Serbia (+381)</option>
+                <option value="+248">🇸🇨 Seychelles (+248)</option>
+                <option value="+232">🇸🇱 Sierra Leone (+232)</option>
+                <option value="+65">🇸🇬 Singapore (+65)</option>
+                <option value="+421">🇸🇰 Slovakia (+421)</option>
+                <option value="+386">🇸🇮 Slovenia (+386)</option>
+                <option value="+677">🇸🇧 Solomon Islands (+677)</option>
+                <option value="+252">🇸🇴 Somalia (+252)</option>
+                <option value="+27">🇿🇦 South Africa (+27)</option>
+                <option value="+82">🇰🇷 South Korea (+82)</option>
+                <option value="+211">🇸🇸 South Sudan (+211)</option>
+                <option value="+34">🇪🇸 Spain (+34)</option>
+                <option value="+94">🇱🇰 Sri Lanka (+94)</option>
+                <option value="+249">🇸🇩 Sudan (+249)</option>
+                <option value="+597">🇸🇷 Suriname (+597)</option>
+                <option value="+46">🇸🇪 Sweden (+46)</option>
+                <option value="+41">🇨🇭 Switzerland (+41)</option>
+                <option value="+963">🇸🇾 Syria (+963)</option>
+                <option value="+886">🇹🇼 Taiwan (+886)</option>
+                <option value="+992">🇹🇯 Tajikistan (+992)</option>
+                <option value="+255">🇹🇿 Tanzania (+255)</option>
+                <option value="+66">🇹🇭 Thailand (+66)</option>
+                <option value="+670">🇹🇱 Timor-Leste (+670)</option>
+                <option value="+228">🇹🇬 Togo (+228)</option>
+                <option value="+676">🇹🇴 Tonga (+676)</option>
+                <option value="+1868">🇹🇹 Trinidad & Tobago (+1868)</option>
+                <option value="+216">🇹🇳 Tunisia (+216)</option>
+                <option value="+90">🇹🇷 Turkey (+90)</option>
+                <option value="+993">🇹🇲 Turkmenistan (+993)</option>
+                <option value="+688">🇹🇻 Tuvalu (+688)</option>
+                <option value="+971">🇦🇪 UAE (+971)</option>
+                <option value="+44">🇬🇧 United Kingdom (+44)</option>
+                <option value="+1">🇺🇸 United States (+1)</option>
+                <option value="+598">🇺🇾 Uruguay (+598)</option>
+                <option value="+998">🇺🇿 Uzbekistan (+998)</option>
+                <option value="+678">🇻🇺 Vanuatu (+678)</option>
+                <option value="+58">🇻🇪 Venezuela (+58)</option>
+                <option value="+84">🇻🇳 Vietnam (+84)</option>
+                <option value="+967">🇾🇪 Yemen (+967)</option>
+                <option value="+260">🇿🇲 Zambia (+260)</option>
+                <option value="+263">🇿🇼 Zimbabwe (+263)</option>
+              </select>
+              <input type="tel" id="phone_number" name="phone_number" class="form-input phone-input" placeholder="700 000000" required>
+            </div>
+          </div>
+          <div class="input-group">
+            <label class="input-label" for="password">Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" minlength="8" required>
+              <button type="button" class="password-toggle" id="togglePassword">
+                <span class="material-symbols-outlined">visibility</span>
+              </button>
+            </div>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="terms" class="checkbox-input" required>
+            <label class="checkbox-label" for="terms">
+              I agree to the <a href="#" class="link-primary">Terms of Service</a> and <a href="#" class="link-primary">Privacy Policy</a>.
+            </label>
+          </div>
+          <button type="submit" class="submit-btn">Register</button>
+        </form>
+
+        <div class="footer-links">
+          <p class="login-prompt">
+            Already have an account?
+            <a href="/login" class="link-highlight">Sign In</a>
+          </p>
+          <hr class="separator">
+          <p class="role-links">
+            Want to list a vehicle? <a href="/owner/register" class="role-link">Join as Owner</a> &nbsp;·&nbsp;
+            <a href="/driver/register" class="role-link">Join as Driver</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-brand-name">Kari Vari Uganda</span>
+        <p class="footer-tagline">Exploring the Pearl of Africa since 2024.</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <a href="#" class="footer-link">Terms of Service</a>
+        <a href="#" class="footer-link">Partner Program</a>
+        <a href="#" class="footer-link">Careers</a>
+      </nav>
+      <p class="footer-copyright">© 2026 Kari Vari Uganda. All rights reserved.</p>
     </div>
-    <div class="mb-3">
-      <label class="form-label">Email address</label>
-      <input type="email" name="email" class="form-control" placeholder="you@example.com" required>
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Phone Number</label>
-      <input type="tel" name="phone_number" class="form-control" placeholder="+256 700 000000" required>
-    </div>
-    <div class="mb-4">
-      <label class="form-label">Password</label>
-      <input type="password" name="password" class="form-control" minlength="8" required>
-    </div>
-    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Create Account</button>
-  </form>
-  <p class="mt-3 text-center small">Already have an account? <a href="/login" class="text-decoration-none fw-semibold" style="color:#2d5a27">Sign In</a></p>
-  <hr class="my-3 opacity-25">
-  <p class="text-center small text-secondary mb-0">
-    Want to list a vehicle? <a href="/owner/register" class="text-decoration-none">Join as Owner</a> &nbsp;·&nbsp;
-    <a href="/driver/register" class="text-decoration-none">Join as Driver</a>
-  </p>
+  </footer>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/static/js/shared.js"></script>
-<script src="/static/js/auth/register.js"></script>
+
+<script src="static/js/customer/register.js"></script>
 </body>
 </html>
