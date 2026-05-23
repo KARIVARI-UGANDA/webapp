@@ -113,6 +113,11 @@ def customer_dashboard(request: Request):
     return templates.TemplateResponse(request, "customer/dashboard.html")
 
 
+@app.get("/vehicles")
+def vehicle_listings(request: Request):
+    return templates.TemplateResponse(request, "customer/vehicles.html")
+
+
 # Admin portal
 @app.get("/admin/login")
 def admin_login_page(request: Request):

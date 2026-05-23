@@ -23,7 +23,7 @@ _owner_or_admin = require_role("owner", "admin")
 _any_auth = get_current_user
 
 UPLOAD_DIR = "uploads/vehicles"
-MAX_PHOTO_SIZE_BYTES = 5 * 1024 * 1024   # 5 MB
+MAX_PHOTO_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB
 MAX_PHOTOS_PER_VEHICLE = 8
 ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/png", "image/webp"}
 
@@ -52,8 +52,8 @@ def list_vehicles(
     page_size: int = Query(20, ge=1, le=100),
     db: Session = Depends(get_db),
 ):
-    """Public browse — only verified vehicles."""
-    q = db.query(Vehicle).filter(Vehicle.status == "verified")
+    """Public browse — pending and verified vehicles (excludes rejected/suspended)."""
+    q = db.query(Vehicle).filter(Vehicle.status.in_(["pending", "verified"]))
 
     if location:
         q = q.filter(Vehicle.service_area.ilike(f"%{location}%"))
@@ -225,7 +225,7 @@ async def upload_photos(
 
         data = await f.read()
         if len(data) > MAX_PHOTO_SIZE_BYTES:
-            raise HTTPException(status_code=400, detail=f"File '{f.filename}' exceeds 5 MB limit")
+            raise HTTPException(status_code=400, detail=f"File '{f.filename}' exceeds 10 MB limit")
 
         ext = content_type.split("/")[-1].replace("jpeg", "jpg")
         safe_name = f"{uuid.uuid4()}.{ext}"

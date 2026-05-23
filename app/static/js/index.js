@@ -1,9 +1,77 @@
-document.addEventListener('DOMContentLoaded', async () => {
+const RATES = { USD: 3700, EUR: 4050 };
+const SYMBOLS = { USD: '$', EUR: '€' };
+
+function convertPrice(ugx, currency) {
+	const rate = RATES[currency] || RATES.USD;
+	return (ugx / rate).toFixed(2);
+}
+
+function renderVehicleCards(vehicles, currency) {
 	const vehicleContainer = document.getElementById('vehicleCardsContainer');
-	const authButtons      = document.getElementById('authButtons');
-	const userButtons      = document.getElementById('userButtons');
-	const logoutBtn        = document.getElementById('logoutBtn');
-	const userNameEl       = document.getElementById('userName');
+	if (!vehicleContainer) return;
+
+	if (vehicles.length === 0) {
+		vehicleContainer.innerHTML = '<p class="col-span-3 text-center py-8 text-on-surface-variant">No vehicles available yet.</p>';
+		return;
+	}
+
+	const sym = SYMBOLS[currency] || '$';
+
+	vehicleContainer.innerHTML = vehicles.map(v => {
+		const imgSrc = v.photos && v.photos.length > 0
+			? v.photos[0].photo_url
+			: 'https://via.placeholder.com/600x300?text=' + encodeURIComponent(v.make + ' ' + v.model);
+		const price = convertPrice(v.base_daily_rate_ugx, currency);
+
+		const features = [
+			`<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> ${v.passenger_capacity} Seats</span>`,
+			`<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">settings</span> ${v.transmission}</span>`,
+			`<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">local_gas_station</span> ${v.fuel_type}</span>`,
+			v.has_ac   ? `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">ac_unit</span> A/C</span>` : '',
+			v.has_wifi ? `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">wifi</span> WiFi</span>` : '',
+			v.is_4wd   ? `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">terrain</span> 4WD</span>` : '',
+		].filter(Boolean).join('');
+
+		const statusBadge = v.status === 'verified'
+			? `<span class="bg-status-success text-white text-[12px] font-bold px-3 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px]">verified</span> Verified</span>`
+			: `<span class="bg-status-pending text-white text-[12px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Under Review</span>`;
+
+		const actionBtn = v.status === 'verified'
+			? `<button class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all">Book Now</button>`
+			: `<button disabled class="border border-outline-variant text-on-surface-variant px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold cursor-not-allowed opacity-60">Pending</button>`;
+
+		return `
+		<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
+			<div class="relative h-64 overflow-hidden">
+				<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+				     src="${imgSrc}" alt="${v.make} ${v.model}">
+				<div class="absolute top-4 left-4">${statusBadge}</div>
+			</div>
+			<div class="p-6">
+				<div class="flex justify-between items-start mb-2">
+					<div>
+						<h3 class="font-headline-md text-headline-md text-on-surface">${v.make} ${v.model}</h3>
+						<p class="text-on-surface-variant font-label-sm text-label-sm mt-0.5">${v.year} · ${v.vehicle_type} · ${v.service_area || 'Uganda'}</p>
+					</div>
+				</div>
+				<div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">${features}</div>
+				<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
+					<div>
+						<span class="font-headline-md text-headline-md text-primary">${sym}${price}</span>
+						<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
+					</div>
+					${actionBtn}
+				</div>
+			</div>
+		</div>`;
+	}).join('');
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+	const authButtons = document.getElementById('authButtons');
+	const userButtons = document.getElementById('userButtons');
+	const logoutBtn   = document.getElementById('logoutBtn');
+	const userNameEl  = document.getElementById('userName');
 
 	const token = localStorage.getItem('access_token');
 
@@ -14,13 +82,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 			});
 			if (res.ok) {
 				const user = await res.json();
-				// Non-customers go straight to their dashboard
 				const dashboards = { owner: '/owner/dashboard', driver: '/driver/dashboard', admin: '/admin/dashboard' };
 				if (dashboards[user.role]) {
 					window.location.href = dashboards[user.role];
 					return;
 				}
-				// Show user name + logout, hide sign-in/register
 				authButtons.classList.add('d-none');
 				userButtons.classList.remove('d-none');
 				userButtons.classList.add('d-flex');
@@ -40,45 +106,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 		});
 	}
 
-	// Load featured vehicles from DB
+	let _vehicles = [];
+
+	// Currency toggle
+	document.querySelectorAll('input[name="currency"]').forEach(radio => {
+		radio.addEventListener('change', () => {
+			renderVehicleCards(_vehicles, radio.value);
+		});
+	});
+
+	// Load featured vehicles
 	try {
 		const res = await fetch(`${API}/vehicles/?page=1&page_size=6`);
 		if (res.ok) {
-			const vehicles = await res.json();
-			if (vehicleContainer) {
-				vehicleContainer.innerHTML = vehicles.length === 0
-					? '<p class="text-center text-secondary col-12">No vehicles available yet.</p>'
-					: vehicles.map(v => `
-						<div class="col-md-6 col-lg-4">
-							<div class="vehicle-card h-100">
-								<div class="vehicle-img-wrapper position-relative">
-									<img src="${v.photos && v.photos.length > 0 ? v.photos[0].photo_url : 'https://via.placeholder.com/400x300?text=' + encodeURIComponent(v.make + ' ' + v.model)}" alt="${v.make} ${v.model}" class="card-img-top">
-									<span class="vehicle-badge">Available</span>
-								</div>
-								<div class="card-body p-4">
-									<div class="d-flex justify-content-between align-items-start mb-3">
-										<div>
-											<h5 class="fw-bold mb-0">${v.make} ${v.model}</h5>
-											<p class="text-secondary small">${v.vehicle_type}</p>
-										</div>
-										<div class="text-end">
-											<span class="price fw-bold">UGX ${(v.base_daily_rate_ugx / 1000).toFixed(0)}k</span>
-											<span class="text-secondary small">/ day</span>
-										</div>
-									</div>
-									<div class="d-flex justify-content-between mb-4 text-secondary">
-										<span><i class="bi bi-people-fill me-1"></i> ${v.passenger_capacity} Seats</span>
-										<span><i class="bi bi-gear-fill me-1"></i> ${v.transmission}</span>
-										<span><i class="bi bi-fuel-pump-fill me-1"></i> ${v.fuel_type}</span>
-									</div>
-									<button class="btn btn-primary w-100 py-2 fw-bold">Book Now</button>
-								</div>
-							</div>
-						</div>`).join('');
-			}
+			_vehicles = await res.json();
+			renderVehicleCards(_vehicles, 'USD');
 		}
 	} catch (err) {
 		console.error('Failed to load vehicles:', err);
+		const vehicleContainer = document.getElementById('vehicleCardsContainer');
 		if (vehicleContainer) {
 			vehicleContainer.innerHTML = '<p class="text-center text-danger col-12">Failed to load vehicles.</p>';
 		}

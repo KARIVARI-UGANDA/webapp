@@ -58,6 +58,7 @@ document.getElementById('logoutBtn').addEventListener('click', async (e) => {
 							<td><span class="badge ${statusBadge(v.status)}">${v.status.replace('_', ' ')}</span></td>
 							<td>UGX ${Number(v.base_daily_rate_ugx).toLocaleString()}/day</td>
 							<td class="text-secondary small">${v.service_area || '—'}</td>
+							<td><button onclick="openEditVehicle('${v.id}')" class="btn btn-sm btn-outline-primary">Edit</button></td>
 						</tr>`).join('');
 			}
 
@@ -101,6 +102,7 @@ async function loadVehicles() {
 						<td><span class="badge ${statusBadge(v.status)}">${v.status.replace('_', ' ')}</span></td>
 						<td>UGX ${Number(v.base_daily_rate_ugx).toLocaleString()}/day</td>
 						<td class="text-secondary small">${v.service_area || '—'}</td>
+						<td><button onclick="openEditVehicle('${v.id}')" class="btn btn-sm btn-outline-primary">Edit</button></td>
 					</tr>`).join('');
 		}
 		document.dispatchEvent(new CustomEvent('kv:vehiclesLoaded', { detail: vehicles }));
@@ -178,9 +180,29 @@ document.getElementById('submitVehicleBtn').addEventListener('click', async () =
 		if (handleUnauthorized(res)) return;
 
 		if (res.ok) {
+			const savedVehicle = await res.json();
+			const vehicleId = isEdit ? window._editVehicleId : savedVehicle.id;
+			const selectedFiles = Array.from(document.getElementById('vehicleImages').files || []);
+
 			bootstrap.Modal.getInstance(document.getElementById('addVehicleModal'))?.hide();
 			form.reset();
 			window._editVehicleId = null;
+
+			if (selectedFiles.length > 0 && vehicleId) {
+				const photoData = new FormData();
+				selectedFiles.forEach(f => photoData.append('files', f));
+				const photoRes = await fetch(`${API}/vehicles/${vehicleId}/photos`, {
+					method: 'POST',
+					headers: { 'Authorization': `Bearer ${token}` },
+					body: photoData,
+				}).catch(() => null);
+				if (photoRes && !photoRes.ok) {
+					const photoErr = await photoRes.json().catch(() => ({}));
+					alertEl.textContent = 'Saved, but photo upload failed: ' + (photoErr.detail || 'Unknown error');
+					alertEl.className = 'alert alert-warning mb-3';
+				}
+			}
+
 			await loadVehicles();
 		} else {
 			const err = await res.json().catch(() => ({}));

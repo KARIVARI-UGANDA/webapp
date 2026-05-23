@@ -126,8 +126,8 @@
 </div>
 </div>
 <div class="flex items-center gap-4">
-<button class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors">Sign In</button>
-<button class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Register</button>
+<a href="/login" class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors">Sign In</a>
+<a href="/register" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Register</a>
 </div>
 </nav>
 <main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8">
@@ -137,60 +137,49 @@
 <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/30 sticky top-24">
 <div class="flex items-center justify-between mb-6">
 <h2 class="font-headline-md text-headline-md text-primary">Filters</h2>
-<button class="text-label-sm text-secondary font-bold">Clear All</button>
+<button onclick="clearFilters()" class="text-label-sm text-secondary font-bold hover:text-primary transition-colors">Clear All</button>
 </div>
 <!-- Price Range -->
 <div class="mb-8">
 <h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Price Range (USD/Day)</h3>
 <div class="space-y-4">
-<input class="w-full accent-safari-green" max="500" min="50" type="range">
+<input id="priceSlider" class="w-full accent-safari-green" max="500" min="0" step="10" type="range" value="500" oninput="updatePriceLabel(this.value); applyFilters()">
 <div class="flex justify-between text-label-sm font-label-sm text-on-surface-variant">
-<span>$50</span>
-<span>$500+</span>
+<span>$0</span>
+<span id="priceLabel" class="font-bold text-primary">No limit</span>
 </div>
 </div>
 </div>
-<!-- Vehicle Type -->
+<!-- Vehicle Type (populated from data) -->
 <div class="mb-8">
 <h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Vehicle Type</h3>
-<div class="space-y-3">
-<label class="flex items-center gap-3 cursor-pointer group">
-<input checked="" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" type="checkbox">
-<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">4x4 SUVs</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" type="checkbox">
-<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Luxury Sedans</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" type="checkbox">
-<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Safari Vans</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" type="checkbox">
-<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Camping Trucks</span>
-</label>
+<div class="space-y-3" id="typeFilterContainer">
+<p class="text-label-sm text-on-surface-variant italic">Loading…</p>
 </div>
 </div>
 <!-- Features -->
 <div class="mb-8">
 <h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Key Features</h3>
 <div class="space-y-3">
-<label class="flex items-center gap-3 cursor-pointer">
-<input class="rounded border-outline-variant text-safari-green w-5 h-5" type="checkbox">
-<span class="font-body-md text-body-md text-on-surface-variant">Air Conditioning</span>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input id="filter-ac" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Air Conditioning</span>
 </label>
-<label class="flex items-center gap-3 cursor-pointer">
-<input checked="" class="rounded border-outline-variant text-safari-green w-5 h-5" type="checkbox">
-<span class="font-body-md text-body-md text-on-surface-variant">Driver Included</span>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input id="filter-wifi" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">WiFi</span>
 </label>
-<label class="flex items-center gap-3 cursor-pointer">
-<input class="rounded border-outline-variant text-safari-green w-5 h-5" type="checkbox">
-<span class="font-body-md text-body-md text-on-surface-variant">Roof Hatch</span>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input id="filter-4wd" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">4WD / All-terrain</span>
 </label>
-<label class="flex items-center gap-3 cursor-pointer">
-<input class="rounded border-outline-variant text-safari-green w-5 h-5" type="checkbox">
-<span class="font-body-md text-body-md text-on-surface-variant">GPS Navigation</span>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input id="filter-roof" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Roof Rack</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input id="filter-child" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Child Seat</span>
 </label>
 </div>
 </div>
@@ -198,9 +187,10 @@
 <div class="mb-6">
 <h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Fuel Type</h3>
 <div class="flex flex-wrap gap-2">
-<button class="px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Diesel</button>
-<button class="px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Petrol</button>
-<button class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container text-label-sm font-label-sm">Hybrid</button>
+<button data-fuel="diesel" onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Diesel</button>
+<button data-fuel="petrol" onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Petrol</button>
+<button data-fuel="hybrid" onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Hybrid</button>
+<button data-fuel="electric" onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Electric</button>
 </div>
 </div>
 </div>
@@ -211,166 +201,27 @@
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
 <div>
 <h1 class="font-headline-lg text-headline-lg text-on-background">Explore Uganda</h1>
-<p class="font-body-md text-body-md text-on-surface-variant">Showing 142 premium vehicles available for your journey</p>
+<p class="font-body-md text-body-md text-on-surface-variant" id="vehicleCount">Loading vehicles…</p>
 </div>
-<div class="flex items-center gap-3 bg-surface-container p-1 rounded-lg">
-<span class="px-3 py-1 font-label-lg text-label-lg text-on-surface-variant">Sort by:</span>
-<select class="bg-transparent border-none focus:ring-0 font-label-lg text-label-lg text-primary cursor-pointer pr-8">
-<option>Most Popular</option>
-<option>Price: Low to High</option>
-<option>Price: High to Low</option>
-<option>Top Rated</option>
-</select>
-</div>
-</div>
-<!-- Grid of Vehicle Cards -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
-<!-- Vehicle Card 1 -->
-<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A rugged dark green Toyota Land Cruiser V8 driving through a lush Ugandan savanna at sunset. The lighting is warm and golden, highlighting the vehicle's sturdy build. In the background, rolling hills and acacia trees create a sense of vast wilderness and adventure. Professional automotive photography style with deep shadows and vibrant earth tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAneIaWIZP1uYK-voei4N7Q4gbOFyWq6encAeLWtYwQ3Jjp8sNGq96r-Laxg5PL3b6WhjnD4qO1MOw3VkJ-iRELes1TdjEOPNx8YWZ-3QdzPXe4ZgK5RQ0SyqFqQhOEg-0tWa4wrVrRGX5_sHkThTP7KTj8z54wHvY4Xj95M_29kpDapCwoe5tNJqtUkWt5kbHjx-sw2JT_pkmrvaKN4KmKVHrzlGHB84tK7PdpwSB3IYvxdN4uC8gUTk08yrHldP1qIk-6lXpUqzw">
-<div class="absolute top-4 left-4">
-<span class="bg-status-success text-white text-[12px] font-bold px-3 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider">
-<span class="material-symbols-outlined text-[14px]">verified</span> Driver Included
-                                </span>
-</div>
-<div class="absolute bottom-4 right-4 flex gap-2">
-<div class="bg-white/20 backdrop-blur-md p-2 rounded-full text-white cursor-pointer hover:bg-white/40">
-<span class="material-symbols-outlined">chevron_left</span>
-</div>
-<div class="bg-white/20 backdrop-blur-md p-2 rounded-full text-white cursor-pointer hover:bg-white/40">
-<span class="material-symbols-outlined">chevron_right</span>
+<div class="flex items-center gap-3 flex-wrap">
+  <!-- Currency toggle -->
+  <div class="flex rounded-lg overflow-hidden border border-outline-variant text-label-sm font-label-sm">
+    <button id="btn-usd" onclick="setCurrency('USD')" class="px-3 py-1.5 bg-primary text-white transition-colors">$ USD</button>
+    <button id="btn-eur" onclick="setCurrency('EUR')" class="px-3 py-1.5 text-on-surface-variant hover:bg-surface-container transition-colors">€ EUR</button>
+  </div>
+  <div class="flex items-center gap-3 bg-surface-container p-1 rounded-lg">
+    <span class="px-3 py-1 font-label-lg text-label-lg text-on-surface-variant">Sort by:</span>
+    <select id="sortSelect" class="bg-transparent border-none focus:ring-0 font-label-lg text-label-lg text-primary cursor-pointer pr-8">
+      <option value="default">Most Popular</option>
+      <option value="price_asc">Price: Low to High</option>
+      <option value="price_desc">Price: High to Low</option>
+    </select>
+  </div>
 </div>
 </div>
-</div>
-<div class="p-6">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline-md text-headline-md text-on-surface">Toyota Land Cruiser V8</h3>
-<div class="flex items-center gap-1 text-ugandan-sun">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="font-label-lg text-label-lg font-bold text-on-surface">4.9</span>
-</div>
-</div>
-<div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> 7 Seats</span>
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">settings</span> Manual/Auto</span>
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">local_gas_station</span> Diesel</span>
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">ac_unit</span> A/C</span>
-</div>
-<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
-<div>
-<span class="font-headline-md text-headline-md text-primary">$120</span>
-<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
-</div>
-<button class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all">View Details</button>
-</div>
-</div>
-</div>
-<!-- Vehicle Card 2 -->
-<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean silver safari customized Toyota Hiace van parked near a modern boutique lodge in Entebbe. Bright midday sun creates clean lines and high-contrast highlights. The background features tropical greenery and a clear blue sky, emphasizing a high-end, reliable travel experience. Corporate modern aesthetic with airy whitespace and vibrant greens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgW5LuRM28B07XNKMn1CWLDs0pySHOcRgONtGjQfIXp6wuSp4HB1JeMvM46wyAJ6c9EvxA6JmibaeNsQSz8GjjvN7UdLNG9nXhwNLs46ECwp-bcT6gLFYaYSi3CLKqWRsD-42EMgreKV3phC_1I1ewQgtv5dc1Gb_VN7r1C09qhUvBd7J8BxWuU8oCoDjANNxZoxrGobEORvniZYDaE63wtQixO4cvXcaV727HjKpBfHxPtINfsmI72mMFBB5ByiyHDoOGDoWDhlA">
-<div class="absolute top-4 left-4">
-<span class="bg-status-pending text-white text-[12px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Pop-up Roof</span>
-</div>
-</div>
-<div class="p-6">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline-md text-headline-md text-on-surface">Toyota Hiace Safari Van</h3>
-<div class="flex items-center gap-1 text-ugandan-sun">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="font-label-lg text-label-lg font-bold text-on-surface">4.7</span>
-</div>
-</div>
-<div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> 9 Seats</span>
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">visibility</span> Pop-up Roof</span>
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">local_gas_station</span> Diesel</span>
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">wifi</span> Free WiFi</span>
-</div>
-<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
-<div class="">
-<span class="font-headline-md text-headline-md text-primary">$85</span>
-<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
-</div>
-<button class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all">View Details</button>
-</div>
-</div>
-</div>
-<!-- Vehicle Card 3 -->
-<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sleek white Toyota RAV4 hybrid parked on a paved road overlooking the source of the Nile in Jinja. Soft morning light creates a peaceful and refreshing atmosphere. The vehicle looks polished and modern against the deep blue water and lush riverbanks. Minimalist and clean visual style with a focus on reliability and fuel efficiency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmflxoaeVcuaywDTqEmdcxQ0uMINy7kvVRP0Y8aFmuw6P8Aa-1rIGmidxSQfp2SNw3L6y6wE2swUIzj25DxMaD_TFpJLumQrL45bVtW7Un4WTMmBU0tmvCt-D8JXzNS5ZnQ-BIPpNeIoeaQ14EZbqIGqz8pbFhJOORg2yB7EXVFmQfchqHiru7OOddsgQnQWndkQzM6s6jH-Q1ZXH4JboeCVCDPa9eob0zBc2599LzTb-DhNx_WB3jjfKLbxViwxvIpc01VYAlFgY">
-</div>
-<div class="p-6">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline-md text-headline-md text-on-surface">Toyota RAV4 Hybrid</h3>
-<div class="flex items-center gap-1 text-ugandan-sun">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="font-label-lg text-label-lg font-bold text-on-surface">4.8</span>
-</div>
-</div>
-<div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> 5 Seats</span>
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">eco</span> Hybrid Fuel</span>
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">luggage</span> 2 Large Bags</span>
-</div>
-<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
-<div>
-<span class="font-headline-md text-headline-md text-primary">$65</span>
-<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
-</div>
-<button class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all">View Details</button>
-</div>
-</div>
-</div>
-<!-- Vehicle Card 4 -->
-<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A powerful Toyota Land Cruiser Prado TXL in metallic bronze parked on a red dirt road in Bwindi Impenetrable Forest. Mist hangs low in the canopy, creating a moody and epic jungle atmosphere. The vehicle's high ground clearance and all-terrain tires are emphasized. Professional adventure travel photography with rich textures and cool shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRzTlHUf-THK1zpWPuSyzW8hX4MbFnZJ62IVcMDoRB6xv-oOD7Uc9eaC9OsYHheBjglsqa7HhxUPiziEaPJ3rjPRvHxXAOVyHCgBJuMUUwCPsUCdRxPTDLJzoKeaaKNpakFdYr6pym1z9UMMQPrzFDi-1aPCj110fPjlgVLl3iNvi_9qPEoTv4JQEsTujpJosy1rvX4rdeZ1SfcpCS-PeQVUU32997L7ZrA-c1cQOyNrvQ3wYtVr1I3Ui_GFhbZ1R3EX08M05BR08">
-<div class="absolute top-4 left-4">
-<span class="bg-status-success text-white text-[12px] font-bold px-3 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider">
-<span class="material-symbols-outlined text-[14px]">verified</span> Driver Included
-                                </span>
-</div>
-</div>
-<div class="p-6">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline-md text-headline-md text-on-surface">Toyota Prado TXL</h3>
-<div class="flex items-center gap-1 text-ugandan-sun">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="font-label-lg text-label-lg font-bold text-on-surface">5.0</span>
-</div>
-</div>
-<div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> 5 Seats</span>
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">terrain</span> 4x4 Drive</span>
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">local_gas_station</span> Diesel</span>
-<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">cool_to_dry</span> Sunroof</span>
-</div>
-<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
-<div>
-<span class="font-headline-md text-headline-md text-primary">$105</span>
-<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
-</div>
-<button class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all">View Details</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Pagination -->
-<div class="mt-12 flex justify-center items-center gap-4">
-<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined">chevron_left</span>
-</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">1</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors font-bold">2</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors font-bold">3</button>
-<span class="text-on-surface-variant">...</span>
-<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors font-bold">12</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined">chevron_right</span>
-</button>
+<!-- Dynamic Vehicle Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter" id="vehicleGrid">
+  <div class="col-span-2 text-center py-16 text-on-surface-variant">Loading…</div>
 </div>
 </section>
 </div>
@@ -413,4 +264,187 @@
 <span class="material-symbols-outlined">chat</span>
 <span class="font-label-lg text-label-lg pr-2">Need Help?</span>
 </button>
+<script>
+const RATES   = { USD: 3700, EUR: 4050 };
+const SYMBOLS = { USD: '$', EUR: '€' };
+let _vehicles = [];
+let _currency = 'USD';
+
+function convertPrice(ugx, cur) {
+  return (ugx / (RATES[cur] || RATES.USD)).toFixed(2);
+}
+
+function setCurrency(cur) {
+  _currency = cur;
+  document.getElementById('btn-usd').className = cur === 'USD'
+    ? 'px-3 py-1.5 bg-primary text-white transition-colors'
+    : 'px-3 py-1.5 text-on-surface-variant hover:bg-surface-container transition-colors';
+  document.getElementById('btn-eur').className = cur === 'EUR'
+    ? 'px-3 py-1.5 bg-primary text-white transition-colors'
+    : 'px-3 py-1.5 text-on-surface-variant hover:bg-surface-container transition-colors';
+  renderGrid(_vehicles);
+}
+
+function updatePriceLabel(val) {
+  const label = document.getElementById('priceLabel');
+  label.textContent = parseInt(val) >= 500 ? 'No limit' : `Up to $${val}`;
+}
+
+function toggleFuel(btn) {
+  const active = btn.classList.contains('active-fuel');
+  if (active) {
+    btn.classList.remove('active-fuel', 'bg-primary', 'text-white', 'border-primary');
+    btn.classList.add('border-outline-variant');
+  } else {
+    btn.classList.add('active-fuel', 'bg-primary', 'text-white', 'border-primary');
+    btn.classList.remove('border-outline-variant');
+  }
+  applyFilters();
+}
+
+function buildTypeFilters(vehicles) {
+  const types = [...new Set(vehicles.map(v => v.vehicle_type).filter(Boolean))].sort();
+  const container = document.getElementById('typeFilterContainer');
+  if (!container) return;
+  container.innerHTML = types.length === 0
+    ? '<p class="text-label-sm text-on-surface-variant italic">No types in data</p>'
+    : types.map(t => `
+      <label class="flex items-center gap-3 cursor-pointer group">
+        <input type="checkbox" value="${t}" class="filter-type rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+        <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary capitalize">${t.replace(/_/g, ' ')}</span>
+      </label>`).join('');
+}
+
+function applyFilters() {
+  const maxPriceUSD = parseInt(document.getElementById('priceSlider').value);
+  const typeChecks  = [...document.querySelectorAll('.filter-type:checked')].map(el => el.value);
+  const wantAC      = document.getElementById('filter-ac').checked;
+  const wantWifi    = document.getElementById('filter-wifi').checked;
+  const want4wd     = document.getElementById('filter-4wd').checked;
+  const wantRoof    = document.getElementById('filter-roof').checked;
+  const wantChild   = document.getElementById('filter-child').checked;
+  const activeFuels = [...document.querySelectorAll('.fuel-btn.active-fuel')].map(el => el.dataset.fuel);
+
+  const filtered = _vehicles.filter(v => {
+    if (maxPriceUSD < 500 && v.base_daily_rate_ugx / RATES.USD > maxPriceUSD) return false;
+    if (typeChecks.length > 0 && !typeChecks.includes(v.vehicle_type)) return false;
+    if (wantAC    && !v.has_ac)        return false;
+    if (wantWifi  && !v.has_wifi)      return false;
+    if (want4wd   && !v.is_4wd)        return false;
+    if (wantRoof  && !v.has_roof_rack) return false;
+    if (wantChild && !v.has_child_seat) return false;
+    if (activeFuels.length > 0 && !activeFuels.includes((v.fuel_type || '').toLowerCase())) return false;
+    return true;
+  });
+
+  renderGrid(filtered);
+}
+
+function clearFilters() {
+  document.getElementById('priceSlider').value = 500;
+  updatePriceLabel(500);
+  document.querySelectorAll('.filter-type').forEach(el => el.checked = false);
+  ['filter-ac','filter-wifi','filter-4wd','filter-roof','filter-child'].forEach(id => {
+    document.getElementById(id).checked = false;
+  });
+  document.querySelectorAll('.fuel-btn.active-fuel').forEach(btn => {
+    btn.classList.remove('active-fuel', 'bg-primary', 'text-white', 'border-primary');
+    btn.classList.add('border-outline-variant');
+  });
+  renderGrid(_vehicles);
+}
+
+function sortVehicles(list, mode) {
+  const copy = [...list];
+  if (mode === 'price_asc')  copy.sort((a, b) => a.base_daily_rate_ugx - b.base_daily_rate_ugx);
+  if (mode === 'price_desc') copy.sort((a, b) => b.base_daily_rate_ugx - a.base_daily_rate_ugx);
+  return copy;
+}
+
+function vehicleCardHTML(v) {
+  const sym   = SYMBOLS[_currency] || '$';
+  const price = convertPrice(v.base_daily_rate_ugx, _currency);
+  const imgSrc = v.photos && v.photos.length > 0
+    ? v.photos[0].photo_url
+    : 'https://via.placeholder.com/600x300?text=' + encodeURIComponent(v.make + ' ' + v.model);
+
+  const features = [
+    `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> ${v.passenger_capacity} Seats</span>`,
+    `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">settings</span> ${v.transmission}</span>`,
+    `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">local_gas_station</span> ${v.fuel_type}</span>`,
+    v.has_ac   ? `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">ac_unit</span> A/C</span>` : '',
+    v.has_wifi ? `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">wifi</span> WiFi</span>` : '',
+    v.is_4wd   ? `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">terrain</span> 4WD</span>` : '',
+  ].filter(Boolean).join('');
+
+  const statusBadge = v.status === 'verified'
+    ? `<span class="bg-status-success text-white text-[12px] font-bold px-3 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px]">verified</span> Verified</span>`
+    : `<span class="bg-status-pending text-white text-[12px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Under Review</span>`;
+
+  const actionBtn = v.status === 'verified'
+    ? `<button class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all">Book Now</button>`
+    : `<button disabled class="border border-outline-variant text-on-surface-variant px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold cursor-not-allowed opacity-60">Pending</button>`;
+
+  return `
+  <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
+    <div class="relative h-64 overflow-hidden">
+      <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+           src="${imgSrc}" alt="${v.make} ${v.model}">
+      <div class="absolute top-4 left-4">${statusBadge}</div>
+    </div>
+    <div class="p-6">
+      <div class="flex justify-between items-start mb-2">
+        <div>
+          <h3 class="font-headline-md text-headline-md text-on-surface">${v.make} ${v.model}</h3>
+          <p class="text-on-surface-variant font-label-sm text-label-sm mt-0.5">${v.year} · ${v.vehicle_type} · ${v.service_area || 'Uganda'}</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">${features}</div>
+      <div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
+        <div>
+          <span class="font-headline-md text-headline-md text-primary">${sym}${price}</span>
+          <span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
+        </div>
+        ${actionBtn}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderGrid(list) {
+  const grid  = document.getElementById('vehicleGrid');
+  const count = document.getElementById('vehicleCount');
+  const sort  = document.getElementById('sortSelect').value;
+  const sorted = sortVehicles(list, sort);
+
+  count.textContent = sorted.length === 0
+    ? 'No vehicles available yet.'
+    : `Showing ${sorted.length} vehicle${sorted.length !== 1 ? 's' : ''} available for your journey`;
+
+  grid.innerHTML = sorted.length === 0
+    ? '<div class="col-span-2 text-center py-16 text-on-surface-variant">No vehicles found.</div>'
+    : sorted.map(vehicleCardHTML).join('');
+}
+
+document.getElementById('sortSelect').addEventListener('change', () => renderGrid(_vehicles));
+
+(async () => {
+  try {
+    const res = await fetch('/api/vehicles/?page=1&page_size=50');
+    if (res.ok) {
+      _vehicles = await res.json();
+      buildTypeFilters(_vehicles);
+      renderGrid(_vehicles);
+    } else {
+      document.getElementById('vehicleGrid').innerHTML =
+        '<div class="col-span-2 text-center py-16 text-on-surface-variant">Failed to load vehicles.</div>';
+      document.getElementById('vehicleCount').textContent = '';
+    }
+  } catch {
+    document.getElementById('vehicleGrid').innerHTML =
+      '<div class="col-span-2 text-center py-16 text-on-surface-variant">Network error — please refresh.</div>';
+    document.getElementById('vehicleCount').textContent = '';
+  }
+})();
+</script>
 </body></html>
