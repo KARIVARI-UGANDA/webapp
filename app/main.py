@@ -118,6 +118,11 @@ def vehicle_listings(request: Request):
     return templates.TemplateResponse(request, "customer/vehicles.html")
 
 
+@app.get("/vehicles/{vehicle_id}")
+def vehicle_detail(request: Request, vehicle_id: str):
+    return templates.TemplateResponse(request, "customer/vehicle_detail.html")
+
+
 # Admin portal
 @app.get("/admin/login")
 def admin_login_page(request: Request):

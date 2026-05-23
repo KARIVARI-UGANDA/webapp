@@ -671,8 +671,25 @@
           <textarea name="description" class="form-control mb-4" rows="3"
                     placeholder="Describe your vehicle — condition, extras, safari history, etc."></textarea>
 
+          <!-- ── Current Photos (edit mode only) ── -->
+          <div id="currentPhotosSection" class="d-none mb-4">
+            <h6 class="fw-bold text-secondary text-uppercase small mb-2">Current Photos</h6>
+            <p class="text-secondary small mb-2">
+              <i class="bi bi-star-fill text-warning me-1"></i><strong>Star</strong> = set as main card image &nbsp;·&nbsp;
+              <i class="bi bi-trash text-danger me-1"></i>= delete permanently
+            </p>
+            <div class="row g-2" id="currentPhotosGrid"></div>
+          </div>
+
           <!-- ── Vehicle Images (upload feature) ── -->
-          <h6 class="fw-bold text-secondary text-uppercase small mb-3">Vehicle Images</h6>
+          <h6 class="fw-bold text-secondary text-uppercase small mb-2">Add More Photos</h6>
+          <div class="alert alert-info py-2 px-3 mb-3 small d-flex gap-2 align-items-start" style="background:#eff8ff;border-color:#bfdbfe;color:#1e40af;">
+            <i class="bi bi-info-circle-fill mt-1 flex-shrink-0"></i>
+            <div>
+              <strong>Upload tip:</strong> The <strong>first image</strong> you select becomes the <strong>main display photo</strong> shown on all vehicle cards.
+              Add extra photos after it as supplementary views (interior, side, rear, etc.).
+            </div>
+          </div>
           <div class="mb-3">
             <div id="imageDropZone"
                  class="border border-2 border-dashed rounded-3 p-4 text-center"
@@ -680,7 +697,7 @@
                  onclick="document.getElementById('vehicleImages').click()">
               <i class="bi bi-images fs-1 text-secondary mb-2 d-block"></i>
               <p class="fw-semibold text-secondary mb-1">Drag & drop photos here, or click to browse</p>
-              <p class="text-secondary small mb-0">JPG, PNG &mdash; up to 5 files, 10 MB each</p>
+              <p class="text-secondary small mb-0">JPG, PNG — up to 8 photos, 10 MB each &nbsp;·&nbsp; <strong>1st photo = main card image</strong></p>
               <input type="file" name="images" id="vehicleImages" accept="image/*" multiple style="display:none">
             </div>
             <div class="row g-2 mt-2" id="imagePreviewGrid"></div>
@@ -1102,7 +1119,64 @@
       plateInput.classList.add('bg-surface-container');
     }
 
+    // Show and populate current photos
+    renderCurrentPhotos(v);
+    document.getElementById('currentPhotosSection').classList.remove('d-none');
+
     bootstrap.Modal.getOrCreateInstance(document.getElementById('addVehicleModal')).show();
+  }
+
+  function renderCurrentPhotos(v) {
+    const grid = document.getElementById('currentPhotosGrid');
+    const photos = v.photos || [];
+    if (photos.length === 0) {
+      grid.innerHTML = '<p class="text-secondary small col-12 mb-0">No photos yet — upload below.</p>';
+      return;
+    }
+    grid.innerHTML = photos.map(p => `
+      <div class="col-4 col-md-3" id="photoCard_${p.id}">
+        <div class="position-relative rounded-2 overflow-hidden border" style="aspect-ratio:4/3;">
+          <img src="${p.photo_url}" class="w-100 h-100" style="object-fit:cover;" alt="photo">
+          ${p.is_primary ? `<span class="position-absolute top-0 start-0 badge bg-success m-1" style="font-size:10px;"><i class="bi bi-star-fill"></i> Main</span>` : ''}
+          <div class="position-absolute bottom-0 start-0 end-0 d-flex gap-1 p-1" style="background:rgba(0,0,0,0.6);">
+            ${!p.is_primary
+              ? `<button onclick="setPrimaryPhoto('${v.id}','${p.id}')" title="Set as main" class="btn btn-sm btn-warning flex-fill py-0" style="font-size:11px;"><i class="bi bi-star-fill"></i></button>`
+              : `<button class="btn btn-sm btn-success flex-fill py-0" disabled style="font-size:11px;"><i class="bi bi-star-fill"></i></button>`}
+            <button onclick="deletePhoto('${v.id}','${p.id}')" title="Delete photo" class="btn btn-sm btn-danger py-0" style="font-size:11px;"><i class="bi bi-trash-fill"></i></button>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  async function setPrimaryPhoto(vehicleId, photoId) {
+    const res = await fetch(`${API}/vehicles/${vehicleId}/photos/${photoId}/primary`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    if (!res.ok) { alert('Could not update main photo.'); return; }
+    const vRes = await fetch(`${API}/vehicles/${vehicleId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+    if (vRes.ok) {
+      const v = await vRes.json();
+      const idx = _allVehicles.findIndex(x => x.id === vehicleId);
+      if (idx !== -1) _allVehicles[idx] = v;
+      renderCurrentPhotos(v);
+    }
+  }
+
+  async function deletePhoto(vehicleId, photoId) {
+    if (!confirm('Delete this photo permanently?')) return;
+    const res = await fetch(`${API}/vehicles/${vehicleId}/photos/${photoId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    if (!res.ok) { alert('Could not delete photo.'); return; }
+    const vRes = await fetch(`${API}/vehicles/${vehicleId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+    if (vRes.ok) {
+      const v = await vRes.json();
+      const idx = _allVehicles.findIndex(x => x.id === vehicleId);
+      if (idx !== -1) _allVehicles[idx] = v;
+      renderCurrentPhotos(v);
+    }
   }
 
   // Reset modal back to "Add" mode when it closes
@@ -1112,6 +1186,8 @@
     document.getElementById('submitVehicleBtnText').textContent = 'Submit Vehicle';
     document.getElementById('addVehicleForm').reset();
     document.getElementById('imagePreviewGrid').innerHTML = '';
+    document.getElementById('currentPhotosGrid').innerHTML = '';
+    document.getElementById('currentPhotosSection').classList.add('d-none');
     // Un-lock the plate field
     const plateInput = document.querySelector('#addVehicleForm [name="registration_plate"]');
     if (plateInput) { plateInput.readOnly = false; plateInput.classList.remove('bg-surface-container'); }

@@ -18,8 +18,11 @@ function renderVehicleCards(vehicles, currency) {
 	const sym = SYMBOLS[currency] || '$';
 
 	vehicleContainer.innerHTML = vehicles.map(v => {
-		const imgSrc = v.photos && v.photos.length > 0
-			? v.photos[0].photo_url
+		const primaryPhoto = v.photos && v.photos.length > 0
+			? (v.photos.find(p => p.is_primary) || v.photos[0])
+			: null;
+		const imgSrc = primaryPhoto
+			? primaryPhoto.photo_url
 			: 'https://via.placeholder.com/600x300?text=' + encodeURIComponent(v.make + ' ' + v.model);
 		const price = convertPrice(v.base_daily_rate_ugx, currency);
 
@@ -37,8 +40,8 @@ function renderVehicleCards(vehicles, currency) {
 			: `<span class="bg-status-pending text-white text-[12px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Under Review</span>`;
 
 		const actionBtn = v.status === 'verified'
-			? `<button class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all">Book Now</button>`
-			: `<button disabled class="border border-outline-variant text-on-surface-variant px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold cursor-not-allowed opacity-60">Pending</button>`;
+			? `<a href="/vehicles/${v.id}" class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all" style="text-decoration:none;">Book Now</a>`
+			: `<a href="/vehicles/${v.id}" class="border border-outline-variant text-on-surface-variant px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-surface-container transition-all" style="text-decoration:none;">View Details</a>`;
 
 		return `
 		<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
@@ -87,9 +90,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 					window.location.href = dashboards[user.role];
 					return;
 				}
-				authButtons.classList.add('d-none');
-				userButtons.classList.remove('d-none');
-				userButtons.classList.add('d-flex');
+				authButtons.classList.add('hidden');
+				userButtons.classList.remove('hidden');
+				userButtons.classList.add('flex');
 				userNameEl.textContent = user.full_name;
 			} else {
 				localStorage.clear();
@@ -106,21 +109,73 @@ document.addEventListener('DOMContentLoaded', async () => {
 		});
 	}
 
-	let _vehicles = [];
+	let _allVehicles  = [];
+	let _shown        = [];
+	let _currency     = 'USD';
+
+	function getCurrentCurrency() {
+		const checked = document.querySelector('input[name="currency"]:checked');
+		return checked ? checked.value : 'USD';
+	}
+
+	function applySearch() {
+		const location = (document.getElementById('searchLocation')?.value || '').trim().toLowerCase();
+		const type     = (document.getElementById('searchType')?.value || '').trim().toLowerCase();
+		const resultEl = document.getElementById('searchResultCount');
+		const heading  = document.getElementById('featuredHeading');
+
+		_shown = _allVehicles.filter(v => {
+			if (location && !(v.service_area || '').toLowerCase().includes(location)) return false;
+			if (type     && v.vehicle_type.toLowerCase() !== type) return false;
+			return true;
+		});
+
+		const isFiltered = location || type;
+		if (heading) heading.textContent = isFiltered ? 'Search Results' : 'Featured Vehicles';
+		if (resultEl) {
+			resultEl.textContent = isFiltered
+				? `${_shown.length} vehicle${_shown.length !== 1 ? 's' : ''} found`
+				: '';
+		}
+
+		renderVehicleCards(_shown, getCurrentCurrency());
+		document.getElementById('vehicleCardsContainer')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}
 
 	// Currency toggle
 	document.querySelectorAll('input[name="currency"]').forEach(radio => {
 		radio.addEventListener('change', () => {
-			renderVehicleCards(_vehicles, radio.value);
+			_currency = radio.value;
+			renderVehicleCards(_shown, _currency);
 		});
+	});
+
+	// Search form
+	document.getElementById('searchForm')?.addEventListener('submit', e => {
+		e.preventDefault();
+		applySearch();
 	});
 
 	// Load featured vehicles
 	try {
-		const res = await fetch(`${API}/vehicles/?page=1&page_size=6`);
+		const res = await fetch(`${API}/vehicles/?page=1&page_size=50`);
 		if (res.ok) {
-			_vehicles = await res.json();
-			renderVehicleCards(_vehicles, 'USD');
+			_allVehicles = await res.json();
+			_shown = _allVehicles.slice(0, 6);
+
+			// Populate type dropdown from real data
+			const typeSelect = document.getElementById('searchType');
+			if (typeSelect) {
+				const types = [...new Set(_allVehicles.map(v => v.vehicle_type).filter(Boolean))].sort();
+				types.forEach(t => {
+					const opt = document.createElement('option');
+					opt.value = t;
+					opt.textContent = t.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+					typeSelect.appendChild(opt);
+				});
+			}
+
+			renderVehicleCards(_shown, 'USD');
 		}
 	} catch (err) {
 		console.error('Failed to load vehicles:', err);

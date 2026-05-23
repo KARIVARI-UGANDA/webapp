@@ -254,6 +254,64 @@ async def upload_photos(
 
 
 # ---------------------------------------------------------------------------
+# Photo management
+# ---------------------------------------------------------------------------
+
+@router.delete("/{vehicle_id}/photos/{photo_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_photo(
+    vehicle_id: str,
+    photo_id: str,
+    current_user=Depends(_owner_or_admin),
+    db: Session = Depends(get_db),
+):
+    _get_own_vehicle(vehicle_id, current_user, db)
+    photo = db.query(VehiclePhoto).filter(
+        VehiclePhoto.id == photo_id,
+        VehiclePhoto.vehicle_id == vehicle_id,
+    ).first()
+    if not photo:
+        raise HTTPException(status_code=404, detail="Photo not found")
+
+    disk_path = photo.photo_url.lstrip("/")
+    if os.path.exists(disk_path):
+        os.remove(disk_path)
+
+    db.delete(photo)
+    db.commit()
+
+    remaining = (
+        db.query(VehiclePhoto)
+        .filter(VehiclePhoto.vehicle_id == vehicle_id)
+        .order_by(VehiclePhoto.sort_order)
+        .first()
+    )
+    if remaining and not remaining.is_primary:
+        remaining.is_primary = True
+        db.commit()
+
+
+@router.patch("/{vehicle_id}/photos/{photo_id}/primary", response_model=VehiclePhotoRead)
+def set_primary_photo(
+    vehicle_id: str,
+    photo_id: str,
+    current_user=Depends(_owner_or_admin),
+    db: Session = Depends(get_db),
+):
+    _get_own_vehicle(vehicle_id, current_user, db)
+    db.query(VehiclePhoto).filter(VehiclePhoto.vehicle_id == vehicle_id).update({"is_primary": False})
+    photo = db.query(VehiclePhoto).filter(
+        VehiclePhoto.id == photo_id,
+        VehiclePhoto.vehicle_id == vehicle_id,
+    ).first()
+    if not photo:
+        raise HTTPException(status_code=404, detail="Photo not found")
+    photo.is_primary = True
+    db.commit()
+    db.refresh(photo)
+    return VehiclePhotoRead.model_validate(photo)
+
+
+# ---------------------------------------------------------------------------
 # Availability check (stub — full overlap logic in Phase 6)
 # ---------------------------------------------------------------------------
 

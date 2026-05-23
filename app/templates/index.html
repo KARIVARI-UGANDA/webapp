@@ -24,11 +24,24 @@
             "on-surface": "#1a1c1e",
             "on-surface-variant": "#42493e",
             "primary": "#154212",
+            "secondary": "#7e5700",
             "safari-green": "#2D5A27",
             "slate-dark": "#1A1C1E",
+            "ugandan-sun": "#F9B115",
+            "surface": "#f9f9fc",
+            "surface-container": "#eeeef0",
             "surface-container-lowest": "#ffffff",
             "status-pending": "#B45309",
             "status-success": "#15803D",
+          },
+          spacing: {
+            "margin-desktop": "48px",
+            "margin-mobile": "16px",
+            "container-max": "1280px",
+            "gutter": "24px",
+          },
+          maxWidth: {
+            "container-max": "1280px",
           },
           fontFamily: {
             "headline-md": ["Montserrat", "sans-serif"],
@@ -56,39 +69,25 @@
 <body>
 
 <!-- Top Navigation Bar -->
-<nav class="navbar navbar-expand-lg sticky-top py-3">
-  <div class="container">
-    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
-      Kari Vari Uganda
-      <span class="portal-badge">Customer Portal</span>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="mainNavbar">
-      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-4">
-        <li class="nav-item"><a class="nav-link active" href="#">Listings</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">How it Works</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-      </ul>
-      <div class="d-flex gap-3 align-items-center" id="authButtons">
-        <a class="btn btn-link text-decoration-none" href="/login">Sign In</a>
-        <a class="btn btn-accent px-4" href="/register">Register</a>
-      </div>
-      <div class="d-none gap-3 align-items-center" id="userButtons">
-        <span class="text-dark fw-semibold" id="userName"></span>
-        <button class="btn btn-accent px-4" id="logoutBtn">Logout</button>
-      </div>
+<nav class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/80 backdrop-blur-md shadow-sm">
+  <div class="flex items-center gap-8">
+    <a href="/" class="font-headline-md text-headline-md font-bold" style="color:#2D5A27;text-decoration:none;">Kari Vari Uganda</a>
+    <div class="hidden md:flex gap-6">
+      <a class="font-label-lg text-label-lg border-b-2 border-primary pb-1 transition-all duration-200" href="#" style="color:#154212;text-decoration:none;">Listings</a>
+      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors duration-200" href="#" style="color:#42493e;text-decoration:none;">How it Works</a>
+      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors duration-200" href="#" style="color:#42493e;text-decoration:none;">About</a>
+      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors duration-200" href="#" style="color:#42493e;text-decoration:none;">Contact</a>
     </div>
   </div>
+  <div class="flex items-center gap-4" id="authButtons">
+    <a href="/login" class="font-label-lg text-label-lg hover:text-secondary transition-colors" style="color:#42493e;text-decoration:none;">Sign In</a>
+    <a href="/register" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95" style="text-decoration:none;">Register</a>
+  </div>
+  <div class="hidden items-center gap-4" id="userButtons">
+    <span class="font-label-lg text-label-lg font-semibold" style="color:#1a1c1e;" id="userName"></span>
+    <button id="logoutBtn" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Logout</button>
+  </div>
 </nav>
-
-<!-- Customer Portal Strip -->
-<div class="portal-strip d-flex align-items-center justify-content-center gap-2">
-  <i class="bi bi-person-check-fill"></i>
-  <span>Welcome to the <strong>Customer Portal</strong> — Browse, Book &amp; Manage Your Rentals</span>
-</div>
 
 <main>
   <!-- Hero Section -->
@@ -103,12 +102,12 @@
       </div>
       <!-- Search Bar Card -->
       <div class="search-card bg-white p-4 p-lg-5 rounded-4 shadow-lg">
-        <form class="row g-4 align-items-end">
+        <form id="searchForm" class="row g-4 align-items-end">
           <div class="col-md-3">
             <label class="form-label small fw-semibold text-secondary">
               <i class="bi bi-geo-alt-fill me-1" style="color: #2d5a27;"></i> PICK-UP LOCATION
             </label>
-            <input type="text" class="form-control form-control-lg" placeholder="City, address, or airport (e.g. Kampala, Entebbe)">
+            <input id="searchLocation" type="text" class="form-control form-control-lg" placeholder="e.g. Kampala, Entebbe">
           </div>
           <div class="col-md-3">
             <label class="form-label small fw-semibold text-secondary">
@@ -120,15 +119,12 @@
             <label class="form-label small fw-semibold text-secondary">
               <i class="bi bi-car-front-fill me-1" style="color: #2d5a27;"></i> VEHICLE TYPE
             </label>
-            <select class="form-select form-select-lg">
-              <option>All Vehicles</option>
-              <option>4x4 Safari Land Cruiser</option>
-              <option>SUV / Rav4</option>
-              <option>Luxury Sedan</option>
+            <select id="searchType" class="form-select form-select-lg">
+              <option value="">All Vehicles</option>
             </select>
           </div>
           <div class="col-md-3">
-            <button class="btn btn-accent w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
+            <button type="submit" id="searchBtn" class="btn btn-accent w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
               <i class="bi bi-search"></i> FIND A VEHICLE
             </button>
           </div>
@@ -142,7 +138,8 @@
     <div class="d-flex flex-wrap justify-content-between align-items-end mb-5">
       <div>
         <span class="badge-soft-success">OUR FLEET</span>
-        <h2 class="display-6 fw-bold mt-2">Featured Vehicles</h2>
+        <h2 class="display-6 fw-bold mt-2" id="featuredHeading">Featured Vehicles</h2>
+        <p class="text-secondary small mt-1 mb-0" id="searchResultCount"></p>
       </div>
       <div class="d-flex align-items-center gap-3">
         <div class="btn-group btn-group-sm" role="group" id="currencyToggle">
@@ -310,6 +307,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/shared.js?v=2"></script>
-<script src="/static/js/index.js?v=3"></script>
+<script src="/static/js/index.js?v=6"></script>
 </body>
 </html>

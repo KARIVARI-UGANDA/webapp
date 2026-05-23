@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Vehicle Details | Kari Vari Uganda</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "secondary-fixed": "#ffdeac", "outline": "#72796e", "secondary-fixed-dim": "#ffba35",
+        "inverse-surface": "#2f3133", "on-background": "#1a1c1e", "on-secondary-fixed": "#281900",
+        "soft-gray": "#F5F5F5", "surface-dim": "#dadadc", "secondary-container": "#ffb61e",
+        "on-surface-variant": "#42493e", "primary-fixed": "#bcf0ae", "on-error": "#ffffff",
+        "outline-variant": "#c2c9bb", "on-primary-fixed-variant": "#23501e", "slate-dark": "#1A1C1E",
+        "on-primary": "#ffffff", "primary-container": "#2d5a27", "tertiary-fixed-dim": "#adc6ff",
+        "secondary": "#7e5700", "surface": "#f9f9fc", "tertiary": "#00377a",
+        "on-secondary": "#ffffff", "primary-fixed-dim": "#a1d494", "tertiary-fixed": "#d8e2ff",
+        "on-surface": "#1a1c1e", "status-pending": "#B45309", "on-secondary-container": "#6c4a00",
+        "inverse-on-surface": "#f0f0f3", "on-primary-fixed": "#002201", "status-success": "#15803D",
+        "on-primary-container": "#9dd090", "surface-container": "#eeeef0", "surface-tint": "#3b6934",
+        "on-tertiary": "#ffffff", "surface-container-lowest": "#ffffff", "error": "#ba1a1a",
+        "on-tertiary-fixed-variant": "#004494", "primary": "#154212", "safari-green": "#2D5A27",
+        "surface-container-high": "#e8e8ea", "surface-bright": "#f9f9fc", "on-tertiary-fixed": "#001a41",
+        "error-container": "#ffdad6", "inverse-primary": "#a1d494", "surface-container-low": "#f3f3f6",
+        "on-tertiary-container": "#a8c3ff", "surface-variant": "#e2e2e5", "on-secondary-fixed-variant": "#5f4100",
+        "tertiary-container": "#004da6", "ugandan-sun": "#F9B115", "background": "#f9f9fc",
+        "on-error-container": "#93000a", "surface-container-highest": "#e2e2e5"
+      },
+      borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      spacing: { "margin-desktop": "48px", "gutter": "24px", "base": "8px", "margin-mobile": "16px", "container-max": "1280px" },
+      maxWidth: { "container-max": "1280px" },
+      fontFamily: {
+        "label-sm": ["Inter"], "headline-lg-mobile": ["Montserrat"], "body-lg": ["Inter"],
+        "headline-md": ["Montserrat"], "label-lg": ["Inter"], "body-md": ["Inter"],
+        "headline-xl": ["Montserrat"], "headline-lg": ["Montserrat"]
+      },
+      fontSize: {
+        "label-sm": ["12px", { lineHeight: "16px", fontWeight: "500" }],
+        "headline-lg-mobile": ["28px", { lineHeight: "34px", fontWeight: "700" }],
+        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+        "label-lg": ["14px", { lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "600" }],
+        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+        "headline-xl": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }]
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
+  .thumb-active { ring: 2px; ring-color: #154212; opacity: 1; }
+</style>
+</head>
+<body class="bg-background text-on-background">
+
+<!-- Nav -->
+<nav class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/80 backdrop-blur-md shadow-sm">
+  <div class="flex items-center gap-8">
+    <a href="/" class="font-headline-md text-headline-md font-bold text-primary" style="text-decoration:none;color:#2D5A27;">Kari Vari Uganda</a>
+    <div class="hidden md:flex gap-6">
+      <a href="/vehicles" class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" style="text-decoration:none;">Listings</a>
+      <a href="#" class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" style="text-decoration:none;">How it Works</a>
+      <a href="#" class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" style="text-decoration:none;">About</a>
+      <a href="#" class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" style="text-decoration:none;">Contact</a>
+    </div>
+  </div>
+  <div class="flex items-center gap-4" id="authButtons">
+    <a href="/login" class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" style="text-decoration:none;">Sign In</a>
+    <a href="/register" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all" style="text-decoration:none;">Register</a>
+  </div>
+  <div class="hidden items-center gap-4" id="userButtons">
+    <span class="font-label-lg text-label-lg font-semibold text-on-surface" id="userName"></span>
+    <button id="logoutBtn" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all">Logout</button>
+  </div>
+</nav>
+
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8">
+
+  <!-- Loading state -->
+  <div id="loadingState" class="flex flex-col items-center justify-center py-32 gap-4 text-on-surface-variant">
+    <span class="material-symbols-outlined text-5xl animate-spin" style="font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 48;">refresh</span>
+    <p class="font-body-md text-body-md">Loading vehicle details…</p>
+  </div>
+
+  <!-- Error state -->
+  <div id="errorState" class="hidden flex-col items-center justify-center py-32 gap-4 text-on-surface-variant">
+    <span class="material-symbols-outlined text-5xl text-error">error</span>
+    <p class="font-headline-md text-headline-md">Vehicle not found</p>
+    <a href="/vehicles" class="mt-2 px-6 py-3 bg-primary text-on-primary rounded-xl font-label-lg text-label-lg" style="text-decoration:none;">Back to Listings</a>
+  </div>
+
+  <!-- Page content (hidden until loaded) -->
+  <div id="pageContent" class="hidden">
+
+    <!-- Breadcrumbs -->
+    <div class="mb-6 flex flex-col gap-2">
+      <nav class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm flex-wrap">
+        <a href="/" class="hover:text-primary transition-colors" style="text-decoration:none;">Home</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+        <a href="/vehicles" class="hover:text-primary transition-colors" style="text-decoration:none;">Listings</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+        <span id="breadcrumbType" class="capitalize"></span>
+        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+        <span id="breadcrumbName" class="text-primary font-bold"></span>
+      </nav>
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 id="vehicleTitle" class="font-headline-lg text-headline-lg text-on-background"></h1>
+          <div class="flex items-center gap-2 mt-2 flex-wrap">
+            <span id="statusBadge"></span>
+            <span class="text-outline-variant">•</span>
+            <span id="serviceArea" class="font-label-lg text-label-lg text-status-success font-bold"></span>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <button class="flex items-center gap-2 font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">share</span> Share
+          </button>
+          <button class="flex items-center gap-2 font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">favorite_border</span> Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bento Gallery -->
+    <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-12 h-[280px] md:h-[480px] rounded-2xl overflow-hidden">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Two-column layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+      <!-- Left: Details -->
+      <div class="lg:col-span-8 space-y-12">
+
+        <!-- Key specs strip -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div class="flex flex-col items-center p-4 rounded-xl bg-surface-container-low text-center">
+            <span class="material-symbols-outlined text-safari-green text-3xl mb-1">people</span>
+            <p id="specSeats" class="font-label-lg text-label-lg"></p>
+            <p class="text-on-surface-variant font-label-sm text-label-sm">Passengers</p>
+          </div>
+          <div class="flex flex-col items-center p-4 rounded-xl bg-surface-container-low text-center">
+            <span class="material-symbols-outlined text-safari-green text-3xl mb-1">settings</span>
+            <p id="specTransmission" class="font-label-lg text-label-lg capitalize"></p>
+            <p class="text-on-surface-variant font-label-sm text-label-sm">Transmission</p>
+          </div>
+          <div class="flex flex-col items-center p-4 rounded-xl bg-surface-container-low text-center">
+            <span class="material-symbols-outlined text-safari-green text-3xl mb-1">local_gas_station</span>
+            <p id="specFuel" class="font-label-lg text-label-lg capitalize"></p>
+            <p class="text-on-surface-variant font-label-sm text-label-sm">Fuel Type</p>
+          </div>
+          <div class="flex flex-col items-center p-4 rounded-xl bg-surface-container-low text-center">
+            <span class="material-symbols-outlined text-safari-green text-3xl mb-1">palette</span>
+            <p id="specColor" class="font-label-lg text-label-lg capitalize"></p>
+            <p class="text-on-surface-variant font-label-sm text-label-sm">Color</p>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <section>
+          <h2 class="font-headline-md text-headline-md mb-6">Vehicle Features</h2>
+          <div id="featuresGrid" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Populated by JS -->
+          </div>
+        </section>
+
+        <!-- Description -->
+        <section class="border-t border-outline-variant pt-10">
+          <h2 class="font-headline-md text-headline-md mb-4">About this vehicle</h2>
+          <p id="vehicleDescription" class="font-body-md text-body-md text-on-surface-variant leading-relaxed"></p>
+          <p id="vehicleDescriptionEmpty" class="hidden font-body-md text-body-md text-on-surface-variant italic">No description provided by the owner.</p>
+        </section>
+
+        <!-- Owner Profile -->
+        <section class="border-t border-outline-variant pt-10">
+          <div id="ownerCard" class="p-6 rounded-2xl bg-surface-container border border-outline-variant flex flex-col md:flex-row items-center gap-6">
+            <div class="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-4xl text-on-surface-variant">person</span>
+            </div>
+            <div class="flex-1 text-center md:text-left">
+              <h3 id="ownerName" class="font-headline-md text-headline-md text-on-background">Vehicle Owner</h3>
+              <p class="font-body-md text-body-md text-on-surface-variant mb-2">Verified car owner on Kari Vari Uganda</p>
+              <span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm inline-flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1;">verified</span> Verified Owner
+              </span>
+            </div>
+            <button class="px-6 py-3 rounded-xl border border-outline font-label-lg text-label-lg hover:bg-surface-container-high transition-colors flex-shrink-0">
+              Contact Owner
+            </button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Right: Booking Widget -->
+      <div class="lg:col-span-4">
+        <div class="sticky top-24 bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 shadow-lg">
+
+          <!-- Price header -->
+          <div class="flex justify-between items-start mb-6">
+            <div>
+              <span id="widgetPrice" class="font-headline-md text-headline-md text-primary"></span>
+              <span class="text-on-surface-variant font-body-md text-body-md"> / day</span>
+            </div>
+            <span id="widgetStatusBadge" class="text-label-sm font-label-sm px-3 py-1 rounded-full"></span>
+          </div>
+
+          <!-- Date pickers -->
+          <div class="space-y-4 mb-6">
+            <div class="border border-outline-variant rounded-xl divide-y divide-outline-variant">
+              <div class="grid grid-cols-2 divide-x divide-outline-variant">
+                <div class="p-3">
+                  <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-1">Pick up</label>
+                  <input id="pickupDate" type="date" class="w-full bg-transparent border-none focus:ring-0 font-label-lg text-label-lg p-0 text-on-surface">
+                </div>
+                <div class="p-3">
+                  <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-1">Return</label>
+                  <input id="returnDate" type="date" class="w-full bg-transparent border-none focus:ring-0 font-label-lg text-label-lg p-0 text-on-surface">
+                </div>
+              </div>
+              <div class="p-3">
+                <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-1">Service Option</label>
+                <select id="serviceOption" class="w-full bg-transparent border-none focus:ring-0 font-label-lg text-label-lg p-0 cursor-pointer" onchange="recalcTotal()">
+                  <option value="self">Self Drive</option>
+                  <option id="withDriverOption" value="driver">With Driver</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price breakdown -->
+          <div class="space-y-2 mb-6 text-on-surface-variant font-body-md text-body-md">
+            <div class="flex justify-between">
+              <span id="breakdownLine"></span>
+              <span id="breakdownTotal"></span>
+            </div>
+            <div class="flex justify-between">
+              <span>Kari Vari service fee</span>
+              <span id="serviceFee">$15</span>
+            </div>
+            <div class="pt-3 border-t border-outline-variant flex justify-between font-bold text-on-background font-headline-md text-headline-md">
+              <span>Total</span>
+              <span id="grandTotal">—</span>
+            </div>
+          </div>
+
+          <button id="reserveBtn" class="w-full py-4 bg-primary text-on-primary rounded-xl font-bold text-lg hover:bg-safari-green transition-all shadow-md active:scale-[0.98]">
+            Reserve This Vehicle
+          </button>
+          <p class="text-center text-on-surface-variant text-[12px] mt-3">You won't be charged yet</p>
+
+          <div class="mt-5 flex flex-col gap-3 pt-5 border-t border-outline-variant">
+            <div class="flex items-center gap-3 text-on-surface-variant">
+              <span class="material-symbols-outlined text-[20px]">verified_user</span>
+              <span class="text-[13px]">Free cancellation within 24 hours</span>
+            </div>
+            <div class="flex items-center gap-3 text-on-surface-variant">
+              <span class="material-symbols-outlined text-[20px]">security</span>
+              <span class="text-[13px]">Safe payment guarantee</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Similar Vehicles -->
+    <section class="mt-20 border-t border-outline-variant pt-12">
+      <h2 class="font-headline-md text-headline-md mb-8">Similar Vehicles for your Adventure</h2>
+      <div id="similarGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+  </div><!-- /pageContent -->
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-12 px-margin-mobile md:px-margin-desktop mt-16 bg-on-background">
+  <div class="max-w-container-max mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+      <div class="md:col-span-2">
+        <a href="/" class="font-headline-lg text-headline-lg font-bold text-ugandan-sun block mb-4" style="text-decoration:none;">Kari Vari Uganda</a>
+        <p class="text-surface-variant font-body-md text-body-md max-w-md">The Pearl of Africa's premier vehicle rental and safari logistics platform.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-label-lg text-label-lg mb-6 uppercase tracking-widest">Resources</h4>
+        <ul class="space-y-3">
+          <li><a href="#" class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" style="text-decoration:none;">Partner Program</a></li>
+          <li><a href="#" class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" style="text-decoration:none;">Rental Policy</a></li>
+          <li><a href="#" class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" style="text-decoration:none;">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-label-lg text-label-lg mb-6 uppercase tracking-widest">Legal</h4>
+        <ul class="space-y-3">
+          <li><a href="#" class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" style="text-decoration:none;">Privacy Policy</a></li>
+          <li><a href="#" class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" style="text-decoration:none;">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-surface-variant font-label-sm text-label-sm">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+      <div class="flex gap-6">
+        <span class="material-symbols-outlined text-surface-variant hover:text-ugandan-sun cursor-pointer">public</span>
+        <span class="material-symbols-outlined text-surface-variant hover:text-ugandan-sun cursor-pointer">mail</span>
+        <span class="material-symbols-outlined text-surface-variant hover:text-ugandan-sun cursor-pointer">call</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const API = '/api';
+const RATES = { USD: 3700, EUR: 4050 };
+const SERVICE_FEE = 15;
+
+const vehicleId = window.location.pathname.split('/').filter(Boolean).pop();
+let _vehicle = null;
+let _dailyRateUSD = 0;
+let _driverRateUSD = 0;
+
+function usd(ugx) { return (ugx / RATES.USD).toFixed(2); }
+
+// ── Auth state ──────────────────────────────────────────────────────────────
+(async () => {
+  const token = localStorage.getItem('access_token');
+  if (!token) return;
+  try {
+    const res = await fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
+    if (res.ok) {
+      const user = await res.json();
+      document.getElementById('authButtons').classList.add('hidden');
+      const ub = document.getElementById('userButtons');
+      ub.classList.remove('hidden');
+      ub.classList.add('flex');
+      document.getElementById('userName').textContent = user.full_name;
+    } else {
+      localStorage.clear();
+    }
+  } catch {}
+  document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+    try { await fetch(`${API}/auth/logout`, { method: 'POST', headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` } }); } catch {}
+    localStorage.clear();
+    window.location.href = '/';
+  });
+})();
+
+// ── Gallery ─────────────────────────────────────────────────────────────────
+function buildGallery(photos) {
+  const grid = document.getElementById('galleryGrid');
+
+  if (photos.length === 0) {
+    grid.innerHTML = `
+      <div class="col-span-4 flex flex-col items-center justify-center bg-gray-100 text-gray-400 h-full rounded-2xl">
+        <span class="material-symbols-outlined" style="font-size:56px;">directions_car</span>
+        <span class="mt-2 text-sm">No photos available</span>
+      </div>`;
+    return;
+  }
+
+  const primary = photos.find(p => p.is_primary) || photos[0];
+  const mainSrc = primary.photo_url;
+  const rest = photos.filter(p => p.id !== primary.id).slice(0, 4);
+
+  if (rest.length === 0) {
+    grid.innerHTML = `
+      <div class="col-span-4 relative overflow-hidden h-full">
+        <img id="mainPhoto" src="${mainSrc}" alt="Main vehicle photo" class="w-full h-full object-cover">
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = `
+    <div class="md:col-span-2 md:row-span-2 relative overflow-hidden">
+      <img id="mainPhoto" src="${mainSrc}" alt="Main vehicle photo" class="w-full h-full object-cover">
+    </div>
+    ${rest.map((p, i) => `
+    <div class="hidden md:block relative overflow-hidden">
+      <img src="${p.photo_url}" alt="Photo ${i + 2}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="setMainPhoto('${p.photo_url}')">
+      ${i === 3 ? `<button class="absolute bottom-3 right-3 bg-surface/90 backdrop-blur px-3 py-1.5 rounded-lg font-label-sm text-label-sm text-on-surface shadow-md flex items-center gap-1">
+        <span class="material-symbols-outlined text-[16px]">grid_view</span> All photos
+      </button>` : ''}
+    </div>`).join('')}`;
+}
+
+function setMainPhoto(src) {
+  document.getElementById('mainPhoto').src = src;
+}
+
+// ── Features ─────────────────────────────────────────────────────────────────
+function buildFeatures(v) {
+  const features = [];
+  if (v.has_ac)        features.push({ icon: 'ac_unit',                    label: 'Air Conditioning',  sub: 'Climate Control' });
+  if (v.is_4wd)        features.push({ icon: 'terrain',                    label: '4WD Drivetrain',     sub: 'Off-road Ready' });
+  if (v.has_wifi)      features.push({ icon: 'wifi',                       label: 'WiFi',               sub: 'In-vehicle Hotspot' });
+  if (v.has_roof_rack) features.push({ icon: 'luggage',                    label: 'Roof Rack',          sub: 'Extra Cargo Space' });
+  if (v.has_child_seat)features.push({ icon: 'child_care',                 label: 'Child Seat',         sub: 'Safety Included' });
+  features.push({ icon: 'airline_seat_recline_extra', label: `${v.passenger_capacity} Seats`, sub: 'Passenger Capacity' });
+  features.push({ icon: 'local_gas_station',          label: v.fuel_type,  sub: 'Fuel Type' });
+  features.push({ icon: 'settings',                   label: v.transmission, sub: 'Gearbox' });
+
+  document.getElementById('featuresGrid').innerHTML = features.map(f => `
+    <div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low">
+      <span class="material-symbols-outlined text-safari-green text-3xl">${f.icon}</span>
+      <div>
+        <p class="font-label-lg text-label-lg capitalize">${f.label}</p>
+        <p class="text-on-surface-variant font-label-sm text-label-sm">${f.sub}</p>
+      </div>
+    </div>`).join('');
+}
+
+// ── Booking widget ────────────────────────────────────────────────────────────
+function initDates() {
+  const today = new Date();
+  const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+  const in4 = new Date(today); in4.setDate(today.getDate() + 4);
+  const fmt = d => d.toISOString().split('T')[0];
+  document.getElementById('pickupDate').value = fmt(tomorrow);
+  document.getElementById('returnDate').value = fmt(in4);
+  document.getElementById('pickupDate').min = fmt(today);
+  document.getElementById('returnDate').min = fmt(tomorrow);
+  document.getElementById('pickupDate').addEventListener('change', recalcTotal);
+  document.getElementById('returnDate').addEventListener('change', recalcTotal);
+}
+
+function recalcTotal() {
+  const p = document.getElementById('pickupDate').value;
+  const r = document.getElementById('returnDate').value;
+  if (!p || !r) return;
+  const days = Math.max(1, Math.round((new Date(r) - new Date(p)) / 86400000));
+  const isDriver = document.getElementById('serviceOption').value === 'driver';
+  const rate = isDriver && _driverRateUSD > 0 ? _driverRateUSD : _dailyRateUSD;
+  const subtotal = (rate * days).toFixed(2);
+  const total = (parseFloat(subtotal) + SERVICE_FEE).toFixed(2);
+  document.getElementById('breakdownLine').textContent = `$${rate.toFixed(2)} × ${days} day${days !== 1 ? 's' : ''}`;
+  document.getElementById('breakdownTotal').textContent = `$${subtotal}`;
+  document.getElementById('grandTotal').textContent = `$${total}`;
+}
+
+// ── Similar vehicles ──────────────────────────────────────────────────────────
+async function loadSimilar(currentId, vehicleType) {
+  try {
+    const res = await fetch(`${API}/vehicles/?page=1&page_size=8`);
+    if (!res.ok) return;
+    const all = await res.json();
+    const similar = all.filter(v => v.id !== currentId).slice(0, 4);
+    const grid = document.getElementById('similarGrid');
+    if (similar.length === 0) { grid.closest('section').classList.add('hidden'); return; }
+    grid.innerHTML = similar.map(v => {
+      const img = v.photos && v.photos.length > 0
+        ? (v.photos.find(p => p.is_primary) || v.photos[0]).photo_url
+        : `https://via.placeholder.com/400x300?text=${encodeURIComponent(v.make + ' ' + v.model)}`;
+      const price = usd(v.base_daily_rate_ugx);
+      const badge = v.status === 'verified'
+        ? `<span class="bg-status-success/90 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Available</span>`
+        : `<span class="bg-status-pending/90 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Under Review</span>`;
+      return `
+        <a href="/vehicles/${v.id}" style="text-decoration:none;" class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm group block hover:shadow-lg transition-all">
+          <div class="h-48 overflow-hidden relative">
+            <img class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" src="${img}" alt="${v.make} ${v.model}">
+            <div class="absolute top-3 left-3">${badge}</div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-start mb-1">
+              <h3 class="font-label-lg text-label-lg font-bold text-on-surface">${v.make} ${v.model}</h3>
+            </div>
+            <p class="text-on-surface-variant text-[12px] mb-3 capitalize">${v.vehicle_type} · ${v.passenger_capacity} Seats · ${v.transmission}</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-primary">$${price}/day</span>
+              <span class="material-symbols-outlined text-primary">arrow_forward_ios</span>
+            </div>
+          </div>
+        </a>`;
+    }).join('');
+  } catch {}
+}
+
+// ── Main load ─────────────────────────────────────────────────────────────────
+async function loadPage() {
+  try {
+    const res = await fetch(`${API}/vehicles/${vehicleId}`);
+    if (!res.ok) throw new Error('not found');
+    const v = await res.json();
+    _vehicle = v;
+    _dailyRateUSD  = parseFloat(usd(v.base_daily_rate_ugx));
+    _driverRateUSD = v.rate_with_driver_ugx ? parseFloat(usd(v.rate_with_driver_ugx)) : 0;
+
+    // Title
+    document.title = `${v.make} ${v.model} (${v.year}) | Kari Vari Uganda`;
+    document.getElementById('pageTitle').textContent = document.title;
+
+    // Breadcrumb
+    document.getElementById('breadcrumbType').textContent = v.vehicle_type;
+    document.getElementById('breadcrumbName').textContent = `${v.make} ${v.model}`;
+
+    // Header
+    document.getElementById('vehicleTitle').textContent = `${v.make} ${v.model} (${v.year})`;
+    document.getElementById('serviceArea').textContent = `Available in ${v.service_area || 'Uganda'}`;
+
+    const isVerified = v.status === 'verified';
+    document.getElementById('statusBadge').innerHTML = isVerified
+      ? `<span class="bg-status-success text-white text-[12px] font-bold px-3 py-1 rounded-full inline-flex items-center gap-1 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1;">verified</span> Verified</span>`
+      : `<span class="bg-status-pending text-white text-[12px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Under Review</span>`;
+
+    // Gallery
+    buildGallery(v.photos || []);
+
+    // Specs strip
+    document.getElementById('specSeats').textContent = v.passenger_capacity;
+    document.getElementById('specTransmission').textContent = v.transmission;
+    document.getElementById('specFuel').textContent = v.fuel_type;
+    document.getElementById('specColor').textContent = v.color || '—';
+
+    // Features
+    buildFeatures(v);
+
+    // Description
+    if (v.description) {
+      document.getElementById('vehicleDescription').textContent = v.description;
+    } else {
+      document.getElementById('vehicleDescription').classList.add('hidden');
+      document.getElementById('vehicleDescriptionEmpty').classList.remove('hidden');
+    }
+
+    // Owner
+    try {
+      const ownerRes = await fetch(`${API}/users/${v.owner_id}`);
+      if (ownerRes.ok) {
+        const owner = await ownerRes.json();
+        document.getElementById('ownerName').textContent = `Hosted by ${owner.full_name}`;
+      }
+    } catch {}
+
+    // Booking widget
+    document.getElementById('widgetPrice').textContent = `$${_dailyRateUSD.toFixed(2)}`;
+    document.getElementById('widgetStatusBadge').textContent = isVerified ? 'Available' : 'Under Review';
+    document.getElementById('widgetStatusBadge').className = isVerified
+      ? 'text-label-sm font-label-sm px-3 py-1 rounded-full bg-status-success/10 text-status-success font-bold'
+      : 'text-label-sm font-label-sm px-3 py-1 rounded-full bg-status-pending/10 text-status-pending font-bold';
+
+    if (_driverRateUSD > 0) {
+      document.getElementById('withDriverOption').textContent = `With Driver (+$${(_driverRateUSD - _dailyRateUSD).toFixed(2)}/day)`;
+    } else {
+      document.getElementById('withDriverOption').disabled = true;
+      document.getElementById('withDriverOption').textContent = 'With Driver (unavailable)';
+    }
+
+    document.getElementById('reserveBtn').addEventListener('click', () => {
+      if (!isVerified) {
+        alert('This vehicle is pending verification and cannot be reserved yet.');
+        return;
+      }
+      alert('Booking functionality coming soon! Please contact the owner directly.');
+    });
+
+    initDates();
+    recalcTotal();
+    loadSimilar(v.id, v.vehicle_type);
+
+    // Show page
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('pageContent').classList.remove('hidden');
+
+  } catch (err) {
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('errorState').classList.remove('hidden');
+    document.getElementById('errorState').classList.add('flex');
+  }
+}
+
+loadPage();
+</script>
+</body>
+</html>
