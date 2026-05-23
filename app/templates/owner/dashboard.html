@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Owner Dashboard | Kari Vari Uganda</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <!-- Bootstrap CSS — needed for the Add Vehicle modal -->
@@ -56,12 +56,13 @@
             "container-max":   "1280px",
           },
           fontFamily: {
-            "label-sm":     ["Inter"],
-            "label-lg":     ["Inter"],
-            "body-md":      ["Inter"],
-            "headline-md":  ["Montserrat"],
-            "headline-lg":  ["Montserrat"],
-            "headline-xl":  ["Montserrat"],
+            "label-sm":     ["Outfit", "sans-serif"],
+            "label-lg":     ["Outfit", "sans-serif"],
+            "body-md":      ["Outfit", "sans-serif"],
+            "headline-md":  ["Outfit", "sans-serif"],
+            "headline-lg":  ["Outfit", "sans-serif"],
+            "headline-xl":  ["Outfit", "sans-serif"],
+            "mono":         ["JetBrains Mono", "monospace"],
           },
           fontSize: {
             "label-sm":    ["12px", {lineHeight:"16px",  fontWeight:"500"}],
@@ -76,6 +77,8 @@
     }
   </script>
   <style>
+    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body { font-family: 'Outfit', sans-serif; }
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
@@ -85,6 +88,58 @@
     .modal-backdrop { z-index: 1050 !important; }
     /* Image drop zone hover */
     #imageDropZone.drag-over { border-color: #2D5A27; background:#f0fdf4; }
+
+    /* ── Vehicle card entrance ── */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+    .vehicle-card {
+      animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    /* ── Shimmer skeleton ── */
+    @keyframes shimmer {
+      0%   { background-position: -700px 0; }
+      100% { background-position:  700px 0; }
+    }
+    .skeleton-shimmer {
+      background: linear-gradient(90deg, #ececf0 25%, #e2e2e8 50%, #ececf0 75%);
+      background-size: 700px 100%;
+      animation: shimmer 1.3s infinite;
+      border-radius: 0.75rem;
+    }
+
+    /* ── Fleet action button ── */
+    .fleet-action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 8px 4px;
+      border-radius: 0.75rem;
+      transition: background-color 0.15s ease, transform 0.1s ease;
+    }
+    .fleet-action-btn:hover { background-color: rgba(21,66,18,0.05); }
+    .fleet-action-btn:active { transform: scale(0.96); }
+
+    /* ── Spotlight card hover overlay ── */
+    .card-spotlight { position: relative; }
+    .card-spotlight::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        380px circle at var(--cx, -200px) var(--cy, -200px),
+        rgba(45, 90, 39, 0.075),
+        transparent 65%
+      );
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .card-spotlight:hover::after { opacity: 1; }
   </style>
 </head>
 <body class="bg-background text-on-background font-body-md text-body-md">
@@ -95,12 +150,16 @@
     <h1 class="font-headline-md text-headline-md font-bold text-primary">Kari Vari</h1>
     <p class="font-label-sm text-label-sm text-on-surface-variant">Vehicle Owner Portal</p>
   </div>
-  <nav class="flex-grow space-y-2">
-    <a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all" href="/owner/dashboard">
+  <nav class="flex-grow space-y-2" id="sidebarNav">
+    <a data-section="overview"
+       class="nav-link flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all cursor-pointer"
+       onclick="showSection('overview')">
       <span class="material-symbols-outlined">dashboard</span>
       <span class="font-label-lg text-label-lg">Dashboard</span>
     </a>
-    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200" href="#">
+    <a data-section="fleet"
+       class="nav-link flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200 cursor-pointer"
+       onclick="showSection('fleet')">
       <span class="material-symbols-outlined">directions_car</span>
       <span class="font-label-lg text-label-lg">My Fleet</span>
     </a>
@@ -130,7 +189,10 @@
 </aside>
 
 <!-- ───────────────────────── Main Content ───────────────────────── -->
-<main class="md:ml-64 p-4 md:p-12 min-h-screen pb-24 md:pb-12">
+<main class="md:ml-64 min-h-screen pb-24 md:pb-12">
+
+<!-- ═══════════ SECTION: Overview (Dashboard) ═══════════ -->
+<div id="section-overview" class="p-4 md:p-12">
 
   <!-- Top Bar -->
   <header class="flex flex-wrap justify-between items-center mb-8 gap-4">
@@ -323,6 +385,144 @@
       </section>
     </div>
   </div>
+</div><!-- /section-overview -->
+
+<!-- ═══════════ SECTION: My Fleet ═══════════ -->
+<div id="section-fleet" style="display:none">
+
+  <!-- Fleet Header -->
+  <header class="sticky top-0 z-30 bg-surface/80 backdrop-blur-md px-4 md:px-12 py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/30">
+    <div>
+      <h2 class="font-headline-lg text-headline-lg text-primary">My Fleet</h2>
+      <p class="font-body-md text-body-md text-on-surface-variant">Manage your vehicles and track listing performance.</p>
+    </div>
+    <div class="flex items-center gap-6">
+      <button class="bg-ugandan-sun text-slate-dark px-6 py-3 rounded-xl font-label-lg text-label-lg font-bold flex items-center gap-2 hover:shadow-lg transition-all active:scale-95"
+              data-bs-toggle="modal" data-bs-target="#addVehicleModal">
+        <span class="material-symbols-outlined">add</span>
+        Add New Vehicle
+      </button>
+      <div class="hidden sm:flex items-center gap-3 pl-6 border-l border-outline-variant">
+        <div class="text-right">
+          <p class="font-label-lg text-label-lg text-on-surface" id="fleetOwnerName">…</p>
+          <p class="text-[10px] font-bold text-primary uppercase tracking-widest">Verified Owner</p>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-sm" id="fleetOwnerAvatar">…</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="px-4 md:px-12 py-8">
+
+    <!-- Fleet Stats Bento — asymmetric grid: featured total + 3 compact stats -->
+    <section class="grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1fr] gap-4 mb-10">
+
+      <!-- Featured: Total Fleet -->
+      <div class="col-span-2 md:col-span-1 bg-surface-container-lowest px-7 py-6 rounded-2xl border border-outline-variant/15 hover:border-outline-variant/25 transition-all duration-200 flex flex-col justify-between min-h-[130px]">
+        <div class="flex items-center justify-between">
+          <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest">Total Fleet</p>
+          <span class="material-symbols-outlined text-[18px] text-outline-variant" style="font-variation-settings:'FILL' 1;">garage</span>
+        </div>
+        <div>
+          <h3 class="font-mono text-[44px] font-bold leading-none tracking-tighter text-on-background" id="fleetStatTotal">—</h3>
+          <p class="text-[12px] text-outline mt-1.5">vehicles in portfolio</p>
+        </div>
+      </div>
+
+      <!-- Available -->
+      <div class="bg-surface-container-lowest px-5 py-6 rounded-2xl border border-outline-variant/15 hover:border-outline-variant/25 transition-all duration-200">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="relative flex h-2 w-2 flex-shrink-0">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60" style="background:#15803D"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2" style="background:#15803D"></span>
+          </span>
+          <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest">Available</p>
+        </div>
+        <h3 class="font-mono text-[32px] font-bold leading-none tracking-tight text-status-success" id="fleetStatVerified">—</h3>
+      </div>
+
+      <!-- Pending Review -->
+      <div class="bg-surface-container-lowest px-5 py-6 rounded-2xl border border-outline-variant/15 hover:border-outline-variant/25 transition-all duration-200">
+        <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-4">Pending</p>
+        <h3 class="font-mono text-[32px] font-bold leading-none tracking-tight text-primary" id="fleetStatPending">—</h3>
+      </div>
+
+      <!-- Rejected -->
+      <div class="bg-surface-container-lowest px-5 py-6 rounded-2xl border border-outline-variant/15 hover:border-outline-variant/25 transition-all duration-200">
+        <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-4">Rejected</p>
+        <h3 class="font-mono text-[32px] font-bold leading-none tracking-tight text-status-pending" id="fleetStatRejected">—</h3>
+      </div>
+
+    </section>
+
+    <!-- Search & Filter -->
+    <section class="mb-8">
+      <div class="bg-surface-container-lowest p-4 rounded-2xl shadow-md border border-outline-variant/10 flex flex-col md:flex-row gap-4 items-center">
+        <div class="relative flex-grow w-full">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none">search</span>
+          <input id="fleetSearch" type="text"
+                 class="w-full pl-12 pr-4 py-3 bg-surface rounded-xl border border-transparent focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-safari-green font-body-md text-body-md transition-all"
+                 placeholder="Search by vehicle name or plate number…"/>
+        </div>
+        <div class="flex gap-2 w-full md:w-auto">
+          <select id="fleetStatusFilter"
+                  class="bg-surface border border-outline-variant rounded-xl py-3 px-4 font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 w-full md:w-44">
+            <option value="">All Statuses</option>
+            <option value="verified">Verified</option>
+            <option value="pending">Under Review</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vehicle Card Grid -->
+    <section id="fleetGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-8">
+      <!-- Shimmer skeleton loading cards (replaced by JS) -->
+      <div class="rounded-2xl overflow-hidden border border-outline-variant/10">
+        <div class="skeleton-shimmer aspect-[3/2]"></div>
+        <div class="p-5 space-y-3">
+          <div class="skeleton-shimmer h-5 w-3/4"></div>
+          <div class="skeleton-shimmer h-4 w-1/2"></div>
+          <div class="skeleton-shimmer h-4 w-1/3 mt-2"></div>
+          <div class="grid grid-cols-3 gap-2 pt-4 border-t border-outline-variant/10">
+            <div class="skeleton-shimmer h-10 rounded-xl"></div>
+            <div class="skeleton-shimmer h-10 rounded-xl"></div>
+            <div class="skeleton-shimmer h-10 rounded-xl"></div>
+          </div>
+        </div>
+      </div>
+      <div class="rounded-2xl overflow-hidden border border-outline-variant/10 hidden md:block">
+        <div class="skeleton-shimmer aspect-[3/2]" style="animation-delay:0.1s"></div>
+        <div class="p-5 space-y-3">
+          <div class="skeleton-shimmer h-5 w-4/5"></div>
+          <div class="skeleton-shimmer h-4 w-2/5"></div>
+          <div class="skeleton-shimmer h-4 w-1/2 mt-2"></div>
+          <div class="grid grid-cols-3 gap-2 pt-4 border-t border-outline-variant/10">
+            <div class="skeleton-shimmer h-10 rounded-xl"></div>
+            <div class="skeleton-shimmer h-10 rounded-xl"></div>
+            <div class="skeleton-shimmer h-10 rounded-xl"></div>
+          </div>
+        </div>
+      </div>
+      <div class="rounded-2xl overflow-hidden border border-outline-variant/10 hidden lg:block">
+        <div class="skeleton-shimmer aspect-[3/2]" style="animation-delay:0.2s"></div>
+        <div class="p-5 space-y-3">
+          <div class="skeleton-shimmer h-5 w-2/3"></div>
+          <div class="skeleton-shimmer h-4 w-3/5"></div>
+          <div class="skeleton-shimmer h-4 w-2/5 mt-2"></div>
+          <div class="grid grid-cols-3 gap-2 pt-4 border-t border-outline-variant/10">
+            <div class="skeleton-shimmer h-10 rounded-xl"></div>
+            <div class="skeleton-shimmer h-10 rounded-xl"></div>
+            <div class="skeleton-shimmer h-10 rounded-xl"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div><!-- /section-fleet -->
+
 </main>
 
 <!-- ───────────────────────── Add Vehicle Modal ───────────────────────── -->
@@ -501,13 +701,13 @@
 </div>
 
 <!-- ───────────────────────── Footer ───────────────────────── -->
-<footer class="w-full py-12 px-4 md:px-12 mt-16 bg-on-background md:ml-64">
-  <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<footer class="py-6 px-4 md:px-10 mt-8 bg-on-background md:ml-64">
+  <div class="flex flex-col md:flex-row justify-between items-center gap-4">
     <div class="text-center md:text-left">
       <span class="font-headline-lg text-headline-lg font-bold text-ugandan-sun">Kari Vari Uganda</span>
-      <p class="text-surface-bright/50 font-label-sm text-label-sm mt-2">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+      <p class="text-surface-bright/50 font-label-sm text-label-sm mt-1">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
     </div>
-    <div class="flex gap-6 flex-wrap justify-center">
+    <div class="flex gap-5 flex-wrap justify-center">
       <a class="text-surface-bright/60 font-label-sm text-label-sm hover:text-ugandan-sun transition-colors" href="#">Privacy Policy</a>
       <a class="text-surface-bright/60 font-label-sm text-label-sm hover:text-ugandan-sun transition-colors" href="#">Terms of Service</a>
       <a class="text-surface-bright/60 font-label-sm text-label-sm hover:text-ugandan-sun transition-colors" href="#">Partner Program</a>
@@ -516,12 +716,12 @@
 </footer>
 
 <!-- ───────────────────────── Mobile Bottom Nav ───────────────────────── -->
-<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-low border-t border-outline-variant flex justify-around py-3 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-  <a class="flex flex-col items-center gap-1 text-primary" href="/owner/dashboard">
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-low border-t border-outline-variant flex justify-around py-3 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]" id="mobileNav">
+  <a data-section="overview" class="mob-nav-link flex flex-col items-center gap-1 text-primary cursor-pointer" onclick="showSection('overview')">
     <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span>
     <span class="text-[10px] font-bold">Dashboard</span>
   </a>
-  <a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+  <a data-section="fleet" class="mob-nav-link flex flex-col items-center gap-1 text-on-surface-variant cursor-pointer" onclick="showSection('fleet')">
     <span class="material-symbols-outlined">directions_car</span>
     <span class="text-[10px]">Fleet</span>
   </a>
@@ -529,7 +729,7 @@
     <span class="material-symbols-outlined">notification_important</span>
     <span class="text-[10px]">Requests</span>
   </a>
-  <a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#" id="mobileLogoutBtn">
+  <a class="flex flex-col items-center gap-1 text-on-surface-variant cursor-pointer" id="mobileLogoutBtn">
     <span class="material-symbols-outlined">logout</span>
     <span class="text-[10px]">Logout</span>
   </a>
@@ -541,18 +741,409 @@
 <script src="/static/js/owner/dashboard.js"></script>
 
 <script>
-  // ── Fleet status cards (populated after dashboard.js loads vehicles) ──
-  const _origLoadVehicles = window._kvFleetHook;
+  // ── Section switcher ──
+  let _allVehicles = [];
+
+  function showSection(name) {
+    // Toggle content sections
+    document.getElementById('section-overview').style.display = name === 'overview' ? 'block' : 'none';
+    document.getElementById('section-fleet').style.display    = name === 'fleet'    ? 'block' : 'none';
+
+    // Update desktop sidebar active state
+    document.querySelectorAll('#sidebarNav .nav-link').forEach(el => {
+      const active = el.dataset.section === name;
+      el.classList.toggle('bg-secondary-container',    active);
+      el.classList.toggle('text-on-secondary-container', active);
+      el.classList.toggle('text-on-surface-variant',   !active);
+    });
+
+    // Update mobile nav active state
+    document.querySelectorAll('#mobileNav .mob-nav-link').forEach(el => {
+      el.classList.toggle('text-primary',            el.dataset.section === name);
+      el.classList.toggle('text-on-surface-variant', el.dataset.section !== name);
+    });
+
+    // Render fleet cards when switching to fleet section
+    if (name === 'fleet') {
+      // Sync owner name into fleet header
+      const ownerEl = document.getElementById('ownerName');
+      const nameEl  = document.getElementById('fleetOwnerName');
+      const avatarEl = document.getElementById('fleetOwnerAvatar');
+      if (ownerEl && nameEl) {
+        const n = ownerEl.textContent.trim();
+        nameEl.textContent = n;
+        if (avatarEl) {
+          avatarEl.textContent = n.split(' ').slice(0, 2).map(w => w[0]?.toUpperCase() || '').join('') || '?';
+        }
+      }
+      loadFleetData();
+    }
+  }
+
+  // ── Skeleton markup reused by loadFleetData ──
+  function fleetSkeletonHTML() {
+    const card = `
+      <div class="rounded-2xl overflow-hidden border border-outline-variant/10 bg-surface-container-lowest">
+        <div class="aspect-[3/2] skeleton-shimmer"></div>
+        <div class="p-5 space-y-3">
+          <div class="h-4 skeleton-shimmer rounded-lg w-3/4"></div>
+          <div class="h-3 skeleton-shimmer rounded-lg w-1/2"></div>
+          <div class="h-6 skeleton-shimmer rounded-lg w-2/5 mt-1"></div>
+          <div class="grid grid-cols-3 gap-1.5 pt-3 border-t border-outline-variant/10">
+            <div class="h-8 skeleton-shimmer rounded-lg"></div>
+            <div class="h-8 skeleton-shimmer rounded-lg"></div>
+            <div class="h-8 skeleton-shimmer rounded-lg"></div>
+          </div>
+        </div>
+      </div>`;
+    return card + card + card;
+  }
+
+  async function loadFleetData() {
+    const tok = localStorage.getItem('access_token');
+    if (!tok) { window.location.href = '/owner/login'; return; }
+
+    const grid = document.getElementById('fleetGrid');
+    if (grid) grid.innerHTML = fleetSkeletonHTML();
+
+    try {
+      const res = await fetch('/api/vehicles/mine', {
+        headers: { 'Authorization': `Bearer ${tok}` }
+      });
+
+      if (res.status === 401) {
+        localStorage.clear();
+        window.location.href = '/owner/login';
+        return;
+      }
+
+      if (!res.ok) {
+        if (grid) grid.innerHTML = `
+          <div class="col-span-full flex flex-col items-center justify-center py-20 text-center">
+            <div class="w-20 h-20 rounded-2xl bg-surface-container-high flex items-center justify-center mb-5">
+              <span class="material-symbols-outlined text-[36px] text-error">error_outline</span>
+            </div>
+            <h4 class="font-semibold text-[17px] text-on-background tracking-tight mb-2">Failed to load fleet</h4>
+            <p class="text-[14px] text-outline max-w-[240px] leading-relaxed">Could not reach the server. Please check your connection and try again.</p>
+            <button onclick="loadFleetData()"
+                    class="mt-6 bg-ugandan-sun text-slate-dark px-5 py-2.5 rounded-xl font-semibold text-[13px]
+                           flex items-center gap-2 hover:shadow-md transition-all active:scale-[0.97]">
+              <span class="material-symbols-outlined text-[16px]">refresh</span>Retry
+            </button>
+          </div>`;
+        return;
+      }
+
+      const vehicles = await res.json();
+      _allVehicles = vehicles;
+
+      // Update sidebar/overview stats to stay in sync
+      const el = id => document.getElementById(id);
+      if (el('statVehicles')) el('statVehicles').textContent = vehicles.length;
+      if (el('statPending'))  el('statPending').textContent  = vehicles.filter(v => v.status === 'pending' || v.status === 'pending_review').length;
+      if (el('fleetTotal'))    el('fleetTotal').textContent    = vehicles.length;
+      if (el('fleetVerified')) el('fleetVerified').textContent = vehicles.filter(v => v.status === 'verified').length;
+      if (el('fleetPending'))  el('fleetPending').textContent  = vehicles.filter(v => v.status === 'pending' || v.status === 'pending_review').length;
+      if (el('fleetRejected')) el('fleetRejected').textContent = vehicles.filter(v => v.status === 'rejected').length;
+
+      renderFleet(vehicles);
+    } catch (err) {
+      console.error('Fleet load failed:', err);
+      if (grid) grid.innerHTML = `
+        <div class="col-span-full flex flex-col items-center justify-center py-20 text-center">
+          <div class="w-20 h-20 rounded-2xl bg-surface-container-high flex items-center justify-center mb-5">
+            <span class="material-symbols-outlined text-[36px] text-error">wifi_off</span>
+          </div>
+          <h4 class="font-semibold text-[17px] text-on-background tracking-tight mb-2">No connection</h4>
+          <p class="text-[14px] text-outline max-w-[240px] leading-relaxed">Check your internet connection and try again.</p>
+          <button onclick="loadFleetData()"
+                  class="mt-6 bg-ugandan-sun text-slate-dark px-5 py-2.5 rounded-xl font-semibold text-[13px]
+                         flex items-center gap-2 hover:shadow-md transition-all active:scale-[0.97]">
+            <span class="material-symbols-outlined text-[16px]">refresh</span>Retry
+          </button>
+        </div>`;
+    }
+  }
+
+  // ── Fleet card rendering ──
+  // Note: backend uses 'pending' (not 'pending_review') — both mapped here for safety
+  const STATUS_CONFIG = {
+    verified:       { label: 'Verified',     bg: 'bg-status-success', text: 'text-white' },
+    pending:        { label: 'Under Review', bg: 'bg-ugandan-sun',    text: 'text-slate-dark' },
+    pending_review: { label: 'Under Review', bg: 'bg-ugandan-sun',    text: 'text-slate-dark' },
+    rejected:       { label: 'Rejected',     bg: 'bg-error',          text: 'text-white' },
+    suspended:      { label: 'Suspended',    bg: 'bg-outline',        text: 'text-white' },
+  };
+
+  // Vehicle type icon map
+  const TYPE_ICON = {
+    safari: 'terrain', suv: 'directions_car', luxury: 'directions_car',
+    minibus: 'airport_shuttle', sedan: 'directions_car', other: 'garage',
+  };
+
+  function vehicleCardHTML(v, index) {
+    const s    = STATUS_CONFIG[v.status] || STATUS_CONFIG['pending_review'];
+    const icon = TYPE_ICON[v.vehicle_type] || 'directions_car';
+    const hasRate = !!v.base_daily_rate_ugx;
+    const rateNum = hasRate ? Number(v.base_daily_rate_ugx).toLocaleString() : null;
+
+    // API returns v.photos[] with photo_url on each item
+    const imgUrl = (v.photos && v.photos.length > 0) ? v.photos[0].photo_url : null;
+
+    // Gradient meshes vary by vehicle type for visual distinction
+    const gradients = {
+      safari:  'radial-gradient(ellipse at 20% 60%, #1a5c14 0%, transparent 55%), radial-gradient(ellipse at 75% 30%, #0d3309 0%, transparent 50%), linear-gradient(160deg, #0a1f08 0%, #173d12 100%)',
+      suv:     'radial-gradient(ellipse at 30% 70%, #1e4d3e 0%, transparent 55%), radial-gradient(ellipse at 70% 25%, #0f2a1d 0%, transparent 50%), linear-gradient(160deg, #0c2218 0%, #1a4030 100%)',
+      luxury:  'radial-gradient(ellipse at 25% 65%, #2a2240 0%, transparent 55%), radial-gradient(ellipse at 75% 30%, #16132b 0%, transparent 50%), linear-gradient(160deg, #0e0c1e 0%, #1e1a35 100%)',
+      minibus: 'radial-gradient(ellipse at 20% 60%, #3d2a0a 0%, transparent 55%), radial-gradient(ellipse at 72% 35%, #221600 0%, transparent 50%), linear-gradient(160deg, #1a1000 0%, #382200 100%)',
+    };
+    const mesh = gradients[v.vehicle_type] || gradients.safari;
+
+    const imageMarkup = imgUrl
+      ? `<img class="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700 ease-out"
+               src="${imgUrl}" alt="${v.make} ${v.model}">`
+      : `<div class="w-full h-full flex items-center justify-center" style="background: ${mesh};">
+           <span class="material-symbols-outlined text-white/[0.13] text-[80px] select-none"
+                 style="font-variation-settings:'FILL' 1; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.4));">${icon}</span>
+         </div>`;
+
+    // Pulsing availability dot for verified/available vehicles
+    const statusDot = v.status === 'verified'
+      ? `<span class="relative flex h-1.5 w-1.5 mr-1.5 flex-shrink-0">
+           <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-70" style="background:#dcfce7"></span>
+           <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-white/90"></span>
+         </span>` : '';
+
+    const delay = `animation-delay:${(index % 9) * 65}ms`;
+
+    return `
+      <div class="vehicle-card card-spotlight bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/10
+                  hover:border-outline-variant/25 hover:shadow-[0_16px_40px_-12px_rgba(21,66,18,0.13)]
+                  transition-all duration-300 ease-out group"
+           style="${delay}"
+           data-make="${(v.make + ' ' + v.model).toLowerCase()}"
+           data-plate="${(v.registration_plate||'').toLowerCase()}"
+           data-status="${v.status}">
+
+        <!-- Media -->
+        <div class="relative aspect-[3/2] overflow-hidden">
+          ${imageMarkup}
+          <!-- Subtle bottom fade for readability -->
+          <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
+          <!-- Status badge -->
+          <div class="absolute top-3.5 left-3.5 flex items-center gap-1 ${s.bg} ${s.text}
+                      px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
+                      shadow-[0_2px_8px_rgba(0,0,0,0.2)] backdrop-blur-[2px]">
+            ${statusDot}${s.label}
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div class="p-5">
+          <div class="flex justify-between items-start mb-2.5">
+            <div class="min-w-0 pr-2">
+              <h4 class="font-semibold text-[15px] leading-snug tracking-tight text-on-background truncate">${v.make} ${v.model}</h4>
+              <p class="text-[12px] text-outline mt-0.5 font-mono">${v.year}${v.registration_plate ? ' · ' + v.registration_plate : ''}</p>
+            </div>
+            <span class="material-symbols-outlined text-[20px] text-outline-variant cursor-pointer
+                         hover:text-primary hover:bg-surface-container-high rounded-lg p-0.5
+                         transition-all duration-150 select-none flex-shrink-0">more_vert</span>
+          </div>
+
+          <!-- Pricing -->
+          ${hasRate
+            ? `<div class="flex items-baseline gap-1 mb-3">
+                 <span class="font-mono text-[20px] font-bold tracking-tight text-on-background">${rateNum}</span>
+                 <span class="text-[11px] text-outline font-medium">UGX / day</span>
+               </div>`
+            : `<p class="text-[13px] text-outline italic mb-3">Rate not set</p>`}
+
+          ${v.service_area
+            ? `<p class="flex items-center gap-1 text-[11px] text-outline mb-4 truncate">
+                 <span class="material-symbols-outlined text-[13px]" style="font-size:13px">location_on</span>
+                 ${v.service_area}
+               </p>`
+            : `<div class="mb-4"></div>`}
+
+          <!-- Actions -->
+          <div class="grid grid-cols-3 gap-1.5 pt-3.5 border-t border-outline-variant/10">
+            <button onclick="openEditVehicle('${v.id}')"
+                    class="fleet-action-btn group/btn">
+              <span class="material-symbols-outlined text-[17px] text-outline group-hover/btn:text-primary transition-colors">edit</span>
+              <span class="text-[10px] font-semibold uppercase tracking-wide text-outline group-hover/btn:text-primary transition-colors">Edit</span>
+            </button>
+            <button class="fleet-action-btn group/btn">
+              <span class="material-symbols-outlined text-[17px] text-outline group-hover/btn:text-primary transition-colors">analytics</span>
+              <span class="text-[10px] font-semibold uppercase tracking-wide text-outline group-hover/btn:text-primary transition-colors">Stats</span>
+            </button>
+            <button class="fleet-action-btn group/btn">
+              <span class="material-symbols-outlined text-[17px] text-outline group-hover/btn:text-primary transition-colors">pause_circle</span>
+              <span class="text-[10px] font-semibold uppercase tracking-wide text-outline group-hover/btn:text-primary transition-colors">Pause</span>
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderFleet(vehicles) {
+    const grid = document.getElementById('fleetGrid');
+    if (!grid) return;
+
+    const search = (document.getElementById('fleetSearch')?.value || '').toLowerCase();
+    const status = document.getElementById('fleetStatusFilter')?.value || '';
+
+    const filtered = vehicles.filter(v => {
+      const matchSearch = !search ||
+        (v.make + ' ' + v.model).toLowerCase().includes(search) ||
+        (v.registration_plate || '').toLowerCase().includes(search);
+      const matchStatus = !status || v.status === status;
+      return matchSearch && matchStatus;
+    });
+
+    // Update fleet stats
+    const el = id => document.getElementById(id);
+    if (el('fleetStatTotal'))    el('fleetStatTotal').textContent    = vehicles.length;
+    if (el('fleetStatVerified')) el('fleetStatVerified').textContent = vehicles.filter(v => v.status === 'verified').length;
+    if (el('fleetStatPending'))  el('fleetStatPending').textContent  = vehicles.filter(v => v.status === 'pending' || v.status === 'pending_review').length;
+    if (el('fleetStatRejected')) el('fleetStatRejected').textContent = vehicles.filter(v => v.status === 'rejected').length;
+
+    if (filtered.length === 0) {
+      const isFiltered = !!(document.getElementById('fleetSearch')?.value || document.getElementById('fleetStatusFilter')?.value);
+      grid.innerHTML = `
+        <div class="col-span-full flex flex-col items-center justify-center py-20 text-center">
+          <div class="w-20 h-20 rounded-2xl bg-surface-container-high flex items-center justify-center mb-5">
+            <span class="material-symbols-outlined text-[36px] text-outline-variant"
+                  style="font-variation-settings:'FILL' 1;">${isFiltered ? 'search_off' : 'directions_car'}</span>
+          </div>
+          <h4 class="font-semibold text-[17px] text-on-background tracking-tight mb-2">
+            ${isFiltered ? 'No results found' : 'Your fleet is empty'}
+          </h4>
+          <p class="text-[14px] text-outline max-w-[260px] leading-relaxed">
+            ${isFiltered
+              ? 'Try adjusting your search or filter to find what you\'re looking for.'
+              : 'Add your first vehicle to start earning. It only takes a few minutes.'}
+          </p>
+          ${!isFiltered ? `<button data-bs-toggle="modal" data-bs-target="#addVehicleModal"
+                    class="mt-6 bg-ugandan-sun text-slate-dark px-5 py-2.5 rounded-xl font-semibold text-[13px]
+                           flex items-center gap-2 hover:shadow-md transition-all active:scale-[0.97]">
+                    <span class="material-symbols-outlined text-[16px]">add</span>Add First Vehicle
+                  </button>` : ''}
+        </div>
+        ${addPlaceholderCard()}`;
+      return;
+    }
+
+    grid.innerHTML = filtered.map((v, i) => vehicleCardHTML(v, i)).join('') + addPlaceholderCard();
+  }
+
+  function addPlaceholderCard() {
+    return `
+      <div class="group cursor-pointer rounded-2xl border border-dashed border-outline-variant/40
+                  hover:border-ugandan-sun/60 hover:bg-ugandan-sun/[0.03]
+                  flex flex-col items-center justify-center p-10 text-center
+                  transition-all duration-300 active:scale-[0.98]"
+           data-bs-toggle="modal" data-bs-target="#addVehicleModal">
+        <div class="w-14 h-14 rounded-2xl bg-surface-container-high
+                    group-hover:bg-ugandan-sun group-hover:shadow-[0_8px_24px_-4px_rgba(249,177,21,0.35)]
+                    flex items-center justify-center mb-4 transition-all duration-300">
+          <span class="material-symbols-outlined text-[22px] text-on-surface-variant group-hover:text-slate-dark transition-colors">add</span>
+        </div>
+        <p class="font-semibold text-[14px] tracking-tight text-on-surface-variant group-hover:text-on-background transition-colors">Add Another Vehicle</p>
+        <p class="text-[12px] text-outline mt-1.5 leading-relaxed">Expand your fleet and increase earnings.</p>
+      </div>`;
+  }
+
+  // Search / filter live update
+  document.getElementById('fleetSearch')?.addEventListener('input',  () => renderFleet(_allVehicles));
+  document.getElementById('fleetStatusFilter')?.addEventListener('change', () => renderFleet(_allVehicles));
+
+  // ── Edit vehicle — pre-fill modal and switch to PATCH mode ──
+  window._editVehicleId = null;
+
+  function openEditVehicle(id) {
+    const v = _allVehicles.find(x => x.id === id);
+    if (!v) return;
+
+    window._editVehicleId = id;
+
+    // Update modal chrome
+    document.getElementById('addVehicleModalLabel').textContent = `Edit Vehicle — ${v.make} ${v.model}`;
+    document.getElementById('submitVehicleBtnText').textContent = 'Save Changes';
+
+    // Pre-fill every field
+    const f = document.getElementById('addVehicleForm');
+    const set = (name, val) => { const el = f.querySelector(`[name="${name}"]`); if (el) el.value = val ?? ''; };
+    const chk = (name, val) => { const el = f.querySelector(`[name="${name}"]`); if (el) el.checked = !!val; };
+
+    set('make',               v.make);
+    set('model',              v.model);
+    set('year',               v.year);
+    set('color',              v.color);
+    set('registration_plate', v.registration_plate);
+    set('vehicle_type',       v.vehicle_type);
+    set('transmission',       v.transmission);
+    set('fuel_type',          v.fuel_type);
+    set('passenger_capacity', v.passenger_capacity);
+    set('service_area',       v.service_area);
+    set('base_daily_rate_ugx', v.base_daily_rate_ugx);
+    set('rate_with_driver_ugx', v.rate_with_driver_ugx);
+    set('description',        v.description);
+    chk('has_ac',       v.has_ac);
+    chk('has_wifi',     v.has_wifi);
+    chk('is_4wd',       v.is_4wd);
+    chk('has_roof_rack',  v.has_roof_rack);
+    chk('has_child_seat', v.has_child_seat);
+
+    // Show note that plate cannot be changed
+    const plateInput = f.querySelector('[name="registration_plate"]');
+    if (plateInput) {
+      plateInput.readOnly = true;
+      plateInput.classList.add('bg-surface-container');
+    }
+
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('addVehicleModal')).show();
+  }
+
+  // Reset modal back to "Add" mode when it closes
+  document.getElementById('addVehicleModal').addEventListener('hidden.bs.modal', () => {
+    window._editVehicleId = null;
+    document.getElementById('addVehicleModalLabel').textContent = 'Add New Vehicle';
+    document.getElementById('submitVehicleBtnText').textContent = 'Submit Vehicle';
+    document.getElementById('addVehicleForm').reset();
+    document.getElementById('imagePreviewGrid').innerHTML = '';
+    // Un-lock the plate field
+    const plateInput = document.querySelector('#addVehicleForm [name="registration_plate"]');
+    if (plateInput) { plateInput.readOnly = false; plateInput.classList.remove('bg-surface-container'); }
+  });
+
+  // ── Fleet status sidebar cards (populated after dashboard.js loads vehicles) ──
   document.addEventListener('kv:vehiclesLoaded', (e) => {
-    const vehicles = e.detail || [];
+    _allVehicles = e.detail || [];
+    const vehicles = _allVehicles;
     const verified  = vehicles.filter(v => v.status === 'verified').length;
-    const pending   = vehicles.filter(v => v.status === 'pending_review').length;
+    const pending   = vehicles.filter(v => v.status === 'pending' || v.status === 'pending_review').length;
     const rejected  = vehicles.filter(v => v.status === 'rejected').length;
     const el = (id) => document.getElementById(id);
     if (el('fleetTotal'))    el('fleetTotal').textContent    = vehicles.length;
     if (el('fleetVerified')) el('fleetVerified').textContent = verified;
     if (el('fleetPending'))  el('fleetPending').textContent  = pending;
     if (el('fleetRejected')) el('fleetRejected').textContent = rejected;
+
+    // Sync owner name + initials into fleet header
+    const ownerEl = document.getElementById('ownerName');
+    if (ownerEl) {
+      const name = ownerEl.textContent.trim();
+      if (el('fleetOwnerName')) el('fleetOwnerName').textContent = name;
+      if (el('fleetOwnerAvatar')) {
+        const initials = name.split(' ').slice(0, 2).map(w => w[0]?.toUpperCase() || '').join('');
+        el('fleetOwnerAvatar').textContent = initials || '?';
+      }
+    }
+
+    // Re-render if fleet section is visible
+    if (document.getElementById('section-fleet').style.display !== 'none') {
+      renderFleet(vehicles);
+    }
   });
 
   // ── Image upload preview ──
@@ -612,6 +1203,19 @@
     vehicleImages.files = dt.files;
     renderPreviews({ target: vehicleImages });
   }
+
+  // ── Spotlight hover effect for fleet cards ──
+  document.getElementById('fleetGrid')?.addEventListener('mousemove', (e) => {
+    const card = e.target.closest('.card-spotlight');
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--cx', `${e.clientX - r.left}px`);
+    card.style.setProperty('--cy', `${e.clientY - r.top}px`);
+  });
+  document.getElementById('fleetGrid')?.addEventListener('mouseleave', (e) => {
+    const card = e.target.closest('.card-spotlight');
+    if (card) { card.style.setProperty('--cx', '-200px'); card.style.setProperty('--cy', '-200px'); }
+  }, true);
 
   // ── Mobile logout mirror ──
   const mobileLogout = document.getElementById('mobileLogoutBtn');
