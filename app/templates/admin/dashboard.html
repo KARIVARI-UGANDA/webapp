@@ -1,152 +1,396 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>Admin Dashboard | Kari Vari Uganda</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="/static/css/base.css">
-  <link rel="stylesheet" href="/static/css/dashboard.css">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary-fixed": "#ffdeac",
+            "outline": "#72796e",
+            "secondary-fixed-dim": "#ffba35",
+            "inverse-surface": "#2f3133",
+            "on-background": "#1a1c1e",
+            "on-secondary-fixed": "#281900",
+            "soft-gray": "#F5F5F5",
+            "surface-dim": "#dadadc",
+            "secondary-container": "#ffb61e",
+            "on-surface-variant": "#42493e",
+            "primary-fixed": "#bcf0ae",
+            "on-error": "#ffffff",
+            "outline-variant": "#c2c9bb",
+            "on-primary-fixed-variant": "#23501e",
+            "slate-dark": "#1A1C1E",
+            "on-primary": "#ffffff",
+            "primary-container": "#2d5a27",
+            "tertiary-fixed-dim": "#adc6ff",
+            "secondary": "#7e5700",
+            "surface": "#f9f9fc",
+            "tertiary": "#00377a",
+            "on-secondary": "#ffffff",
+            "primary-fixed-dim": "#a1d494",
+            "tertiary-fixed": "#d8e2ff",
+            "on-surface": "#1a1c1e",
+            "status-pending": "#B45309",
+            "on-secondary-container": "#6c4a00",
+            "inverse-on-surface": "#f0f0f3",
+            "on-primary-fixed": "#002201",
+            "status-success": "#15803D",
+            "on-primary-container": "#9dd090",
+            "surface-container": "#eeeef0",
+            "surface-tint": "#3b6934",
+            "on-tertiary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "error": "#ba1a1a",
+            "on-tertiary-fixed-variant": "#004494",
+            "surface-container-highest": "#e2e2e5",
+            "primary": "#154212",
+            "safari-green": "#2D5A27",
+            "surface-container-high": "#e8e8ea",
+            "surface-bright": "#f9f9fc",
+            "on-tertiary-fixed": "#001a41",
+            "error-container": "#ffdad6",
+            "inverse-primary": "#a1d494",
+            "surface-container-low": "#f3f3f6",
+            "on-tertiary-container": "#a8c3ff",
+            "surface-variant": "#e2e2e5",
+            "on-secondary-fixed-variant": "#5f4100",
+            "tertiary-container": "#004da6",
+            "ugandan-sun": "#F9B115",
+            "background": "#f9f9fc",
+            "on-error-container": "#93000a"
+          },
+          borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+          spacing: {
+            "margin-desktop": "48px", "gutter": "24px", "base": "8px",
+            "margin-mobile": "16px", "container-max": "1280px"
+          },
+          fontFamily: {
+            "label-sm": ["Inter"], "headline-lg-mobile": ["Montserrat"],
+            "body-lg": ["Inter"], "headline-md": ["Montserrat"],
+            "label-lg": ["Inter"], "body-md": ["Inter"],
+            "headline-xl": ["Montserrat"], "headline-lg": ["Montserrat"]
+          },
+          fontSize: {
+            "label-sm": ["12px", { lineHeight: "16px", fontWeight: "500" }],
+            "headline-lg-mobile": ["28px", { lineHeight: "34px", fontWeight: "700" }],
+            "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+            "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+            "label-lg": ["14px", { lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "600" }],
+            "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+            "headline-xl": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+            "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
-<body style="background:#f9f9fc;">
+<body class="bg-background text-on-background font-body-md text-body-md antialiased">
 
-<div class="d-flex">
-  <!-- Sidebar -->
-  <nav class="sidebar sidebar-admin d-flex flex-column p-3 gap-1 flex-shrink-0">
-    <a class="navbar-brand text-white fw-bold fs-5 mb-4 px-2" href="/">Kari Vari Uganda</a>
-    <a class="nav-link active" href="/admin/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
-    <a class="nav-link" href="#"><i class="bi bi-people"></i> Users</a>
-    <a class="nav-link" href="#" id="navVerifications">
-      <i class="bi bi-patch-check"></i> Verifications
-      <span class="pending-dot ms-1" id="pendingDot" style="display:none;"></span>
-    </a>
-    <a class="nav-link" href="#"><i class="bi bi-calendar3"></i> Bookings</a>
-    <a class="nav-link" href="#"><i class="bi bi-exclamation-triangle"></i> Disputes</a>
-    <a class="nav-link" href="#"><i class="bi bi-bar-chart-line"></i> Analytics</a>
-    <div class="mt-auto pt-3 border-top border-white border-opacity-25">
-      <a class="nav-link nav-link-danger" href="#" id="logoutBtn">
-        <i class="bi bi-box-arrow-right"></i> Logout
-      </a>
+<!-- Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low shadow-md flex flex-col p-6 space-y-4 z-50 overflow-y-auto hide-scrollbar">
+  <div class="mb-8">
+    <h1 class="font-headline-md text-headline-md font-bold text-primary">Kari Vari Admin</h1>
+    <div class="mt-4">
+      <p class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Logged in as</p>
+      <p class="font-label-lg text-label-lg text-on-surface" id="adminName">—</p>
     </div>
+  </div>
+
+  <nav class="flex-1 space-y-1">
+    <a id="navDashboard" class="flex items-center gap-3 px-4 py-2.5 bg-secondary-container text-on-secondary-container rounded-lg transition-all" href="/admin/dashboard">
+      <span class="material-symbols-outlined text-[20px]">dashboard</span>
+      <span class="font-body-md text-body-md">Dashboard</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined text-[20px]">group</span>
+      <span class="font-body-md text-body-md">User Management</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined text-[20px]">directions_car</span>
+      <span class="font-body-md text-body-md">Vehicle Management</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined text-[20px]">book_online</span>
+      <span class="font-body-md text-body-md">Booking Management</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined text-[20px]">payments</span>
+      <span class="font-body-md text-body-md">Payments &amp; Commissions</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined text-[20px]">analytics</span>
+      <span class="font-body-md text-body-md">Analytics</span>
+    </a>
+    <a id="navVerifications" class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined text-[20px]">fact_check</span>
+      <span class="font-body-md text-body-md">Vehicle Inspections</span>
+      <span id="pendingDot" class="hidden ml-auto w-2 h-2 rounded-full bg-error"></span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined text-[20px]">confirmation_number</span>
+      <span class="font-body-md text-body-md">Support Tickets</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined text-[20px]">settings</span>
+      <span class="font-body-md text-body-md">Settings</span>
+    </a>
   </nav>
 
-  <!-- Main Content -->
-  <main class="flex-grow-1 p-4 p-lg-5">
+  <div class="pt-6 border-t border-outline-variant">
+    <a id="logoutBtn" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-error transition-colors cursor-pointer" href="#">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="font-label-lg text-label-lg">Log Out</span>
+    </a>
+  </div>
+</aside>
 
-    <!-- Header -->
-    <div class="d-flex flex-wrap align-items-center justify-content-between mb-5 gap-3">
-      <div>
-        <span class="portal-badge portal-badge-admin mb-2 d-inline-block">ADMIN PORTAL</span>
-        <h1 class="page-header mb-1">Admin Dashboard</h1>
-        <p class="text-secondary small mb-0">Monitor platform activity, verify users, and manage the fleet.</p>
+<!-- Main Content -->
+<main class="ml-64 min-h-screen p-[48px] bg-surface">
+
+  <!-- Header -->
+  <header class="flex justify-between items-center mb-10">
+    <div>
+      <h2 class="font-headline-lg text-headline-lg text-primary">Admin Overview</h2>
+      <p class="text-on-surface-variant font-body-md">Real-time performance metrics for the Pearl of Africa fleet.</p>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+        <input class="pl-10 pr-4 py-2 bg-surface-container-lowest border-none rounded-xl shadow-sm focus:ring-2 focus:ring-safari-green w-64" placeholder="Search accounts, VINs..." type="text" id="searchInput"/>
       </div>
-      <a href="/api/docs" target="_blank" class="btn btn-dark px-4 fw-bold">
-        <i class="bi bi-code-slash me-2"></i>API Docs
+      <a href="/api/docs" target="_blank" class="bg-ugandan-sun text-slate-dark font-label-lg text-label-lg px-6 py-2.5 rounded-xl hover:shadow-lg transition-all flex items-center gap-2">
+        <span class="material-symbols-outlined">code</span>
+        API Docs
       </a>
     </div>
+  </header>
 
-    <!-- Stats Row -->
-    <div class="row g-4 mb-5">
-      <div class="col-sm-6 col-xl-3">
-        <div class="card stat-card p-4">
-          <div class="d-flex align-items-center gap-3">
-            <div class="stat-icon" style="background:rgba(26,28,30,0.08);color:#1a1c1e;">
-              <i class="bi bi-people"></i>
-            </div>
-            <div>
-              <div class="text-secondary small fw-semibold">TOTAL USERS</div>
-              <div class="fs-3 fw-bold" id="statUsers">—</div>
-            </div>
-          </div>
-        </div>
+  <!-- Stats Grid -->
+  <section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-[24px] mb-10">
+
+    <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-surface-variant/20">
+      <div class="flex items-center justify-between mb-4">
+        <span class="material-symbols-outlined text-safari-green bg-primary-fixed/30 p-2 rounded-lg">group</span>
+        <span class="text-status-success text-label-sm font-label-sm" id="statUsersTrend">—</span>
       </div>
-      <div class="col-sm-6 col-xl-3">
-        <div class="card stat-card p-4">
-          <div class="d-flex align-items-center gap-3">
-            <div class="stat-icon" style="background:rgba(249,177,21,0.12);color:#b07d00;">
-              <i class="bi bi-hourglass-split"></i>
-            </div>
-            <div>
-              <div class="text-secondary small fw-semibold">PENDING VERIFICATIONS</div>
-              <div class="fs-3 fw-bold" id="statPending">—</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-xl-3">
-        <div class="card stat-card p-4">
-          <div class="d-flex align-items-center gap-3">
-            <div class="stat-icon" style="background:rgba(21,66,18,0.1);color:var(--primary);">
-              <i class="bi bi-truck"></i>
-            </div>
-            <div>
-              <div class="text-secondary small fw-semibold">ACTIVE VEHICLES</div>
-              <div class="fs-3 fw-bold" id="statVehicles">—</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-xl-3">
-        <div class="card stat-card p-4">
-          <div class="d-flex align-items-center gap-3">
-            <div class="stat-icon" style="background:rgba(186,26,26,0.08);color:#ba1a1a;">
-              <i class="bi bi-exclamation-triangle"></i>
-            </div>
-            <div>
-              <div class="text-secondary small fw-semibold">OPEN DISPUTES</div>
-              <div class="fs-3 fw-bold" id="statDisputes">—</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <p class="text-on-surface-variant font-label-lg text-label-lg">Total Users</p>
+      <p class="font-headline-md text-headline-md text-on-surface" id="statUsers">—</p>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="mb-5">
-      <h5 class="fw-bold mb-3">Quick Actions</h5>
-      <div class="d-flex flex-wrap gap-3">
-        <button class="btn btn-outline-secondary px-4" id="btnVerifications">
-          <i class="bi bi-patch-check me-2"></i>Review Pending Verifications
+    <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-surface-variant/20">
+      <div class="flex items-center justify-between mb-4">
+        <span class="material-symbols-outlined text-safari-green bg-primary-fixed/30 p-2 rounded-lg">directions_car</span>
+        <span class="text-status-success text-label-sm font-label-sm" id="statVehiclesTrend">—</span>
+      </div>
+      <p class="text-on-surface-variant font-label-lg text-label-lg">Active Vehicles</p>
+      <p class="font-headline-md text-headline-md text-on-surface" id="statVehicles">—</p>
+    </div>
+
+    <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-surface-variant/20">
+      <div class="flex items-center justify-between mb-4">
+        <span class="material-symbols-outlined text-ugandan-sun bg-secondary-fixed/30 p-2 rounded-lg">account_balance_wallet</span>
+        <span class="text-status-success text-label-sm font-label-sm">UGX</span>
+      </div>
+      <p class="text-on-surface-variant font-label-lg text-label-lg">Open Disputes</p>
+      <p class="font-headline-md text-headline-md text-on-surface" id="statDisputes">—</p>
+    </div>
+
+    <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-surface-variant/20">
+      <div class="flex items-center justify-between mb-4">
+        <span class="material-symbols-outlined text-safari-green bg-primary-fixed/30 p-2 rounded-lg">event_available</span>
+        <span class="bg-status-success/10 text-status-success px-2 py-0.5 rounded text-[10px] font-bold">LIVE</span>
+      </div>
+      <p class="text-on-surface-variant font-label-lg text-label-lg">Active Bookings</p>
+      <p class="font-headline-md text-headline-md text-on-surface" id="statBookings">—</p>
+    </div>
+
+    <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-surface-variant/20">
+      <div class="flex items-center justify-between mb-4">
+        <span class="material-symbols-outlined text-error bg-error-container/30 p-2 rounded-lg">verified_user</span>
+        <span class="text-status-pending text-label-sm font-label-sm" id="statPendingBadge">—</span>
+      </div>
+      <p class="text-on-surface-variant font-label-lg text-label-lg">Pending Verif.</p>
+      <p class="font-headline-md text-headline-md text-on-surface" id="statPending">—</p>
+    </div>
+
+  </section>
+
+  <!-- Main Layout -->
+  <div class="grid grid-cols-12 gap-[24px]">
+
+    <!-- Left Column -->
+    <div class="col-span-12 lg:col-span-8 space-y-[24px]">
+
+      <!-- Map -->
+      <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden">
+        <div class="p-6 border-b border-surface-variant/10 flex justify-between items-center">
+          <div>
+            <h3 class="font-headline-md text-headline-md text-on-surface">Geographic Reach</h3>
+            <p class="text-on-surface-variant font-label-sm text-label-sm">Hotspots for rentals across major Ugandan districts</p>
+          </div>
+          <div class="flex gap-2">
+            <span class="flex items-center gap-1 text-label-sm font-label-sm text-safari-green">
+              <span class="w-2 h-2 rounded-full bg-safari-green"></span> High Demand
+            </span>
+            <span class="flex items-center gap-1 text-label-sm font-label-sm text-ugandan-sun ml-4">
+              <span class="w-2 h-2 rounded-full bg-ugandan-sun"></span> Moderate
+            </span>
+          </div>
+        </div>
+        <div class="h-[400px] bg-soft-gray relative flex items-center justify-center">
+          <img class="w-full h-full object-cover opacity-80"
+               src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYsgVialYt3IN38q02YFKRIgiqtxPG7kCaydLeUZs7MeRkEEqtt4Cm1P-yKxVnQPSs4eUKas1iagVEoJPtwWe57nT4aWDsgaksnG8iuSsbBkAjsEnTw6jxvYnDbfeeomd6cLyrJvtD7-2QIznNTUZlAOdGsv-T31KW4TL7G01nlQRxqV5eWqUH_w46QagNcRO3Nn5jKovNrh5GCZKprUVg4t_5nl9S5pU9XQNfSFnKeiAtuOjs0XuGodh2HjkVVybbOLecF5sSe8c"
+               alt="Uganda rental hotspot map"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/80 to-transparent pointer-events-none"></div>
+          <div class="absolute top-1/4 left-1/2 bg-safari-green text-white p-2 rounded-full shadow-lg ring-4 ring-white/30">
+            <span class="material-symbols-outlined text-[16px]">location_on</span>
+          </div>
+          <div class="absolute bottom-1/3 left-1/3 bg-ugandan-sun text-slate-dark p-2 rounded-full shadow-lg ring-4 ring-white/30">
+            <span class="material-symbols-outlined text-[16px]">location_on</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Vehicles Table -->
+      <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="font-headline-md text-headline-md text-on-surface">Pending Vehicle Inspections</h3>
+          <span id="pendingCount" class="text-safari-green font-label-lg text-label-lg">Loading…</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+              <tr>
+                <th class="px-4 py-3 rounded-l-lg">Vehicle</th>
+                <th class="px-4 py-3">Registration</th>
+                <th class="px-4 py-3">Year</th>
+                <th class="px-4 py-3 rounded-r-lg">Status</th>
+              </tr>
+            </thead>
+            <tbody id="vehicleTableBody" class="divide-y divide-surface-variant/10">
+              <tr>
+                <td colspan="4" class="px-4 py-8 text-center text-on-surface-variant">
+                  <span class="material-symbols-outlined animate-spin text-[32px] text-outline">progress_activity</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent Users Table -->
+      <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="font-headline-md text-headline-md text-on-surface">Recent Users</h3>
+          <a href="#" class="text-safari-green font-label-lg text-label-lg hover:underline">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+              <tr>
+                <th class="px-4 py-3 rounded-l-lg">Name</th>
+                <th class="px-4 py-3">Email</th>
+                <th class="px-4 py-3">Role</th>
+                <th class="px-4 py-3 rounded-r-lg">Status</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody" class="divide-y divide-surface-variant/10">
+              <tr>
+                <td colspan="4" class="px-4 py-8 text-center text-on-surface-variant">
+                  <span class="material-symbols-outlined animate-spin text-[32px] text-outline">progress_activity</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-span-12 lg:col-span-4 space-y-[24px]">
+
+      <!-- Live Activity Feed -->
+      <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] p-6">
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-6">Live Activity</h3>
+        <div id="activityFeed" class="space-y-6">
+          <div class="flex items-center justify-center py-4 text-on-surface-variant">
+            <span class="material-symbols-outlined animate-spin mr-2">progress_activity</span> Loading…
+          </div>
+        </div>
+        <button class="w-full mt-8 py-3 text-safari-green font-label-lg text-label-lg border border-safari-green/20 rounded-xl hover:bg-safari-green hover:text-white transition-all">
+          View Audit Logs
         </button>
-        <button class="btn btn-outline-secondary px-4">
-          <i class="bi bi-people me-2"></i>Manage Users
-        </button>
-        <button class="btn btn-outline-secondary px-4">
-          <i class="bi bi-mortarboard me-2"></i>Training Modules
-        </button>
       </div>
-    </div>
 
-    <!-- Pending Verifications -->
-    <div class="card border-0 rounded-4 shadow-sm mb-4">
-      <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
-        <h6 class="fw-bold mb-0">Pending Vehicle Verifications</h6>
-        <span class="badge bg-warning bg-opacity-15 text-warning fw-semibold" id="pendingCount">Loading…</span>
-      </div>
-      <div class="card-body" id="verificationsList">
-        <div class="text-center py-4 text-secondary">
-          <div class="spinner-border spinner-border-sm me-2"></div>Loading…
+      <!-- Support Queue -->
+      <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] p-6">
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-6">Support Queue</h3>
+        <div class="space-y-4">
+          <div class="p-4 bg-surface-container-low rounded-xl border-l-4 border-error">
+            <div class="flex justify-between items-start">
+              <span class="font-label-lg text-label-lg text-on-surface">Emergency Roadside</span>
+              <span class="text-error font-bold text-xs uppercase">Critical</span>
+            </div>
+            <p class="text-sm text-on-surface-variant mt-1">Breakdown reported near Jinja bridge. Needs immediate dispatch.</p>
+          </div>
+          <div class="p-4 bg-surface-container-low rounded-xl border-l-4 border-ugandan-sun">
+            <div class="flex justify-between items-start">
+              <span class="font-label-lg text-label-lg text-on-surface">Verification Help</span>
+              <span class="text-ugandan-sun font-bold text-xs uppercase">Pending</span>
+            </div>
+            <p class="text-sm text-on-surface-variant mt-1">Owner unable to upload National ID photo from mobile app.</p>
+          </div>
+          <div class="p-4 bg-surface-container-low rounded-xl border-l-4 border-safari-green">
+            <div class="flex justify-between items-start">
+              <span class="font-label-lg text-label-lg text-on-surface">Refund Request</span>
+              <span class="text-safari-green font-bold text-xs uppercase">In Progress</span>
+            </div>
+            <p class="text-sm text-on-surface-variant mt-1">Cancellation refund for trip #KV-8211 due to weather.</p>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-center">
+          <div class="bg-soft-gray rounded-full px-4 py-2 flex items-center gap-2">
+            <span class="text-xs text-on-surface-variant">Support queue — coming soon</span>
+          </div>
         </div>
       </div>
+
     </div>
+  </div>
+</main>
 
-    <!-- Recent Users -->
-    <div class="card border-0 rounded-4 shadow-sm">
-      <div class="card-header bg-white border-0 pt-4 px-4">
-        <h6 class="fw-bold mb-0">Recent Users</h6>
-      </div>
-      <div id="recentUsersList">
-        <div class="text-center py-4 text-secondary">
-          <div class="spinner-border spinner-border-sm me-2"></div>Loading…
-        </div>
-      </div>
+<!-- Footer -->
+<footer class="ml-64 py-12 px-[16px] md:px-[48px] mt-16 bg-on-background text-ugandan-sun">
+  <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+    <div class="flex flex-col items-center md:items-start">
+      <h2 class="font-headline-lg text-headline-lg font-bold text-ugandan-sun mb-2">Kari Vari Uganda</h2>
+      <p class="text-surface-variant font-label-sm text-label-sm">Admin Portal • Exploring the Pearl of Africa.</p>
     </div>
+    <div class="flex flex-wrap justify-center gap-8">
+      <a class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" href="#">Privacy Policy</a>
+      <a class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" href="#">Terms of Service</a>
+      <a class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" href="#">Partner Program</a>
+      <a class="text-surface-variant hover:text-ugandan-sun transition-colors font-label-sm text-label-sm" href="#">Careers</a>
+    </div>
+    <p class="text-surface-variant font-label-sm text-label-sm text-center md:text-right">© 2024 Kari Vari Uganda. All rights reserved.</p>
+  </div>
+</footer>
 
-  </main>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/shared.js"></script>
 <script src="/static/js/admin/dashboard.js"></script>
 </body>

@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -9,14 +9,71 @@ from app.database import get_db
 from app.deps import require_role
 from app.models import AuditLog, User, Vehicle
 from app.models.driver import DriverProfile
+from app.models.kyc import RefreshToken
 from app.models.training import TrainingModule
 from app.schemas.driver import AdminDriverDecision, DriverProfileRead, TrainingModuleCreate, TrainingModuleRead
 from app.schemas.vehicle import VerificationDecision, VehicleRead
+from app.security import create_access_token, create_refresh_token, hash_password
 from app.services.notifications import create_notification
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 _admin = require_role("admin")
+
+_DEV_ADMIN_EMAIL = "admin@karivari.ug"
+_DEV_ADMIN_NAME  = "Admin"
+
+
+# ── POST /api/admin/dev-signin ────────────────────────────────────────────────
+
+@router.post("/dev-signin", include_in_schema=False)
+def dev_signin(db: Session = Depends(get_db)):
+    """
+    Development shortcut: auto-provision an admin account and return a token.
+    No credentials required. Remove or gate behind a feature flag before going live.
+    """
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+
+    user = db.query(User).filter(User.email == _DEV_ADMIN_EMAIL).first()
+    if not user:
+        user = User(
+            id=str(uuid.uuid4()),
+            full_name=_DEV_ADMIN_NAME,
+            email=_DEV_ADMIN_EMAIL,
+            phone_number="+000000000000",
+            password_hash=hash_password("Admin1234!"),
+            role="admin",
+            account_type="individual",
+            preferred_language="en",
+            is_verified=True,
+            is_active=True,
+            created_at=now,
+            updated_at=now,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+    access_token = create_access_token(user.id, user.role)
+    refresh_raw   = create_refresh_token(user.id)
+
+    db.add(RefreshToken(
+        id=str(uuid.uuid4()),
+        user_id=user.id,
+        token_hash=hash_password(refresh_raw),
+        expires_at=now + timedelta(days=14),
+        created_at=now,
+    ))
+    db.commit()
+
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_raw,
+        "token_type": "bearer",
+        "user_id": user.id,
+        "role": user.role,
+        "full_name": user.full_name,
+    }
 
 
 def _now():
