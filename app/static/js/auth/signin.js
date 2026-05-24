@@ -98,14 +98,14 @@
         localStorage.setItem('user_name', data.full_name);
         showAlert('Login successful! Redirecting...', 'success');
         const roleRedirects = {
-          tourist:  '/dashboard',
-          customer: '/dashboard',
+          tourist:  '/',
+          customer: '/',
           owner:    '/owner/dashboard',
           driver:   '/driver/dashboard',
           admin:    '/admin/dashboard',
         };
         setTimeout(() => {
-          window.location.href = roleRedirects[data.role] || '/dashboard';
+          window.location.href = roleRedirects[data.role] || '/';
         }, 1500);
       } else {
         const errorMsg = data.message || data.error || 'Invalid email or password.';

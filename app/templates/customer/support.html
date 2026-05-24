@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Support - Kari Vari Uganda</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "secondary-fixed": "#ffdeac", "outline": "#72796e",
+          "secondary-fixed-dim": "#ffba35", "inverse-surface": "#2f3133",
+          "on-background": "#1a1c1e", "on-secondary-fixed": "#281900",
+          "surface-dim": "#dadadc", "secondary-container": "#ffb61e",
+          "on-surface-variant": "#42493e", "primary-fixed": "#bcf0ae",
+          "on-error": "#ffffff", "outline-variant": "#c2c9bb",
+          "slate-dark": "#1A1C1E", "on-primary": "#ffffff",
+          "primary-container": "#2d5a27", "tertiary-fixed-dim": "#a5d6a7",
+          "secondary": "#7e5700", "surface": "#f9f9fc",
+          "tertiary": "#2D5A27", "on-secondary": "#ffffff",
+          "primary-fixed-dim": "#a1d494", "tertiary-fixed": "#c8e6c9",
+          "on-surface": "#1a1c1e", "on-secondary-container": "#6c4a00",
+          "inverse-on-surface": "#f0f0f3", "on-primary-fixed": "#002201",
+          "status-success": "#15803D", "on-primary-container": "#9dd090",
+          "surface-container": "#eeeef0", "surface-tint": "#3b6934",
+          "on-tertiary": "#ffffff", "surface-container-lowest": "#ffffff",
+          "error": "#ba1a1a", "surface-container-highest": "#e2e2e5",
+          "primary": "#154212", "safari-green": "#2D5A27",
+          "surface-container-high": "#e8e8ea", "surface-bright": "#f9f9fc",
+          "error-container": "#ffdad6", "inverse-primary": "#a1d494",
+          "surface-container-low": "#f3f3f6", "surface-variant": "#e2e2e5",
+          "on-secondary-fixed-variant": "#5f4100", "tertiary-container": "#154212",
+          "ugandan-sun": "#F9B115", "background": "#f9f9fc",
+          "on-error-container": "#93000a"
+        },
+        borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+        fontFamily: {
+          "label-sm": ["Inter"], "body-lg": ["Inter"], "headline-md": ["Montserrat"],
+          "label-lg": ["Inter"], "body-md": ["Inter"], "headline-xl": ["Montserrat"],
+          "headline-lg": ["Montserrat"]
+        },
+        fontSize: {
+          "label-sm":  ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+          "body-lg":   ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+          "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+          "label-lg":  ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+          "body-md":   ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+          "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+          "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #f9f9fc; color: #1a1c1e; font-family: 'Inter', sans-serif; }
+  h1,h2,h3,h4 { font-family: 'Montserrat', sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .elevation-1 { box-shadow: 0px 4px 20px rgba(0,0,0,0.05); }
+  .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .faq-body.open { max-height: 400px; }
+  .faq-icon { transition: transform 0.3s ease; }
+  .faq-icon.open { transform: rotate(180deg); }
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  .spin { animation: spin 1s linear infinite; }
+</style>
+</head>
+<body class="selection:bg-ugandan-sun selection:text-slate-dark">
+
+<!-- Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low shadow-md flex flex-col p-6 space-y-4 z-50">
+  <div class="mb-6">
+    <a href="/" class="flex items-center gap-2 font-bold text-[20px]" style="color:#154212;text-decoration:none;">
+      <span class="material-symbols-outlined text-[24px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+      Kari Vari Uganda
+    </a>
+  </div>
+  <div class="flex items-center space-x-3 mb-6 px-2">
+    <div id="avatarCircle" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg flex-shrink-0">?</div>
+    <div class="overflow-hidden">
+      <p class="font-label-lg text-label-lg text-on-surface truncate" id="sidebarName">Welcome back</p>
+      <p class="font-label-sm text-label-sm text-on-surface-variant">Customer Portal</p>
+    </div>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/dashboard">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="font-label-lg text-label-lg">Dashboard</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/vehicles">
+      <span class="material-symbols-outlined">directions_car</span>
+      <span class="font-label-lg text-label-lg">Browse Cars</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/my-bookings">
+      <span class="material-symbols-outlined">calendar_month</span>
+      <span class="font-label-lg text-label-lg">My Bookings</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/my-payments">
+      <span class="material-symbols-outlined">payments</span>
+      <span class="font-label-lg text-label-lg">Payments</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all" href="/support">
+      <span class="material-symbols-outlined">contact_support</span>
+      <span class="font-label-lg text-label-lg">Support</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/settings">
+      <span class="material-symbols-outlined">settings</span>
+      <span class="font-label-lg text-label-lg">Settings</span>
+    </a>
+  </nav>
+  <div class="pt-4 border-t border-outline-variant space-y-2">
+    <a href="/vehicles" class="block w-full text-center bg-safari-green text-white font-label-lg text-label-lg py-3 rounded-xl hover:opacity-90 transition-all active:scale-95">
+      Book a Car
+    </a>
+    <button id="logoutBtn" class="w-full flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:text-error transition-colors rounded-lg">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="font-label-lg text-label-lg">Log Out</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="ml-64 min-h-screen bg-surface">
+  <header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md flex justify-between items-center px-10 py-4 shadow-sm">
+    <div>
+      <h1 class="font-headline-md text-headline-md text-on-surface">Support</h1>
+      <p class="font-label-sm text-label-sm text-on-surface-variant">We're here to help, 24 / 7</p>
+    </div>
+    <div id="headerAvatar" class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">?</div>
+  </header>
+
+  <div class="p-10 max-w-[1100px] mx-auto space-y-10">
+
+    <!-- Contact cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-surface-container-lowest rounded-2xl elevation-1 p-6 flex flex-col items-center text-center gap-3">
+        <div class="bg-primary-fixed p-4 rounded-2xl">
+          <span class="material-symbols-outlined text-safari-green text-[32px]" style="font-variation-settings:'FILL' 1;">mail</span>
+        </div>
+        <h3 class="font-headline-md text-headline-md">Email Us</h3>
+        <p class="font-body-md text-body-md text-on-surface-variant text-sm">Response within 2 hours</p>
+        <a href="mailto:support@karivari.ug" class="text-safari-green font-label-lg text-label-lg hover:underline">support@karivari.ug</a>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl elevation-1 p-6 flex flex-col items-center text-center gap-3">
+        <div class="bg-secondary-fixed p-4 rounded-2xl">
+          <span class="material-symbols-outlined text-secondary text-[32px]" style="font-variation-settings:'FILL' 1;">chat</span>
+        </div>
+        <h3 class="font-headline-md text-headline-md">WhatsApp</h3>
+        <p class="font-body-md text-body-md text-on-surface-variant text-sm">Chat with us directly</p>
+        <a href="https://wa.me/256700000000" target="_blank" class="text-safari-green font-label-lg text-label-lg hover:underline">+256 700 000 000</a>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl elevation-1 p-6 flex flex-col items-center text-center gap-3">
+        <div class="bg-primary-fixed p-4 rounded-2xl">
+          <span class="material-symbols-outlined text-safari-green text-[32px]" style="font-variation-settings:'FILL' 1;">call</span>
+        </div>
+        <h3 class="font-headline-md text-headline-md">Call Us</h3>
+        <p class="font-body-md text-body-md text-on-surface-variant text-sm">Mon–Sun, 7am – 9pm EAT</p>
+        <a href="tel:+256700000000" class="text-safari-green font-label-lg text-label-lg hover:underline">+256 700 000 000</a>
+      </div>
+    </div>
+
+    <!-- Two columns: FAQ + Contact form -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+      <!-- FAQ -->
+      <div class="space-y-4">
+        <h2 class="font-headline-lg text-headline-lg">Frequently Asked Questions</h2>
+
+        <div class="space-y-3" id="faqList">
+
+          <div class="bg-surface-container-lowest rounded-2xl elevation-1 overflow-hidden">
+            <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-4 text-left">
+              <span class="font-label-lg text-label-lg text-on-surface">How do I make a booking?</span>
+              <span class="material-symbols-outlined faq-icon text-on-surface-variant">expand_more</span>
+            </button>
+            <div class="faq-body px-6">
+              <p class="font-body-md text-body-md text-on-surface-variant pb-5">Browse available vehicles, choose your dates and pickup location, then proceed to checkout. Payment is collected securely via Stripe card or MTN/Airtel mobile money.</p>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest rounded-2xl elevation-1 overflow-hidden">
+            <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-4 text-left">
+              <span class="font-label-lg text-label-lg text-on-surface">Can I cancel or modify my booking?</span>
+              <span class="material-symbols-outlined faq-icon text-on-surface-variant">expand_more</span>
+            </button>
+            <div class="faq-body px-6">
+              <p class="font-body-md text-body-md text-on-surface-variant pb-5">Cancellations made more than 48 hours before pickup receive a full refund. Within 48 hours, 50% of the booking fee is retained. To cancel, contact our support team or email us directly.</p>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest rounded-2xl elevation-1 overflow-hidden">
+            <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-4 text-left">
+              <span class="font-label-lg text-label-lg text-on-surface">What is included in the rental price?</span>
+              <span class="material-symbols-outlined faq-icon text-on-surface-variant">expand_more</span>
+            </button>
+            <div class="faq-body px-6">
+              <p class="font-body-md text-body-md text-on-surface-variant pb-5">The quoted price includes the vehicle rental for the selected days and a $15 service fee. Fuel, park entry fees, and extras like a driver (if selected) are also included as per your booking type. There are no hidden charges.</p>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest rounded-2xl elevation-1 overflow-hidden">
+            <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-4 text-left">
+              <span class="font-label-lg text-label-lg text-on-surface">Do I need an international driving licence?</span>
+              <span class="material-symbols-outlined faq-icon text-on-surface-variant">expand_more</span>
+            </button>
+            <div class="faq-body px-6">
+              <p class="font-body-md text-body-md text-on-surface-variant pb-5">Yes, for self-drive bookings you will need a valid international driving licence. We recommend choosing the "With Driver" option if you are not familiar with Ugandan roads.</p>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest rounded-2xl elevation-1 overflow-hidden">
+            <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-4 text-left">
+              <span class="font-label-lg text-label-lg text-on-surface">How are refunds processed?</span>
+              <span class="material-symbols-outlined faq-icon text-on-surface-variant">expand_more</span>
+            </button>
+            <div class="faq-body px-6">
+              <p class="font-body-md text-body-md text-on-surface-variant pb-5">Refunds are returned to the original payment method within 5–10 business days. Card refunds go back to your card; mobile money refunds go back to the same number used at checkout.</p>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest rounded-2xl elevation-1 overflow-hidden">
+            <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-4 text-left">
+              <span class="font-label-lg text-label-lg text-on-surface">Is my payment information secure?</span>
+              <span class="material-symbols-outlined faq-icon text-on-surface-variant">expand_more</span>
+            </button>
+            <div class="faq-body px-6">
+              <p class="font-body-md text-body-md text-on-surface-variant pb-5">Yes. Card payments are processed by Stripe (PCI DSS Level 1 certified). We never store your card details on our servers. Mobile money payments are handled by Flutterwave.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Contact form -->
+      <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-6 h-fit">
+        <h2 class="font-headline-lg text-headline-lg">Send a Message</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant">Can't find your answer? Fill in the form and our team will get back to you shortly.</p>
+
+        <div id="formSuccess" class="hidden bg-primary-fixed rounded-xl p-5 flex items-center gap-3">
+          <span class="material-symbols-outlined text-safari-green" style="font-variation-settings:'FILL' 1;">check_circle</span>
+          <div>
+            <p class="font-label-lg text-label-lg text-safari-green">Message sent!</p>
+            <p class="font-label-sm text-label-sm text-on-surface-variant">We'll reply to your email within 2 hours.</p>
+          </div>
+        </div>
+
+        <form id="supportForm" class="space-y-5" onsubmit="submitForm(event)">
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Full Name</label>
+            <input id="fName" type="text" required placeholder="John Doe"
+              class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-safari-green"/>
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Email</label>
+            <input id="fEmail" type="email" required placeholder="you@example.com"
+              class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-safari-green"/>
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Subject</label>
+            <select id="fSubject" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-safari-green">
+              <option value="booking">Booking issue</option>
+              <option value="payment">Payment / refund</option>
+              <option value="vehicle">Vehicle question</option>
+              <option value="cancellation">Cancellation request</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Message</label>
+            <textarea id="fMessage" required rows="5" placeholder="Describe your issue or question…"
+              class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-safari-green resize-none"></textarea>
+          </div>
+          <button type="submit" id="submitBtn"
+            class="w-full bg-safari-green text-white font-label-lg text-label-lg py-3.5 rounded-xl hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">send</span>
+            Send Message
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+const token = localStorage.getItem('access_token');
+if (!token) { window.location.href = '/login'; }
+document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
+
+function initials(n) { return n ? n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?'; }
+
+// Pre-fill user info
+(async () => {
+  try {
+    const r = await fetch('/api/users/me', { headers: { Authorization: `Bearer ${token}` } });
+    if (!r.ok) { localStorage.clear(); window.location.href = '/login'; return; }
+    const u = await r.json();
+    const name = u.full_name || u.email;
+    document.getElementById('sidebarName').textContent = name;
+    document.getElementById('avatarCircle').textContent = initials(name);
+    document.getElementById('headerAvatar').textContent = initials(name);
+    if (u.full_name) document.getElementById('fName').value  = u.full_name;
+    if (u.email)     document.getElementById('fEmail').value = u.email;
+  } catch {}
+})();
+
+function toggleFaq(btn) {
+  const body = btn.nextElementSibling;
+  const icon = btn.querySelector('.faq-icon');
+  body.classList.toggle('open');
+  icon.classList.toggle('open');
+}
+
+function submitForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-[18px] spin">refresh</span> Sending…';
+
+  // Simulate a short delay (replace with real API call when messages endpoint is ready)
+  setTimeout(() => {
+    document.getElementById('supportForm').classList.add('hidden');
+    document.getElementById('formSuccess').classList.remove('hidden');
+  }, 1200);
+}
+</script>
+</body>
+</html>

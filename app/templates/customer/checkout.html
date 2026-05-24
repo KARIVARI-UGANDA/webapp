@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout | Kari Vari Uganda</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "background": "#f9f9fc", "surface-container-highest": "#e2e2e5",
+          "on-primary-fixed": "#002201", "on-surface": "#1a1c1e",
+          "surface-dim": "#dadadc", "primary": "#154212",
+          "surface-variant": "#e2e2e5", "on-background": "#1a1c1e",
+          "secondary-fixed": "#ffdeac", "ugandan-sun": "#F9B115",
+          "primary-container": "#2d5a27", "inverse-primary": "#a1d494",
+          "surface-bright": "#f9f9fc", "on-primary-fixed-variant": "#23501e",
+          "outline": "#72796e", "safari-green": "#2D5A27",
+          "secondary-fixed-dim": "#ffba35", "on-secondary": "#ffffff",
+          "tertiary-fixed": "#c8e6c9", "tertiary": "#2D5A27",
+          "on-tertiary": "#ffffff", "surface-container-low": "#f3f3f6",
+          "surface-container-lowest": "#ffffff", "primary-fixed": "#bcf0ae",
+          "on-secondary-container": "#6c4a00", "tertiary-container": "#154212",
+          "error": "#ba1a1a", "on-primary-container": "#9dd090",
+          "status-pending": "#B45309", "on-surface-variant": "#42493e",
+          "secondary-container": "#ffb61e", "on-secondary-fixed": "#281900",
+          "on-tertiary-fixed-variant": "#1b5e20", "surface": "#f9f9fc",
+          "tertiary-fixed-dim": "#a5d6a7", "status-success": "#15803D",
+          "on-primary": "#ffffff", "on-error": "#ffffff",
+          "on-tertiary-fixed": "#0a3d0a", "on-error-container": "#93000a",
+          "outline-variant": "#c2c9bb", "surface-container": "#eeeef0",
+          "error-container": "#ffdad6", "soft-gray": "#F5F5F5",
+          "surface-container-high": "#e8e8ea", "inverse-surface": "#2f3133",
+          "inverse-on-surface": "#f0f0f3", "secondary": "#7e5700",
+          "on-tertiary-container": "#c8e6c9", "primary-fixed-dim": "#a1d494",
+          "on-secondary-fixed-variant": "#5f4100", "surface-tint": "#3b6934",
+          "slate-dark": "#1A1C1E"
+        },
+        borderRadius: { DEFAULT: "0.5rem", lg: "0.5rem", xl: "1rem", full: "9999px" }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; background-color: #f9f9fc; color: #1a1c1e; }
+  h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .spin { animation: spin 1s linear infinite; }
+  /* Stripe card element */
+  #stripeCard { padding: 12px 16px; border: 1px solid #c2c9bb; border-radius: 0.5rem; background: #f9f9fc; min-height: 48px; }
+  #stripeCard.StripeElement--focus { border-color: #154212; box-shadow: 0 0 0 1px #154212; }
+  #stripeCard.StripeElement--invalid { border-color: #ba1a1a; }
+</style>
+</head>
+<body class="bg-background text-on-surface">
+
+<!-- ── Nav (same as index) ────────────────────────────────────────────────── -->
+<nav class="sticky top-0 w-full z-50 flex justify-between items-center px-4 md:px-12 py-4 max-w-[1280px] mx-auto bg-surface/80 backdrop-blur-md shadow-sm">
+  <div class="flex items-center gap-8">
+    <a id="backBtn" href="/vehicles" class="flex items-center text-on-surface-variant hover:text-primary transition-colors mr-2">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </a>
+    <a href="/" class="flex items-center gap-2 font-bold text-[22px]" style="color:#2D5A27;text-decoration:none;">
+      <span class="material-symbols-outlined text-[28px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+      Kari Vari Uganda
+    </a>
+    <div class="hidden md:flex gap-6">
+      <a class="text-sm font-semibold hover:text-primary transition-colors" href="/vehicles" style="color:#42493e;text-decoration:none;">Listings</a>
+      <a class="text-sm font-semibold hover:text-primary transition-colors" href="#" style="color:#42493e;text-decoration:none;">How it Works</a>
+      <a class="text-sm font-semibold hover:text-primary transition-colors" href="#" style="color:#42493e;text-decoration:none;">About</a>
+      <a class="text-sm font-semibold hover:text-primary transition-colors" href="#" style="color:#42493e;text-decoration:none;">Contact</a>
+    </div>
+  </div>
+  <div class="flex items-center gap-4" id="authButtons">
+    <a href="/login" class="text-sm font-semibold hover:text-primary transition-colors" style="color:#42493e;text-decoration:none;">Sign In</a>
+    <a href="/register" class="bg-ugandan-sun text-slate-dark px-5 py-2 rounded-lg text-sm font-bold hover:shadow-lg transition-all active:scale-95" style="text-decoration:none;">Register</a>
+  </div>
+  <div class="hidden items-center gap-4" id="userButtons">
+    <a href="/dashboard" class="flex items-center gap-1 text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors" style="text-decoration:none;">
+      <span class="material-symbols-outlined text-[18px]">dashboard</span>
+      Dashboard
+    </a>
+    <span class="text-sm font-semibold text-on-surface" id="navUserName"></span>
+    <button id="navLogoutBtn" class="bg-ugandan-sun text-slate-dark px-5 py-2 rounded-lg text-sm font-bold hover:shadow-lg transition-all active:scale-95">Logout</button>
+  </div>
+</nav>
+
+<!-- ── Loading / Error states ────────────────────────────────────────────────── -->
+<div id="loadingState" class="flex items-center justify-center min-h-[60vh]">
+  <div class="text-center">
+    <span class="material-symbols-outlined text-primary text-[48px] spin">refresh</span>
+    <p class="mt-4 text-on-surface-variant">Loading your booking…</p>
+  </div>
+</div>
+
+<div id="errorState" class="hidden flex items-center justify-center min-h-[60vh]">
+  <div class="text-center">
+    <span class="material-symbols-outlined text-error text-[48px]">error</span>
+    <p class="mt-4 font-bold text-on-surface">Booking not available</p>
+    <p class="text-on-surface-variant text-sm mb-6" id="errorMsg">Could not load vehicle details.</p>
+    <a href="/" class="px-6 py-3 bg-primary text-white rounded-lg font-bold" style="text-decoration:none;">Back to Home</a>
+  </div>
+</div>
+
+<!-- ── Success state ──────────────────────────────────────────────────────────── -->
+<div id="successState" class="hidden flex items-center justify-center min-h-[70vh] px-4">
+  <div class="max-w-md text-center">
+    <div class="w-24 h-24 rounded-full bg-status-success/10 flex items-center justify-center mx-auto mb-6">
+      <span class="material-symbols-outlined text-status-success text-[56px]" style="font-variation-settings:'FILL' 1;">check_circle</span>
+    </div>
+    <h2 class="text-2xl font-bold text-slate-dark mb-2">Booking Confirmed!</h2>
+    <p class="text-on-surface-variant mb-1">Your booking reference:</p>
+    <p class="text-2xl font-bold text-safari-green tracking-widest mb-6" id="successRef">—</p>
+    <p class="text-on-surface-variant text-sm mb-8">A confirmation will be sent to your email. The car owner will contact you with pickup details.</p>
+    <a href="/" class="inline-block px-10 py-4 bg-ugandan-sun text-slate-dark font-bold rounded-lg shadow-lg hover:bg-[#E2A113] transition-all" style="text-decoration:none;">Back to Home</a>
+  </div>
+</div>
+
+<!-- ── Main checkout layout ───────────────────────────────────────────────────── -->
+<main id="checkoutMain" class="hidden max-w-[1280px] mx-auto py-8 px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+  <!-- Left column -->
+  <div class="lg:col-span-8 space-y-8">
+    <header>
+      <h1 class="text-2xl font-bold text-slate-dark mb-2">Finalize Your Reservation</h1>
+      <p class="text-on-surface-variant text-sm" id="headerSubtitle">Complete the details below to secure your vehicle.</p>
+    </header>
+
+    <!-- Step 1: Traveler Details -->
+    <section class="bg-white rounded-xl shadow-sm border border-surface-container-high p-6">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">1</span>
+        <h2 class="text-lg font-bold text-slate-dark">Traveler Details</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="space-y-1.5">
+          <label class="text-sm font-semibold text-on-surface">Full Name</label>
+          <input id="travelerName" type="text" placeholder="John Doe"
+                 class="w-full h-12 rounded-lg border border-outline-variant px-4 focus:border-primary focus:ring-1 focus:ring-primary bg-background text-sm"/>
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-sm font-semibold text-on-surface">Email Address</label>
+          <input id="travelerEmail" type="email" placeholder="john@example.com"
+                 class="w-full h-12 rounded-lg border border-outline-variant px-4 focus:border-primary focus:ring-1 focus:ring-primary bg-background text-sm"/>
+        </div>
+        <div class="space-y-1.5 md:col-span-2">
+          <label class="text-sm font-semibold text-on-surface">Phone Number <span class="text-on-surface-variant font-normal">(for booking updates)</span></label>
+          <div class="flex gap-2">
+            <select id="phoneCode" class="h-12 w-28 rounded-lg border border-outline-variant px-2 bg-background text-sm">
+              <option value="+256">🇺🇬 +256</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+49">🇩🇪 +49</option>
+            </select>
+            <input id="travelerPhone" type="tel" placeholder="700 123 456"
+                   class="flex-1 h-12 rounded-lg border border-outline-variant px-4 focus:border-primary focus:ring-1 focus:ring-primary bg-background text-sm"/>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 2: Add-ons (cosmetic) -->
+    <section class="bg-white rounded-xl shadow-sm border border-surface-container-high p-6">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">2</span>
+        <h2 class="text-lg font-bold text-slate-dark">Enhance Your Trip</h2>
+      </div>
+      <div class="space-y-3">
+        <label class="flex items-center justify-between p-4 rounded-lg border border-surface-container hover:border-primary/40 transition-colors bg-surface-container-lowest cursor-pointer">
+          <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-safari-green">child_care</span>
+            <div>
+              <p class="font-semibold text-slate-dark text-sm">Child Safety Seat</p>
+              <p class="text-xs text-on-surface-variant">Essential for travelers with young children</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="font-bold text-safari-green text-sm">+$25</span>
+            <input type="checkbox" data-addon="25" onchange="recalcAddons()"
+                   class="w-5 h-5 rounded border-outline-variant text-safari-green focus:ring-safari-green"/>
+          </div>
+        </label>
+        <label class="flex items-center justify-between p-4 rounded-lg border border-surface-container hover:border-primary/40 transition-colors bg-surface-container-lowest cursor-pointer">
+          <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-safari-green">explore</span>
+            <div>
+              <p class="font-semibold text-slate-dark text-sm">GPS Navigation System</p>
+              <p class="text-xs text-on-surface-variant">Pre-loaded with offline Ugandan trail maps</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="font-bold text-safari-green text-sm">+$15</span>
+            <input type="checkbox" data-addon="15" onchange="recalcAddons()"
+                   class="w-5 h-5 rounded border-outline-variant text-safari-green focus:ring-safari-green"/>
+          </div>
+        </label>
+        <label class="flex items-center justify-between p-4 rounded-lg border border-surface-container hover:border-primary/40 transition-colors bg-surface-container-lowest cursor-pointer">
+          <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-safari-green">group</span>
+            <div>
+              <p class="font-semibold text-slate-dark text-sm">Additional Driver</p>
+              <p class="text-xs text-on-surface-variant">Share the driving duties across the country</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="font-bold text-safari-green text-sm">+$30</span>
+            <input type="checkbox" data-addon="30" onchange="recalcAddons()"
+                   class="w-5 h-5 rounded border-outline-variant text-safari-green focus:ring-safari-green"/>
+          </div>
+        </label>
+      </div>
+    </section>
+
+    <!-- Step 3: Payment -->
+    <section class="bg-white rounded-xl shadow-sm border border-surface-container-high p-6">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">3</span>
+        <h2 class="text-lg font-bold text-slate-dark">Secure Payment</h2>
+      </div>
+
+      <!-- Payment method selector -->
+      <div class="grid grid-cols-3 gap-3 mb-6">
+        <label id="tabCard" onclick="selectPayMethod('card')"
+               class="relative flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer border-primary bg-primary/5 transition-all">
+          <input checked name="payment" type="radio" class="absolute top-2 right-2 text-primary focus:ring-primary" value="card" onchange="selectPayMethod('card')"/>
+          <span class="material-symbols-outlined text-primary mb-1 text-[22px]">credit_card</span>
+          <span class="font-bold text-sm text-primary">Credit Card</span>
+        </label>
+        <label id="tabMTN" onclick="selectPayMethod('mtn')"
+               class="relative flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer border-surface-container bg-white transition-all hover:border-ugandan-sun/50">
+          <input name="payment" type="radio" class="absolute top-2 right-2 text-primary focus:ring-primary" value="mtn" onchange="selectPayMethod('mtn')"/>
+          <div class="w-8 h-8 bg-ugandan-sun rounded mb-1 flex items-center justify-center text-[10px] font-bold text-slate-dark">MTN</div>
+          <span class="font-bold text-sm">MTN Money</span>
+        </label>
+        <label id="tabAirtel" onclick="selectPayMethod('airtel')"
+               class="relative flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer border-surface-container bg-white transition-all hover:border-error/50">
+          <input name="payment" type="radio" class="absolute top-2 right-2 text-primary focus:ring-primary" value="airtel" onchange="selectPayMethod('airtel')"/>
+          <div class="w-8 h-8 bg-error rounded mb-1 flex items-center justify-center text-[10px] font-bold text-white">Airtel</div>
+          <span class="font-bold text-sm">Airtel Money</span>
+        </label>
+      </div>
+
+      <!-- Card panel (Stripe) -->
+      <div id="panelCard" class="space-y-4">
+        <div class="space-y-1.5">
+          <label class="text-sm font-semibold text-on-surface">Card Details</label>
+          <div id="stripeCard"></div>
+          <div id="cardError" class="hidden items-center gap-2 text-red-600 text-xs mt-1">
+            <span class="material-symbols-outlined text-[14px]">error</span>
+            <span id="cardErrorMsg"></span>
+          </div>
+        </div>
+        <p class="text-xs text-on-surface-variant flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px] text-status-success">lock</span>
+          Your card details are encrypted and never stored on our servers.
+        </p>
+      </div>
+
+      <!-- MTN Money panel -->
+      <div id="panelMTN" class="hidden space-y-4">
+        <div class="space-y-1.5">
+          <label class="text-sm font-semibold text-on-surface">MTN Mobile Money Number</label>
+          <div class="flex border border-outline-variant rounded-lg overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary bg-background">
+            <span class="flex items-center px-3 text-sm text-on-surface-variant bg-surface-container-low border-r border-outline-variant">+256</span>
+            <input id="mtnPhone" type="tel" placeholder="7XX XXX XXX" maxlength="9"
+                   class="flex-1 px-4 h-12 text-sm bg-transparent border-none focus:outline-none focus:ring-0"/>
+          </div>
+        </div>
+        <div id="mtnPending" class="hidden p-4 bg-amber-50 rounded-lg border border-amber-200 text-sm text-amber-800">
+          <p class="font-bold mb-1 flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">smartphone</span> Check your phone</p>
+          <p>A payment prompt has been sent to your MTN line. Approve it, then tap <strong>Verify Payment</strong>.</p>
+          <button onclick="verifyMomo()" id="verifyMTNBtn"
+                  class="mt-3 w-full py-2.5 bg-amber-600 text-white rounded-lg font-bold text-sm hover:bg-amber-700 transition-colors flex items-center justify-center gap-2">
+            <span id="verifyMTNText">Verify Payment</span>
+            <span id="verifyMTNSpinner" class="hidden material-symbols-outlined text-[16px] spin">refresh</span>
+          </button>
+        </div>
+        <div id="mtnError" class="hidden items-center gap-2 text-red-600 text-xs">
+          <span class="material-symbols-outlined text-[14px]">error</span>
+          <span id="mtnErrorMsg"></span>
+        </div>
+      </div>
+
+      <!-- Airtel Money panel -->
+      <div id="panelAirtel" class="hidden space-y-4">
+        <div class="space-y-1.5">
+          <label class="text-sm font-semibold text-on-surface">Airtel Money Number</label>
+          <div class="flex border border-outline-variant rounded-lg overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary bg-background">
+            <span class="flex items-center px-3 text-sm text-on-surface-variant bg-surface-container-low border-r border-outline-variant">+256</span>
+            <input id="airtelPhone" type="tel" placeholder="7XX XXX XXX" maxlength="9"
+                   class="flex-1 px-4 h-12 text-sm bg-transparent border-none focus:outline-none focus:ring-0"/>
+          </div>
+        </div>
+        <div id="airtelPending" class="hidden p-4 bg-red-50 rounded-lg border border-red-200 text-sm text-red-800">
+          <p class="font-bold mb-1 flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">smartphone</span> Check your phone</p>
+          <p>A payment prompt has been sent to your Airtel line. Approve it, then tap <strong>Verify Payment</strong>.</p>
+          <button onclick="verifyMomo()" id="verifyAirtelBtn"
+                  class="mt-3 w-full py-2.5 bg-red-600 text-white rounded-lg font-bold text-sm hover:bg-red-700 transition-colors flex items-center justify-center gap-2">
+            <span id="verifyAirtelText">Verify Payment</span>
+            <span id="verifyAirtelSpinner" class="hidden material-symbols-outlined text-[16px] spin">refresh</span>
+          </button>
+        </div>
+        <div id="airtelError" class="hidden items-center gap-2 text-red-600 text-xs">
+          <span class="material-symbols-outlined text-[14px]">error</span>
+          <span id="airtelErrorMsg"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom bar -->
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-4">
+      <div class="flex items-center gap-5 text-on-surface-variant">
+        <div class="flex items-center gap-1 text-sm">
+          <span class="material-symbols-outlined text-status-success text-[20px]">lock</span>
+          <span>Secure SSL</span>
+        </div>
+        <div class="flex items-center gap-1 text-sm">
+          <span class="material-symbols-outlined text-status-success text-[20px]">bolt</span>
+          <span>Instant Confirmation</span>
+        </div>
+      </div>
+      <button id="confirmBtn" onclick="confirmPayment()"
+              class="w-full md:w-auto px-10 py-4 bg-ugandan-sun hover:bg-[#E2A113] text-slate-dark text-base font-bold rounded-lg shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100">
+        <span id="confirmBtnText">Confirm and Pay</span>
+        <span id="confirmSpinner" class="hidden material-symbols-outlined text-[18px] spin">refresh</span>
+      </button>
+    </div>
+  </div><!-- /left column -->
+
+  <!-- Right column: Sidebar -->
+  <aside class="lg:col-span-4">
+    <div class="sticky top-24 space-y-5">
+
+      <!-- Booking summary -->
+      <div class="bg-white rounded-xl shadow-sm border border-surface-container-high overflow-hidden">
+        <div id="vehicleImg" class="h-48 w-full bg-surface-container bg-cover bg-center"></div>
+        <div class="p-5 space-y-5">
+          <div>
+            <div class="flex items-start justify-between mb-1">
+              <h3 class="text-lg font-bold text-slate-dark" id="sidebarVehicleName">—</h3>
+              <span id="sidebarBadge" class="bg-primary-container text-on-primary-container text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider ml-2 flex-shrink-0"></span>
+            </div>
+            <p class="text-on-surface-variant text-sm flex items-center gap-1">
+              <span class="material-symbols-outlined text-[15px]">location_on</span>
+              <span id="sidebarArea">Uganda</span>
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 py-4 border-y border-surface-container">
+            <div>
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-0.5">Pickup</p>
+              <p class="font-bold text-slate-dark text-sm" id="sidebarPickup">—</p>
+            </div>
+            <div>
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-0.5">Return</p>
+              <p class="font-bold text-slate-dark text-sm" id="sidebarReturn">—</p>
+            </div>
+          </div>
+
+          <div class="space-y-2.5">
+            <h4 class="text-xs font-bold text-slate-dark uppercase tracking-wider">Price Breakdown</h4>
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant" id="sidebarRateLine">Daily rate × — days</span>
+              <span class="font-medium" id="sidebarRateTotal">—</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant">Service fee</span>
+              <span class="font-medium">$15.00</span>
+            </div>
+            <div id="addonBreakdown" class="space-y-1.5"></div>
+            <div class="pt-3 border-t border-surface-container flex justify-between items-center">
+              <span class="font-bold text-slate-dark">Total</span>
+              <span class="text-lg font-bold text-safari-green" id="sidebarTotal">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cancellation policy -->
+      <div class="bg-surface-container-low p-4 rounded-xl border border-surface-container flex gap-3">
+        <span class="material-symbols-outlined text-safari-green flex-shrink-0">info</span>
+        <div>
+          <p class="font-semibold text-sm text-slate-dark">Free Cancellation</p>
+          <p class="text-xs text-on-surface-variant">Full refund if cancelled up to 48 hours before pickup. No hidden fees.</p>
+        </div>
+      </div>
+
+      <!-- Support -->
+      <div class="bg-safari-green text-white p-5 rounded-xl shadow-lg relative overflow-hidden">
+        <div class="relative z-10">
+          <h4 class="font-bold mb-2">Need assistance?</h4>
+          <p class="text-sm text-on-primary-container mb-4">Our local concierge team is available 24/7 for support during your booking process.</p>
+          <button class="flex items-center gap-2 text-ugandan-sun font-bold text-sm group">
+            Chat with us
+            <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </button>
+        </div>
+        <div class="absolute -bottom-4 -right-4 opacity-10">
+          <span class="material-symbols-outlined text-[120px]">support_agent</span>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+</main>
+
+<footer class="mt-12 py-8 border-t border-surface-container-high text-center">
+  <p class="text-on-surface-variant text-sm">© 2024 Kari Vari Uganda. All rights reserved.</p>
+  <div class="flex justify-center gap-6 mt-4 opacity-40">
+    <span class="material-symbols-outlined">verified</span>
+    <span class="material-symbols-outlined">security</span>
+    <span class="material-symbols-outlined">shield</span>
+  </div>
+</footer>
+
+<script>
+const API = '/api';
+const params   = new URLSearchParams(location.search);
+const vehicleId   = params.get('vehicle_id');
+const pickupDate  = params.get('pickup_date');
+const returnDate  = params.get('return_date');
+const bookingType = params.get('booking_type') || 'self_drive';
+
+const RATES_UGX_PER_USD = 3700;
+const SERVICE_FEE = 15;
+
+let _vehicle = null;
+let _days    = 1;
+let _baseUSD = 0;
+let _addonUSD = 0;
+let _stripe  = null;
+let _cardEl  = null;
+let _activeMethod = 'card';  // 'card' | 'mtn' | 'airtel'
+let _momoPaymentId = null;
+let _momoBookingId = null;
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function fmt(dateStr) {
+  if (!dateStr) return '—';
+  return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-UG', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function showEl(id)  { document.getElementById(id).classList.remove('hidden'); }
+function hideEl(id)  { document.getElementById(id).classList.add('hidden'); }
+function showFlex(id){ const el = document.getElementById(id); el.classList.remove('hidden'); el.style.display = 'flex'; }
+
+function recalcAddons() {
+  _addonUSD = [...document.querySelectorAll('[data-addon]:checked')]
+    .reduce((s, el) => s + parseInt(el.dataset.addon), 0);
+  updateSidebar();
+}
+
+function updateSidebar() {
+  const total = _baseUSD + SERVICE_FEE + _addonUSD;
+  document.getElementById('sidebarTotal').textContent = `$${total.toFixed(2)}`;
+  document.getElementById('confirmBtnText').textContent = `Confirm and Pay $${total.toFixed(2)}`;
+
+  const addonEl = document.getElementById('addonBreakdown');
+  const checked = [...document.querySelectorAll('[data-addon]:checked')];
+  addonEl.innerHTML = checked.map(el => {
+    const label = el.closest('label').querySelector('p.font-semibold').textContent;
+    return `<div class="flex justify-between text-sm"><span class="text-on-surface-variant">${label}</span><span class="font-medium">+$${el.dataset.addon}.00</span></div>`;
+  }).join('');
+}
+
+// ── Payment method tabs ───────────────────────────────────────────────────────
+
+function selectPayMethod(method) {
+  _activeMethod = method;
+
+  // Reset all tabs
+  ['tabCard','tabMTN','tabAirtel'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('border-primary','bg-primary/5','border-ugandan-sun','bg-ugandan-sun/5','border-error','bg-error/5');
+    el.classList.add('border-surface-container','bg-white');
+    el.querySelector('span.font-bold,span[class*="font-bold"]') &&
+      el.querySelectorAll('span').forEach(s => s.classList.remove('text-primary'));
+  });
+
+  // Highlight selected
+  const activeStyles = { card: ['border-primary','bg-primary/5'], mtn: ['border-ugandan-sun','bg-ugandan-sun/5'], airtel: ['border-error','bg-error/5'] };
+  const tabId = method === 'card' ? 'tabCard' : method === 'mtn' ? 'tabMTN' : 'tabAirtel';
+  const tab = document.getElementById(tabId);
+  tab.classList.remove('border-surface-container','bg-white');
+  activeStyles[method].forEach(c => tab.classList.add(c));
+
+  // Show/hide panels
+  ['panelCard','panelMTN','panelAirtel'].forEach(id => hideEl(id));
+  const panelId = method === 'card' ? 'panelCard' : method === 'mtn' ? 'panelMTN' : 'panelAirtel';
+  showEl(panelId);
+
+  // Show confirm button for card & hide for momo while pending
+  const pendingVisible = (method === 'mtn' && !document.getElementById('mtnPending').classList.contains('hidden')) ||
+                         (method === 'airtel' && !document.getElementById('airtelPending').classList.contains('hidden'));
+  document.getElementById('confirmBtn').classList.toggle('hidden', pendingVisible);
+
+  if (method === 'card') initStripe();
+}
+
+// ── Stripe ───────────────────────────────────────────────────────────────────
+
+async function initStripe() {
+  if (_stripe) return;
+  try {
+    const res = await fetch(`${API}/payments/stripe-config`);
+    if (!res.ok) throw new Error('Stripe config unavailable');
+    const { publishable_key } = await res.json();
+    if (!publishable_key) throw new Error('Stripe not configured on server');
+
+    _stripe = Stripe(publishable_key);
+    const elements = _stripe.elements();
+    _cardEl = elements.create('card', {
+      style: {
+        base: { fontFamily: "'Inter', sans-serif", fontSize: '15px', color: '#1a1c1e', '::placeholder': { color: '#9ca3af' } },
+        invalid: { color: '#ba1a1a' },
+      },
+    });
+    _cardEl.mount('#stripeCard');
+    _cardEl.on('change', e => {
+      const div = document.getElementById('cardError');
+      const msg = document.getElementById('cardErrorMsg');
+      if (e.error) { msg.textContent = e.error.message; div.style.display = 'flex'; }
+      else { div.style.display = 'none'; }
+    });
+  } catch(e) {
+    const div = document.getElementById('stripeCard');
+    div.innerHTML = `<p class="text-red-600 text-sm flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">error</span>${e.message}</p>`;
+    console.error(e);
+  }
+}
+
+// ── Confirm button ────────────────────────────────────────────────────────────
+
+async function confirmPayment() {
+  if (_activeMethod === 'card') await payWithCard();
+  else await payWithMomo();
+}
+
+// ── Card payment ──────────────────────────────────────────────────────────────
+
+async function payWithCard() {
+  const token = localStorage.getItem('access_token');
+  if (!token) { alert('Please log in first.'); window.location.href = '/login'; return; }
+
+  if (!_stripe || !_cardEl) {
+    showFlex('cardError');
+    document.getElementById('cardErrorMsg').textContent = 'Card payment is loading. Please wait a moment.';
+    return;
+  }
+
+  const btn = document.getElementById('confirmBtn');
+  const spinner = document.getElementById('confirmSpinner');
+  const btnText = document.getElementById('confirmBtnText');
+  const errDiv = document.getElementById('cardError');
+  const showErr = msg => { document.getElementById('cardErrorMsg').textContent = msg; errDiv.style.display = 'flex'; };
+
+  btn.disabled = true; spinner.classList.remove('hidden'); errDiv.style.display = 'none';
+
+  try {
+    // 1. Create booking
+    const bookRes = await fetch(`${API}/bookings/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({
+        vehicle_id: vehicleId,
+        pickup_date: pickupDate,
+        return_date: returnDate,
+        pickup_location: 'To be confirmed',
+        dropoff_location: 'To be confirmed',
+        booking_type: bookingType,
+        passenger_count: 1,
+      }),
+    });
+
+    if (!bookRes.ok) {
+      const err = await bookRes.json().catch(()=>({}));
+      showErr(err.detail || 'Booking failed. Please try again.');
+      return;
+    }
+
+    const bookData = await bookRes.json();
+    btnText.textContent = 'Confirming payment…';
+
+    // 2. Confirm card with Stripe.js (card data never hits our server)
+    const { error, paymentIntent } = await _stripe.confirmCardPayment(bookData.client_secret, {
+      payment_method: { card: _cardEl },
+    });
+
+    if (error) { showErr(error.message); return; }
+    if (paymentIntent.status !== 'succeeded') { showErr(`Unexpected status: ${paymentIntent.status}`); return; }
+
+    // 3. Tell backend to confirm
+    const confirmRes = await fetch(`${API}/bookings/${bookData.booking_id}/confirm-payment`, {
+      method: 'POST', headers: { 'Authorization': `Bearer ${token}` },
+    });
+    const confirmData = await confirmRes.json().catch(()=>({}));
+
+    showSuccess(confirmData.booking_reference || bookData.booking_reference);
+
+  } catch(e) {
+    showErr('Network error. Please try again.');
+    console.error(e);
+  } finally {
+    btn.disabled = false; spinner.classList.add('hidden');
+  }
+}
+
+// ── Mobile money ──────────────────────────────────────────────────────────────
+
+async function payWithMomo() {
+  const token = localStorage.getItem('access_token');
+  if (!token) { alert('Please log in first.'); window.location.href = '/login'; return; }
+
+  const network = _activeMethod === 'mtn' ? 'MTN_UGANDA' : 'AIRTEL_UGANDA';
+  const phoneInput = document.getElementById(_activeMethod === 'mtn' ? 'mtnPhone' : 'airtelPhone');
+  const rawPhone = phoneInput.value.trim().replace(/\s/g,'');
+  const errId = _activeMethod === 'mtn' ? 'mtnError' : 'airtelError';
+  const errMsgId = _activeMethod === 'mtn' ? 'mtnErrorMsg' : 'airtelErrorMsg';
+  const showErr = msg => { document.getElementById(errMsgId).textContent = msg; document.getElementById(errId).style.display = 'flex'; };
+
+  document.getElementById(errId).style.display = 'none';
+
+  if (!rawPhone || rawPhone.length < 9) {
+    showErr('Enter a valid 9-digit phone number after +256.');
+    return;
+  }
+
+  const btn = document.getElementById('confirmBtn');
+  const spinner = document.getElementById('confirmSpinner');
+  btn.disabled = true; spinner.classList.remove('hidden');
+
+  try {
+    // 1. Create booking
+    const bookRes = await fetch(`${API}/bookings/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({
+        vehicle_id: vehicleId,
+        pickup_date: pickupDate,
+        return_date: returnDate,
+        pickup_location: 'To be confirmed',
+        dropoff_location: 'To be confirmed',
+        booking_type: bookingType,
+        passenger_count: 1,
+      }),
+    });
+
+    if (!bookRes.ok) {
+      const err = await bookRes.json().catch(()=>({}));
+      showErr(err.detail || 'Booking failed. Please try again.');
+      return;
+    }
+
+    const bookData = await bookRes.json();
+    _momoBookingId = bookData.booking_id;
+
+    // 2. Initiate Flutterwave mobile money charge
+    const momoRes = await fetch(`${API}/payments/initiate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({
+        booking_id: bookData.booking_id,
+        method: 'mobile_money',
+        phone_number: `+256${rawPhone}`,
+        network,
+      }),
+    });
+
+    if (!momoRes.ok) {
+      const err = await momoRes.json().catch(()=>({}));
+      showErr(err.detail || 'Mobile money initiation failed.');
+      return;
+    }
+
+    const momoData = await momoRes.json();
+    _momoPaymentId = momoData.payment_id;
+
+    // 3. Show "check your phone" panel
+    const pendingId = _activeMethod === 'mtn' ? 'mtnPending' : 'airtelPending';
+    showEl(pendingId);
+    hideEl('confirmBtn');
+
+  } catch(e) {
+    showErr('Network error. Please try again.');
+    console.error(e);
+  } finally {
+    btn.disabled = false; spinner.classList.add('hidden');
+  }
+}
+
+// ── Verify mobile money ───────────────────────────────────────────────────────
+
+async function verifyMomo() {
+  const token = localStorage.getItem('access_token');
+  if (!token || !_momoPaymentId) return;
+
+  const isMtn    = _activeMethod === 'mtn';
+  const textId   = isMtn ? 'verifyMTNText'    : 'verifyAirtelText';
+  const spinnerId = isMtn ? 'verifyMTNSpinner' : 'verifyAirtelSpinner';
+  const btnId    = isMtn ? 'verifyMTNBtn'     : 'verifyAirtelBtn';
+  const errId    = isMtn ? 'mtnError'         : 'airtelError';
+  const errMsgId = isMtn ? 'mtnErrorMsg'      : 'airtelErrorMsg';
+  const showErr  = msg  => { document.getElementById(errMsgId).textContent = msg; document.getElementById(errId).style.display = 'flex'; };
+
+  const btn = document.getElementById(btnId);
+  btn.disabled = true;
+  document.getElementById(textId).textContent = 'Verifying…';
+  showEl(spinnerId);
+  document.getElementById(errId).style.display = 'none';
+
+  try {
+    const res = await fetch(`${API}/payments/${_momoPaymentId}/verify`, {
+      method: 'POST', headers: { 'Authorization': `Bearer ${token}` },
+    });
+    const data = await res.json().catch(()=>({}));
+
+    if (data.status === 'completed') {
+      showSuccess(null);
+    } else if (data.status === 'failed') {
+      showErr('Payment was declined. Please try again.');
+      hideEl(isMtn ? 'mtnPending' : 'airtelPending');
+      showEl('confirmBtn');
+    } else {
+      showErr('Payment not confirmed yet. Approve the prompt on your phone, then try again.');
+    }
+  } catch(e) {
+    showErr('Network error while verifying.');
+  } finally {
+    btn.disabled = false;
+    document.getElementById(textId).textContent = 'Verify Payment';
+    hideEl(spinnerId);
+  }
+}
+
+// ── Show success ──────────────────────────────────────────────────────────────
+
+function showSuccess(ref) {
+  hideEl('checkoutMain');
+  if (ref) document.getElementById('successRef').textContent = ref;
+  showFlex('successState');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Redirect to dashboard after 2.5 seconds
+  setTimeout(() => { window.location.href = '/dashboard'; }, 2500);
+}
+
+// ── Load page data ────────────────────────────────────────────────────────────
+
+async function loadPage() {
+  const token = localStorage.getItem('access_token');
+  if (!token) { window.location.href = `/login?next=${encodeURIComponent(location.href)}`; return; }
+
+  if (!vehicleId || !pickupDate || !returnDate) {
+    document.getElementById('errorMsg').textContent = 'Missing booking details. Please go back and select your dates.';
+    hideEl('loadingState'); showFlex('errorState'); return;
+  }
+
+  try {
+    // Fetch vehicle + user profile in parallel
+    const [vRes, uRes] = await Promise.all([
+      fetch(`${API}/vehicles/${vehicleId}`),
+      fetch(`${API}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } }),
+    ]);
+
+    if (!vRes.ok) throw new Error('Vehicle not found');
+    _vehicle = await vRes.json();
+
+    // Populate traveler details from profile
+    if (uRes.ok) {
+      const user = await uRes.json();
+      document.getElementById('travelerName').value  = user.full_name  || '';
+      document.getElementById('travelerEmail').value = user.email      || '';
+    }
+
+    // Calculate pricing
+    const pickDt  = new Date(pickupDate  + 'T00:00:00');
+    const retDt   = new Date(returnDate  + 'T00:00:00');
+    _days = Math.max(1, Math.round((retDt - pickDt) / 86400000));
+
+    const rateUGX = bookingType === 'with_driver' && _vehicle.rate_with_driver_ugx
+      ? _vehicle.rate_with_driver_ugx : _vehicle.base_daily_rate_ugx;
+    _baseUSD = parseFloat((rateUGX / RATES_UGX_PER_USD * _days).toFixed(2));
+
+    // Sidebar
+    const photo = _vehicle.photos?.find(p => p.is_primary) || _vehicle.photos?.[0];
+    if (photo) document.getElementById('vehicleImg').style.backgroundImage = `url('${photo.photo_url}')`;
+
+    document.getElementById('sidebarVehicleName').textContent = `${_vehicle.make} ${_vehicle.model} (${_vehicle.year})`;
+    document.getElementById('sidebarBadge').textContent       = _vehicle.vehicle_type || '';
+    document.getElementById('sidebarArea').textContent        = _vehicle.service_area || 'Uganda';
+    document.getElementById('sidebarPickup').textContent      = fmt(pickupDate);
+    document.getElementById('sidebarReturn').textContent      = fmt(returnDate);
+    document.getElementById('sidebarRateLine').textContent    = `$${(_baseUSD / _days).toFixed(2)}/day × ${_days} day${_days > 1 ? 's' : ''}`;
+    document.getElementById('sidebarRateTotal').textContent   = `$${_baseUSD.toFixed(2)}`;
+
+    document.getElementById('headerSubtitle').textContent =
+      `Complete the details below to secure your ${_vehicle.make} ${_vehicle.model} for your Ugandan adventure.`;
+    document.getElementById('backBtn').href = `/vehicles/${vehicleId}`;
+
+    updateSidebar();
+
+    hideEl('loadingState');
+    showEl('checkoutMain');
+
+    // Init Stripe immediately (default tab is card)
+    initStripe();
+
+  } catch(e) {
+    document.getElementById('errorMsg').textContent = e.message || 'Could not load booking details.';
+    hideEl('loadingState');
+    showFlex('errorState');
+  }
+}
+
+// ── Nav auth state ────────────────────────────────────────────────────────────
+(function() {
+  const token = localStorage.getItem('access_token');
+  const authBtn = document.getElementById('authButtons');
+  const userBtn = document.getElementById('userButtons');
+  const nameEl  = document.getElementById('navUserName');
+  if (token) {
+    authBtn.classList.add('hidden'); userBtn.style.display = 'flex';
+    fetch(`${API}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } })
+      .then(r => r.ok ? r.json() : null).then(u => { if (u) nameEl.textContent = u.full_name || u.email; }).catch(()=>{});
+  }
+  document.getElementById('navLogoutBtn')?.addEventListener('click', () => {
+    localStorage.removeItem('access_token');
+    window.location.href = '/';
+  });
+})();
+
+loadPage();
+</script>
+</body>
+</html>

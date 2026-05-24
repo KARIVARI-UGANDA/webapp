@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Trips | Kari Vari Uganda</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body style="background:#f9f9fc;">
+
+<div class="d-flex">
+  <!-- Sidebar -->
+  <nav class="sidebar d-flex flex-column p-3 gap-1 flex-shrink-0">
+    <a class="navbar-brand text-white fw-bold fs-5 mb-4 px-2 d-flex align-items-center gap-2" href="/"><i class="bi bi-car-front-fill"></i> Kari Vari Uganda</a>
+    <a class="nav-link" href="/driver/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link active" href="/driver/trips"><i class="bi bi-map"></i> My Trips</a>
+    <a class="nav-link" href="/driver/training"><i class="bi bi-mortarboard"></i> Training</a>
+    <a class="nav-link" href="#"><i class="bi bi-star"></i> Reviews</a>
+    <a class="nav-link" href="/settings"><i class="bi bi-person-circle"></i> Profile</a>
+    <a class="nav-link" href="/settings"><i class="bi bi-gear"></i> Settings</a>
+    <div class="mt-auto pt-3 border-top border-white border-opacity-25">
+      <a class="nav-link nav-link-danger" href="#" id="logoutBtn">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow-1 p-4 p-lg-5">
+
+    <!-- Header -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 gap-3">
+      <div>
+        <span class="portal-badge portal-badge-driver mb-2 d-inline-block">DRIVER PORTAL</span>
+        <h1 class="page-header mb-1">My Trips</h1>
+        <p class="text-secondary small mb-0">Track and manage your assigned trips.</p>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row g-3 mb-4">
+      <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:rgba(21,66,18,0.1);color:var(--primary);"><i class="bi bi-list-ul"></i></div>
+            <div>
+              <div class="text-secondary small fw-semibold">TOTAL</div>
+              <div class="fs-3 fw-bold" id="statTotal">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:rgba(13,110,253,0.1);color:#0d6efd;"><i class="bi bi-calendar-check"></i></div>
+            <div>
+              <div class="text-secondary small fw-semibold">UPCOMING</div>
+              <div class="fs-3 fw-bold" id="statUpcoming">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:rgba(249,177,21,0.12);color:#b07d00;"><i class="bi bi-play-circle"></i></div>
+            <div>
+              <div class="text-secondary small fw-semibold">IN PROGRESS</div>
+              <div class="fs-3 fw-bold" id="statActive">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:rgba(21,128,61,0.1);color:#15803d;"><i class="bi bi-check-circle"></i></div>
+            <div>
+              <div class="text-secondary small fw-semibold">COMPLETED</div>
+              <div class="fs-3 fw-bold" id="statCompleted">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="card border-0 rounded-4 shadow-sm">
+      <div class="card-header bg-white border-0 pt-4 px-4">
+        <ul class="nav nav-pills gap-2" id="tripTabs">
+          <li class="nav-item"><button class="nav-link active" onclick="switchTab('all')">All Trips</button></li>
+          <li class="nav-item"><button class="nav-link" onclick="switchTab('upcoming')">Upcoming</button></li>
+          <li class="nav-item"><button class="nav-link" onclick="switchTab('active')">In Progress</button></li>
+          <li class="nav-item"><button class="nav-link" onclick="switchTab('past')">Past</button></li>
+        </ul>
+      </div>
+      <div class="card-body p-4" id="tripList">
+        <div class="text-center py-5 text-secondary">
+          <div class="spinner-border spinner-border-sm me-2"></div>Loading trips…
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Start Trip Confirmation Modal -->
+<div class="modal fade" id="startModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold">Start Trip</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-secondary mb-0">Are you sure you want to mark trip <strong id="startRef"></strong> as <em>in progress</em>?</p>
+      </div>
+      <div class="modal-footer border-0">
+        <button class="btn btn-outline-secondary rounded-3" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-warning rounded-3 text-dark fw-semibold" id="startConfirmBtn" onclick="confirmStart()">
+          <i class="bi bi-play-fill me-1"></i>Start Trip
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Complete Trip Confirmation Modal -->
+<div class="modal fade" id="completeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold">Complete Trip</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-secondary mb-0">Mark trip <strong id="completeRef"></strong> as <em>completed</em>? This cannot be undone.</p>
+      </div>
+      <div class="modal-footer border-0">
+        <button class="btn btn-outline-secondary rounded-3" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-success rounded-3 fw-semibold" id="completeConfirmBtn" onclick="confirmComplete()">
+          <i class="bi bi-check-lg me-1"></i>Mark Completed
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/shared.js"></script>
+<script>
+const API   = '/api';
+const token = localStorage.getItem('access_token');
+if (!token) { window.location.href = '/login'; }
+document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
+
+const AUTH = { headers: { Authorization: `Bearer ${token}` } };
+
+const STATUS_BADGE = {
+  confirmed:   'bg-primary-subtle text-primary',
+  in_progress: 'bg-warning-subtle text-warning-emphasis',
+  completed:   'bg-success-subtle text-success-emphasis',
+  cancelled:   'bg-danger-subtle text-danger',
+};
+const STATUS_LABEL = {
+  confirmed:   'Upcoming',
+  in_progress: 'In Progress',
+  completed:   'Completed',
+  cancelled:   'Cancelled',
+};
+
+let allTrips   = [];
+let actionTarget = { id: '', ref: '' };
+let startModalInst, completeModalInst;
+
+function fmtDate(s) {
+  if (!s) return '—';
+  return new Date(s).toLocaleDateString('en-UG', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function tripCard(t) {
+  const badge  = STATUS_BADGE[t.status] || 'bg-secondary-subtle text-secondary';
+  const label  = STATUS_LABEL[t.status] || t.status;
+  const vName  = t.vehicle ? `${t.vehicle.make} ${t.vehicle.model} ${t.vehicle.year}` : 'Unknown Vehicle';
+  const photo  = t.vehicle?.photo_url
+    ? `<img src="${t.vehicle.photo_url}" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:12px;flex-shrink:0;">`
+    : `<div style="width:72px;height:72px;border-radius:12px;background:#e9ecef;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-car-front fs-3 text-secondary"></i></div>`;
+
+  let actions = '';
+  if (t.status === 'confirmed') {
+    actions = `<button class="btn btn-sm btn-warning rounded-3 fw-semibold" onclick="openStart('${t.id}','${t.booking_reference}')">
+      <i class="bi bi-play-fill me-1"></i>Start Trip
+    </button>`;
+  } else if (t.status === 'in_progress') {
+    actions = `<button class="btn btn-sm btn-success rounded-3 fw-semibold" onclick="openComplete('${t.id}','${t.booking_reference}')">
+      <i class="bi bi-check-lg me-1"></i>Complete Trip
+    </button>`;
+  }
+
+  return `
+    <div class="d-flex gap-3 p-4 rounded-4 border mb-3 align-items-start" style="background:#fff;">
+      ${photo}
+      <div class="flex-grow-1 min-w-0">
+        <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap mb-1">
+          <div>
+            <span class="fw-semibold">${vName}</span>
+            <span class="text-secondary small ms-2">${t.booking_reference}</span>
+          </div>
+          <span class="badge rounded-pill ${badge} px-3 py-1">${label}</span>
+        </div>
+        <div class="d-flex flex-wrap gap-3 text-secondary small mb-2">
+          <span><i class="bi bi-calendar3 me-1"></i>${fmtDate(t.start_datetime)} → ${fmtDate(t.end_datetime)}</span>
+          <span><i class="bi bi-clock me-1"></i>${t.total_days || 1} day${(t.total_days||1)!==1?'s':''}</span>
+          <span><i class="bi bi-geo-alt me-1"></i>${t.pickup_location || '—'}</span>
+          <span><i class="bi bi-arrow-right me-1"></i>${t.dropoff_location || '—'}</span>
+          ${t.customer_name ? `<span><i class="bi bi-person me-1"></i>${t.customer_name}</span>` : ''}
+        </div>
+        ${actions ? `<div class="mt-1">${actions}</div>` : ''}
+      </div>
+    </div>`;
+}
+
+function emptyState(msg) {
+  return `<div class="text-center py-5 text-secondary">
+    <i class="bi bi-map fs-1 opacity-25 d-block mb-3"></i>
+    <p class="mb-0">${msg}</p>
+  </div>`;
+}
+
+let currentTab = 'all';
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('#tripTabs .nav-link').forEach((btn, i) => {
+    const tabs = ['all','upcoming','active','past'];
+    btn.classList.toggle('active', tabs[i] === tab);
+  });
+  const filtered = tab === 'all'      ? allTrips
+    : tab === 'upcoming' ? allTrips.filter(t => t.status === 'confirmed')
+    : tab === 'active'   ? allTrips.filter(t => t.status === 'in_progress')
+    : allTrips.filter(t => ['completed','cancelled'].includes(t.status));
+
+  const msgs = {
+    all:      'No trips assigned yet.',
+    upcoming: 'No upcoming trips.',
+    active:   'No trips in progress.',
+    past:     'No past trips yet.',
+  };
+  document.getElementById('tripList').innerHTML = filtered.length
+    ? filtered.map(tripCard).join('')
+    : emptyState(msgs[tab]);
+}
+
+function updateStats() {
+  document.getElementById('statTotal').textContent     = allTrips.length;
+  document.getElementById('statUpcoming').textContent  = allTrips.filter(t=>t.status==='confirmed').length;
+  document.getElementById('statActive').textContent    = allTrips.filter(t=>t.status==='in_progress').length;
+  document.getElementById('statCompleted').textContent = allTrips.filter(t=>t.status==='completed').length;
+}
+
+// Start
+function openStart(id, ref) {
+  actionTarget = { id, ref };
+  document.getElementById('startRef').textContent = ref;
+  startModalInst.show();
+}
+
+async function confirmStart() {
+  const btn = document.getElementById('startConfirmBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Starting…';
+  try {
+    const res = await fetch(`${API}/bookings/${actionTarget.id}/start`, { method:'PATCH', ...AUTH });
+    if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Failed'); }
+    const t = allTrips.find(x=>x.id===actionTarget.id);
+    if (t) t.status = 'in_progress';
+    updateStats();
+    switchTab(currentTab);
+    startModalInst.hide();
+  } catch(e) {
+    alert(e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-play-fill me-1"></i>Start Trip';
+  }
+}
+
+// Complete
+function openComplete(id, ref) {
+  actionTarget = { id, ref };
+  document.getElementById('completeRef').textContent = ref;
+  completeModalInst.show();
+}
+
+async function confirmComplete() {
+  const btn = document.getElementById('completeConfirmBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Completing…';
+  try {
+    const res = await fetch(`${API}/bookings/${actionTarget.id}/complete`, { method:'PATCH', ...AUTH });
+    if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Failed'); }
+    const t = allTrips.find(x=>x.id===actionTarget.id);
+    if (t) t.status = 'completed';
+    updateStats();
+    switchTab(currentTab);
+    completeModalInst.hide();
+  } catch(e) {
+    alert(e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-check-lg me-1"></i>Mark Completed';
+  }
+}
+
+async function load() {
+  startModalInst   = new bootstrap.Modal(document.getElementById('startModal'));
+  completeModalInst = new bootstrap.Modal(document.getElementById('completeModal'));
+
+  try {
+    const res = await fetch(`${API}/drivers/me/trips`, AUTH);
+    if (res.status === 401) { localStorage.clear(); window.location.href='/login'; return; }
+    if (!res.ok) {
+      document.getElementById('tripList').innerHTML = emptyState('Could not load trips. Are you a verified driver?');
+      return;
+    }
+    const data = await res.json();
+    allTrips = data.trips || [];
+    updateStats();
+    switchTab('all');
+  } catch(e) {
+    document.getElementById('tripList').innerHTML = emptyState('Failed to load trips.');
+  }
+}
+load();
+</script>
+</body>
+</html>

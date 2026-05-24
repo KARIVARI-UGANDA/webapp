@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -359,18 +360,97 @@ def update_training_module(
 # ---------------------------------------------------------------------------
 
 @router.get("/kyc/manual-review")
-def list_kyc_manual_review(current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 7")
+def list_kyc_manual_review(
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    from app.models.user import UserIdentityVerification
+    records = (
+        db.query(UserIdentityVerification)
+        .filter(UserIdentityVerification.verification_status == "pending")
+        .order_by(UserIdentityVerification.submitted_at.desc())
+        .all()
+    )
+    return [
+        {
+            "id": r.id,
+            "user_id": r.user_id,
+            "document_type": r.document_type,
+            "document_number": r.document_number,
+            "document_front_url": r.document_front_url,
+            "document_back_url": r.document_back_url,
+            "selfie_url": r.selfie_url,
+            "submitted_at": r.submitted_at,
+        }
+        for r in records
+    ]
 
 
-@router.patch("/kyc/{user_id}/approve")
-def approve_kyc(user_id: str, current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 7")
+class KYCDecision(BaseModel):
+    reason: Optional[str] = None
 
 
-@router.patch("/kyc/{user_id}/reject")
-def reject_kyc(user_id: str, current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 7")
+@router.patch("/kyc/{record_id}/approve")
+def approve_kyc(
+    record_id: str,
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    from app.models.user import UserIdentityVerification
+    record = db.query(UserIdentityVerification).filter(UserIdentityVerification.id == record_id).first()
+    if not record:
+        raise HTTPException(status_code=404, detail="KYC record not found")
+
+    record.verification_status = "approved"
+    record.reviewed_by = current_user.id
+    record.reviewed_at = _now()
+    record.rejection_reason = None
+    db.commit()
+
+    create_notification(db, user_id=record.user_id,
+                        notification_type="kyc_approved",
+                        title="Identity verification approved",
+                        body="Your identity has been verified on Kari Vari Uganda.",
+                        related_entity_type="kyc", related_entity_id=record.id)
+
+    _write_audit(db, admin_id=current_user.id, action="approve_kyc",
+                 entity_type="user_identity_verification", entity_id=record.id)
+    db.commit()
+    return {"status": "approved", "record_id": record.id}
+
+
+@router.patch("/kyc/{record_id}/reject")
+def reject_kyc(
+    record_id: str,
+    payload: KYCDecision,
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    from app.models.user import UserIdentityVerification
+    if not payload.reason:
+        raise HTTPException(status_code=422, detail="A reason is required when rejecting a KYC submission")
+
+    record = db.query(UserIdentityVerification).filter(UserIdentityVerification.id == record_id).first()
+    if not record:
+        raise HTTPException(status_code=404, detail="KYC record not found")
+
+    record.verification_status = "rejected"
+    record.reviewed_by = current_user.id
+    record.reviewed_at = _now()
+    record.rejection_reason = payload.reason
+    db.commit()
+
+    create_notification(db, user_id=record.user_id,
+                        notification_type="kyc_rejected",
+                        title="Identity verification unsuccessful",
+                        body=f"Your document was not approved. Reason: {payload.reason}",
+                        related_entity_type="kyc", related_entity_id=record.id)
+
+    _write_audit(db, admin_id=current_user.id, action="reject_kyc",
+                 entity_type="user_identity_verification", entity_id=record.id,
+                 details={"reason": payload.reason})
+    db.commit()
+    return {"status": "rejected", "record_id": record.id}
 
 
 # ---------------------------------------------------------------------------
@@ -443,13 +523,75 @@ def suspend_user(
 # ---------------------------------------------------------------------------
 
 @router.get("/bookings")
-def list_all_bookings(current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 13")
+def list_all_bookings(
+    status_filter: Optional[str] = Query(None, alias="status"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    from app.models import Booking, Payment
+
+    q = db.query(Booking)
+    if status_filter:
+        q = q.filter(Booking.status == status_filter)
+    total = q.count()
+    bookings = q.order_by(Booking.created_at.desc()).offset((page-1)*page_size).limit(page_size).all()
+
+    result = []
+    for b in bookings:
+        customer = db.query(User).filter(User.id == b.customer_id).first()
+        payment = db.query(Payment).filter(Payment.booking_id == b.id).order_by(Payment.created_at.desc()).first()
+        result.append({
+            "id": b.id,
+            "booking_reference": b.booking_reference,
+            "status": b.status,
+            "booking_type": b.booking_type,
+            "customer_name": customer.full_name if customer else None,
+            "customer_email": customer.email if customer else None,
+            "vehicle_id": b.vehicle_id,
+            "start_datetime": b.start_datetime,
+            "end_datetime": b.end_datetime,
+            "total_days": b.total_days,
+            "amount_usd": float(payment.amount_usd) if payment and payment.amount_usd else None,
+            "created_at": b.created_at,
+        })
+    return {"total": total, "page": page, "page_size": page_size, "bookings": result}
+
+
+class BookingStatusOverride(BaseModel):
+    status: str
+    reason: Optional[str] = None
 
 
 @router.patch("/bookings/{booking_id}/override-status")
-def override_booking_status(booking_id: str, current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 13")
+def override_booking_status(
+    booking_id: str,
+    payload: BookingStatusOverride,
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    from app.models import Booking
+
+    booking = db.query(Booking).filter(Booking.id == booking_id).first()
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+
+    VALID_STATUSES = {"pending_payment","pending","confirmed","in_progress","completed","cancelled"}
+    if payload.status not in VALID_STATUSES:
+        raise HTTPException(status_code=400, detail=f"Invalid status. Must be one of {VALID_STATUSES}")
+
+    old_status = booking.status
+    booking.status = payload.status
+    booking.updated_at = _now()
+    db.commit()
+
+    _write_audit(db, admin_id=current_user.id, action="override_booking_status",
+                 entity_type="booking", entity_id=booking_id,
+                 details={"old_status": old_status, "new_status": payload.status, "reason": payload.reason})
+    db.commit()
+
+    return {"booking_id": booking_id, "status": payload.status}
 
 
 # ---------------------------------------------------------------------------
@@ -457,54 +599,265 @@ def override_booking_status(booking_id: str, current_user=Depends(_admin)):
 # ---------------------------------------------------------------------------
 
 @router.get("/disputes")
-def list_disputes(current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 13")
+def list_disputes(
+    status_filter: Optional[str] = Query(None, alias="status"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    from app.models.dispute import Dispute
+
+    q = db.query(Dispute)
+    if status_filter:
+        q = q.filter(Dispute.status == status_filter)
+    total = q.count()
+    disputes = q.order_by(Dispute.opened_at.desc()).offset((page-1)*page_size).limit(page_size).all()
+
+    result = []
+    for d in disputes:
+        raiser = db.query(User).filter(User.id == d.raised_by).first()
+        result.append({
+            "id": d.id,
+            "booking_id": d.booking_id,
+            "dispute_type": d.dispute_type,
+            "description": d.description,
+            "status": d.status,
+            "raised_by_name": raiser.full_name if raiser else None,
+            "resolution_notes": d.resolution_notes,
+            "refund_issued": d.refund_issued,
+            "opened_at": d.opened_at,
+            "resolved_at": d.resolved_at,
+        })
+    return {"total": total, "page": page, "page_size": page_size, "disputes": result}
+
+
+class DisputeResolve(BaseModel):
+    resolution_notes: str
+    refund_issued: bool = False
 
 
 @router.patch("/disputes/{dispute_id}/resolve")
-def resolve_dispute(dispute_id: str, current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 13")
+def resolve_dispute(
+    dispute_id: str,
+    payload: DisputeResolve,
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    from app.models.dispute import Dispute
+
+    dispute = db.query(Dispute).filter(Dispute.id == dispute_id).first()
+    if not dispute:
+        raise HTTPException(status_code=404, detail="Dispute not found")
+    if dispute.status == "resolved":
+        raise HTTPException(status_code=400, detail="Dispute is already resolved")
+
+    now = _now()
+    dispute.status = "resolved"
+    dispute.resolution_notes = payload.resolution_notes
+    dispute.refund_issued = payload.refund_issued
+    dispute.assigned_to = current_user.id
+    dispute.resolved_at = now
+    dispute.updated_at = now
+    db.commit()
+
+    _write_audit(db, admin_id=current_user.id, action="resolve_dispute",
+                 entity_type="dispute", entity_id=dispute_id,
+                 details={"resolution_notes": payload.resolution_notes})
+    db.commit()
+
+    return {"dispute_id": dispute_id, "status": "resolved"}
 
 
 # ---------------------------------------------------------------------------
-# Analytics (Phase 14)
+# Analytics
 # ---------------------------------------------------------------------------
 
 @router.get("/analytics/overview")
-def analytics_overview(current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 14")
+def analytics_overview(current_user=Depends(_admin), db: Session = Depends(get_db)):
+    from sqlalchemy import func
+    from app.models import Booking, Payment
+    from app.models.dispute import Dispute
+
+    total_users     = db.query(func.count(User.id)).scalar() or 0
+    total_bookings  = db.query(func.count(Booking.id)).scalar() or 0
+    confirmed_b     = db.query(func.count(Booking.id)).filter(Booking.status == "confirmed").scalar() or 0
+    completed_b     = db.query(func.count(Booking.id)).filter(Booking.status == "completed").scalar() or 0
+    cancelled_b     = db.query(func.count(Booking.id)).filter(Booking.status == "cancelled").scalar() or 0
+    total_revenue   = db.query(func.sum(Payment.amount_usd)).filter(Payment.status == "completed").scalar() or 0
+    open_disputes   = db.query(func.count(Dispute.id)).filter(Dispute.status == "open").scalar() or 0
+    active_vehicles = db.query(func.count(Vehicle.id)).filter(Vehicle.status == "verified").scalar() or 0
+
+    return {
+        "total_users": total_users,
+        "total_bookings": total_bookings,
+        "confirmed_bookings": confirmed_b,
+        "completed_bookings": completed_b,
+        "cancelled_bookings": cancelled_b,
+        "total_revenue_usd": float(total_revenue),
+        "open_disputes": open_disputes,
+        "active_vehicles": active_vehicles,
+    }
 
 
 @router.get("/analytics/bookings")
-def analytics_bookings(current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 14")
+def analytics_bookings(
+    days: int = Query(30, ge=1, le=365),
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    from sqlalchemy import func, cast, Date
+    from app.models import Booking
+    from datetime import date
+
+    cutoff = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=days)
+    rows = (
+        db.query(
+            cast(Booking.created_at, Date).label("day"),
+            func.count(Booking.id).label("count"),
+        )
+        .filter(Booking.created_at >= cutoff)
+        .group_by(cast(Booking.created_at, Date))
+        .order_by(cast(Booking.created_at, Date))
+        .all()
+    )
+    return [{"date": str(r.day), "count": r.count} for r in rows]
 
 
 @router.get("/analytics/revenue")
-def analytics_revenue(current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 14")
+def analytics_revenue(
+    days: int = Query(30, ge=1, le=365),
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    from sqlalchemy import func, cast, Date
+    from app.models import Payment
+
+    cutoff = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=days)
+    rows = (
+        db.query(
+            cast(Payment.created_at, Date).label("day"),
+            func.sum(Payment.amount_usd).label("revenue"),
+        )
+        .filter(Payment.status == "completed", Payment.created_at >= cutoff)
+        .group_by(cast(Payment.created_at, Date))
+        .order_by(cast(Payment.created_at, Date))
+        .all()
+    )
+    return [{"date": str(r.day), "revenue_usd": float(r.revenue or 0)} for r in rows]
 
 
 @router.get("/analytics/fleet-utilisation")
-def analytics_fleet(current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 14")
+def analytics_fleet(current_user=Depends(_admin), db: Session = Depends(get_db)):
+    from sqlalchemy import func
+    from app.models import Booking
+
+    total_vehicles    = db.query(func.count(Vehicle.id)).scalar() or 0
+    verified_vehicles = db.query(func.count(Vehicle.id)).filter(Vehicle.status == "verified").scalar() or 0
+    booked_vehicle_ids = [
+        r[0] for r in db.query(Booking.vehicle_id)
+        .filter(Booking.status.in_(["confirmed", "in_progress"]))
+        .distinct().all()
+    ]
+    return {
+        "total_vehicles": total_vehicles,
+        "verified_vehicles": verified_vehicles,
+        "currently_booked": len(booked_vehicle_ids),
+        "utilisation_pct": round(len(booked_vehicle_ids) / verified_vehicles * 100, 1) if verified_vehicles else 0,
+    }
 
 
 @router.get("/analytics/top-routes")
-def analytics_top_routes(current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 14")
+def analytics_top_routes(
+    limit: int = Query(10, ge=1, le=50),
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    from sqlalchemy import func
+    from app.models import Booking
+
+    rows = (
+        db.query(
+            Booking.pickup_location,
+            Booking.dropoff_location,
+            func.count(Booking.id).label("count"),
+        )
+        .group_by(Booking.pickup_location, Booking.dropoff_location)
+        .order_by(func.count(Booking.id).desc())
+        .limit(limit)
+        .all()
+    )
+    return [{"from": r.pickup_location, "to": r.dropoff_location, "count": r.count} for r in rows]
 
 
 @router.get("/analytics/conversion-funnel")
-def analytics_funnel(current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 14")
+def analytics_funnel(current_user=Depends(_admin), db: Session = Depends(get_db)):
+    from sqlalchemy import func
+    from app.models import Booking
+
+    total  = db.query(func.count(Booking.id)).scalar() or 0
+    paid   = db.query(func.count(Booking.id)).filter(Booking.status != "pending_payment").scalar() or 0
+    done   = db.query(func.count(Booking.id)).filter(Booking.status == "completed").scalar() or 0
+    return {
+        "created": total,
+        "payment_completed": paid,
+        "trip_completed": done,
+        "payment_rate_pct": round(paid/total*100, 1) if total else 0,
+        "completion_rate_pct": round(done/paid*100, 1) if paid else 0,
+    }
 
 
 @router.get("/analytics/driver-performance")
-def analytics_driver_performance(current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 14")
+def analytics_driver_performance(
+    limit: int = Query(10, ge=1, le=50),
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    from app.models.review import Review
+
+    drivers = (
+        db.query(DriverProfile)
+        .filter(DriverProfile.total_trips > 0)
+        .order_by(DriverProfile.total_trips.desc())
+        .limit(limit)
+        .all()
+    )
+    result = []
+    for d in drivers:
+        user = db.query(User).filter(User.id == d.user_id).first()
+        avg_rating = db.query(
+            __import__('sqlalchemy', fromlist=['func']).func.avg(Review.overall_rating)
+        ).filter(Review.reviewee_id == d.user_id, Review.review_target == "driver").scalar()
+        result.append({
+            "driver_id": d.id,
+            "name": user.full_name if user else None,
+            "total_trips": d.total_trips,
+            "average_rating": round(float(avg_rating), 2) if avg_rating else None,
+            "verification_status": d.verification_status,
+        })
+    return result
 
 
 @router.get("/analytics/customer-segments")
-def analytics_customer_segments(current_user=Depends(_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 14")
+def analytics_customer_segments(current_user=Depends(_admin), db: Session = Depends(get_db)):
+    from sqlalchemy import func
+    from app.models import Booking
+
+    total_customers = db.query(func.count(User.id)).filter(User.role == "customer").scalar() or 0
+    booked_once = (
+        db.query(func.count(func.distinct(Booking.customer_id)))
+        .scalar() or 0
+    )
+    repeat = (
+        db.query(Booking.customer_id)
+        .group_by(Booking.customer_id)
+        .having(func.count(Booking.id) > 1)
+        .count()
+    )
+    return {
+        "total_customers": total_customers,
+        "customers_who_booked": booked_once,
+        "repeat_customers": repeat,
+        "booking_rate_pct": round(booked_once/total_customers*100, 1) if total_customers else 0,
+        "repeat_rate_pct": round(repeat/booked_once*100, 1) if booked_once else 0,
+    }

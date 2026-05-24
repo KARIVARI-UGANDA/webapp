@@ -135,6 +135,9 @@ def get_driver_trips(
     current_user=Depends(_driver),
     db: Session = Depends(get_db),
 ):
+    from app.models.vehicle import Vehicle, VehiclePhoto
+    from app.models.user import User
+
     profile = _get_profile_or_404(current_user.id, db)
 
     q = db.query(Booking).filter(Booking.driver_id == profile.id)
@@ -148,21 +151,39 @@ def get_driver_trips(
 
     trips = q.order_by(Booking.start_datetime.desc()).all()
 
-    return {
-        "total": len(trips),
-        "trips": [
-            {
-                "id": t.id,
-                "booking_reference": t.booking_reference,
-                "status": t.status,
-                "pickup_location": t.pickup_location,
-                "dropoff_location": t.dropoff_location,
-                "start_datetime": t.start_datetime,
-                "end_datetime": t.end_datetime,
-            }
-            for t in trips
-        ],
-    }
+    result = []
+    for t in trips:
+        vehicle = db.query(Vehicle).filter(Vehicle.id == t.vehicle_id).first()
+        customer = db.query(User).filter(User.id == t.customer_id).first()
+        photo = None
+        if vehicle:
+            photo = (
+                db.query(VehiclePhoto)
+                .filter(VehiclePhoto.vehicle_id == vehicle.id, VehiclePhoto.is_primary.is_(True))
+                .first()
+                or db.query(VehiclePhoto).filter(VehiclePhoto.vehicle_id == vehicle.id).first()
+            )
+        result.append({
+            "id": t.id,
+            "booking_reference": t.booking_reference,
+            "booking_type": t.booking_type,
+            "status": t.status,
+            "pickup_location": t.pickup_location,
+            "dropoff_location": t.dropoff_location,
+            "start_datetime": t.start_datetime.isoformat() if t.start_datetime else None,
+            "end_datetime": t.end_datetime.isoformat() if t.end_datetime else None,
+            "total_days": t.total_days,
+            "passenger_count": t.passenger_count,
+            "vehicle": {
+                "make": vehicle.make if vehicle else None,
+                "model": vehicle.model if vehicle else None,
+                "year": vehicle.year if vehicle else None,
+                "photo_url": photo.photo_url if photo else None,
+            } if vehicle else None,
+            "customer_name": customer.full_name if customer else None,
+        })
+
+    return {"total": len(result), "trips": result}
 
 
 # ---------------------------------------------------------------------------

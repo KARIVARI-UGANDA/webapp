@@ -128,6 +128,17 @@ class VehicleWithPhotos(VehicleRead):
     photos: List[VehiclePhotoRead] = []
 
 
+class VehicleStatusUpdate(BaseModel):
+    status: str
+
+    @field_validator("status")
+    @classmethod
+    def valid_status(cls, v: str) -> str:
+        if v not in ALLOWED_STATUSES:
+            raise ValueError(f"status must be one of {ALLOWED_STATUSES}")
+        return v
+
+
 # ---------- Admin ----------
 
 class VerificationDecision(BaseModel):

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Payments - Kari Vari Uganda</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "secondary-fixed": "#ffdeac", "outline": "#72796e",
+          "secondary-fixed-dim": "#ffba35", "inverse-surface": "#2f3133",
+          "on-background": "#1a1c1e", "on-secondary-fixed": "#281900",
+          "surface-dim": "#dadadc", "secondary-container": "#ffb61e",
+          "on-surface-variant": "#42493e", "primary-fixed": "#bcf0ae",
+          "on-error": "#ffffff", "outline-variant": "#c2c9bb",
+          "slate-dark": "#1A1C1E", "on-primary": "#ffffff",
+          "primary-container": "#2d5a27", "tertiary-fixed-dim": "#a5d6a7",
+          "secondary": "#7e5700", "surface": "#f9f9fc",
+          "tertiary": "#2D5A27", "on-secondary": "#ffffff",
+          "primary-fixed-dim": "#a1d494", "tertiary-fixed": "#c8e6c9",
+          "on-surface": "#1a1c1e", "status-pending": "#B45309",
+          "on-secondary-container": "#6c4a00", "inverse-on-surface": "#f0f0f3",
+          "on-primary-fixed": "#002201", "status-success": "#15803D",
+          "on-primary-container": "#9dd090", "surface-container": "#eeeef0",
+          "surface-tint": "#3b6934", "on-tertiary": "#ffffff",
+          "surface-container-lowest": "#ffffff", "error": "#ba1a1a",
+          "surface-container-highest": "#e2e2e5", "primary": "#154212",
+          "safari-green": "#2D5A27", "surface-container-high": "#e8e8ea",
+          "surface-bright": "#f9f9fc", "on-tertiary-fixed": "#0a3d0a",
+          "error-container": "#ffdad6", "inverse-primary": "#a1d494",
+          "surface-container-low": "#f3f3f6", "surface-variant": "#e2e2e5",
+          "on-secondary-fixed-variant": "#5f4100", "tertiary-container": "#154212",
+          "ugandan-sun": "#F9B115", "background": "#f9f9fc",
+          "on-error-container": "#93000a"
+        },
+        borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+        fontFamily: {
+          "label-sm": ["Inter"], "body-lg": ["Inter"], "headline-md": ["Montserrat"],
+          "label-lg": ["Inter"], "body-md": ["Inter"], "headline-xl": ["Montserrat"],
+          "headline-lg": ["Montserrat"]
+        },
+        fontSize: {
+          "label-sm":  ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+          "body-lg":   ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+          "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+          "label-lg":  ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+          "body-md":   ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+          "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+          "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #f9f9fc; color: #1a1c1e; font-family: 'Inter', sans-serif; }
+  h1,h2,h3,h4 { font-family: 'Montserrat', sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .elevation-1 { box-shadow: 0px 4px 20px rgba(0,0,0,0.05); }
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  .spin { animation: spin 1s linear infinite; }
+</style>
+</head>
+<body class="selection:bg-ugandan-sun selection:text-slate-dark">
+
+<!-- Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low shadow-md flex flex-col p-6 space-y-4 z-50">
+  <div class="mb-6">
+    <a href="/" class="flex items-center gap-2 font-bold text-[20px]" style="color:#154212;text-decoration:none;">
+      <span class="material-symbols-outlined text-[24px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+      Kari Vari Uganda
+    </a>
+  </div>
+  <div class="flex items-center space-x-3 mb-6 px-2">
+    <div id="avatarCircle" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg flex-shrink-0">?</div>
+    <div class="overflow-hidden">
+      <p class="font-label-lg text-label-lg text-on-surface truncate" id="sidebarName">Welcome back</p>
+      <p class="font-label-sm text-label-sm text-on-surface-variant">Customer Portal</p>
+    </div>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/dashboard">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="font-label-lg text-label-lg">Dashboard</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/vehicles">
+      <span class="material-symbols-outlined">directions_car</span>
+      <span class="font-label-lg text-label-lg">Browse Cars</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/my-bookings">
+      <span class="material-symbols-outlined">calendar_month</span>
+      <span class="font-label-lg text-label-lg">My Bookings</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all" href="/my-payments">
+      <span class="material-symbols-outlined">payments</span>
+      <span class="font-label-lg text-label-lg">Payments</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/support">
+      <span class="material-symbols-outlined">contact_support</span>
+      <span class="font-label-lg text-label-lg">Support</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/settings">
+      <span class="material-symbols-outlined">settings</span>
+      <span class="font-label-lg text-label-lg">Settings</span>
+    </a>
+  </nav>
+  <div class="pt-4 border-t border-outline-variant space-y-2">
+    <a href="/vehicles" class="block w-full text-center bg-safari-green text-white font-label-lg text-label-lg py-3 rounded-xl hover:opacity-90 transition-all active:scale-95">
+      Book a Car
+    </a>
+    <button id="logoutBtn" class="w-full flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:text-error transition-colors rounded-lg">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="font-label-lg text-label-lg">Log Out</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="ml-64 min-h-screen bg-surface">
+  <header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md flex justify-between items-center px-10 py-4 shadow-sm">
+    <div>
+      <h1 class="font-headline-md text-headline-md text-on-surface">Payments</h1>
+      <p class="font-label-sm text-label-sm text-on-surface-variant">Your full transaction history</p>
+    </div>
+    <div id="headerAvatar" class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">?</div>
+  </header>
+
+  <div class="p-10 max-w-[1100px] mx-auto space-y-8">
+
+    <div id="loadingState" class="flex items-center justify-center py-24">
+      <span class="material-symbols-outlined text-primary text-[48px] spin">refresh</span>
+    </div>
+
+    <div id="pageContent" class="hidden space-y-8">
+
+      <!-- Summary cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-surface-container-lowest p-6 rounded-2xl elevation-1 border-l-4 border-safari-green flex items-center justify-between">
+          <div>
+            <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Total Paid</p>
+            <p class="font-headline-lg text-headline-lg text-on-surface" id="totalPaid">$0.00</p>
+          </div>
+          <div class="bg-primary-fixed p-3 rounded-xl">
+            <span class="material-symbols-outlined text-safari-green" style="font-variation-settings:'FILL' 1;">paid</span>
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest p-6 rounded-2xl elevation-1 border-l-4 border-ugandan-sun flex items-center justify-between">
+          <div>
+            <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Transactions</p>
+            <p class="font-headline-lg text-headline-lg text-on-surface" id="totalTx">0</p>
+          </div>
+          <div class="bg-secondary-fixed p-3 rounded-xl">
+            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1;">receipt_long</span>
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest p-6 rounded-2xl elevation-1 border-l-4 border-safari-green flex items-center justify-between">
+          <div>
+            <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Pending</p>
+            <p class="font-headline-lg text-headline-lg text-on-surface" id="totalPending">0</p>
+          </div>
+          <div class="bg-primary-fixed p-3 rounded-xl">
+            <span class="material-symbols-outlined text-safari-green" style="font-variation-settings:'FILL' 1;">pending</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaction list -->
+      <div class="bg-surface-container-lowest rounded-3xl elevation-1 overflow-hidden">
+        <div class="px-8 py-5 border-b border-outline-variant/30 flex items-center justify-between">
+          <h3 class="font-headline-md text-headline-md">Transaction History</h3>
+          <!-- filter tabs -->
+          <div class="flex gap-2">
+            <button onclick="filterTx('all')"       id="ftab-all"       class="ftab px-4 py-1.5 rounded-full font-label-sm text-label-sm bg-safari-green text-white transition-colors">All</button>
+            <button onclick="filterTx('completed')" id="ftab-completed" class="ftab px-4 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Paid</button>
+            <button onclick="filterTx('pending')"   id="ftab-pending"   class="ftab px-4 py-1.5 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Pending</button>
+          </div>
+        </div>
+
+        <!-- Table header -->
+        <div class="hidden md:grid grid-cols-12 gap-4 px-8 py-3 bg-surface-container text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+          <div class="col-span-4">Vehicle / Booking</div>
+          <div class="col-span-2">Date</div>
+          <div class="col-span-2">Method</div>
+          <div class="col-span-2 text-right">Amount</div>
+          <div class="col-span-2 text-right">Status</div>
+        </div>
+
+        <div id="txList" class="divide-y divide-outline-variant/20"></div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+const API = '/api';
+const token = localStorage.getItem('access_token');
+if (!token) { window.location.href = '/login'; }
+document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
+
+function initials(n) { return n ? n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?'; }
+function fmtDate(s) { return s ? new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : '—'; }
+
+const METHOD_ICON = { card:'credit_card', mobile_money:'phone_android' };
+const METHOD_LABEL = { card:'Credit Card', mobile_money:'Mobile Money' };
+const CHANNEL_LABEL = { stripe:'Stripe', paystack:'Paystack', MTN_UGANDA:'MTN MoMo', AIRTEL_UGANDA:'Airtel Money' };
+
+const TX_BADGE = {
+  completed: 'bg-status-success/10 text-status-success',
+  pending:   'bg-secondary-fixed text-secondary',
+  failed:    'bg-error-container text-error',
+};
+const TX_LABEL = { completed:'Paid', pending:'Pending', failed:'Failed' };
+
+let allTx = [];
+
+function txRow(b) {
+  const v     = b.vehicle;
+  const amt   = b.amount_usd != null ? `$${parseFloat(b.amount_usd).toFixed(2)}` : '—';
+  const badge = b.payment_status ? (TX_BADGE[b.payment_status] || 'bg-surface-container text-on-surface-variant') : TX_BADGE[b.status === 'confirmed' || b.status === 'completed' ? 'completed' : 'pending'];
+  const label = b.payment_status ? (TX_LABEL[b.payment_status] || b.payment_status) : (b.status === 'confirmed' || b.status === 'completed' ? 'Paid' : 'Pending');
+  const method = METHOD_LABEL[b.payment_method] || b.payment_method || 'Card';
+  const channel = CHANNEL_LABEL[b.payment_channel] || b.payment_channel || '';
+  const icon  = METHOD_ICON[b.payment_method] || 'credit_card';
+
+  return `
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 items-center px-8 py-5 hover:bg-surface-container-low transition-colors">
+      <div class="md:col-span-4 flex items-center gap-3">
+        ${v?.primary_photo_url
+          ? `<img src="${v.primary_photo_url}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0"/>`
+          : `<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-outline-variant">directions_car</span></div>`}
+        <div class="min-w-0">
+          <p class="font-label-lg text-label-lg text-on-surface truncate">${v ? v.make+' '+v.model : 'Vehicle'}</p>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">${b.booking_reference}</p>
+        </div>
+      </div>
+      <div class="md:col-span-2 font-label-sm text-label-sm text-on-surface-variant">${fmtDate(b.created_at)}</div>
+      <div class="md:col-span-2 flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant">
+        <span class="material-symbols-outlined text-[16px]">${icon}</span>
+        <span>${method}${channel ? ' · '+channel : ''}</span>
+      </div>
+      <div class="md:col-span-2 text-right font-headline-md text-headline-md text-safari-green">${amt}</div>
+      <div class="md:col-span-2 text-right">
+        <span class="${badge} font-label-sm text-label-sm px-3 py-1 rounded-full uppercase">${label}</span>
+      </div>
+    </div>`;
+}
+
+function filterTx(filter) {
+  document.querySelectorAll('.ftab').forEach(btn => {
+    const t = btn.id.replace('ftab-','');
+    btn.className = `ftab px-4 py-1.5 rounded-full font-label-sm text-label-sm transition-colors ${t===filter ? 'bg-safari-green text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'}`;
+  });
+  const list = filter === 'all' ? allTx
+    : filter === 'completed' ? allTx.filter(b => b.payment_status === 'completed' || b.status === 'confirmed' || b.status === 'completed')
+    : allTx.filter(b => b.payment_status === 'pending' || b.status === 'pending_payment');
+  document.getElementById('txList').innerHTML = list.length
+    ? list.map(txRow).join('')
+    : `<div class="text-center py-12 text-on-surface-variant"><span class="material-symbols-outlined text-[48px] mb-3 block">receipt_long</span><p class="font-label-sm text-label-sm">No transactions found.</p></div>`;
+}
+
+async function load() {
+  try {
+    const [uRes, bRes] = await Promise.all([
+      fetch(`${API}/users/me`, { headers: { Authorization: `Bearer ${token}` } }),
+      fetch(`${API}/bookings/`, { headers: { Authorization: `Bearer ${token}` } }),
+    ]);
+    if (!uRes.ok) { localStorage.clear(); window.location.href = '/login'; return; }
+    const user = await uRes.json();
+    const name = user.full_name || user.email;
+    document.getElementById('sidebarName').textContent = name;
+    document.getElementById('avatarCircle').textContent = initials(name);
+    document.getElementById('headerAvatar').textContent = initials(name);
+
+    const bookings = bRes.ok ? await bRes.json() : [];
+    // Only show bookings that have a payment (not pending_payment with no action taken)
+    allTx = bookings.filter(b => b.amount_usd != null || b.amount_ugx != null);
+
+    const paidTx    = allTx.filter(b => ['confirmed','completed'].includes(b.status));
+    const pendingTx = allTx.filter(b => ['pending','pending_payment'].includes(b.status));
+    const totalPaid = paidTx.reduce((s,b) => s + (b.amount_usd || 0), 0);
+
+    document.getElementById('totalPaid').textContent    = `$${totalPaid.toFixed(2)}`;
+    document.getElementById('totalTx').textContent      = allTx.length;
+    document.getElementById('totalPending').textContent = pendingTx.length;
+
+    filterTx('all');
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('pageContent').classList.remove('hidden');
+  } catch(e) {
+    document.getElementById('loadingState').innerHTML = `<div class="text-center"><span class="material-symbols-outlined text-error text-[48px]">error</span><p class="mt-4 text-on-surface-variant">Failed to load. <a href="/" class="text-primary underline">Go home</a></p></div>`;
+  }
+}
+load();
+</script>
+</body>
+</html>

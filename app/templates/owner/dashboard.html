@@ -110,6 +110,10 @@
       border-radius: 0.75rem;
     }
 
+    /* ── Override Bootstrap's .text-primary with brand green ── */
+    .text-primary { color: #154212 !important; }
+    .bg-primary   { background-color: #154212 !important; }
+
     /* ── Fleet action button ── */
     .fleet-action-btn {
       display: flex;
@@ -163,11 +167,15 @@
       <span class="material-symbols-outlined">directions_car</span>
       <span class="font-label-lg text-label-lg">My Fleet</span>
     </a>
-    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200" href="#">
-      <span class="material-symbols-outlined">notification_important</span>
-      <span class="font-label-lg text-label-lg">Booking Requests</span>
+    <a data-section="bookings"
+       class="nav-link flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200 cursor-pointer"
+       onclick="showSection('bookings')">
+      <span class="material-symbols-outlined">book_online</span>
+      <span class="font-label-lg text-label-lg">Bookings</span>
     </a>
-    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200" href="#">
+    <a data-section="earnings"
+       class="nav-link flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200 cursor-pointer"
+       onclick="showSection('earnings')">
       <span class="material-symbols-outlined">payments</span>
       <span class="font-label-lg text-label-lg">Earnings</span>
     </a>
@@ -175,7 +183,9 @@
       <span class="material-symbols-outlined">fact_check</span>
       <span class="font-label-lg text-label-lg">Inspections</span>
     </a>
-    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200" href="#">
+    <a data-section="settings"
+       class="nav-link flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200 cursor-pointer"
+       onclick="showSection('settings')">
       <span class="material-symbols-outlined">settings</span>
       <span class="font-label-lg text-label-lg">Settings</span>
     </a>
@@ -237,7 +247,7 @@
         </div>
       </div>
     </div>
-    <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-secondary-container">
+    <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-secondary-container cursor-pointer hover:shadow-md transition-shadow" onclick="showSection('bookings')">
       <p class="text-on-surface-variant font-label-lg text-label-lg">Pending Bookings</p>
       <div class="flex items-end justify-between mt-2">
         <h3 class="font-headline-lg text-headline-lg" id="statPending">—</h3>
@@ -364,9 +374,9 @@
               <p class="text-[12px] text-on-surface-variant">Add to your fleet</p>
             </div>
           </button>
-          <button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors text-left">
+          <button onclick="showSection('bookings')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors text-left">
             <div class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
-              <span class="material-symbols-outlined text-on-secondary-container text-[18px]">calendar_month</span>
+              <span class="material-symbols-outlined text-on-secondary-container text-[18px]">book_online</span>
             </div>
             <div>
               <p class="font-label-lg text-label-lg">View Bookings</p>
@@ -523,6 +533,420 @@
 
   </div>
 </div><!-- /section-fleet -->
+
+<!-- ═══════════ SECTION: Bookings ═══════════ -->
+<div id="section-bookings" style="display:none">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-30 bg-surface/80 backdrop-blur-md px-4 md:px-12 py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/30">
+    <div>
+      <h2 class="font-headline-lg text-headline-lg text-primary">Bookings</h2>
+      <p class="font-body-md text-body-md text-on-surface-variant">All reservations on your vehicles.</p>
+    </div>
+  </header>
+
+  <div class="px-4 md:px-12 py-8">
+
+    <!-- Stats -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-surface-container-lowest px-5 py-5 rounded-2xl border border-outline-variant/15">
+        <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-3">Total</p>
+        <h3 class="font-mono text-[32px] font-bold leading-none text-on-background" id="bkStatTotal">—</h3>
+      </div>
+      <div class="bg-surface-container-lowest px-5 py-5 rounded-2xl border border-outline-variant/15">
+        <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-3">Pending</p>
+        <h3 class="font-mono text-[32px] font-bold leading-none text-status-pending" id="bkStatPending">—</h3>
+      </div>
+      <div class="bg-surface-container-lowest px-5 py-5 rounded-2xl border border-outline-variant/15">
+        <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-3">Confirmed</p>
+        <h3 class="font-mono text-[32px] font-bold leading-none text-status-success" id="bkStatConfirmed">—</h3>
+      </div>
+      <div class="bg-surface-container-lowest px-5 py-5 rounded-2xl border border-outline-variant/15">
+        <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-3">Completed</p>
+        <h3 class="font-mono text-[32px] font-bold leading-none text-primary" id="bkStatCompleted">—</h3>
+      </div>
+    </section>
+
+    <!-- Filter tabs -->
+    <div class="flex gap-2 flex-wrap mb-6">
+      <button onclick="filterBookings(null)" id="bk-tab-all"
+        class="bk-tab px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white transition-colors">All</button>
+      <button onclick="filterBookings('pending')" id="bk-tab-pending"
+        class="bk-tab px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Pending</button>
+      <button onclick="filterBookings('confirmed')" id="bk-tab-confirmed"
+        class="bk-tab px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Confirmed</button>
+      <button onclick="filterBookings('in_progress')" id="bk-tab-in_progress"
+        class="bk-tab px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">In Progress</button>
+      <button onclick="filterBookings('completed')" id="bk-tab-completed"
+        class="bk-tab px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Completed</button>
+      <button onclick="filterBookings('cancelled')" id="bk-tab-cancelled"
+        class="bk-tab px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Cancelled</button>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/15 overflow-hidden">
+      <div id="bkTableWrap">
+        <div class="text-center py-16 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[48px]" style="animation:spin 1s linear infinite;display:inline-block;">refresh</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /section-bookings -->
+
+<!-- ═══════════ SECTION: Earnings ═══════════ -->
+<div id="section-earnings" style="display:none" class="p-4 md:p-12">
+
+  <!-- Header -->
+  <header class="flex flex-wrap justify-between items-center mb-8 gap-4">
+    <div>
+      <h2 class="font-headline-lg text-headline-lg text-primary">Earnings Overview</h2>
+      <p class="text-on-surface-variant">Track your revenue and manage payout schedules.</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="exportEarningsCSV()" class="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg font-label-lg text-label-lg text-on-surface hover:bg-surface-container-low transition-colors">
+        <span class="material-symbols-outlined text-[20px]">download</span>
+        <span>Export CSV</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Summary Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+    <div class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/10">
+      <div class="flex items-center justify-between mb-4">
+        <span class="material-symbols-outlined text-primary bg-primary-fixed/30 p-2 rounded-lg">account_balance_wallet</span>
+        <span class="font-label-sm text-label-sm text-status-success" id="earnLifetimeGrowth">—</span>
+      </div>
+      <p class="font-label-lg text-label-lg text-on-surface-variant">Lifetime Earnings (Net)</p>
+      <p class="font-headline-md text-headline-md text-on-surface mt-1" id="earnLifetime">UGX —</p>
+    </div>
+    <div class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/10">
+      <div class="flex items-center justify-between mb-4">
+        <span class="material-symbols-outlined text-secondary bg-secondary-fixed/30 p-2 rounded-lg">pending_actions</span>
+      </div>
+      <p class="font-label-lg text-label-lg text-on-surface-variant">Pending Payout</p>
+      <p class="font-headline-md text-headline-md text-on-surface mt-1" id="earnPending">UGX —</p>
+    </div>
+    <div class="bg-ugandan-sun p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.1)]">
+      <div class="flex items-center justify-between mb-4">
+        <span class="material-symbols-outlined text-slate-dark bg-white/30 p-2 rounded-lg">event_upcoming</span>
+      </div>
+      <p class="font-label-lg text-label-lg text-slate-dark/70">Next Payout Date</p>
+      <p class="font-headline-md text-headline-md text-slate-dark mt-1" id="earnNextPayout">—</p>
+    </div>
+  </div>
+
+  <!-- Ledger Table -->
+  <section class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/10 overflow-hidden mb-10">
+    <div class="px-6 py-5 border-b border-outline-variant/20 flex flex-wrap justify-between items-center gap-3">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Recent Earnings</h3>
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+        <input id="earnSearch" oninput="filterEarnings(this.value)" class="pl-10 pr-4 py-2 border border-outline-variant rounded-lg text-body-md focus:ring-safari-green focus:border-safari-green outline-none" placeholder="Search booking…" type="text"/>
+      </div>
+    </div>
+    <div id="earnTableWrap" class="overflow-x-auto">
+      <div class="text-center py-16 text-on-surface-variant">
+        <span class="material-symbols-outlined text-[48px] mb-3 block opacity-25">payments</span>
+        <p class="font-label-lg text-label-lg">Loading earnings…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Payout Method + Security -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <section class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/10">
+      <div class="flex items-center gap-4 mb-6">
+        <span class="material-symbols-outlined text-primary bg-primary-fixed/30 p-2 rounded-lg">account_balance</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface">Payout Method</h3>
+      </div>
+      <div class="space-y-4">
+        <div class="p-4 rounded-xl border-2 border-safari-green bg-primary-fixed/10 relative">
+          <span class="material-symbols-outlined absolute top-4 right-4 text-safari-green">check_circle</span>
+          <p class="font-label-lg text-label-lg text-safari-green">Primary: Bank Transfer</p>
+          <p class="text-on-surface mt-1">Standard Chartered Uganda</p>
+          <p class="text-on-surface-variant text-sm">**** **** **** 4512</p>
+        </div>
+        <div class="p-4 rounded-xl border border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer group">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-label-lg text-label-lg text-on-surface">Mobile Money</p>
+              <p class="text-on-surface-variant text-sm">MTN Uganda — 0772 *** 889</p>
+            </div>
+            <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">radio_button_unchecked</span>
+          </div>
+        </div>
+        <button class="w-full py-3 border border-dashed border-outline-variant rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low transition-colors">
+          + Add New Payout Method
+        </button>
+      </div>
+    </section>
+
+    <section class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/10 flex flex-col">
+      <div class="flex items-center gap-4 mb-6">
+        <span class="material-symbols-outlined text-secondary bg-secondary-fixed/30 p-2 rounded-lg">security</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface">Security &amp; Verification</h3>
+      </div>
+      <p class="text-on-surface-variant mb-6">All payouts are subject to a 24-hour verification hold. Ensure your Tax Identification Number (TIN) is up to date.</p>
+      <div class="mt-auto space-y-4">
+        <div class="flex items-center justify-between p-4 bg-surface rounded-lg" id="earnKycRow">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-status-success">verified</span>
+            <span class="font-label-lg text-label-lg">Identity Verified</span>
+          </div>
+          <span class="font-label-sm text-label-sm text-status-success font-bold uppercase">Active</span>
+        </div>
+        <div class="flex items-center justify-between p-4 bg-surface rounded-lg">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-on-surface-variant">fact_check</span>
+            <span class="font-label-lg text-label-lg">Tax Documents</span>
+          </div>
+          <button onclick="showSection('settings')" class="text-primary font-label-sm text-label-sm font-bold hover:underline">UPDATE</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</div><!-- /section-earnings -->
+
+<!-- ═══════════ SECTION: Settings ═══════════ -->
+<div id="section-settings" style="display:none" class="p-4 md:p-12">
+
+  <!-- Header -->
+  <header class="mb-8">
+    <h2 class="font-headline-lg text-headline-lg text-primary">Account Settings</h2>
+    <p class="text-on-surface-variant">Manage your profile, documents and security.</p>
+  </header>
+
+  <div class="max-w-3xl">
+    <!-- Tab Bar -->
+    <div class="flex gap-1 mb-8 p-1 bg-surface-container rounded-xl w-fit flex-wrap">
+      <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg bg-white shadow text-primary transition-all" data-tab="profile" onclick="spShowTab('profile')">Profile</button>
+      <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-all" data-tab="documents" onclick="spShowTab('documents')">Documents</button>
+      <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-all hidden" data-tab="driver" id="sp-driverTabBtn" onclick="spShowTab('driver')">Driver Profile</button>
+      <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-all" data-tab="security" onclick="spShowTab('security')">Security</button>
+    </div>
+
+    <!-- TAB: Profile -->
+    <div id="sp-tab-profile" class="space-y-6">
+      <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6">
+        <h4 class="font-headline-md text-headline-md mb-5">Profile Photo</h4>
+        <div class="flex items-center gap-6">
+          <div class="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 overflow-hidden" id="sp-profileAvatar">?</div>
+          <div>
+            <label class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-outline-variant bg-surface-container hover:bg-surface-container-high transition-colors font-label-lg text-label-lg">
+              <span class="material-symbols-outlined text-[18px]">upload</span>
+              Upload Photo
+              <input type="file" accept="image/*" class="hidden" onchange="spUploadAvatar(this)">
+            </label>
+            <p class="text-on-surface-variant font-label-sm text-label-sm mt-2">JPG or PNG, max 5MB</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6">
+        <h4 class="font-headline-md text-headline-md mb-5">Personal Information</h4>
+        <div class="space-y-4">
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Full Name</label>
+            <input id="sp-pName" type="text" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md" placeholder="Your full name">
+          </div>
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Email Address</label>
+            <input id="sp-pEmail" type="email" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface-container font-body-md" readonly>
+          </div>
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Phone Number</label>
+            <input id="sp-pPhone" type="tel" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md" placeholder="+256 700 000000">
+          </div>
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Preferred Language</label>
+            <select id="sp-pLang" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+              <option value="en">English</option>
+              <option value="sw">Swahili</option>
+              <option value="lg">Luganda</option>
+              <option value="fr">French</option>
+            </select>
+          </div>
+        </div>
+        <button onclick="spSaveProfile(this)" class="mt-5 bg-primary text-white px-6 py-2.5 rounded-xl font-label-lg text-label-lg hover:bg-safari-green transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">save</span>Save Changes
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB: Documents -->
+    <div id="sp-tab-documents" class="space-y-6 hidden">
+      <div id="sp-kycBanner" class="px-5 py-4 rounded-2xl border font-label-lg text-label-lg hidden"></div>
+      <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6">
+        <h4 class="font-headline-md text-headline-md mb-2">Identity Verification</h4>
+        <p class="text-on-surface-variant font-label-sm text-label-sm mb-5">Submit a government-issued ID. Required for full platform access.</p>
+        <div class="space-y-4">
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Document Type</label>
+            <select id="sp-docType" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md" onchange="spToggleBackSide()">
+              <option value="national_id">National ID</option>
+              <option value="passport">Passport</option>
+              <option value="drivers_license">Driver's Licence</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Document Number</label>
+            <input id="sp-docNumber" type="text" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md" placeholder="e.g. CM12345678">
+          </div>
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Expiry Date</label>
+            <input id="sp-docExpiry" type="date" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+          </div>
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Front Side</label>
+            <div class="border-2 border-dashed border-outline-variant rounded-xl p-6 text-center cursor-pointer hover:border-safari-green transition-colors"
+                 onclick="document.getElementById('sp-file-front').click()"
+                 ondragover="spDragOver(event,this)" ondragleave="spDragLeave(event,this)" ondrop="spDropFile(event,this,'sp-file-front','front')">
+              <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
+              <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
+              <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10MB</p>
+              <input type="file" id="sp-file-front" accept="image/*,.pdf" class="hidden" onchange="spPreviewDoc(this,'front')">
+            </div>
+            <div id="sp-prev-front" class="mt-2 hidden"></div>
+          </div>
+          <div id="sp-backSideWrap">
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Back Side</label>
+            <div class="border-2 border-dashed border-outline-variant rounded-xl p-6 text-center cursor-pointer hover:border-safari-green transition-colors"
+                 onclick="document.getElementById('sp-file-back').click()"
+                 ondragover="spDragOver(event,this)" ondragleave="spDragLeave(event,this)" ondrop="spDropFile(event,this,'sp-file-back','back')">
+              <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
+              <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
+              <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10MB</p>
+              <input type="file" id="sp-file-back" accept="image/*,.pdf" class="hidden" onchange="spPreviewDoc(this,'back')">
+            </div>
+            <div id="sp-prev-back" class="mt-2 hidden"></div>
+          </div>
+        </div>
+        <button id="sp-kycSubmitBtn" onclick="spSubmitKYC(this)" class="mt-5 bg-primary text-white px-6 py-2.5 rounded-xl font-label-lg text-label-lg hover:bg-safari-green transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">verified_user</span>Submit for Verification
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB: Driver Profile (shown only for drivers) -->
+    <div id="sp-tab-driver" class="space-y-6 hidden">
+      <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6">
+        <h4 class="font-headline-md text-headline-md mb-5">Driver Profile</h4>
+        <div class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Licence Number</label>
+              <input id="sp-dLicNumber" type="text" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+            </div>
+            <div>
+              <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Licence Class</label>
+              <input id="sp-dLicClass" type="text" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md" placeholder="e.g. B, C">
+            </div>
+            <div>
+              <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Licence Expiry</label>
+              <input id="sp-dLicExpiry" type="date" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+            </div>
+            <div>
+              <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Years of Experience</label>
+              <input id="sp-dYears" type="number" min="0" max="50" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+            </div>
+          </div>
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Languages Spoken</label>
+            <input id="sp-dLangs" type="text" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md" placeholder="e.g. English, Swahili">
+          </div>
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Specialties</label>
+            <input id="sp-dSpecialties" type="text" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md" placeholder="e.g. Safari, Off-road">
+          </div>
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Bio</label>
+            <textarea id="sp-dBio" rows="3" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md resize-none" placeholder="Tell travellers about yourself..."></textarea>
+          </div>
+          <div class="flex gap-6">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input id="sp-dFirstAid" type="checkbox" class="w-4 h-4 accent-primary">
+              <span class="font-label-lg text-label-lg">First Aid Certified</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input id="sp-dPoliceExp" type="checkbox" class="w-4 h-4 accent-primary">
+              <span class="font-label-lg text-label-lg">Police Clearance</span>
+            </label>
+          </div>
+        </div>
+        <button onclick="spSaveDriverProfile(this)" class="mt-5 bg-primary text-white px-6 py-2.5 rounded-xl font-label-lg text-label-lg hover:bg-safari-green transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">save</span>Save Driver Profile
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB: Security -->
+    <div id="sp-tab-security" class="space-y-6 hidden">
+      <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6">
+        <h4 class="font-headline-md text-headline-md mb-5">Account Information</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <p class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-1">Role</p>
+            <p class="font-label-lg text-label-lg capitalize" id="sp-secRole">—</p>
+          </div>
+          <div>
+            <p class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-1">Account Type</p>
+            <p class="font-label-lg text-label-lg capitalize" id="sp-secType">—</p>
+          </div>
+          <div>
+            <p class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-1">Member Since</p>
+            <p class="font-label-lg text-label-lg" id="sp-secJoined">—</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6">
+        <h4 class="font-headline-md text-headline-md mb-5">Change Password</h4>
+        <div class="space-y-4">
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Current Password</label>
+            <div class="relative">
+              <input id="sp-pwCurrent" type="password" class="w-full px-4 py-2.5 pr-12 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+              <button type="button" onclick="spTogglePw('sp-pwCurrent',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface">
+                <span class="material-symbols-outlined text-[20px]">visibility</span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">New Password</label>
+            <div class="relative">
+              <input id="sp-pwNew" type="password" class="w-full px-4 py-2.5 pr-12 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+              <button type="button" onclick="spTogglePw('sp-pwNew',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface">
+                <span class="material-symbols-outlined text-[20px]">visibility</span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Confirm New Password</label>
+            <div class="relative">
+              <input id="sp-pwConfirm" type="password" class="w-full px-4 py-2.5 pr-12 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+              <button type="button" onclick="spTogglePw('sp-pwConfirm',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface">
+                <span class="material-symbols-outlined text-[20px]">visibility</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <button onclick="spChangePassword(this)" class="mt-5 bg-primary text-white px-6 py-2.5 rounded-xl font-label-lg text-label-lg hover:bg-safari-green transition-colors flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">lock_reset</span>Update Password
+        </button>
+      </div>
+    </div>
+  </div>
+</div><!-- /section-settings -->
+
+<!-- Toast for settings panel -->
+<div id="spToastEl" class="fixed bottom-6 right-6 z-[9999] hidden transition-all">
+  <div class="spt-inner flex items-center gap-3 bg-on-surface text-surface px-5 py-3 rounded-2xl shadow-xl">
+    <span class="spt-icon material-symbols-outlined text-[20px]"></span>
+    <span class="spt-msg font-label-lg text-label-lg"></span>
+  </div>
+</div>
 
 </main>
 
@@ -722,7 +1146,10 @@
 <footer class="py-6 px-4 md:px-10 mt-8 bg-on-background md:ml-64">
   <div class="flex flex-col md:flex-row justify-between items-center gap-4">
     <div class="text-center md:text-left">
-      <span class="font-headline-lg text-headline-lg font-bold text-ugandan-sun">Kari Vari Uganda</span>
+      <span class="font-headline-lg text-headline-lg font-bold text-ugandan-sun flex items-center gap-2">
+        <span class="material-symbols-outlined text-[28px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+        Kari Vari Uganda
+      </span>
       <p class="text-surface-bright/50 font-label-sm text-label-sm mt-1">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
     </div>
     <div class="flex gap-5 flex-wrap justify-center">
@@ -743,9 +1170,13 @@
     <span class="material-symbols-outlined">directions_car</span>
     <span class="text-[10px]">Fleet</span>
   </a>
-  <a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
-    <span class="material-symbols-outlined">notification_important</span>
-    <span class="text-[10px]">Requests</span>
+  <a data-section="bookings" class="mob-nav-link flex flex-col items-center gap-1 text-on-surface-variant cursor-pointer" onclick="showSection('bookings')">
+    <span class="material-symbols-outlined">book_online</span>
+    <span class="text-[10px]">Bookings</span>
+  </a>
+  <a data-section="earnings" class="mob-nav-link flex flex-col items-center gap-1 text-on-surface-variant cursor-pointer" onclick="showSection('earnings')">
+    <span class="material-symbols-outlined">payments</span>
+    <span class="text-[10px]">Earnings</span>
   </a>
   <a class="flex flex-col items-center gap-1 text-on-surface-variant cursor-pointer" id="mobileLogoutBtn">
     <span class="material-symbols-outlined">logout</span>
@@ -757,15 +1188,25 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/shared.js"></script>
 <script src="/static/js/owner/dashboard.js"></script>
+<script src="/static/js/settings_panel.js"></script>
 
 <script>
   // ── Section switcher ──
   let _allVehicles = [];
 
+  let _spLoaded = false;
+  let _bkLoaded = false;
+  let _earnLoaded = false;
   function showSection(name) {
     // Toggle content sections
-    document.getElementById('section-overview').style.display = name === 'overview' ? 'block' : 'none';
-    document.getElementById('section-fleet').style.display    = name === 'fleet'    ? 'block' : 'none';
+    document.getElementById('section-overview').style.display  = name === 'overview'  ? 'block' : 'none';
+    document.getElementById('section-fleet').style.display     = name === 'fleet'     ? 'block' : 'none';
+    document.getElementById('section-bookings').style.display  = name === 'bookings'  ? 'block' : 'none';
+    document.getElementById('section-earnings').style.display  = name === 'earnings'  ? 'block' : 'none';
+    document.getElementById('section-settings').style.display  = name === 'settings'  ? 'block' : 'none';
+    if (name === 'settings' && !_spLoaded) { _spLoaded = true; spLoadSettings(); }
+    if (name === 'bookings' && !_bkLoaded) { _bkLoaded = true; loadOwnerBookings(); }
+    if (name === 'earnings' && !_earnLoaded) { _earnLoaded = true; loadOwnerEarnings(); }
 
     // Update desktop sidebar active state
     document.querySelectorAll('#sidebarNav .nav-link').forEach(el => {
@@ -994,10 +1435,20 @@
               <span class="material-symbols-outlined text-[17px] text-outline group-hover/btn:text-primary transition-colors">analytics</span>
               <span class="text-[10px] font-semibold uppercase tracking-wide text-outline group-hover/btn:text-primary transition-colors">Stats</span>
             </button>
-            <button class="fleet-action-btn group/btn">
-              <span class="material-symbols-outlined text-[17px] text-outline group-hover/btn:text-primary transition-colors">pause_circle</span>
-              <span class="text-[10px] font-semibold uppercase tracking-wide text-outline group-hover/btn:text-primary transition-colors">Pause</span>
-            </button>
+            ${v.status === 'verified'
+              ? `<button onclick="toggleAvailability('${v.id}', 'suspended')" class="fleet-action-btn group/btn">
+                   <span class="material-symbols-outlined text-[17px] text-outline group-hover/btn:text-primary transition-colors">pause_circle</span>
+                   <span class="text-[10px] font-semibold uppercase tracking-wide text-outline group-hover/btn:text-primary transition-colors">Pause</span>
+                 </button>`
+              : v.status === 'suspended'
+              ? `<button onclick="toggleAvailability('${v.id}', 'verified')" class="fleet-action-btn group/btn">
+                   <span class="material-symbols-outlined text-[17px] text-status-success group-hover/btn:text-primary transition-colors">play_circle</span>
+                   <span class="text-[10px] font-semibold uppercase tracking-wide text-status-success group-hover/btn:text-primary transition-colors">Resume</span>
+                 </button>`
+              : `<button class="fleet-action-btn group/btn opacity-40 cursor-not-allowed" disabled title="Only verified vehicles can be paused">
+                   <span class="material-symbols-outlined text-[17px] text-outline">pause_circle</span>
+                   <span class="text-[10px] font-semibold uppercase tracking-wide text-outline">Pause</span>
+                 </button>`}
           </div>
         </div>
       </div>`;
@@ -1124,6 +1575,29 @@
     document.getElementById('currentPhotosSection').classList.remove('d-none');
 
     bootstrap.Modal.getOrCreateInstance(document.getElementById('addVehicleModal')).show();
+  }
+
+  async function toggleAvailability(vehicleId, newStatus) {
+    const label = newStatus === 'suspended' ? 'pause' : 'resume';
+    if (!confirm(`Are you sure you want to ${label} this vehicle?`)) return;
+    try {
+      const res = await fetch(`${API}/vehicles/${vehicleId}/availability`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        alert(err.detail || `Failed to ${label} vehicle.`);
+        return;
+      }
+      const updated = await res.json();
+      const idx = _allVehicles.findIndex(v => v.id === vehicleId);
+      if (idx !== -1) _allVehicles[idx] = { ..._allVehicles[idx], status: updated.status };
+      renderFleet(_allVehicles);
+    } catch {
+      alert('Network error. Please try again.');
+    }
   }
 
   function renderCurrentPhotos(v) {
@@ -1293,6 +1767,273 @@
     const card = e.target.closest('.card-spotlight');
     if (card) { card.style.setProperty('--cx', '-200px'); card.style.setProperty('--cy', '-200px'); }
   }, true);
+
+  // ── Owner Bookings ──────────────────────────────────────────────────────────────
+  let _allOwnerBookings = [];
+  let _bkFilter = null;
+
+  const BK_STATUS = {
+    pending:         { label:'Pending',     cls:'bg-status-pending/10 text-status-pending' },
+    confirmed:       { label:'Confirmed',   cls:'bg-status-success/10 text-status-success' },
+    in_progress:     { label:'In Progress', cls:'bg-primary/10 text-primary' },
+    completed:       { label:'Completed',   cls:'bg-safari-green/10 text-safari-green' },
+    cancelled:       { label:'Cancelled',   cls:'bg-error/10 text-error' },
+    pending_payment: { label:'Awaiting Pay',cls:'bg-secondary-container/30 text-on-secondary-container' },
+  };
+
+  function fmtBkDate(s) {
+    if (!s) return '—';
+    return new Date(s).toLocaleDateString('en-UG', { day:'numeric', month:'short', year:'numeric' });
+  }
+
+  async function loadOwnerBookings() {
+    const tok = localStorage.getItem('access_token');
+    if (!tok) return;
+    document.getElementById('bkTableWrap').innerHTML = '<div class="text-center py-16 text-on-surface-variant"><span class="material-symbols-outlined text-[48px]" style="animation:spin 1s linear infinite;display:inline-block;">refresh</span></div>';
+    try {
+      const res = await fetch('/api/bookings/owner', { headers:{ Authorization:`Bearer ${tok}` } });
+      if (!res.ok) throw new Error('Failed');
+      _allOwnerBookings = await res.json();
+
+      // Update stats
+      const all = _allOwnerBookings;
+      const g = id => document.getElementById(id);
+      if (g('bkStatTotal'))    g('bkStatTotal').textContent    = all.length;
+      if (g('bkStatPending'))  g('bkStatPending').textContent  = all.filter(b=>b.status==='pending'||b.status==='pending_payment').length;
+      if (g('bkStatConfirmed'))g('bkStatConfirmed').textContent= all.filter(b=>b.status==='confirmed'||b.status==='in_progress').length;
+      if (g('bkStatCompleted'))g('bkStatCompleted').textContent= all.filter(b=>b.status==='completed').length;
+
+      // Sync overview pending stat
+      if (g('statPending')) g('statPending').textContent = all.filter(b=>b.status==='pending').length;
+
+      renderOwnerBookings();
+    } catch {
+      document.getElementById('bkTableWrap').innerHTML = '<div class="text-center py-16 text-error font-label-lg text-label-lg">Failed to load bookings.</div>';
+    }
+  }
+
+  function filterBookings(status) {
+    _bkFilter = status;
+    document.querySelectorAll('.bk-tab').forEach(btn => {
+      const active = (status === null && btn.id === 'bk-tab-all') || btn.id === `bk-tab-${status}`;
+      btn.className = active
+        ? 'bk-tab px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white transition-colors'
+        : 'bk-tab px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors';
+    });
+    renderOwnerBookings();
+  }
+
+  function renderOwnerBookings() {
+    const list = _bkFilter
+      ? _allOwnerBookings.filter(b => b.status === _bkFilter)
+      : _allOwnerBookings;
+
+    if (!list.length) {
+      document.getElementById('bkTableWrap').innerHTML = `
+        <div class="text-center py-16 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[48px] mb-3 block opacity-25">book_online</span>
+          <p class="font-label-lg text-label-lg">No bookings found.</p>
+        </div>`;
+      return;
+    }
+
+    const rows = list.map(b => {
+      const v = b.vehicle;
+      const imgHtml = v?.primary_photo_url
+        ? `<img src="${v.primary_photo_url}" class="w-10 h-10 rounded-lg object-cover flex-shrink-0" alt="">`
+        : `<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-[18px] text-outline-variant">directions_car</span></div>`;
+      const sc = BK_STATUS[b.status] || { label: b.status, cls:'bg-surface-container text-on-surface-variant' };
+      const amtStr = b.amount_usd != null ? `$${parseFloat(b.amount_usd).toFixed(2)}` : '—';
+      const custName = b.customer_name || '—';
+      return `<tr class="border-b border-outline-variant/20 hover:bg-surface-container-low transition-colors">
+        <td class="px-5 py-4">
+          <div class="flex items-center gap-3">
+            ${imgHtml}
+            <div>
+              <p class="font-label-lg text-label-lg text-on-surface">${v ? v.make+' '+v.model : '—'}</p>
+              <p class="font-label-sm text-label-sm text-on-surface-variant font-mono">${b.booking_reference}</p>
+            </div>
+          </div>
+        </td>
+        <td class="px-5 py-4 font-label-lg text-label-lg text-on-surface">${custName}</td>
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${fmtBkDate(b.start_datetime)}<br>${fmtBkDate(b.end_datetime)}</td>
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${b.total_days || '—'} day${b.total_days===1?'':'s'}</td>
+        <td class="px-5 py-4"><span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm ${sc.cls}">${sc.label}</span></td>
+        <td class="px-5 py-4 font-label-lg text-label-lg text-on-surface">${amtStr}</td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('bkTableWrap').innerHTML = `
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-surface-container-low border-b border-outline-variant/30">
+            <tr>
+              <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Vehicle</th>
+              <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Customer</th>
+              <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Dates</th>
+              <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Duration</th>
+              <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Status</th>
+              <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Amount</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div class="px-5 py-3 border-t border-outline-variant/20 font-label-sm text-label-sm text-on-surface-variant">
+          Showing ${list.length} booking${list.length===1?'':'s'}
+        </div>
+      </div>`;
+  }
+
+  // ── Owner Earnings ─────────────────────────────────────────────────────────────
+  const COMMISSION_RATE = 0.10; // 10% platform fee
+
+  let _allEarningsRows = []; // processed rows cached for search/filter
+
+  function fmtUGX(usd) {
+    if (usd == null) return 'UGX —';
+    // Approx conversion; display in UGX (1 USD ~ 3750 UGX)
+    const ugx = Math.round(parseFloat(usd) * 3750);
+    return 'UGX ' + ugx.toLocaleString('en-UG');
+  }
+
+  function nextPayoutDate() {
+    const d = new Date();
+    // Last calendar day of current month
+    const last = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+    return last.toLocaleDateString('en-UG', { day:'numeric', month:'short', year:'numeric' });
+  }
+
+  async function loadOwnerEarnings() {
+    const tok = localStorage.getItem('access_token');
+    if (!tok) return;
+    document.getElementById('earnTableWrap').innerHTML = `
+      <div class="text-center py-16 text-on-surface-variant">
+        <span class="material-symbols-outlined text-[48px]" style="animation:spin 1s linear infinite;display:inline-block;">refresh</span>
+      </div>`;
+    try {
+      const res = await fetch('/api/bookings/owner', { headers:{ Authorization:`Bearer ${tok}` } });
+      if (!res.ok) throw new Error('Failed');
+      const all = await res.json();
+
+      // Net earnings from completed bookings
+      const completed = all.filter(b => b.status === 'completed');
+      const pending   = all.filter(b => b.status === 'confirmed' || b.status === 'in_progress');
+
+      const lifetimeUSD = completed.reduce((s, b) => s + (parseFloat(b.amount_usd) || 0), 0);
+      const pendingUSD  = pending.reduce((s, b) => s + (parseFloat(b.amount_usd) || 0), 0);
+      const netLifetime = lifetimeUSD * (1 - COMMISSION_RATE);
+      const netPending  = pendingUSD  * (1 - COMMISSION_RATE);
+
+      document.getElementById('earnLifetime').textContent   = fmtUGX(netLifetime);
+      document.getElementById('earnPending').textContent    = fmtUGX(netPending);
+      document.getElementById('earnNextPayout').textContent = nextPayoutDate();
+      document.getElementById('earnLifetimeGrowth').textContent = completed.length
+        ? `${completed.length} trip${completed.length === 1 ? '' : 's'} completed`
+        : 'No completed trips yet';
+
+      // Build ledger rows from all bookings that have revenue
+      _allEarningsRows = all
+        .filter(b => b.amount_usd != null && parseFloat(b.amount_usd) > 0)
+        .map(b => {
+          const total   = parseFloat(b.amount_usd) || 0;
+          const comm    = total * COMMISSION_RATE;
+          const net     = total - comm;
+          const v       = b.vehicle;
+          const vehicle = v ? `${v.make} ${v.model}` : '—';
+          return {
+            date:      b.start_datetime ? new Date(b.start_datetime).toLocaleDateString('en-UG', {day:'numeric',month:'short',year:'numeric'}) : '—',
+            ref:       b.booking_reference || `#${b.id}`,
+            vehicle,
+            total,
+            comm,
+            net,
+            status:    b.status,
+          };
+        });
+
+      renderEarningsTable(_allEarningsRows);
+    } catch {
+      document.getElementById('earnTableWrap').innerHTML = '<div class="text-center py-16 text-error font-label-lg text-label-lg">Failed to load earnings data.</div>';
+    }
+  }
+
+  function filterEarnings(query) {
+    const q = query.toLowerCase();
+    const rows = q
+      ? _allEarningsRows.filter(r => r.ref.toLowerCase().includes(q) || r.vehicle.toLowerCase().includes(q))
+      : _allEarningsRows;
+    renderEarningsTable(rows);
+  }
+
+  function renderEarningsTable(rows) {
+    if (!rows.length) {
+      document.getElementById('earnTableWrap').innerHTML = `
+        <div class="text-center py-16 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[48px] mb-3 block opacity-25">payments</span>
+          <p class="font-label-lg text-label-lg">No earnings records found.</p>
+        </div>`;
+      return;
+    }
+
+    const STATUS_BADGE = {
+      completed:   'bg-green-100 text-status-success',
+      confirmed:   'bg-primary-fixed/30 text-primary',
+      in_progress: 'bg-primary/10 text-primary',
+      pending:     'bg-amber-100 text-status-pending',
+      pending_payment: 'bg-secondary-container/30 text-on-secondary-container',
+      cancelled:   'bg-error-container/30 text-error',
+    };
+
+    const trs = rows.map(r => {
+      const badge = STATUS_BADGE[r.status] || 'bg-surface-container text-on-surface-variant';
+      const label = r.status.replace(/_/g,' ').toUpperCase();
+      return `<tr class="border-b border-outline-variant/10 hover:bg-surface-container-low transition-colors">
+        <td class="px-6 py-4 text-on-surface-variant text-sm">${r.date}</td>
+        <td class="px-6 py-4 text-primary font-bold text-sm">${r.ref}</td>
+        <td class="px-6 py-4 text-sm">${r.vehicle}</td>
+        <td class="px-6 py-4 text-sm">${fmtUGX(r.total)}</td>
+        <td class="px-6 py-4 text-error text-sm">-${fmtUGX(r.comm)}</td>
+        <td class="px-6 py-4 font-bold text-sm">${fmtUGX(r.net)}</td>
+        <td class="px-6 py-4"><span class="inline-flex items-center px-3 py-1 rounded-full font-label-sm text-label-sm ${badge}">${label}</span></td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('earnTableWrap').innerHTML = `
+      <table class="w-full text-left">
+        <thead class="bg-surface-container-low">
+          <tr class="font-label-lg text-label-lg text-on-surface-variant">
+            <th class="px-6 py-4">Date</th>
+            <th class="px-6 py-4">Booking ID</th>
+            <th class="px-6 py-4">Vehicle</th>
+            <th class="px-6 py-4">Total Fare</th>
+            <th class="px-6 py-4">Commission (10%)</th>
+            <th class="px-6 py-4">Net Earnings</th>
+            <th class="px-6 py-4">Status</th>
+          </tr>
+        </thead>
+        <tbody>${trs}</tbody>
+      </table>
+      <div class="px-6 py-3 border-t border-outline-variant/20 flex justify-between items-center bg-surface-container-low">
+        <p class="font-label-sm text-label-sm text-on-surface-variant">Showing ${rows.length} record${rows.length===1?'':'s'}</p>
+      </div>`;
+  }
+
+  function exportEarningsCSV() {
+    if (!_allEarningsRows.length) return;
+    const header = ['Date','Booking ID','Vehicle','Total Fare (UGX)','Commission (UGX)','Net Earnings (UGX)','Status'];
+    const lines = _allEarningsRows.map(r => [
+      r.date, r.ref, r.vehicle,
+      Math.round(parseFloat(r.total) * 3750),
+      Math.round(parseFloat(r.comm)  * 3750),
+      Math.round(parseFloat(r.net)   * 3750),
+      r.status
+    ].join(','));
+    const csv = [header.join(','), ...lines].join('\n');
+    const a = document.createElement('a');
+    a.href = 'data:text/csv,' + encodeURIComponent(csv);
+    a.download = 'kari-vari-earnings.csv';
+    a.click();
+  }
 
   // ── Mobile logout mirror ──
   const mobileLogout = document.getElementById('mobileLogoutBtn');

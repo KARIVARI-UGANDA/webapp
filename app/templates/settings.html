@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings - Kari Vari Uganda</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: { extend: { colors: {
+      "secondary-fixed":"#ffdeac","outline":"#72796e","secondary-fixed-dim":"#ffba35",
+      "inverse-surface":"#2f3133","on-background":"#1a1c1e","on-secondary-fixed":"#281900",
+      "surface-dim":"#dadadc","secondary-container":"#ffb61e","on-surface-variant":"#42493e",
+      "primary-fixed":"#bcf0ae","on-error":"#ffffff","outline-variant":"#c2c9bb",
+      "slate-dark":"#1A1C1E","on-primary":"#ffffff","primary-container":"#2d5a27",
+      "tertiary-fixed-dim":"#adc6ff","secondary":"#7e5700","surface":"#f9f9fc",
+      "tertiary":"#00377a","on-secondary":"#ffffff","primary-fixed-dim":"#a1d494",
+      "tertiary-fixed":"#d8e2ff","on-surface":"#1a1c1e","on-secondary-container":"#6c4a00",
+      "inverse-on-surface":"#f0f0f3","on-primary-fixed":"#002201","status-success":"#15803D",
+      "on-primary-container":"#9dd090","surface-container":"#eeeef0","surface-tint":"#3b6934",
+      "on-tertiary":"#ffffff","surface-container-lowest":"#ffffff","error":"#ba1a1a",
+      "surface-container-highest":"#e2e2e5","primary":"#154212","safari-green":"#2D5A27",
+      "surface-container-high":"#e8e8ea","surface-bright":"#f9f9fc","on-tertiary-fixed":"#001a41",
+      "error-container":"#ffdad6","inverse-primary":"#a1d494","surface-container-low":"#f3f3f6",
+      "surface-variant":"#e2e2e5","on-secondary-fixed-variant":"#5f4100",
+      "tertiary-container":"#004da6","ugandan-sun":"#F9B115","background":"#f9f9fc",
+      "on-error-container":"#93000a"
+    }, fontFamily: {
+      "label-sm":["Inter"],"body-lg":["Inter"],"headline-md":["Montserrat"],
+      "label-lg":["Inter"],"body-md":["Inter"],"headline-xl":["Montserrat"],
+      "headline-lg":["Montserrat"]
+    }, fontSize: {
+      "label-sm":["12px",{lineHeight:"16px",fontWeight:"500"}],
+      "body-lg":["18px",{lineHeight:"28px",fontWeight:"400"}],
+      "headline-md":["24px",{lineHeight:"32px",fontWeight:"600"}],
+      "label-lg":["14px",{lineHeight:"20px",letterSpacing:"0.05em",fontWeight:"600"}],
+      "body-md":["16px",{lineHeight:"24px",fontWeight:"400"}],
+      "headline-xl":["48px",{lineHeight:"56px",letterSpacing:"-0.02em",fontWeight:"700"}],
+      "headline-lg":["32px",{lineHeight:"40px",letterSpacing:"-0.01em",fontWeight:"700"}]
+    }}}
+  }
+</script>
+<style>
+  body { background:#f9f9fc; color:#1a1c1e; font-family:'Inter',sans-serif; }
+  h1,h2,h3,h4 { font-family:'Montserrat',sans-serif; }
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+  .elevation-1 { box-shadow:0 4px 20px rgba(0,0,0,.05); }
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  .spin { animation:spin 1s linear infinite; }
+  .tab-btn.active { background:#2D5A27; color:#fff; }
+  .drop-zone { border:2px dashed #c2c9bb; transition:border-color .2s,background .2s; }
+  .drop-zone.drag-over { border-color:#2D5A27; background:#f0faf0; }
+</style>
+</head>
+<body class="selection:bg-ugandan-sun selection:text-slate-dark">
+
+<!-- ── Sidebar ─────────────────────────────────────────────────────────────── -->
+<aside id="sidebar" class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low shadow-md flex flex-col p-6 space-y-4 z-50">
+  <div class="mb-6">
+    <a href="/" class="flex items-center gap-2 font-bold text-[20px]" style="color:#154212;text-decoration:none;">
+      <span class="material-symbols-outlined text-[24px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+      Kari Vari Uganda
+    </a>
+  </div>
+  <div class="flex items-center space-x-3 px-2">
+    <div id="avatarCircle" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg flex-shrink-0">?</div>
+    <div class="overflow-hidden">
+      <p class="font-label-lg text-label-lg text-on-surface truncate" id="sidebarName">—</p>
+      <p class="font-label-sm text-label-sm text-on-surface-variant" id="sidebarRole">—</p>
+    </div>
+  </div>
+  <nav id="sidebarNav" class="flex-1 space-y-1 pt-2"></nav>
+  <div class="pt-4 border-t border-outline-variant space-y-2">
+    <a href="/vehicles" class="block w-full text-center bg-safari-green text-white font-label-lg text-label-lg py-3 rounded-xl hover:opacity-90 transition-all active:scale-95">
+      Book a Car
+    </a>
+    <button id="logoutBtn" class="w-full flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:text-error transition-colors rounded-lg">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="font-label-lg text-label-lg">Log Out</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ── Main ────────────────────────────────────────────────────────────────── -->
+<main class="ml-64 min-h-screen bg-surface">
+  <header class="sticky top-0 z-40 bg-surface/80 backdrop-blur-md flex justify-between items-center px-10 py-4 shadow-sm">
+    <div>
+      <h1 class="font-headline-md text-headline-md">Account Settings</h1>
+      <p class="font-label-sm text-label-sm text-on-surface-variant">Manage your profile, documents, and security</p>
+    </div>
+    <div id="headerAvatar" class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">?</div>
+  </header>
+
+  <div class="p-10 max-w-[960px] mx-auto space-y-8">
+
+    <!-- Loading -->
+    <div id="loadingState" class="flex justify-center py-24">
+      <span class="material-symbols-outlined text-primary text-[48px] spin">refresh</span>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden">
+      <div id="toastInner" class="flex items-center gap-3 px-5 py-4 rounded-2xl shadow-lg text-white font-label-lg text-label-lg">
+        <span id="toastIcon" class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;"></span>
+        <span id="toastMsg"></span>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div id="pageContent" class="hidden">
+
+      <!-- Tab nav -->
+      <div class="flex gap-2 mb-8 flex-wrap">
+        <button onclick="showTab('profile')"   class="tab-btn active px-5 py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Profile</button>
+        <button onclick="showTab('documents')" class="tab-btn px-5 py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Documents</button>
+        <button id="driverTab" onclick="showTab('driver')" class="tab-btn hidden px-5 py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Driver Profile</button>
+        <button onclick="showTab('security')"  class="tab-btn px-5 py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Security</button>
+      </div>
+
+      <!-- ── Tab: Profile ─────────────────────────────────────────────────── -->
+      <div id="tab-profile" class="space-y-6">
+        <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-6">
+          <h2 class="font-headline-md text-headline-md">Personal Information</h2>
+
+          <!-- Avatar -->
+          <div class="flex items-center gap-6">
+            <div id="profileAvatar" class="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-white font-bold text-3xl overflow-hidden flex-shrink-0">?</div>
+            <div class="space-y-2">
+              <p class="font-label-lg text-label-lg text-on-surface">Profile Photo</p>
+              <p class="font-label-sm text-label-sm text-on-surface-variant">JPG, PNG or WebP · max 10 MB</p>
+              <label class="cursor-pointer inline-flex items-center gap-2 bg-surface-container px-4 py-2 rounded-xl font-label-sm text-label-sm text-on-surface hover:bg-surface-container-high transition-colors">
+                <span class="material-symbols-outlined text-[16px]">upload</span>
+                Upload Photo
+                <input type="file" accept="image/*" class="hidden" onchange="uploadAvatar(this)"/>
+              </label>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Full Name</label>
+              <input id="pName" type="text" class="field" placeholder="Your full name"/>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Email Address</label>
+              <input id="pEmail" type="email" disabled class="field opacity-60 cursor-not-allowed" placeholder="email"/>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Phone Number</label>
+              <input id="pPhone" type="tel" class="field" placeholder="+256 700 000 000"/>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Preferred Language</label>
+              <select id="pLang" class="field">
+                <option value="">Select language</option>
+                <option value="en">English</option>
+                <option value="sw">Swahili</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="es">Spanish</option>
+                <option value="zh">Chinese</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button onclick="saveProfile()" class="save-btn bg-safari-green text-white px-8 py-3 rounded-xl font-label-lg text-label-lg hover:opacity-90 transition-all active:scale-95 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">save</span> Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Tab: Documents ──────────────────────────────────────────────── -->
+      <div id="tab-documents" class="space-y-6 hidden">
+
+        <!-- KYC status banner -->
+        <div id="kycBanner" class="hidden rounded-2xl p-5 flex items-center gap-4">
+          <span id="kycBannerIcon" class="material-symbols-outlined text-[32px]" style="font-variation-settings:'FILL' 1;"></span>
+          <div>
+            <p id="kycBannerTitle" class="font-label-lg text-label-lg"></p>
+            <p id="kycBannerSub"   class="font-label-sm text-label-sm mt-0.5"></p>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-6">
+          <h2 class="font-headline-md text-headline-md">Identity Verification</h2>
+          <p class="font-body-md text-body-md text-on-surface-variant">Upload a government-issued photo ID. Your document is stored securely and only visible to our verification team.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Document Type</label>
+              <select id="docType" class="field" onchange="toggleBackSide()">
+                <option value="passport">Passport</option>
+                <option value="national_id">National ID</option>
+                <option value="driving_licence">Driving Licence</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Document Number</label>
+              <input id="docNumber" type="text" class="field" placeholder="e.g. A12345678"/>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Country of Issue</label>
+              <input id="docCountry" type="text" class="field" placeholder="e.g. Uganda"/>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Expiry Date</label>
+              <input id="docExpiry" type="date" class="field"/>
+            </div>
+          </div>
+
+          <!-- Front side -->
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Front Side / Photo Page *</label>
+            <div class="drop-zone rounded-2xl p-8 text-center cursor-pointer" onclick="document.getElementById('docFrontInput').click()" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'front')">
+              <input type="file" id="docFrontInput" accept="image/*,application/pdf" class="hidden" onchange="previewDoc(this,'front')"/>
+              <div id="docFrontPreview">
+                <span class="material-symbols-outlined text-[48px] text-on-surface-variant block mb-2">upload_file</span>
+                <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag &amp; drop</p>
+                <p class="font-label-sm text-label-sm text-outline mt-1">JPEG, PNG, WebP, PDF · max 10 MB</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Back side (hidden for passport) -->
+          <div id="backSideWrap">
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Back Side</label>
+            <div class="drop-zone rounded-2xl p-8 text-center cursor-pointer" onclick="document.getElementById('docBackInput').click()" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'back')">
+              <input type="file" id="docBackInput" accept="image/*,application/pdf" class="hidden" onchange="previewDoc(this,'back')"/>
+              <div id="docBackPreview">
+                <span class="material-symbols-outlined text-[48px] text-on-surface-variant block mb-2">upload_file</span>
+                <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag &amp; drop</p>
+                <p class="font-label-sm text-label-sm text-outline mt-1">JPEG, PNG, WebP, PDF · max 10 MB</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button onclick="submitKYC()" id="kycSubmitBtn" class="bg-safari-green text-white px-8 py-3 rounded-xl font-label-lg text-label-lg hover:opacity-90 transition-all active:scale-95 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">verified_user</span> Submit for Verification
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Tab: Driver Profile ──────────────────────────────────────────── -->
+      <div id="tab-driver" class="space-y-6 hidden">
+
+        <!-- Verification status -->
+        <div id="driverStatusBanner" class="hidden rounded-2xl p-5 flex items-center gap-4"></div>
+
+        <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-6">
+          <h2 class="font-headline-md text-headline-md">Driving Licence</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Licence Number *</label>
+              <input id="dLicNumber" type="text" class="field" placeholder="DL-123456"/>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Licence Class *</label>
+              <select id="dLicClass" class="field">
+                <option value="B">Class B – Private car</option>
+                <option value="C">Class C – Medium truck</option>
+                <option value="D">Class D – Bus / Minibus</option>
+                <option value="E">Class E – Heavy truck</option>
+                <option value="CM">Class CM – Motorcycle</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Expiry Date *</label>
+              <input id="dLicExpiry" type="date" class="field"/>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Years of Experience</label>
+              <input id="dYears" type="number" min="0" max="50" class="field" placeholder="e.g. 5"/>
+            </div>
+          </div>
+
+          <!-- Licence upload -->
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Licence Document *</label>
+            <div class="drop-zone rounded-2xl p-8 text-center cursor-pointer" onclick="document.getElementById('licInput').click()" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'licence')">
+              <input type="file" id="licInput" accept="image/*,application/pdf" class="hidden" onchange="previewDoc(this,'licence')"/>
+              <div id="licPreview">
+                <span class="material-symbols-outlined text-[48px] text-on-surface-variant block mb-2">badge</span>
+                <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag licence image / PDF</p>
+                <p class="font-label-sm text-label-sm text-outline mt-1">JPEG, PNG, WebP, PDF · max 10 MB</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-6">
+          <h2 class="font-headline-md text-headline-md">Additional Certifications</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Police Clearance Certificate</label>
+              <div class="drop-zone rounded-2xl p-6 text-center cursor-pointer" onclick="document.getElementById('policeInput').click()" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'police')">
+                <input type="file" id="policeInput" accept="image/*,application/pdf" class="hidden" onchange="previewDoc(this,'police')"/>
+                <div id="policePreview">
+                  <span class="material-symbols-outlined text-[36px] text-on-surface-variant block mb-1">policy</span>
+                  <p class="font-label-sm text-label-sm text-on-surface-variant">Upload clearance certificate</p>
+                </div>
+              </div>
+              <div class="mt-2">
+                <label class="font-label-sm text-label-sm text-on-surface-variant">Clearance Expiry</label>
+                <input id="dPoliceExp" type="date" class="field mt-1"/>
+              </div>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">First Aid Certificate</label>
+              <div class="drop-zone rounded-2xl p-6 text-center cursor-pointer" onclick="document.getElementById('firstAidInput').click()" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'firstaid')">
+                <input type="file" id="firstAidInput" accept="image/*,application/pdf" class="hidden" onchange="previewDoc(this,'firstaid')"/>
+                <div id="firstaidPreview">
+                  <span class="material-symbols-outlined text-[36px] text-on-surface-variant block mb-1">emergency</span>
+                  <p class="font-label-sm text-label-sm text-on-surface-variant">Upload first aid certificate</p>
+                </div>
+              </div>
+              <div class="mt-3 flex items-center gap-2">
+                <input type="checkbox" id="dFirstAid" class="w-4 h-4 text-safari-green rounded"/>
+                <label for="dFirstAid" class="font-label-sm text-label-sm text-on-surface-variant">I hold a valid first aid certificate</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-5">
+          <h2 class="font-headline-md text-headline-md">Profile &amp; Bio</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Languages Spoken</label>
+              <input id="dLangs" type="text" class="field" placeholder="English, Swahili, French"/>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Specialties</label>
+              <input id="dSpecialties" type="text" class="field" placeholder="Wildlife, Photography, 4×4 off-road"/>
+            </div>
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Bio</label>
+            <textarea id="dBio" rows="4" class="field resize-none" placeholder="Tell travellers a bit about yourself…"></textarea>
+          </div>
+          <div class="flex justify-end">
+            <button onclick="saveDriverProfile()" class="bg-safari-green text-white px-8 py-3 rounded-xl font-label-lg text-label-lg hover:opacity-90 transition-all active:scale-95 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">save</span> Save Driver Profile
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Tab: Security ───────────────────────────────────────────────── -->
+      <div id="tab-security" class="space-y-6 hidden">
+        <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-6">
+          <h2 class="font-headline-md text-headline-md">Change Password</h2>
+          <div class="max-w-md space-y-5">
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Current Password</label>
+              <div class="relative">
+                <input id="pwCurrent" type="password" class="field pr-12" placeholder="Enter current password"/>
+                <button type="button" onclick="togglePw('pwCurrent',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[20px]">visibility</span>
+                </button>
+              </div>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">New Password</label>
+              <div class="relative">
+                <input id="pwNew" type="password" class="field pr-12" placeholder="Min. 8 characters"/>
+                <button type="button" onclick="togglePw('pwNew',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[20px]">visibility</span>
+                </button>
+              </div>
+            </div>
+            <div>
+              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Confirm New Password</label>
+              <div class="relative">
+                <input id="pwConfirm" type="password" class="field pr-12" placeholder="Repeat new password"/>
+                <button type="button" onclick="togglePw('pwConfirm',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[20px]">visibility</span>
+                </button>
+              </div>
+            </div>
+            <button onclick="changePassword()" class="bg-safari-green text-white px-8 py-3 rounded-xl font-label-lg text-label-lg hover:opacity-90 transition-all active:scale-95 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">lock_reset</span> Update Password
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-4">
+          <h2 class="font-headline-md text-headline-md">Account Info</h2>
+          <div class="grid grid-cols-2 gap-4 max-w-md">
+            <div>
+              <p class="font-label-sm text-label-sm text-on-surface-variant">Account Type</p>
+              <p class="font-label-lg text-label-lg text-on-surface capitalize" id="secAccountType">—</p>
+            </div>
+            <div>
+              <p class="font-label-sm text-label-sm text-on-surface-variant">Role</p>
+              <p class="font-label-lg text-label-lg text-on-surface capitalize" id="secRole">—</p>
+            </div>
+            <div>
+              <p class="font-label-sm text-label-sm text-on-surface-variant">Member Since</p>
+              <p class="font-label-lg text-label-lg text-on-surface" id="secJoined">—</p>
+            </div>
+            <div>
+              <p class="font-label-sm text-label-sm text-on-surface-variant">Last Login</p>
+              <p class="font-label-lg text-label-lg text-on-surface" id="secLastLogin">—</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /pageContent -->
+  </div>
+</main>
+
+<!-- Shared field styles via Tailwind apply -->
+<style>
+  .field {
+    width:100%; padding:0.75rem 1rem;
+    background:#f3f3f6; border:1px solid #c2c9bb;
+    border-radius:0.75rem; font-size:16px; line-height:24px;
+    outline:none; transition:border-color .15s, box-shadow .15s;
+  }
+  .field:focus { border-color:#2D5A27; box-shadow:0 0 0 3px rgba(45,90,39,.15); }
+</style>
+
+<script>
+const API = '/api';
+const token = localStorage.getItem('access_token');
+if (!token) { window.location.href = '/login'; }
+document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
+
+// ── Helpers ────────────────────────────────────────────────────────────────────
+function initials(n) { return n ? n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?'; }
+function fmtDate(s) { return s ? new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : '—'; }
+function auth() { return { headers: { Authorization: `Bearer ${token}` } }; }
+
+let toastTimer;
+function toast(msg, ok=true) {
+  const el = document.getElementById('toast');
+  const inner = document.getElementById('toastInner');
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toastIcon').textContent = ok ? 'check_circle' : 'error';
+  inner.className = `flex items-center gap-3 px-5 py-4 rounded-2xl shadow-lg text-white font-label-lg text-label-lg ${ok ? 'bg-safari-green' : 'bg-error'}`;
+  el.classList.remove('hidden');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.add('hidden'), 3500);
+}
+
+function setBusy(btn, busy) {
+  if (busy) { btn.disabled=true; btn.dataset.orig=btn.innerHTML; btn.innerHTML='<span class="material-symbols-outlined text-[18px] spin">refresh</span> Saving…'; }
+  else       { btn.disabled=false; btn.innerHTML=btn.dataset.orig; }
+}
+
+// ── Sidebar nav per role ───────────────────────────────────────────────────────
+const NAV = {
+  customer: [
+    {href:'/dashboard',     icon:'dashboard',      label:'Dashboard'},
+    {href:'/vehicles',      icon:'directions_car', label:'Browse Cars'},
+    {href:'/my-bookings',   icon:'calendar_month', label:'My Bookings'},
+    {href:'/my-payments',   icon:'payments',       label:'Payments'},
+    {href:'/support',       icon:'contact_support',label:'Support'},
+    {href:'/settings',      icon:'settings',       label:'Settings', active:true},
+  ],
+  tourist: [
+    {href:'/dashboard',     icon:'dashboard',      label:'Dashboard'},
+    {href:'/vehicles',      icon:'directions_car', label:'Browse Cars'},
+    {href:'/my-bookings',   icon:'calendar_month', label:'My Bookings'},
+    {href:'/my-payments',   icon:'payments',       label:'Payments'},
+    {href:'/support',       icon:'contact_support',label:'Support'},
+    {href:'/settings',      icon:'settings',       label:'Settings', active:true},
+  ],
+  driver: [
+    {href:'/driver/dashboard',icon:'dashboard',    label:'Dashboard'},
+    {href:'#',              icon:'map',            label:'My Trips'},
+    {href:'#',              icon:'school',         label:'Training'},
+    {href:'/settings',      icon:'settings',       label:'Settings', active:true},
+  ],
+  owner: [
+    {href:'/owner/dashboard',icon:'dashboard',     label:'Dashboard'},
+    {href:'/vehicles',       icon:'directions_car',label:'My Vehicles'},
+    {href:'/settings',       icon:'settings',      label:'Settings', active:true},
+  ],
+  admin: [
+    {href:'/admin/dashboard',icon:'dashboard',     label:'Dashboard'},
+    {href:'/settings',       icon:'settings',      label:'Settings', active:true},
+  ],
+};
+
+function buildSidebar(role) {
+  const items = NAV[role] || NAV.customer;
+  document.getElementById('sidebarNav').innerHTML = items.map(it => `
+    <a class="flex items-center space-x-3 px-4 py-3 ${it.active ? 'bg-secondary-container text-on-secondary-container' : 'text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1'} transition-all rounded-lg" href="${it.href}">
+      <span class="material-symbols-outlined">${it.icon}</span>
+      <span class="font-label-lg text-label-lg">${it.label}</span>
+    </a>`).join('');
+}
+
+// ── Tabs ───────────────────────────────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(`tab-${name}`).classList.remove('hidden');
+  event.currentTarget.classList.add('active');
+}
+
+// ── Drop zones ─────────────────────────────────────────────────────────────────
+function dragOver(e,el) { e.preventDefault(); el.classList.add('drag-over'); }
+function dragLeave(el)  { el.classList.remove('drag-over'); }
+function dropFile(e,el,slot) {
+  e.preventDefault(); el.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  const fakeInput = { files:[file] };
+  Object.defineProperty(fakeInput,'files',{value:e.dataTransfer.files});
+  previewDoc(fakeInput, slot);
+}
+
+const uploadedUrls = {};
+async function previewDoc(input, slot) {
+  const file = input.files[0];
+  if (!file) return;
+  const previewEl = document.getElementById(`${slot}Preview`);
+
+  // Show preview while uploading
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      previewEl.innerHTML = `<img src="${e.target.result}" class="mx-auto max-h-40 rounded-xl object-contain"/><p class="font-label-sm text-label-sm text-on-surface-variant mt-2">Uploading…</p>`;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    previewEl.innerHTML = `<span class="material-symbols-outlined text-[36px] text-safari-green block mb-1">picture_as_pdf</span><p class="font-label-sm text-label-sm">${file.name}</p><p class="font-label-sm text-label-sm text-on-surface-variant">Uploading…</p>`;
+  }
+
+  try {
+    const fd = new FormData();
+    fd.append('file', file);
+    const res = await fetch(`${API}/users/me/upload-document`, { method:'POST', headers:{ Authorization:`Bearer ${token}` }, body:fd });
+    if (!res.ok) throw new Error('Upload failed');
+    const { url } = await res.json();
+    uploadedUrls[slot] = url;
+    const done = `<span class="material-symbols-outlined text-safari-green text-[20px]" style="font-variation-settings:'FILL' 1;">check_circle</span><p class="font-label-sm text-label-sm text-safari-green mt-1">Uploaded ✓</p>`;
+    if (file.type.startsWith('image/')) {
+      previewEl.innerHTML = `<img src="${url}" class="mx-auto max-h-40 rounded-xl object-contain"/>${done}`;
+    } else {
+      previewEl.innerHTML = `<span class="material-symbols-outlined text-[36px] text-safari-green block mb-1">picture_as_pdf</span><p class="font-label-sm text-label-sm">${file.name}</p>${done}`;
+    }
+  } catch {
+    previewEl.innerHTML = `<span class="material-symbols-outlined text-error text-[36px] block mb-1">error</span><p class="font-label-sm text-label-sm text-error">Upload failed. Try again.</p>`;
+  }
+}
+
+function toggleBackSide() {
+  const type = document.getElementById('docType').value;
+  document.getElementById('backSideWrap').style.display = type === 'passport' ? 'none' : '';
+}
+
+// ── Upload avatar ──────────────────────────────────────────────────────────────
+async function uploadAvatar(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('profileAvatar').innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover"/>`;
+  };
+  reader.readAsDataURL(file);
+  try {
+    const fd = new FormData(); fd.append('file', file);
+    const res = await fetch(`${API}/users/me/avatar`, { method:'POST', headers:{ Authorization:`Bearer ${token}` }, body:fd });
+    if (res.ok) { toast('Profile photo updated'); }
+    else { toast('Avatar upload failed', false); }
+  } catch { toast('Avatar upload failed', false); }
+}
+
+// ── Save profile ───────────────────────────────────────────────────────────────
+async function saveProfile() {
+  const btn = event.currentTarget;
+  setBusy(btn, true);
+  try {
+    const res = await fetch(`${API}/users/me`, {
+      method:'PATCH',
+      headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        full_name: document.getElementById('pName').value.trim() || undefined,
+        phone_number: document.getElementById('pPhone').value.trim() || undefined,
+        preferred_language: document.getElementById('pLang').value || undefined,
+      }),
+    });
+    if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Save failed'); }
+    toast('Profile saved successfully');
+  } catch(e) { toast(e.message, false); }
+  finally { setBusy(btn, false); }
+}
+
+// ── Submit KYC ─────────────────────────────────────────────────────────────────
+async function submitKYC() {
+  const btn = document.getElementById('kycSubmitBtn');
+  const frontUrl = uploadedUrls['front'];
+  if (!frontUrl) { toast('Please upload the front of your document first', false); return; }
+  const docNum = document.getElementById('docNumber').value.trim();
+  if (!docNum) { toast('Please enter a document number', false); return; }
+  setBusy(btn, true);
+  try {
+    const res = await fetch(`${API}/kyc/me/submit`, {
+      method:'POST',
+      headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        document_type: document.getElementById('docType').value,
+        document_number: docNum,
+        document_front_url: frontUrl,
+        document_back_url: uploadedUrls['back'] || null,
+        expiry_date: document.getElementById('docExpiry').value || null,
+      }),
+    });
+    if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Submission failed'); }
+    toast('Document submitted for verification');
+    showKYCBanner('pending');
+  } catch(e) { toast(e.message, false); }
+  finally { setBusy(btn, false); }
+}
+
+function showKYCBanner(status) {
+  const cfg = {
+    pending:    { cls:'bg-secondary-fixed text-secondary',       icon:'pending',       title:'Verification Pending', sub:'We\'re reviewing your document. This usually takes 1–2 business days.' },
+    approved:   { cls:'bg-primary-fixed text-safari-green',      icon:'verified_user', title:'Identity Verified',    sub:'Your identity has been successfully verified.' },
+    rejected:   { cls:'bg-error-container text-error',           icon:'error',         title:'Verification Rejected', sub:'Please resubmit with a clear, valid document.' },
+    not_submitted:{ cls:'bg-tertiary-fixed text-tertiary',       icon:'info',          title:'Not Yet Verified',     sub:'Upload your ID to unlock full booking features.' },
+  };
+  const c = cfg[status] || cfg.not_submitted;
+  const banner = document.getElementById('kycBanner');
+  banner.className = `rounded-2xl p-5 flex items-center gap-4 ${c.cls}`;
+  document.getElementById('kycBannerIcon').textContent  = c.icon;
+  document.getElementById('kycBannerTitle').textContent = c.title;
+  document.getElementById('kycBannerSub').textContent   = c.sub;
+  banner.classList.remove('hidden');
+}
+
+// ── Save Driver Profile ────────────────────────────────────────────────────────
+async function saveDriverProfile() {
+  const btn = event.currentTarget;
+  const licNum  = document.getElementById('dLicNumber').value.trim();
+  const licExp  = document.getElementById('dLicExpiry').value;
+  const licClass = document.getElementById('dLicClass').value;
+  if (!licNum || !licExp) { toast('Licence number and expiry are required', false); return; }
+  if (!uploadedUrls['licence'] && !window._existingLicUrl) { toast('Please upload your licence document', false); return; }
+
+  setBusy(btn, true);
+  try {
+    const payload = {
+      license_class: licClass,
+      license_expiry: licExp,
+      license_doc_url: uploadedUrls['licence'] || window._existingLicUrl,
+      years_experience: parseInt(document.getElementById('dYears').value)||undefined,
+      languages_spoken: document.getElementById('dLangs').value.trim()||undefined,
+      specialties: document.getElementById('dSpecialties').value.trim()||undefined,
+      bio: document.getElementById('dBio').value.trim()||undefined,
+      has_first_aid: document.getElementById('dFirstAid').checked,
+      police_clearance_url: uploadedUrls['police']||undefined,
+      police_clearance_exp: document.getElementById('dPoliceExp').value||undefined,
+      first_aid_cert_url: uploadedUrls['firstaid']||undefined,
+    };
+
+    // Try PATCH first, fall back to POST if 404
+    let res = await fetch(`${API}/drivers/me/profile`, {
+      method:'PATCH',
+      headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (res.status === 404) {
+      // Profile doesn't exist yet — create it
+      res = await fetch(`${API}/drivers/me/profile`, {
+        method:'POST',
+        headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
+        body: JSON.stringify({ ...payload, license_number: licNum }),
+      });
+    }
+
+    if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Save failed'); }
+    toast('Driver profile saved');
+  } catch(e) { toast(e.message, false); }
+  finally { setBusy(btn, false); }
+}
+
+// ── Change password ────────────────────────────────────────────────────────────
+async function changePassword() {
+  const cur = document.getElementById('pwCurrent').value;
+  const nw  = document.getElementById('pwNew').value;
+  const cfm = document.getElementById('pwConfirm').value;
+  if (!cur||!nw||!cfm)    { toast('All password fields are required', false); return; }
+  if (nw.length < 8)       { toast('New password must be at least 8 characters', false); return; }
+  if (nw !== cfm)          { toast('New passwords do not match', false); return; }
+  const btn = event.currentTarget; setBusy(btn, true);
+  try {
+    const res = await fetch(`${API}/users/me/change-password`, {
+      method:'POST',
+      headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
+      body: JSON.stringify({ current_password:cur, new_password:nw }),
+    });
+    if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Password change failed'); }
+    toast('Password updated successfully');
+    ['pwCurrent','pwNew','pwConfirm'].forEach(id => document.getElementById(id).value='');
+  } catch(e) { toast(e.message, false); }
+  finally { setBusy(btn, false); }
+}
+
+function togglePw(id, btn) {
+  const inp = document.getElementById(id);
+  const showing = inp.type === 'text';
+  inp.type = showing ? 'password' : 'text';
+  btn.querySelector('.material-symbols-outlined').textContent = showing ? 'visibility' : 'visibility_off';
+}
+
+// ── Load page ──────────────────────────────────────────────────────────────────
+async function load() {
+  try {
+    const uRes = await fetch(`${API}/users/me`, auth());
+    if (!uRes.ok) { localStorage.clear(); window.location.href='/login'; return; }
+    const user = await uRes.json();
+
+    const name = user.full_name || user.email;
+    document.getElementById('sidebarName').textContent = name;
+    document.getElementById('sidebarRole').textContent = user.role.charAt(0).toUpperCase()+user.role.slice(1);
+    document.getElementById('avatarCircle').textContent = initials(name);
+    document.getElementById('headerAvatar').textContent = initials(name);
+
+    // Profile avatar
+    const pa = document.getElementById('profileAvatar');
+    if (user.profile_photo_url) {
+      pa.innerHTML = `<img src="${user.profile_photo_url}" class="w-full h-full object-cover"/>`;
+    } else {
+      pa.textContent = initials(name);
+    }
+
+    // Fill profile form
+    document.getElementById('pName').value  = user.full_name || '';
+    document.getElementById('pEmail').value = user.email || '';
+    document.getElementById('pPhone').value = user.phone_number || '';
+    document.getElementById('pLang').value  = user.preferred_language || '';
+
+    // Security tab
+    document.getElementById('secAccountType').textContent = user.account_type;
+    document.getElementById('secRole').textContent        = user.role;
+    document.getElementById('secJoined').textContent      = fmtDate(user.created_at);
+    document.getElementById('secLastLogin').textContent   = fmtDate(user.last_login_at);
+
+    buildSidebar(user.role);
+
+    // Show driver tab only for drivers
+    if (user.role === 'driver') {
+      document.getElementById('driverTab').classList.remove('hidden');
+      loadDriverProfile();
+    }
+
+    // Load KYC status for customer/tourist
+    if (['customer','tourist'].includes(user.role)) {
+      try {
+        const kRes = await fetch(`${API}/kyc/me`, auth());
+        if (kRes.ok) {
+          const kyc = await kRes.json();
+          if (kyc.status && kyc.status !== 'not_submitted') {
+            showKYCBanner(kyc.status);
+            if (kyc.document_type) document.getElementById('docType').value = kyc.document_type;
+            if (kyc.document_number) document.getElementById('docNumber').value = kyc.document_number;
+            if (kyc.expiry_date) document.getElementById('docExpiry').value = kyc.expiry_date;
+            if (kyc.document_front_url) {
+              uploadedUrls['front'] = kyc.document_front_url;
+              document.getElementById('docFrontPreview').innerHTML = `<img src="${kyc.document_front_url}" class="mx-auto max-h-32 rounded-xl object-contain"/><span class="material-symbols-outlined text-safari-green text-[20px]" style="font-variation-settings:'FILL' 1;">check_circle</span>`;
+            }
+            if (kyc.document_back_url) {
+              uploadedUrls['back'] = kyc.document_back_url;
+              document.getElementById('docBackPreview').innerHTML = `<img src="${kyc.document_back_url}" class="mx-auto max-h-32 rounded-xl object-contain"/><span class="material-symbols-outlined text-safari-green text-[20px]" style="font-variation-settings:'FILL' 1;">check_circle</span>`;
+            }
+          }
+        }
+      } catch {}
+    }
+
+    toggleBackSide();
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('pageContent').classList.remove('hidden');
+  } catch(e) {
+    document.getElementById('loadingState').innerHTML=`<div class="text-center"><span class="material-symbols-outlined text-error text-[48px]">error</span><p class="mt-4 text-on-surface-variant">Failed to load. <a href="/" class="text-primary underline">Go home</a></p></div>`;
+  }
+}
+
+async function loadDriverProfile() {
+  try {
+    const res = await fetch(`${API}/drivers/me/profile`, auth());
+    if (!res.ok) return;
+    const p = await res.json();
+    document.getElementById('dLicNumber').value   = p.license_number || '';
+    document.getElementById('dLicClass').value    = p.license_class  || 'B';
+    document.getElementById('dLicExpiry').value   = p.license_expiry || '';
+    document.getElementById('dYears').value       = p.years_experience || '';
+    document.getElementById('dLangs').value       = p.languages_spoken || '';
+    document.getElementById('dSpecialties').value = p.specialties || '';
+    document.getElementById('dBio').value         = p.bio || '';
+    document.getElementById('dFirstAid').checked  = !!p.has_first_aid;
+    document.getElementById('dPoliceExp').value   = p.police_clearance_exp || '';
+
+    if (p.license_doc_url) {
+      window._existingLicUrl = p.license_doc_url;
+      document.getElementById('licPreview').innerHTML=`<img src="${p.license_doc_url}" class="mx-auto max-h-32 rounded-xl object-contain" onerror="this.style.display='none'"/><span class="material-symbols-outlined text-safari-green text-[20px]" style="font-variation-settings:'FILL' 1;">check_circle</span><p class="font-label-sm text-label-sm text-safari-green mt-1">Current licence on file</p>`;
+    }
+
+    // Verification status banner
+    const cfg = {
+      pending:  { cls:'bg-secondary-fixed text-secondary',  icon:'pending',      msg:'Your driver profile is under review. This may take 2–3 business days.' },
+      verified: { cls:'bg-primary-fixed text-safari-green', icon:'verified_user',msg:'Your driver profile is verified. You can accept trip assignments.' },
+      rejected: { cls:'bg-error-container text-error',      icon:'error',        msg:'Your driver profile was rejected. Update your details and resubmit.' },
+    };
+    const c = cfg[p.verification_status];
+    if (c) {
+      const b = document.getElementById('driverStatusBanner');
+      b.className = `rounded-2xl p-5 flex items-center gap-4 ${c.cls}`;
+      b.innerHTML = `<span class="material-symbols-outlined text-[32px]" style="font-variation-settings:'FILL' 1;">${c.icon}</span><p class="font-label-lg text-label-lg">${c.msg}</p>`;
+      b.classList.remove('hidden');
+    }
+  } catch {}
+}
+
+load();
+</script>
+</body>
+</html>

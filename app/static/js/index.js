@@ -36,7 +36,7 @@ function renderVehicleCards(vehicles, currency) {
 		].filter(Boolean).join('');
 
 		const statusBadge = v.status === 'verified'
-			? `<span class="bg-status-success text-white text-[12px] font-bold px-3 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px]">verified</span> Verified</span>`
+			? `<span class="bg-status-success text-white text-[12px] font-bold px-3 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px]">check_circle</span> Available</span>`
 			: `<span class="bg-status-pending text-white text-[12px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Under Review</span>`;
 
 		const actionBtn = v.status === 'verified'
@@ -60,7 +60,7 @@ function renderVehicleCards(vehicles, currency) {
 				<div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">${features}</div>
 				<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
 					<div>
-						<span class="font-headline-md text-headline-md text-primary">${sym}${price}</span>
+						<span class="font-headline-md text-headline-md text-safari-green">${sym}${price}</span>
 						<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
 					</div>
 					${actionBtn}

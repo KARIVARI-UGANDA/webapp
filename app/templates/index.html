@@ -71,7 +71,10 @@
 <!-- Top Navigation Bar -->
 <nav class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/80 backdrop-blur-md shadow-sm">
   <div class="flex items-center gap-8">
-    <a href="/" class="font-headline-md text-headline-md font-bold" style="color:#2D5A27;text-decoration:none;">Kari Vari Uganda</a>
+    <a href="/" class="font-headline-md text-headline-md font-bold flex items-center gap-2" style="color:#2D5A27;text-decoration:none;">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+      Kari Vari Uganda
+    </a>
     <div class="hidden md:flex gap-6">
       <a class="font-label-lg text-label-lg border-b-2 border-primary pb-1 transition-all duration-200" href="#" style="color:#154212;text-decoration:none;">Listings</a>
       <a class="font-label-lg text-label-lg hover:text-secondary transition-colors duration-200" href="#" style="color:#42493e;text-decoration:none;">How it Works</a>
@@ -84,6 +87,10 @@
     <a href="/register" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95" style="text-decoration:none;">Register</a>
   </div>
   <div class="hidden items-center gap-4" id="userButtons">
+    <a href="/dashboard" id="dashboardLink" class="font-label-lg text-label-lg font-semibold hover:text-primary transition-colors flex items-center gap-1" style="color:#42493e;text-decoration:none;">
+      <span class="material-symbols-outlined text-[18px]">dashboard</span>
+      Dashboard
+    </a>
     <span class="font-label-lg text-label-lg font-semibold" style="color:#1a1c1e;" id="userName"></span>
     <button id="logoutBtn" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Logout</button>
   </div>

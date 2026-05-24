@@ -62,7 +62,7 @@ const authHeaders = { 'Authorization': `Bearer ${token}` };
 
 		if (!tbody) return;
 		if (list.length === 0) {
-			tbody.innerHTML = emptyRow(4, 'No pending vehicle inspections.');
+			tbody.innerHTML = emptyRow(5, 'No pending vehicle inspections.');
 			return;
 		}
 
@@ -81,9 +81,28 @@ const authHeaders = { 'Authorization': `Bearer ${token}` };
 				<td class="px-4 py-4">
 					<span class="bg-status-pending/10 text-status-pending text-[10px] font-bold px-2 py-1 rounded-full uppercase">Pending</span>
 				</td>
+				<td class="px-4 py-4">
+					<div class="flex items-center gap-2">
+						<button onclick="setVehicleStatus('${esc(v.id)}', 'verified', this)"
+								class="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold
+								       bg-status-success/10 text-status-success hover:bg-status-success hover:text-white transition-all">
+							<span class="material-symbols-outlined text-[14px]">check_circle</span> Approve
+						</button>
+						<button onclick="setVehicleStatus('${esc(v.id)}', 'suspended', this)"
+								class="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold
+								       bg-outline/10 text-outline hover:bg-outline hover:text-white transition-all">
+							<span class="material-symbols-outlined text-[14px]">pause_circle</span> Suspend
+						</button>
+						<button onclick="setVehicleStatus('${esc(v.id)}', 'rejected', this)"
+								class="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold
+								       bg-error/10 text-error hover:bg-error hover:text-white transition-all">
+							<span class="material-symbols-outlined text-[14px]">cancel</span> Reject
+						</button>
+					</div>
+				</td>
 			</tr>`).join('');
 	} catch (_) {
-		if (tbody) tbody.innerHTML = emptyRow(4, 'Could not load verifications.');
+		if (tbody) tbody.innerHTML = emptyRow(5, 'Could not load verifications.');
 		if (countEl) countEl.textContent = '—';
 	}
 })();
@@ -189,6 +208,45 @@ const authHeaders = { 'Authorization': `Bearer ${token}` };
 		feed.innerHTML = `<p class="text-on-surface-variant text-sm text-center">Could not load activity.</p>`;
 	}
 })();
+
+// ── Vehicle status change (admin) ──────────────────────────────────────────────
+async function setVehicleStatus(vehicleId, newStatus, btn) {
+	const labels = { verified: 'approve', suspended: 'suspend', rejected: 'reject' };
+	if (!confirm(`Are you sure you want to ${labels[newStatus] || newStatus} this vehicle?`)) return;
+
+	const row = btn.closest('tr');
+	if (row) row.style.opacity = '0.5';
+
+	try {
+		const res = await fetch(`${API}/vehicles/${vehicleId}/availability`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json', ...authHeaders },
+			body: JSON.stringify({ status: newStatus }),
+		});
+
+		if (!res.ok) {
+			const err = await res.json().catch(() => ({}));
+			alert(err.detail || 'Failed to update vehicle status.');
+			if (row) row.style.opacity = '1';
+			return;
+		}
+
+		// Remove the row from the table on success
+		if (row) row.remove();
+
+		// Update pending count
+		const tbody = document.getElementById('vehicleTableBody');
+		const countEl = document.getElementById('pendingCount');
+		if (tbody && countEl) {
+			const remaining = tbody.querySelectorAll('tr').length;
+			countEl.textContent = `${remaining} pending`;
+			if (remaining === 0) tbody.innerHTML = emptyRow(5, 'No pending vehicle inspections.');
+		}
+	} catch {
+		alert('Network error. Please try again.');
+		if (row) row.style.opacity = '1';
+	}
+}
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 function setText(id, value) {

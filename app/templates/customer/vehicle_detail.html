@@ -7,6 +7,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
 <script id="tailwind-config">
 tailwind.config = {
   darkMode: "class",
@@ -18,18 +19,18 @@ tailwind.config = {
         "soft-gray": "#F5F5F5", "surface-dim": "#dadadc", "secondary-container": "#ffb61e",
         "on-surface-variant": "#42493e", "primary-fixed": "#bcf0ae", "on-error": "#ffffff",
         "outline-variant": "#c2c9bb", "on-primary-fixed-variant": "#23501e", "slate-dark": "#1A1C1E",
-        "on-primary": "#ffffff", "primary-container": "#2d5a27", "tertiary-fixed-dim": "#adc6ff",
-        "secondary": "#7e5700", "surface": "#f9f9fc", "tertiary": "#00377a",
-        "on-secondary": "#ffffff", "primary-fixed-dim": "#a1d494", "tertiary-fixed": "#d8e2ff",
+        "on-primary": "#ffffff", "primary-container": "#2d5a27", "tertiary-fixed-dim": "#a5d6a7",
+        "secondary": "#7e5700", "surface": "#f9f9fc", "tertiary": "#2D5A27",
+        "on-secondary": "#ffffff", "primary-fixed-dim": "#a1d494", "tertiary-fixed": "#c8e6c9",
         "on-surface": "#1a1c1e", "status-pending": "#B45309", "on-secondary-container": "#6c4a00",
         "inverse-on-surface": "#f0f0f3", "on-primary-fixed": "#002201", "status-success": "#15803D",
         "on-primary-container": "#9dd090", "surface-container": "#eeeef0", "surface-tint": "#3b6934",
         "on-tertiary": "#ffffff", "surface-container-lowest": "#ffffff", "error": "#ba1a1a",
-        "on-tertiary-fixed-variant": "#004494", "primary": "#154212", "safari-green": "#2D5A27",
-        "surface-container-high": "#e8e8ea", "surface-bright": "#f9f9fc", "on-tertiary-fixed": "#001a41",
+        "on-tertiary-fixed-variant": "#1b5e20", "primary": "#154212", "safari-green": "#2D5A27",
+        "surface-container-high": "#e8e8ea", "surface-bright": "#f9f9fc", "on-tertiary-fixed": "#0a3d0a",
         "error-container": "#ffdad6", "inverse-primary": "#a1d494", "surface-container-low": "#f3f3f6",
-        "on-tertiary-container": "#a8c3ff", "surface-variant": "#e2e2e5", "on-secondary-fixed-variant": "#5f4100",
-        "tertiary-container": "#004da6", "ugandan-sun": "#F9B115", "background": "#f9f9fc",
+        "on-tertiary-container": "#c8e6c9", "surface-variant": "#e2e2e5", "on-secondary-fixed-variant": "#5f4100",
+        "tertiary-container": "#154212", "ugandan-sun": "#F9B115", "background": "#f9f9fc",
         "on-error-container": "#93000a", "surface-container-highest": "#e2e2e5"
       },
       borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
@@ -66,7 +67,10 @@ tailwind.config = {
 <!-- Nav -->
 <nav class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/80 backdrop-blur-md shadow-sm">
   <div class="flex items-center gap-8">
-    <a href="/" class="font-headline-md text-headline-md font-bold text-primary" style="text-decoration:none;color:#2D5A27;">Kari Vari Uganda</a>
+    <a href="/" class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2" style="text-decoration:none;color:#2D5A27;">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+      Kari Vari Uganda
+    </a>
     <div class="hidden md:flex gap-6">
       <a href="/vehicles" class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" style="text-decoration:none;">Listings</a>
       <a href="#" class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" style="text-decoration:none;">How it Works</a>
@@ -79,6 +83,10 @@ tailwind.config = {
     <a href="/register" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all" style="text-decoration:none;">Register</a>
   </div>
   <div class="hidden items-center gap-4" id="userButtons">
+    <a href="/dashboard" class="font-label-lg text-label-lg font-semibold text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" style="text-decoration:none;">
+      <span class="material-symbols-outlined text-[18px]">dashboard</span>
+      Dashboard
+    </a>
     <span class="font-label-lg text-label-lg font-semibold text-on-surface" id="userName"></span>
     <button id="logoutBtn" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all">Logout</button>
   </div>
@@ -203,6 +211,22 @@ tailwind.config = {
           </div>
         </section>
 
+        <!-- Reviews -->
+        <section class="border-t border-outline-variant pt-10" id="reviewsSection">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="font-headline-md text-headline-md">Guest Reviews</h2>
+            <div id="reviewsAvgBadge" class="hidden flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10">
+              <span class="material-symbols-outlined text-ugandan-sun text-[20px]" style="font-variation-settings:'FILL' 1;">star</span>
+              <span id="reviewsAvg" class="font-label-lg text-label-lg text-on-surface"></span>
+            </div>
+          </div>
+          <div id="reviewsList" class="space-y-4">
+            <div class="text-center py-8 text-on-surface-variant">
+              <span class="material-symbols-outlined text-[40px] spin">refresh</span>
+            </div>
+          </div>
+        </section>
+
       </div>
 
       <!-- Right: Booking Widget -->
@@ -288,12 +312,157 @@ tailwind.config = {
   </div><!-- /pageContent -->
 </main>
 
+<!-- ── Payment Modal ────────────────────────────────────────────────────────── -->
+<div id="paymentModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4"
+     style="background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden" style="max-height:90vh;overflow-y:auto;">
+
+    <!-- ── Form state ── -->
+    <div id="pmForm">
+
+      <!-- Header -->
+      <div class="p-5 border-b border-outline-variant flex justify-between items-start">
+        <div>
+          <h2 class="font-headline-sm text-headline-sm text-on-background font-bold">Complete Booking</h2>
+          <p class="text-on-surface-variant text-[13px] mt-0.5" id="pmVehicleName"></p>
+        </div>
+        <button onclick="closePaymentModal()" class="text-on-surface-variant hover:text-on-background ml-4 flex-shrink-0 mt-0.5">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Booking summary -->
+      <div class="px-5 py-4 bg-surface-container-low space-y-1.5 text-[14px]">
+        <div class="flex justify-between text-on-surface-variant">
+          <span id="pmDateRange">—</span>
+          <span id="pmSubtotal">—</span>
+        </div>
+        <div class="flex justify-between text-on-surface-variant">
+          <span>Kari Vari service fee</span>
+          <span>$15.00</span>
+        </div>
+        <div class="flex justify-between font-bold text-on-background pt-2 border-t border-outline-variant text-[18px]">
+          <span>Total</span>
+          <span id="pmTotal" class="text-primary">—</span>
+        </div>
+      </div>
+
+      <!-- Payment method tabs -->
+      <div class="px-5 pt-5">
+        <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-3">Payment Method</p>
+        <div class="grid grid-cols-2 gap-2 mb-5">
+          <button id="tabCard" onclick="switchTab('card')"
+                  class="flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-primary bg-primary/5 text-primary font-bold text-[14px] transition-all">
+            <span class="material-symbols-outlined text-[18px]">credit_card</span> Card
+          </button>
+          <button id="tabMomo" onclick="switchTab('momo')"
+                  class="flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-outline-variant text-on-surface-variant font-bold text-[14px] transition-all">
+            <span class="material-symbols-outlined text-[18px]">smartphone</span> Mobile Money
+          </button>
+        </div>
+
+        <!-- Card panel -->
+        <div id="panelCard">
+          <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Card Details</p>
+          <!-- Stripe mounts here -->
+          <div id="stripeCardElement"
+               class="border border-outline-variant rounded-xl p-4 bg-surface-container-lowest"
+               style="min-height:50px;">
+            <!-- Loading placeholder shown until Stripe mounts -->
+            <div id="stripeLoading" class="flex items-center gap-2 text-on-surface-variant text-[13px]">
+              <span class="material-symbols-outlined text-[16px]" style="animation:spin 1s linear infinite;">refresh</span>
+              Loading secure card input…
+            </div>
+          </div>
+          <div id="cardError" class="hidden items-center gap-2 text-red-600 text-[13px] mt-2">
+            <span class="material-symbols-outlined text-[16px]">error</span>
+            <span id="cardErrorMsg"></span>
+          </div>
+        </div>
+
+        <!-- Mobile Money panel -->
+        <div id="panelMomo" class="hidden">
+          <div class="space-y-3">
+            <div>
+              <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Network</label>
+              <select id="momoNetwork" class="w-full border border-outline-variant rounded-xl px-4 py-3 text-[14px] text-on-surface bg-surface-container-lowest focus:outline-none focus:border-primary">
+                <option value="MTN_UGANDA">MTN Mobile Money</option>
+                <option value="AIRTEL_UGANDA">Airtel Money</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Phone Number</label>
+              <div class="flex border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest focus-within:border-primary">
+                <span class="flex items-center px-3 text-on-surface-variant text-[14px] bg-surface-container-low border-r border-outline-variant">+256</span>
+                <input id="momoPhone" type="tel" placeholder="7XX XXX XXX"
+                       class="flex-1 px-3 py-3 text-[14px] text-on-surface bg-transparent border-none focus:outline-none focus:ring-0"
+                       maxlength="9">
+              </div>
+              <p class="text-[11px] text-on-surface-variant mt-1">You will receive a payment prompt on your phone.</p>
+            </div>
+          </div>
+          <div id="momoError" class="hidden items-center gap-2 text-red-600 text-[13px] mt-2">
+            <span class="material-symbols-outlined text-[16px]">error</span>
+            <span id="momoErrorMsg"></span>
+          </div>
+          <!-- Pending state shown after momo initiated -->
+          <div id="momoPending" class="hidden mt-4 p-4 bg-amber-50 rounded-xl border border-amber-200 text-[13px] text-amber-800">
+            <div class="flex items-center gap-2 font-bold mb-1">
+              <span class="material-symbols-outlined text-[16px]">smartphone</span>
+              Check your phone
+            </div>
+            <p>A payment request has been sent to your mobile money account. Approve it, then tap <strong>Verify Payment</strong> below.</p>
+            <button id="verifyMomoBtn" onclick="verifyMomoPayment()"
+                    class="mt-3 w-full py-2.5 bg-amber-600 text-white rounded-xl font-bold text-[14px] hover:bg-amber-700 transition-colors flex items-center justify-center gap-2">
+              <span id="verifyBtnText">Verify Payment</span>
+              <span id="verifySpinner" class="hidden material-symbols-outlined text-[16px]" style="animation:spin 1s linear infinite;">refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pay button -->
+        <button id="payBtn" onclick="submitPayment()"
+                class="w-full mt-5 mb-5 py-4 bg-primary text-on-primary rounded-xl font-bold text-[16px]
+                       hover:bg-safari-green transition-all shadow-md active:scale-[0.98]
+                       flex items-center justify-center gap-2">
+          <span id="payBtnText">Pay Now</span>
+          <span id="payBtnSpinner" class="hidden material-symbols-outlined text-[20px]" style="animation:spin 1s linear infinite;">refresh</span>
+        </button>
+
+        <div class="pb-5 flex items-center justify-center gap-2 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[15px]">lock</span>
+          <span class="text-[12px]">Secured by Stripe &amp; Flutterwave · 256-bit SSL</span>
+        </div>
+      </div>
+    </div><!-- /pmForm -->
+
+    <!-- ── Success state ── -->
+    <div id="pmSuccess" class="hidden p-10 text-center">
+      <div class="w-20 h-20 rounded-full bg-status-success/10 flex items-center justify-center mx-auto mb-5">
+        <span class="material-symbols-outlined text-status-success text-[48px]"
+              style="font-variation-settings:'FILL' 1;">check_circle</span>
+      </div>
+      <h3 class="font-headline-md text-headline-md text-on-background mb-2">Booking Confirmed!</h3>
+      <p class="text-on-surface-variant font-body-md text-body-md mb-1">Your booking reference:</p>
+      <p class="font-bold text-primary tracking-widest text-2xl mb-6" id="pmBookingRef"></p>
+      <p class="text-on-surface-variant text-[13px] mb-8">A confirmation will be sent to your email. The car owner will contact you with pickup details.</p>
+      <a href="/" class="inline-block px-8 py-3 bg-primary text-on-primary rounded-xl font-label-lg text-label-lg"
+         style="text-decoration:none;">Back to Home</a>
+    </div>
+
+  </div>
+</div>
+<style>@keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }</style>
+
 <!-- Footer -->
 <footer class="w-full py-12 px-margin-mobile md:px-margin-desktop mt-16 bg-on-background">
   <div class="max-w-container-max mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
       <div class="md:col-span-2">
-        <a href="/" class="font-headline-lg text-headline-lg font-bold text-ugandan-sun block mb-4" style="text-decoration:none;">Kari Vari Uganda</a>
+        <a href="/" class="font-headline-lg text-headline-lg font-bold text-ugandan-sun flex items-center gap-2 mb-4" style="text-decoration:none;">
+          <span class="material-symbols-outlined text-[28px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+          Kari Vari Uganda
+        </a>
         <p class="text-surface-variant font-body-md text-body-md max-w-md">The Pearl of Africa's premier vehicle rental and safari logistics platform.</p>
       </div>
       <div>
@@ -564,12 +733,17 @@ async function loadPage() {
         alert('This vehicle is pending verification and cannot be reserved yet.');
         return;
       }
-      alert('Booking functionality coming soon! Please contact the owner directly.');
+      const pickup  = document.getElementById('pickupDate').value;
+      const dropoff = document.getElementById('returnDate').value;
+      if (!pickup || !dropoff) { alert('Please select pickup and return dates first.'); return; }
+      const isDriver = document.getElementById('serviceOption').value === 'driver';
+      window.location.href = `/checkout?vehicle_id=${v.id}&pickup_date=${pickup}&return_date=${dropoff}&booking_type=${isDriver ? 'with_driver' : 'self_drive'}`;
     });
 
     initDates();
     recalcTotal();
     loadSimilar(v.id, v.vehicle_type);
+    loadReviews(v.id);
 
     // Show page
     document.getElementById('loadingState').classList.add('hidden');
@@ -579,6 +753,423 @@ async function loadPage() {
     document.getElementById('loadingState').classList.add('hidden');
     document.getElementById('errorState').classList.remove('hidden');
     document.getElementById('errorState').classList.add('flex');
+  }
+}
+
+// ── Payment modal state ───────────────────────────────────────────────────────
+
+let _stripe       = null;
+let _cardElement  = null;
+let _activeTab    = 'card';  // 'card' | 'momo'
+let _momoPaymentId = null;   // returned by /api/payments/initiate for mobile money
+let _momoBookingId = null;
+
+// ── Tab switcher ──────────────────────────────────────────────────────────────
+
+function switchTab(tab) {
+  _activeTab = tab;
+  const isCard = tab === 'card';
+  document.getElementById('panelCard').classList.toggle('hidden', !isCard);
+  document.getElementById('panelMomo').classList.toggle('hidden', isCard);
+
+  const tabCard = document.getElementById('tabCard');
+  const tabMomo = document.getElementById('tabMomo');
+  if (isCard) {
+    tabCard.classList.add('border-primary', 'bg-primary/5', 'text-primary');
+    tabCard.classList.remove('border-outline-variant', 'text-on-surface-variant');
+    tabMomo.classList.add('border-outline-variant', 'text-on-surface-variant');
+    tabMomo.classList.remove('border-primary', 'bg-primary/5', 'text-primary');
+    initStripe();
+  } else {
+    tabMomo.classList.add('border-primary', 'bg-primary/5', 'text-primary');
+    tabMomo.classList.remove('border-outline-variant', 'text-on-surface-variant');
+    tabCard.classList.add('border-outline-variant', 'text-on-surface-variant');
+    tabCard.classList.remove('border-primary', 'bg-primary/5', 'text-primary');
+  }
+
+  document.getElementById('payBtn').classList.toggle('hidden', tab === 'momo' && !document.getElementById('momoPending').classList.contains('hidden'));
+}
+
+// ── Stripe card init ──────────────────────────────────────────────────────────
+
+async function initStripe() {
+  if (_stripe) {
+    document.getElementById('stripeLoading')?.remove();
+    return;
+  }
+  try {
+    const res = await fetch(`${API}/payments/stripe-config`);
+    if (!res.ok) throw new Error('Stripe config unavailable');
+    const { publishable_key } = await res.json();
+    if (!publishable_key) throw new Error('Stripe key not configured on server');
+
+    _stripe = Stripe(publishable_key);
+    const elements = _stripe.elements();
+    _cardElement = elements.create('card', {
+      style: {
+        base: {
+          fontFamily: 'inherit',
+          fontSize: '16px',
+          color: '#1a1a1a',
+          '::placeholder': { color: '#9ca3af' },
+        },
+        invalid: { color: '#ef4444' },
+      },
+    });
+
+    const mountEl = document.getElementById('stripeCardElement');
+    document.getElementById('stripeLoading')?.remove();
+    _cardElement.mount(mountEl);
+
+    _cardElement.on('change', e => {
+      const div = document.getElementById('cardError');
+      const msg = document.getElementById('cardErrorMsg');
+      if (e.error) { msg.textContent = e.error.message; div.style.display = 'flex'; }
+      else          { div.style.display = 'none'; msg.textContent = ''; }
+    });
+  } catch (e) {
+    const loading = document.getElementById('stripeLoading');
+    if (loading) {
+      loading.innerHTML = `<span class="material-symbols-outlined text-red-500 text-[16px]">error</span>
+        <span class="text-red-600">Card payment unavailable: ${e.message}</span>`;
+    }
+    console.error('Stripe init failed:', e);
+  }
+}
+
+// ── Open / close modal ────────────────────────────────────────────────────────
+
+function openPaymentModal() {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    alert('Please log in to make a booking.');
+    window.location.href = '/login';
+    return;
+  }
+
+  const pickup  = document.getElementById('pickupDate').value;
+  const dropoff = document.getElementById('returnDate').value;
+  if (!pickup || !dropoff) { alert('Please select pickup and return dates.'); return; }
+
+  const pickupDt  = new Date(pickup);
+  const dropoffDt = new Date(dropoff);
+  if (dropoffDt <= pickupDt) { alert('Return date must be after pickup date.'); return; }
+
+  const days     = Math.max(1, Math.round((dropoffDt - pickupDt) / 86400000));
+  const isDriver = document.getElementById('serviceOption').value === 'driver';
+  const rate     = isDriver && _driverRateUSD > 0 ? _driverRateUSD : _dailyRateUSD;
+  const SERVICE  = 15.0;
+  const subtotal = rate * days;
+  const total    = subtotal + SERVICE;
+
+  document.getElementById('pmDateRange').textContent =
+    `${pickupDt.toLocaleDateString()} → ${dropoffDt.toLocaleDateString()} (${days} day${days > 1 ? 's' : ''})`;
+  document.getElementById('pmSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+  document.getElementById('pmTotal').textContent    = `$${total.toFixed(2)}`;
+  document.getElementById('payBtnText').textContent = `Pay $${total.toFixed(2)}`;
+
+  if (_vehicle) {
+    document.getElementById('pmVehicleName').textContent =
+      `${_vehicle.make} ${_vehicle.model} (${_vehicle.year})`;
+  }
+
+  // Reset state
+  document.getElementById('pmForm').classList.remove('hidden');
+  document.getElementById('pmSuccess').classList.add('hidden');
+  document.getElementById('momoPending').classList.add('hidden');
+  document.getElementById('cardError').style.display = 'none';
+  document.getElementById('momoError').style.display = 'none';
+  document.getElementById('payBtn').classList.remove('hidden');
+  document.getElementById('paymentModal').classList.remove('hidden');
+
+  switchTab('card');
+}
+
+function closePaymentModal() {
+  document.getElementById('paymentModal').classList.add('hidden');
+}
+
+// ── Submit payment (card or momo) ─────────────────────────────────────────────
+
+async function submitPayment() {
+  if (_activeTab === 'card') await _submitCard();
+  else await _submitMomo();
+}
+
+// ── Card (Stripe) ─────────────────────────────────────────────────────────────
+
+async function _submitCard() {
+  const token = localStorage.getItem('access_token');
+  if (!token) { alert('Please log in.'); return; }
+  if (!_stripe || !_cardElement) {
+    document.getElementById('cardErrorMsg').textContent = 'Card payment is not ready. Please wait a moment or refresh.';
+    document.getElementById('cardError').style.display = 'flex';
+    return;
+  }
+
+  const payBtn  = document.getElementById('payBtn');
+  const spinner = document.getElementById('payBtnSpinner');
+  const btnText = document.getElementById('payBtnText');
+  const errDiv  = document.getElementById('cardError');
+  const errMsg  = document.getElementById('cardErrorMsg');
+  const showErr = msg => { errMsg.textContent = msg; errDiv.style.display = 'flex'; };
+
+  payBtn.disabled = true;
+  spinner.classList.remove('hidden');
+  errDiv.style.display = 'none';
+
+  try {
+    const pickup   = document.getElementById('pickupDate').value;
+    const dropoff  = document.getElementById('returnDate').value;
+    const isDriver = document.getElementById('serviceOption').value === 'driver';
+
+    // 1. Create booking on backend → get Stripe client_secret
+    const bookRes = await fetch(`${API}/bookings/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({
+        vehicle_id:       vehicleId,
+        pickup_date:      pickup,
+        return_date:      dropoff,
+        pickup_location:  'To be confirmed',
+        dropoff_location: 'To be confirmed',
+        booking_type:     isDriver ? 'with_driver' : 'self_drive',
+        passenger_count:  1,
+      }),
+    });
+
+    if (!bookRes.ok) {
+      const err = await bookRes.json().catch(() => ({}));
+      showErr(err.detail || 'Booking failed. Please try again.');
+      return;
+    }
+
+    const bookData = await bookRes.json();
+    btnText.textContent = `Confirming…`;
+
+    // 2. Confirm card with Stripe.js (PCI-compliant — card data never hits our server)
+    const { error, paymentIntent } = await _stripe.confirmCardPayment(bookData.client_secret, {
+      payment_method: { card: _cardElement },
+    });
+
+    if (error) { showErr(error.message); return; }
+    if (paymentIntent.status !== 'succeeded') {
+      showErr(`Payment status: ${paymentIntent.status}. Please try again.`);
+      return;
+    }
+
+    // 3. Tell backend the Stripe payment succeeded → marks booking confirmed
+    const confirmRes = await fetch(`${API}/bookings/${bookData.booking_id}/confirm-payment`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    const confirmData = await confirmRes.json().catch(() => ({}));
+
+    _showSuccess(confirmData.booking_reference || bookData.booking_reference);
+
+  } catch (e) {
+    showErr('Network error. Please try again.');
+    console.error(e);
+  } finally {
+    payBtn.disabled = false;
+    spinner.classList.add('hidden');
+  }
+}
+
+// ── Mobile Money (Flutterwave) ────────────────────────────────────────────────
+
+async function _submitMomo() {
+  const token = localStorage.getItem('access_token');
+  if (!token) { alert('Please log in.'); return; }
+
+  const network = document.getElementById('momoNetwork').value;
+  const rawPhone = document.getElementById('momoPhone').value.trim().replace(/\s/g, '');
+  const errDiv  = document.getElementById('momoError');
+  const errMsg  = document.getElementById('momoErrorMsg');
+  const showErr = msg => { errMsg.textContent = msg; errDiv.style.display = 'flex'; };
+  errDiv.style.display = 'none';
+
+  if (!rawPhone || rawPhone.length < 9) {
+    showErr('Please enter a valid Ugandan phone number (9 digits after +256).');
+    return;
+  }
+  const phone = `+256${rawPhone}`;
+
+  const payBtn  = document.getElementById('payBtn');
+  const spinner = document.getElementById('payBtnSpinner');
+  payBtn.disabled = true;
+  spinner.classList.remove('hidden');
+
+  try {
+    const pickup   = document.getElementById('pickupDate').value;
+    const dropoff  = document.getElementById('returnDate').value;
+    const isDriver = document.getElementById('serviceOption').value === 'driver';
+
+    // 1. Create booking on backend (status = pending_payment, Stripe intent created but unused for momo)
+    const bookRes = await fetch(`${API}/bookings/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({
+        vehicle_id:       vehicleId,
+        pickup_date:      pickup,
+        return_date:      dropoff,
+        pickup_location:  'To be confirmed',
+        dropoff_location: 'To be confirmed',
+        booking_type:     isDriver ? 'with_driver' : 'self_drive',
+        passenger_count:  1,
+      }),
+    });
+
+    if (!bookRes.ok) {
+      const err = await bookRes.json().catch(() => ({}));
+      showErr(err.detail || 'Booking failed. Please try again.');
+      return;
+    }
+
+    const bookData = await bookRes.json();
+    _momoBookingId = bookData.booking_id;
+
+    // 2. Initiate Flutterwave mobile money charge
+    const momoRes = await fetch(`${API}/payments/initiate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({
+        booking_id:   bookData.booking_id,
+        method:       'mobile_money',
+        phone_number: phone,
+        network:      network,
+      }),
+    });
+
+    if (!momoRes.ok) {
+      const err = await momoRes.json().catch(() => ({}));
+      showErr(err.detail || 'Mobile money initiation failed.');
+      return;
+    }
+
+    const momoData = await momoRes.json();
+    _momoPaymentId = momoData.payment_id;
+
+    // 3. Show "check your phone" panel — user approves prompt, then clicks Verify
+    payBtn.classList.add('hidden');
+    document.getElementById('momoPending').classList.remove('hidden');
+
+  } catch (e) {
+    showErr('Network error. Please try again.');
+    console.error(e);
+  } finally {
+    payBtn.disabled = false;
+    spinner.classList.add('hidden');
+  }
+}
+
+// ── Verify Mobile Money (poll after user approves) ────────────────────────────
+
+async function verifyMomoPayment() {
+  const token = localStorage.getItem('access_token');
+  if (!token || !_momoPaymentId) return;
+
+  const btn     = document.getElementById('verifyMomoBtn');
+  const spinner = document.getElementById('verifySpinner');
+  const btnText = document.getElementById('verifyBtnText');
+  const errDiv  = document.getElementById('momoError');
+  const errMsg  = document.getElementById('momoErrorMsg');
+  const showErr = msg => { errMsg.textContent = msg; errDiv.style.display = 'flex'; };
+
+  btn.disabled = true;
+  spinner.classList.remove('hidden');
+  btnText.textContent = 'Verifying…';
+  errDiv.style.display = 'none';
+
+  try {
+    const res = await fetch(`${API}/payments/${_momoPaymentId}/verify`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    const data = await res.json().catch(() => ({}));
+
+    if (data.status === 'completed') {
+      _showSuccess(null);  // success — booking ref not returned here, show generic message
+    } else if (data.status === 'failed') {
+      showErr('Payment failed or was declined. Please try again.');
+      document.getElementById('momoPending').classList.add('hidden');
+      document.getElementById('payBtn').classList.remove('hidden');
+    } else {
+      showErr('Payment not confirmed yet. Please approve the prompt on your phone and try again.');
+    }
+  } catch (e) {
+    showErr('Network error while verifying. Please try again.');
+  } finally {
+    btn.disabled = false;
+    spinner.classList.add('hidden');
+    btnText.textContent = 'Verify Payment';
+  }
+}
+
+// ── Show success screen ───────────────────────────────────────────────────────
+
+function _showSuccess(bookingRef) {
+  document.getElementById('pmForm').classList.add('hidden');
+  if (bookingRef) document.getElementById('pmBookingRef').textContent = bookingRef;
+  else document.getElementById('pmBookingRef').textContent = 'Processing…';
+  document.getElementById('pmSuccess').classList.remove('hidden');
+}
+
+// ── Reviews ───────────────────────────────────────────────────────────────────
+
+async function loadReviews(vehicleId) {
+  try {
+    const res = await fetch(`${API}/vehicles/${vehicleId}/reviews`);
+    const reviews = res.ok ? await res.json() : [];
+
+    if (!reviews.length) {
+      document.getElementById('reviewsList').innerHTML = `
+        <div class="text-center py-8 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[40px] opacity-25 block mb-2">star_border</span>
+          <p class="font-label-sm text-label-sm">No reviews yet. Be the first to book this vehicle!</p>
+        </div>`;
+      return;
+    }
+
+    const avg = (reviews.reduce((s, r) => s + r.overall_rating, 0) / reviews.length).toFixed(1);
+    document.getElementById('reviewsAvg').textContent = `${avg} (${reviews.length} review${reviews.length !== 1 ? 's' : ''})`;
+    document.getElementById('reviewsAvgBadge').classList.remove('hidden');
+    document.getElementById('reviewsAvgBadge').classList.add('flex');
+
+    function starRow(val) {
+      return [1,2,3,4,5].map(i =>
+        `<span class="material-symbols-outlined text-[16px]" style="color:${i<=val?'#F9B115':'#c2c9bb'};font-variation-settings:'FILL' ${i<=val?1:0};">star</span>`
+      ).join('');
+    }
+
+    document.getElementById('reviewsList').innerHTML = reviews.map(r => {
+      const date = r.created_at ? new Date(r.created_at).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : '';
+      const subRatings = [
+        r.cleanliness_rating   != null ? `<span class="text-xs text-on-surface-variant">Cleanliness ${r.cleanliness_rating}/5</span>` : '',
+        r.communication_rating != null ? `<span class="text-xs text-on-surface-variant">Communication ${r.communication_rating}/5</span>` : '',
+        r.value_rating         != null ? `<span class="text-xs text-on-surface-variant">Value ${r.value_rating}/5</span>` : '',
+      ].filter(Boolean).join('<span class="text-outline-variant mx-1">·</span>');
+
+      return `
+        <div class="p-5 rounded-2xl bg-surface-container border border-outline-variant/30">
+          <div class="flex items-start justify-between gap-3 mb-2">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                ${r.reviewer_name ? r.reviewer_name[0].toUpperCase() : '?'}
+              </div>
+              <div>
+                <p class="font-label-lg text-label-lg text-on-surface">${r.reviewer_name || 'Guest'}</p>
+                <p class="font-label-sm text-label-sm text-on-surface-variant">${date}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-0.5">${starRow(r.overall_rating)}</div>
+          </div>
+          ${subRatings ? `<div class="flex flex-wrap gap-3 mb-2">${subRatings}</div>` : ''}
+          ${r.review_text ? `<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">${r.review_text}</p>` : ''}
+        </div>`;
+    }).join('');
+  } catch {
+    document.getElementById('reviewsList').innerHTML = `<p class="text-on-surface-variant text-sm">Could not load reviews.</p>`;
   }
 }
 

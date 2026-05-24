@@ -30,13 +30,13 @@
                       "slate-dark": "#1A1C1E",
                       "on-primary": "#ffffff",
                       "primary-container": "#2d5a27",
-                      "tertiary-fixed-dim": "#adc6ff",
+                      "tertiary-fixed-dim": "#a5d6a7",
                       "secondary": "#7e5700",
                       "surface": "#f9f9fc",
-                      "tertiary": "#00377a",
+                      "tertiary": "#2D5A27",
                       "on-secondary": "#ffffff",
                       "primary-fixed-dim": "#a1d494",
-                      "tertiary-fixed": "#d8e2ff",
+                      "tertiary-fixed": "#c8e6c9",
                       "on-surface": "#1a1c1e",
                       "status-pending": "#B45309",
                       "on-secondary-container": "#6c4a00",
@@ -49,20 +49,20 @@
                       "on-tertiary": "#ffffff",
                       "surface-container-lowest": "#ffffff",
                       "error": "#ba1a1a",
-                      "on-tertiary-fixed-variant": "#004494",
+                      "on-tertiary-fixed-variant": "#1b5e20",
                       "surface-container-highest": "#e2e2e5",
                       "primary": "#154212",
                       "safari-green": "#2D5A27",
                       "surface-container-high": "#e8e8ea",
                       "surface-bright": "#f9f9fc",
-                      "on-tertiary-fixed": "#001a41",
+                      "on-tertiary-fixed": "#0a3d0a",
                       "error-container": "#ffdad6",
                       "inverse-primary": "#a1d494",
                       "surface-container-low": "#f3f3f6",
-                      "on-tertiary-container": "#a8c3ff",
+                      "on-tertiary-container": "#c8e6c9",
                       "surface-variant": "#e2e2e5",
                       "on-secondary-fixed-variant": "#5f4100",
-                      "tertiary-container": "#004da6",
+                      "tertiary-container": "#154212",
                       "ugandan-sun": "#F9B115",
                       "background": "#f9f9fc",
                       "on-error-container": "#93000a"
@@ -117,7 +117,10 @@
 <!-- TopNavBar -->
 <nav class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/80 backdrop-blur-md shadow-sm">
 <div class="flex items-center gap-8">
-<a href="/" class="font-headline-md text-headline-md font-bold text-primary" style="text-decoration:none;color:inherit;">Kari Vari Uganda</a>
+<a href="/" class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2" style="text-decoration:none;color:inherit;">
+  <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+  Kari Vari Uganda
+</a>
 <div class="hidden md:flex gap-6">
 <a class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-1 transition-all duration-200 ease-in-out" href="#">Listings</a>
 <a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors transition-all duration-200 ease-in-out" href="#">How it Works</a>
@@ -125,9 +128,17 @@
 <a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors transition-all duration-200 ease-in-out" href="#">Contact</a>
 </div>
 </div>
-<div class="flex items-center gap-4">
-<a href="/login" class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors">Sign In</a>
-<a href="/register" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Register</a>
+<div class="flex items-center gap-4" id="authButtons">
+<a href="/login" class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" style="text-decoration:none;">Sign In</a>
+<a href="/register" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95" style="text-decoration:none;">Register</a>
+</div>
+<div class="hidden items-center gap-4" id="userButtons">
+  <a href="/dashboard" class="font-label-lg text-label-lg font-semibold text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" style="text-decoration:none;">
+    <span class="material-symbols-outlined text-[18px]">dashboard</span>
+    Dashboard
+  </a>
+  <span class="font-label-lg text-label-lg font-semibold text-on-surface" id="userName"></span>
+  <button id="logoutBtn" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Logout</button>
 </div>
 </nav>
 <main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8">
@@ -230,7 +241,10 @@
 <footer class="w-full py-12 px-margin-mobile md:px-margin-desktop mt-16 bg-on-background dark:bg-black">
 <div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
 <div class="md:col-span-2">
-<span class="font-headline-lg text-headline-lg font-bold text-ugandan-sun block mb-4">Kari Vari Uganda</span>
+<span class="font-headline-lg text-headline-lg font-bold text-ugandan-sun flex items-center gap-2 mb-4">
+  <span class="material-symbols-outlined text-[28px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+  Kari Vari Uganda
+</span>
 <p class="text-surface-variant font-body-md text-body-md max-w-md">The Pearl of Africa's premier vehicle rental and safari logistics platform. Reliability, comfort, and local expertise for your journey.</p>
 </div>
 <div>
@@ -265,6 +279,26 @@
 <span class="font-label-lg text-label-lg pr-2">Need Help?</span>
 </button>
 <script>
+// ── Nav auth state ────────────────────────────────────────────────────────────
+(function() {
+  const token = localStorage.getItem('access_token');
+  const auth  = document.getElementById('authButtons');
+  const user  = document.getElementById('userButtons');
+  if (token) {
+    auth.classList.add('hidden');
+    user.classList.remove('hidden');
+    user.classList.add('flex');
+    fetch('/api/users/me', { headers: { 'Authorization': `Bearer ${token}` } })
+      .then(r => r.ok ? r.json() : null)
+      .then(u => { if (u) document.getElementById('userName').textContent = u.full_name || ''; })
+      .catch(() => {});
+  }
+  document.getElementById('logoutBtn')?.addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = '/';
+  });
+})();
+
 const RATES   = { USD: 3700, EUR: 4050 };
 const SYMBOLS = { USD: '$', EUR: '€' };
 let _vehicles = [];

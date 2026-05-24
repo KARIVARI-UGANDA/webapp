@@ -18,8 +18,8 @@ def create_payment_intent(amount_usd_cents: int, booking_id: str, customer_email
     intent = stripe.PaymentIntent.create(
         amount=amount_usd_cents,
         currency=settings.stripe_currency,
+        payment_method_types=["card"],
         metadata={"booking_id": booking_id, "customer_email": customer_email},
-        automatic_payment_methods={"enabled": True},
     )
     return {"payment_intent_id": intent.id, "client_secret": intent.client_secret}
 

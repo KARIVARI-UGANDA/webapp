@@ -11,6 +11,7 @@ from app.deps import get_current_user, require_role
 from app.models import Vehicle, VehiclePhoto
 from app.schemas.vehicle import (
     VehicleRead,
+    VehicleStatusUpdate,
     VehicleSubmit,
     VehicleUpdate,
     VehicleWithPhotos,
@@ -175,6 +176,35 @@ def update_vehicle(
     return v
 
 
+@router.patch("/{vehicle_id}/availability", response_model=VehicleRead)
+def set_vehicle_availability(
+    vehicle_id: str,
+    payload: VehicleStatusUpdate,
+    current_user=Depends(_owner_or_admin),
+    db: Session = Depends(get_db),
+):
+    v = _get_own_vehicle(vehicle_id, current_user, db)
+
+    if current_user.role != "admin":
+        if payload.status not in {"verified", "suspended"}:
+            raise HTTPException(
+                status_code=403,
+                detail="Owners may only pause (suspend) or resume (verified) their vehicles.",
+            )
+        if v.status not in {"verified", "suspended"}:
+            raise HTTPException(
+                status_code=400,
+                detail="Only verified or suspended vehicles can be paused or resumed.",
+            )
+
+    v.status = payload.status
+    v.updated_at = datetime.now(timezone.utc).replace(tzinfo=None)
+    db.add(v)
+    db.commit()
+    db.refresh(v)
+    return v
+
+
 @router.delete("/{vehicle_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_vehicle(
     vehicle_id: str,
@@ -331,4 +361,45 @@ def get_availability(
 
 @router.get("/{vehicle_id}/reviews")
 def get_vehicle_reviews(vehicle_id: str, db: Session = Depends(get_db)):
-    raise HTTPException(status_code=501, detail="Not implemented yet — Phase 10")
+    from app.models import Booking
+    from app.models.review import Review
+    from app.models.user import User
+
+    vehicle = db.query(Vehicle).filter(Vehicle.id == vehicle_id).first()
+    if not vehicle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+
+    booking_ids = [
+        b.id for b in db.query(Booking).filter(Booking.vehicle_id == vehicle_id).all()
+    ]
+    if not booking_ids:
+        return []
+
+    reviews = (
+        db.query(Review)
+        .filter(
+            Review.booking_id.in_(booking_ids),
+            Review.review_target.in_(["vehicle", "trip"]),
+            Review.is_public == True,
+            Review.is_flagged == False,
+        )
+        .order_by(Review.created_at.desc())
+        .limit(50)
+        .all()
+    )
+
+    result = []
+    for r in reviews:
+        reviewer = db.query(User).filter(User.id == r.reviewer_id).first()
+        result.append({
+            "id": r.id,
+            "reviewer_name": reviewer.full_name if reviewer else "Anonymous",
+            "review_target": r.review_target,
+            "overall_rating": r.overall_rating,
+            "cleanliness_rating": r.cleanliness_rating,
+            "communication_rating": r.communication_rating,
+            "value_rating": r.value_rating,
+            "review_text": r.review_text,
+            "created_at": r.created_at.isoformat() if r.created_at else None,
+        })
+    return result

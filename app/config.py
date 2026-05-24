@@ -33,5 +33,11 @@ class Settings:
     # Redirect URLs for Flutterwave hosted checkout
     payment_redirect_url: str = os.getenv("PAYMENT_REDIRECT_URL", "http://localhost:8080/payments/callback")
 
+    # Stripe (card / international payments)
+    stripe_secret_key: str = os.getenv("STRIPE_SECRET_KEY", "")
+    stripe_publishable_key: str = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
+    stripe_currency: str = os.getenv("STRIPE_CURRENCY", "usd")
+    stripe_webhook_secret: str = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+
 
 settings = Settings()

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>User Management | Kari Vari Admin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode:"class",
+      theme:{extend:{colors:{"safari-green":"#2D5A27","primary":"#154212","surface":"#f9f9fc","surface-container":"#eeeef0","surface-container-low":"#f3f3f6","surface-container-high":"#e8e8ea","surface-container-lowest":"#ffffff","on-surface":"#1a1c1e","on-surface-variant":"#42493e","outline-variant":"#c2c9bb","outline":"#72796e","secondary-container":"#ffb61e","on-secondary-container":"#6c4a00","error":"#ba1a1a","error-container":"#ffdad6","status-success":"#15803D","status-pending":"#B45309","ugandan-sun":"#F9B115"},
+      fontSize:{"label-sm":["12px",{lineHeight:"16px",fontWeight:"500"}],"label-lg":["14px",{lineHeight:"20px",letterSpacing:"0.05em",fontWeight:"600"}],"body-md":["16px",{lineHeight:"24px",fontWeight:"400"}],"headline-md":["24px",{lineHeight:"32px",fontWeight:"600"}],"headline-lg":["32px",{lineHeight:"40px",fontWeight:"700"}]}}}
+    }
+  </script>
+  <style>
+    .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    .spin{animation:spin 1s linear infinite;}
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased">
+
+<!-- Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low shadow-md flex flex-col p-6 space-y-4 z-50 overflow-y-auto">
+  <div class="mb-8">
+    <h1 class="font-headline-md text-headline-md font-bold text-primary">Kari Vari Admin</h1>
+    <p class="font-label-sm text-label-sm uppercase tracking-wider text-outline mt-2">Logged in as</p>
+    <p class="font-label-lg text-label-lg text-on-surface" id="adminName">—</p>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="/admin/dashboard">
+      <span class="material-symbols-outlined text-[20px]">dashboard</span><span>Dashboard</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2.5 bg-secondary-container text-on-secondary-container rounded-lg transition-all" href="/admin/users">
+      <span class="material-symbols-outlined text-[20px]">group</span><span>User Management</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="/admin/bookings">
+      <span class="material-symbols-outlined text-[20px]">book_online</span><span>Booking Management</span>
+    </a>
+  </nav>
+  <div class="pt-6 border-t border-outline-variant">
+    <a id="logoutBtn" href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-error transition-colors">
+      <span class="material-symbols-outlined">logout</span><span class="font-label-lg text-label-lg">Log Out</span>
+    </a>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="ml-64 min-h-screen p-8">
+  <div class="max-w-[1200px] mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="font-headline-md text-headline-md">User Management</h2>
+        <p class="text-on-surface-variant font-label-sm text-label-sm mt-1">Manage all platform users</p>
+      </div>
+    </div>
+
+    <!-- Search + Filter -->
+    <div class="flex flex-wrap gap-3">
+      <div class="flex-1 min-w-[200px] relative">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+        <input id="searchInput" type="text" placeholder="Search by name or email…" oninput="debouncedSearch()"
+          class="w-full pl-10 pr-4 py-2.5 border border-outline-variant rounded-xl font-body-md text-body-md bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-safari-green">
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        <button onclick="setRole(null)" id="role-all" class="role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white">All</button>
+        <button onclick="setRole('customer')" id="role-customer" class="role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Customers</button>
+        <button onclick="setRole('owner')" id="role-owner" class="role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Owners</button>
+        <button onclick="setRole('driver')" id="role-driver" class="role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Drivers</button>
+        <button onclick="setRole('admin')" id="role-admin" class="role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Admins</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden">
+      <div id="tableWrap">
+        <div class="text-center py-16 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[48px] spin">refresh</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+const API   = '/api';
+const token = localStorage.getItem('access_token');
+if (!token) { window.location.href = '/admin/login'; }
+document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
+
+const AUTH = { headers: { Authorization: `Bearer ${token}` } };
+
+const ROLE_COLOR = {
+  customer:'bg-primary/10 text-primary',
+  owner:'bg-ugandan-sun/20 text-status-pending',
+  driver:'bg-safari-green/10 text-safari-green',
+  admin:'bg-error/10 text-error',
+};
+
+function fmtDate(s) {
+  if (!s) return '—';
+  return new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'});
+}
+
+let currentRole = null;
+let searchTimeout = null;
+
+function setRole(role) {
+  currentRole = role;
+  document.querySelectorAll('.role-btn').forEach(btn => {
+    const isActive = (role === null && btn.id === 'role-all') || btn.id === `role-${role}`;
+    btn.className = isActive
+      ? 'role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white'
+      : 'role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high';
+  });
+  loadUsers();
+}
+
+function debouncedSearch() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(loadUsers, 350);
+}
+
+async function toggleSuspend(userId, currentlyActive) {
+  const action = currentlyActive ? 'suspend' : 'unsuspend';
+  if (!confirm(`${currentlyActive ? 'Suspend' : 'Unsuspend'} this user?`)) return;
+  try {
+    const res = await fetch(`${API}/admin/users/${userId}/suspend`, { method:'PATCH', ...AUTH });
+    if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Failed'); }
+    loadUsers();
+  } catch(e) {
+    alert(e.message);
+  }
+}
+
+async function loadUsers() {
+  const search = document.getElementById('searchInput').value.trim();
+  let url = `${API}/admin/users?page_size=50`;
+  if (currentRole) url += `&role=${currentRole}`;
+  if (search) url += `&search=${encodeURIComponent(search)}`;
+
+  document.getElementById('tableWrap').innerHTML = '<div class="text-center py-16 text-on-surface-variant"><span class="material-symbols-outlined text-[48px] spin">refresh</span></div>';
+
+  try {
+    const res = await fetch(url, AUTH);
+    if (res.status === 401 || res.status === 403) { localStorage.clear(); window.location.href='/admin/login'; return; }
+    const users = await res.json();
+
+    if (!users.length) {
+      document.getElementById('tableWrap').innerHTML = `<div class="text-center py-16 text-on-surface-variant"><span class="material-symbols-outlined text-[48px] mb-3 block opacity-25">group</span><p>No users found.</p></div>`;
+      return;
+    }
+
+    const rows = users.map(u => {
+      const roleClass = ROLE_COLOR[u.role] || 'bg-surface-container text-on-surface-variant';
+      const activeClass = u.is_active ? 'text-status-success' : 'text-error';
+      const activeLabel = u.is_active ? 'Active' : 'Suspended';
+      const verifiedIcon = u.is_verified
+        ? '<span class="material-symbols-outlined text-[16px] text-status-success" style="font-variation-settings:\'FILL\' 1;">verified</span>'
+        : '<span class="material-symbols-outlined text-[16px] text-outline">unpublished</span>';
+
+      return `<tr class="border-b border-outline-variant/20 hover:bg-surface-container-low transition-colors">
+        <td class="px-5 py-4">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+              ${u.full_name ? u.full_name[0].toUpperCase() : '?'}
+            </div>
+            <div>
+              <p class="font-label-lg text-label-lg text-on-surface">${u.full_name || '—'}</p>
+              <p class="font-label-sm text-label-sm text-on-surface-variant">${u.email}</p>
+            </div>
+          </div>
+        </td>
+        <td class="px-5 py-4"><span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm ${roleClass} capitalize">${u.role}</span></td>
+        <td class="px-5 py-4 font-label-sm text-label-sm ${activeClass}">${activeLabel}</td>
+        <td class="px-5 py-4">${verifiedIcon}</td>
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${fmtDate(u.created_at)}</td>
+        <td class="px-5 py-4">
+          <button onclick="toggleSuspend('${u.id}', ${u.is_active})"
+            class="px-3 py-1.5 rounded-lg font-label-sm text-label-sm border transition-colors ${u.is_active ? 'border-error/40 text-error hover:bg-error-container' : 'border-status-success/40 text-status-success hover:bg-primary/10'}">
+            ${u.is_active ? 'Suspend' : 'Unsuspend'}
+          </button>
+        </td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('tableWrap').innerHTML = `<table class="w-full text-left">
+      <thead class="bg-surface-container-low border-b border-outline-variant/30">
+        <tr>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">User</th>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Role</th>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Status</th>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Verified</th>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Joined</th>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Actions</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="px-5 py-3 text-on-surface-variant font-label-sm text-label-sm border-t border-outline-variant/20">
+      Showing ${users.length} users
+    </div>`;
+  } catch(e) {
+    document.getElementById('tableWrap').innerHTML = `<div class="text-center py-16 text-error">Failed to load users.</div>`;
+  }
+}
+
+async function init() {
+  const uRes = await fetch(`${API}/users/me`, AUTH);
+  if (!uRes.ok) { localStorage.clear(); window.location.href='/admin/login'; return; }
+  const user = await uRes.json();
+  if (user.role !== 'admin') { window.location.href='/'; return; }
+  document.getElementById('adminName').textContent = user.full_name || user.email;
+  loadUsers();
+}
+init();
+</script>
+</body>
+</html>

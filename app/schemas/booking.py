@@ -1,8 +1,27 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel
+
+
+class BookingRequest(BaseModel):
+    """Simplified payload sent by the booking widget."""
+    vehicle_id: str
+    pickup_date: str           # YYYY-MM-DD
+    return_date: str           # YYYY-MM-DD
+    pickup_location: str
+    dropoff_location: str
+    booking_type: str          # "self_drive" or "with_driver"
+    passenger_count: int = 1
+    special_requests: Optional[str] = None
+
+
+class BookingPaymentResponse(BaseModel):
+    booking_id: str
+    booking_reference: str
+    client_secret: str         # Stripe PaymentIntent client_secret
+    amount_usd: float
 
 
 class BookingCreate(BaseModel):
@@ -52,6 +71,34 @@ class BookingPromotionRead(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class VehicleSnapshot(BaseModel):
+    id: str
+    make: str
+    model: str
+    year: int
+    vehicle_type: str
+    base_daily_rate_ugx: int
+    primary_photo_url: Optional[str] = None
+
+
+class BookingListItem(BaseModel):
+    id: str
+    booking_reference: str
+    vehicle_id: str
+    booking_type: str
+    pickup_location: str
+    dropoff_location: str
+    start_datetime: datetime
+    end_datetime: datetime
+    total_days: Optional[int] = None
+    passenger_count: int
+    status: str
+    created_at: datetime
+    amount_ugx: Optional[int] = None
+    amount_usd: Optional[float] = None
+    vehicle: Optional[VehicleSnapshot] = None
 
 
 class BookingStopRead(BaseModel):

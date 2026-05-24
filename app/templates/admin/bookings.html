@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Booking Management | Kari Vari Admin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode:"class",
+      theme:{extend:{colors:{"safari-green":"#2D5A27","primary":"#154212","surface":"#f9f9fc","surface-container":"#eeeef0","surface-container-low":"#f3f3f6","surface-container-high":"#e8e8ea","surface-container-lowest":"#ffffff","on-surface":"#1a1c1e","on-surface-variant":"#42493e","outline-variant":"#c2c9bb","outline":"#72796e","secondary-container":"#ffb61e","on-secondary-container":"#6c4a00","error":"#ba1a1a","error-container":"#ffdad6","status-success":"#15803D","status-pending":"#B45309","ugandan-sun":"#F9B115"},
+      fontSize:{"label-sm":["12px",{lineHeight:"16px",fontWeight:"500"}],"label-lg":["14px",{lineHeight:"20px",letterSpacing:"0.05em",fontWeight:"600"}],"body-md":["16px",{lineHeight:"24px",fontWeight:"400"}],"headline-md":["24px",{lineHeight:"32px",fontWeight:"600"}],"headline-lg":["32px",{lineHeight:"40px",fontWeight:"700"}]}}}
+    }
+  </script>
+  <style>
+    .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    .spin{animation:spin 1s linear infinite;}
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased">
+
+<!-- Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low shadow-md flex flex-col p-6 space-y-4 z-50 overflow-y-auto">
+  <div class="mb-8">
+    <h1 class="font-headline-md text-headline-md font-bold text-primary">Kari Vari Admin</h1>
+    <p class="font-label-sm text-label-sm uppercase tracking-wider text-outline mt-2">Logged in as</p>
+    <p class="font-label-lg text-label-lg text-on-surface" id="adminName">—</p>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="/admin/dashboard">
+      <span class="material-symbols-outlined text-[20px]">dashboard</span><span>Dashboard</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="/admin/users">
+      <span class="material-symbols-outlined text-[20px]">group</span><span>User Management</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2.5 bg-secondary-container text-on-secondary-container rounded-lg transition-all" href="/admin/bookings">
+      <span class="material-symbols-outlined text-[20px]">book_online</span><span>Booking Management</span>
+    </a>
+  </nav>
+  <div class="pt-6 border-t border-outline-variant">
+    <a id="logoutBtn" href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-error transition-colors">
+      <span class="material-symbols-outlined">logout</span><span class="font-label-lg text-label-lg">Log Out</span>
+    </a>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="ml-64 min-h-screen p-8">
+  <div class="max-w-[1200px] mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="font-headline-md text-headline-md">Booking Management</h2>
+        <p class="text-on-surface-variant font-label-sm text-label-sm mt-1">View and manage all platform bookings</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="statsRow">
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Total</p>
+        <p class="font-headline-md text-headline-md" id="statTotal">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Confirmed</p>
+        <p class="font-headline-md text-headline-md text-safari-green" id="statConfirmed">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Completed</p>
+        <p class="font-headline-md text-headline-md text-primary" id="statCompleted">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Cancelled</p>
+        <p class="font-headline-md text-headline-md text-error" id="statCancelled">—</p>
+      </div>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="flex gap-2 flex-wrap">
+      <button onclick="loadBookings(null)" id="filter-all" class="filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white">All</button>
+      <button onclick="loadBookings('confirmed')" id="filter-confirmed" class="filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Confirmed</button>
+      <button onclick="loadBookings('in_progress')" id="filter-in_progress" class="filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">In Progress</button>
+      <button onclick="loadBookings('completed')" id="filter-completed" class="filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Completed</button>
+      <button onclick="loadBookings('cancelled')" id="filter-cancelled" class="filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Cancelled</button>
+      <button onclick="loadBookings('pending_payment')" id="filter-pending_payment" class="filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Pending Payment</button>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden">
+      <div id="tableWrap">
+        <div class="text-center py-16 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[48px] spin">refresh</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Override Modal -->
+<div id="overrideModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" style="background:rgba(0,0,0,.5);">
+  <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-5">
+    <div class="flex items-start justify-between">
+      <h2 class="font-headline-md text-headline-md">Override Booking Status</h2>
+      <button onclick="closeOverride()" class="p-2 text-on-surface-variant hover:text-on-surface rounded-xl"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <p class="font-label-sm text-label-sm text-on-surface-variant">Booking: <span id="overrideRef" class="font-semibold text-on-surface"></span></p>
+    <div>
+      <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">New Status</label>
+      <select id="overrideStatus" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-safari-green">
+        <option value="pending">Pending</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="in_progress">In Progress</option>
+        <option value="completed">Completed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+    <div>
+      <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Reason <span class="text-outline">(optional)</span></label>
+      <textarea id="overrideReason" rows="2" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-safari-green resize-none"></textarea>
+    </div>
+    <p id="overrideError" class="font-label-sm text-label-sm text-error min-h-[1rem]"></p>
+    <div class="flex gap-3">
+      <button onclick="closeOverride()" class="flex-1 py-3 rounded-xl border border-outline-variant text-on-surface font-label-lg text-label-lg hover:bg-surface-container">Cancel</button>
+      <button id="overrideBtn" onclick="submitOverride()" class="flex-1 bg-primary text-white font-label-lg text-label-lg py-3 rounded-xl hover:opacity-90 active:scale-95 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-[18px]">edit</span> Apply Override
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API   = '/api';
+const token = localStorage.getItem('access_token');
+if (!token) { window.location.href = '/admin/login'; }
+document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
+
+const AUTH = { headers: { Authorization: `Bearer ${token}` } };
+
+const STATUS_COLOR = {
+  confirmed:'bg-status-success/10 text-status-success',
+  in_progress:'bg-ugandan-sun/10 text-status-pending',
+  completed:'bg-primary/10 text-primary',
+  cancelled:'bg-error/10 text-error',
+  pending_payment:'bg-surface-container text-on-surface-variant',
+  pending:'bg-surface-container text-on-surface-variant',
+};
+const STATUS_LABEL = {
+  confirmed:'Confirmed', in_progress:'In Progress', completed:'Completed',
+  cancelled:'Cancelled', pending_payment:'Awaiting Payment', pending:'Pending',
+};
+
+function fmtDate(s) {
+  if (!s) return '—';
+  return new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'});
+}
+
+let overrideTarget = { id:'', ref:'' };
+
+function openOverride(id, ref, currentStatus) {
+  overrideTarget = { id, ref };
+  document.getElementById('overrideRef').textContent = ref;
+  document.getElementById('overrideStatus').value = currentStatus;
+  document.getElementById('overrideReason').value = '';
+  document.getElementById('overrideError').textContent = '';
+  document.getElementById('overrideBtn').disabled = false;
+  document.getElementById('overrideBtn').innerHTML = '<span class="material-symbols-outlined text-[18px]">edit</span> Apply Override';
+  document.getElementById('overrideModal').classList.remove('hidden');
+}
+function closeOverride() { document.getElementById('overrideModal').classList.add('hidden'); }
+
+async function submitOverride() {
+  const btn = document.getElementById('overrideBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-[18px] spin">refresh</span> Saving…';
+  document.getElementById('overrideError').textContent = '';
+  try {
+    const res = await fetch(`${API}/admin/bookings/${overrideTarget.id}/override-status`, {
+      method:'PATCH', ...AUTH,
+      headers: { ...AUTH.headers, 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        status: document.getElementById('overrideStatus').value,
+        reason: document.getElementById('overrideReason').value.trim() || null,
+      }),
+    });
+    if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Failed'); }
+    closeOverride();
+    loadBookings(currentFilter);
+  } catch(e) {
+    document.getElementById('overrideError').textContent = e.message;
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">edit</span> Apply Override';
+  }
+}
+
+let currentFilter = null;
+
+async function loadBookings(statusFilter) {
+  currentFilter = statusFilter;
+
+  // Update filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    const isActive = (statusFilter === null && btn.id === 'filter-all')
+      || (statusFilter && btn.id === `filter-${statusFilter}`);
+    btn.className = isActive
+      ? 'filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white'
+      : 'filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high';
+  });
+
+  document.getElementById('tableWrap').innerHTML = '<div class="text-center py-16 text-on-surface-variant"><span class="material-symbols-outlined text-[48px] spin">refresh</span></div>';
+
+  const url = `${API}/admin/bookings?page_size=50${statusFilter ? `&status=${statusFilter}` : ''}`;
+  try {
+    const res = await fetch(url, AUTH);
+    if (res.status === 401 || res.status === 403) { localStorage.clear(); window.location.href='/admin/login'; return; }
+    const data = await res.json();
+    const bookings = data.bookings || [];
+
+    if (!bookings.length) {
+      document.getElementById('tableWrap').innerHTML = `<div class="text-center py-16 text-on-surface-variant"><span class="material-symbols-outlined text-[48px] mb-3 block opacity-25">book_online</span><p>No bookings found.</p></div>`;
+      return;
+    }
+
+    const rows = bookings.map(b => {
+      const badge = STATUS_COLOR[b.status] || 'bg-surface-container text-on-surface-variant';
+      const label = STATUS_LABEL[b.status] || b.status;
+      return `<tr class="border-b border-outline-variant/20 hover:bg-surface-container-low transition-colors">
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${b.booking_reference}</td>
+        <td class="px-5 py-4 font-body-md text-body-md">${b.customer_name || '—'}<br><span class="text-on-surface-variant text-xs">${b.customer_email||''}</span></td>
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${fmtDate(b.start_datetime)} → ${fmtDate(b.end_datetime)}</td>
+        <td class="px-5 py-4"><span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm ${badge}">${label}</span></td>
+        <td class="px-5 py-4 font-label-lg text-label-lg">${b.amount_usd != null ? '$'+parseFloat(b.amount_usd).toFixed(2) : '—'}</td>
+        <td class="px-5 py-4">
+          <button onclick="openOverride('${b.id}','${b.booking_reference}','${b.status}')" class="text-on-surface-variant hover:text-on-surface p-1.5 rounded-lg hover:bg-surface-container transition-colors" title="Override status">
+            <span class="material-symbols-outlined text-[18px]">edit</span>
+          </button>
+        </td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('tableWrap').innerHTML = `<table class="w-full text-left">
+      <thead class="bg-surface-container-low border-b border-outline-variant/30">
+        <tr>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Reference</th>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Customer</th>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Dates</th>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Status</th>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Amount</th>
+          <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Actions</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="px-5 py-3 text-on-surface-variant font-label-sm text-label-sm border-t border-outline-variant/20">
+      Showing ${bookings.length} of ${data.total || bookings.length} bookings
+    </div>`;
+  } catch(e) {
+    document.getElementById('tableWrap').innerHTML = `<div class="text-center py-16 text-error">Failed to load bookings.</div>`;
+  }
+}
+
+async function loadStats() {
+  try {
+    const res = await fetch(`${API}/admin/analytics/overview`, AUTH);
+    if (!res.ok) return;
+    const d = await res.json();
+    document.getElementById('statTotal').textContent     = d.total_bookings ?? '—';
+    document.getElementById('statConfirmed').textContent = d.confirmed_bookings ?? '—';
+    document.getElementById('statCompleted').textContent = d.completed_bookings ?? '—';
+    document.getElementById('statCancelled').textContent = d.cancelled_bookings ?? '—';
+  } catch {}
+}
+
+async function init() {
+  const uRes = await fetch(`${API}/users/me`, AUTH);
+  if (!uRes.ok) { localStorage.clear(); window.location.href='/admin/login'; return; }
+  const user = await uRes.json();
+  if (user.role !== 'admin') { window.location.href='/'; return; }
+  document.getElementById('adminName').textContent = user.full_name || user.email;
+
+  loadStats();
+  loadBookings(null);
+}
+init();
+</script>
+</body>
+</html>

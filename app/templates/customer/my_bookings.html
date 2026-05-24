@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Bookings - Kari Vari Uganda</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "secondary-fixed": "#ffdeac", "outline": "#72796e",
+          "secondary-fixed-dim": "#ffba35", "inverse-surface": "#2f3133",
+          "on-background": "#1a1c1e", "on-secondary-fixed": "#281900",
+          "soft-gray": "#F5F5F5", "surface-dim": "#dadadc",
+          "secondary-container": "#ffb61e", "on-surface-variant": "#42493e",
+          "primary-fixed": "#bcf0ae", "on-error": "#ffffff",
+          "outline-variant": "#c2c9bb", "on-primary-fixed-variant": "#23501e",
+          "slate-dark": "#1A1C1E", "on-primary": "#ffffff",
+          "primary-container": "#2d5a27", "tertiary-fixed-dim": "#a5d6a7",
+          "secondary": "#7e5700", "surface": "#f9f9fc",
+          "tertiary": "#2D5A27", "on-secondary": "#ffffff",
+          "primary-fixed-dim": "#a1d494", "tertiary-fixed": "#c8e6c9",
+          "on-surface": "#1a1c1e", "status-pending": "#B45309",
+          "on-secondary-container": "#6c4a00", "inverse-on-surface": "#f0f0f3",
+          "on-primary-fixed": "#002201", "status-success": "#15803D",
+          "on-primary-container": "#9dd090", "surface-container": "#eeeef0",
+          "surface-tint": "#3b6934", "on-tertiary": "#ffffff",
+          "surface-container-lowest": "#ffffff", "error": "#ba1a1a",
+          "on-tertiary-fixed-variant": "#1b5e20", "surface-container-highest": "#e2e2e5",
+          "primary": "#154212", "safari-green": "#2D5A27",
+          "surface-container-high": "#e8e8ea", "surface-bright": "#f9f9fc",
+          "on-tertiary-fixed": "#0a3d0a", "error-container": "#ffdad6",
+          "inverse-primary": "#a1d494", "surface-container-low": "#f3f3f6",
+          "on-tertiary-container": "#c8e6c9", "surface-variant": "#e2e2e5",
+          "on-secondary-fixed-variant": "#5f4100", "tertiary-container": "#154212",
+          "ugandan-sun": "#F9B115", "background": "#f9f9fc",
+          "on-error-container": "#93000a"
+        },
+        borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+        fontFamily: {
+          "label-sm": ["Inter"], "headline-lg-mobile": ["Montserrat"], "body-lg": ["Inter"],
+          "headline-md": ["Montserrat"], "label-lg": ["Inter"], "body-md": ["Inter"],
+          "headline-xl": ["Montserrat"], "headline-lg": ["Montserrat"]
+        },
+        fontSize: {
+          "label-sm":  ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+          "body-lg":   ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+          "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+          "label-lg":  ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+          "body-md":   ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+          "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+          "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #f9f9fc; color: #1a1c1e; font-family: 'Inter', sans-serif; }
+  h1,h2,h3,h4 { font-family: 'Montserrat', sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .elevation-1 { box-shadow: 0px 4px 20px rgba(0,0,0,0.05); }
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  .spin { animation: spin 1s linear infinite; }
+  /* Star rating */
+  .star-row { display:flex; gap:6px; }
+  .star-btn { font-size:28px; cursor:pointer; color:#c2c9bb; transition:color .15s; line-height:1; }
+  .star-btn.lit, .star-btn:hover, .star-btn:hover ~ .star-btn { color:#F9B115; }
+  /* flip hover direction via flex-row-reverse trick */
+  .star-row { flex-direction: row-reverse; justify-content: flex-end; }
+  .star-btn:hover, .star-btn:hover ~ .star-btn { color:#F9B115 !important; }
+  .star-row .star-btn.lit { color:#F9B115; }
+</style>
+</head>
+<body class="selection:bg-ugandan-sun selection:text-slate-dark">
+
+<!-- Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low shadow-md flex flex-col p-6 space-y-4 z-50">
+  <div class="mb-6">
+    <a href="/" class="flex items-center gap-2 font-bold text-[20px]" style="color:#154212;text-decoration:none;">
+      <span class="material-symbols-outlined text-[24px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+      Kari Vari Uganda
+    </a>
+  </div>
+  <div class="flex items-center space-x-3 mb-6 px-2">
+    <div id="avatarCircle" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg flex-shrink-0">?</div>
+    <div class="overflow-hidden">
+      <p class="font-label-lg text-label-lg text-on-surface truncate" id="sidebarName">Welcome back</p>
+      <p class="font-label-sm text-label-sm text-on-surface-variant">Customer Portal</p>
+    </div>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/dashboard">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="font-label-lg text-label-lg">Dashboard</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/vehicles">
+      <span class="material-symbols-outlined">directions_car</span>
+      <span class="font-label-lg text-label-lg">Browse Cars</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all" href="/my-bookings">
+      <span class="material-symbols-outlined">calendar_month</span>
+      <span class="font-label-lg text-label-lg">My Bookings</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/my-payments">
+      <span class="material-symbols-outlined">payments</span>
+      <span class="font-label-lg text-label-lg">Payments</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/support">
+      <span class="material-symbols-outlined">contact_support</span>
+      <span class="font-label-lg text-label-lg">Support</span>
+    </a>
+    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/settings">
+      <span class="material-symbols-outlined">settings</span>
+      <span class="font-label-lg text-label-lg">Settings</span>
+    </a>
+  </nav>
+  <div class="pt-4 border-t border-outline-variant space-y-2">
+    <a href="/vehicles" class="block w-full text-center bg-safari-green text-white font-label-lg text-label-lg py-3 rounded-xl hover:opacity-90 transition-all active:scale-95">
+      Book a Car
+    </a>
+    <button id="logoutBtn" class="w-full flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:text-error transition-colors rounded-lg">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="font-label-lg text-label-lg">Log Out</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="ml-64 min-h-screen bg-surface">
+  <header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md flex justify-between items-center px-10 py-4 shadow-sm">
+    <div>
+      <h1 class="font-headline-md text-headline-md text-on-surface">My Bookings</h1>
+      <p class="font-label-sm text-label-sm text-on-surface-variant">All your trips in one place</p>
+    </div>
+    <div class="flex items-center space-x-4">
+      <a href="/vehicles" class="bg-safari-green text-white font-label-lg text-label-lg px-5 py-2.5 rounded-xl hover:opacity-90 transition-all" style="text-decoration:none;">
+        + New Booking
+      </a>
+      <div id="headerAvatar" class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">?</div>
+    </div>
+  </header>
+
+  <div class="p-10 max-w-[1100px] mx-auto space-y-8">
+
+    <!-- Loading -->
+    <div id="loadingState" class="flex items-center justify-center py-24">
+      <span class="material-symbols-outlined text-primary text-[48px] spin">refresh</span>
+    </div>
+
+    <!-- Content -->
+    <div id="pageContent" class="hidden space-y-6">
+
+      <!-- Stats strip -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-surface-container-lowest p-5 rounded-2xl elevation-1 text-center">
+          <p class="font-headline-lg text-headline-lg text-on-surface" id="countAll">0</p>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">Total Bookings</p>
+        </div>
+        <div class="bg-surface-container-lowest p-5 rounded-2xl elevation-1 text-center">
+          <p class="font-headline-lg text-headline-lg text-ugandan-sun" id="countUpcoming">0</p>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">Upcoming</p>
+        </div>
+        <div class="bg-surface-container-lowest p-5 rounded-2xl elevation-1 text-center">
+          <p class="font-headline-lg text-headline-lg text-safari-green" id="countCompleted">0</p>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">Completed</p>
+        </div>
+        <div class="bg-surface-container-lowest p-5 rounded-2xl elevation-1 text-center">
+          <p class="font-headline-lg text-headline-lg text-error" id="countCancelled">0</p>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">Cancelled</p>
+        </div>
+      </div>
+
+      <!-- Tabs + list -->
+      <div class="bg-surface-container-lowest rounded-3xl elevation-1 overflow-hidden">
+        <div class="flex border-b border-outline-variant/30">
+          <button onclick="switchTab('all')"       id="tab-all"       class="bk-tab flex-1 py-4 font-label-lg text-label-lg border-b-2 border-safari-green text-safari-green transition-colors">All</button>
+          <button onclick="switchTab('upcoming')"  id="tab-upcoming"  class="bk-tab flex-1 py-4 font-label-lg text-label-lg border-b-2 border-transparent text-on-surface-variant hover:text-on-surface transition-colors">Upcoming</button>
+          <button onclick="switchTab('completed')" id="tab-completed" class="bk-tab flex-1 py-4 font-label-lg text-label-lg border-b-2 border-transparent text-on-surface-variant hover:text-on-surface transition-colors">Completed</button>
+          <button onclick="switchTab('cancelled')" id="tab-cancelled" class="bk-tab flex-1 py-4 font-label-lg text-label-lg border-b-2 border-transparent text-on-surface-variant hover:text-on-surface transition-colors">Cancelled</button>
+        </div>
+        <div class="p-6 space-y-4" id="bookingList"></div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+const API = '/api';
+const token = localStorage.getItem('access_token');
+if (!token) { window.location.href = '/login'; }
+document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
+
+function initials(n) { return n ? n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?'; }
+function fmtDate(s)  { return s ? new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : '—'; }
+function auth()      { return { headers: { Authorization: `Bearer ${token}` } }; }
+
+const STATUS_BADGE  = { confirmed:'bg-status-success/10 text-status-success', completed:'bg-primary-fixed text-safari-green', pending:'bg-secondary-fixed text-secondary', pending_payment:'bg-secondary-fixed text-secondary', cancelled:'bg-error-container text-error' };
+const STATUS_LABEL  = { confirmed:'Confirmed', completed:'Completed', pending:'Pending', pending_payment:'Awaiting Payment', cancelled:'Cancelled' };
+const UPCOMING      = ['pending_payment','pending','confirmed'];
+const REVIEWABLE    = ['confirmed','completed'];
+
+let allBookings  = [];
+let myReviews    = {};   // bookingId → Set of targets already reviewed
+
+function bookingCard(b) {
+  const v      = b.vehicle;
+  const img    = v?.primary_photo_url
+    ? `<img src="${v.primary_photo_url}" alt="" class="w-20 h-20 rounded-xl object-cover flex-shrink-0"/>`
+    : `<div class="w-20 h-20 rounded-xl bg-surface-container flex items-center justify-center flex-shrink-0 text-outline-variant"><span class="material-symbols-outlined text-[36px]">directions_car</span></div>`;
+  const badge  = STATUS_BADGE[b.status] || 'bg-surface-container text-on-surface-variant';
+  const label  = STATUS_LABEL[b.status] || b.status;
+  const amt    = b.amount_usd != null ? `$${parseFloat(b.amount_usd).toFixed(2)}` : '—';
+  const days   = b.total_days || 1;
+  const hasDriver = b.booking_type === 'with_driver';
+
+  // Cancel button — shown for upcoming bookings only
+  let cancelBtn = '';
+  if (UPCOMING.includes(b.status)) {
+    cancelBtn = `<button onclick="openCancelModal('${b.id}','${b.booking_reference}')" class="flex items-center gap-1.5 text-error border border-error/30 hover:bg-error-container px-3 py-1.5 rounded-xl font-label-sm text-label-sm transition-colors">
+      <span class="material-symbols-outlined text-[16px]">cancel</span> Cancel
+    </button>`;
+  }
+
+  // Review action — shown for reviewable bookings
+  let reviewBtn = '';
+  if (REVIEWABLE.includes(b.status)) {
+    const done  = myReviews[b.id] || new Set();
+    const targets = hasDriver ? ['trip','driver'] : ['trip'];
+    const remaining = targets.filter(t => !done.has(t));
+    if (remaining.length === 0) {
+      reviewBtn = `<span class="flex items-center gap-1 text-safari-green font-label-sm text-label-sm"><span class="material-symbols-outlined text-[16px]" style="font-variation-settings:'FILL' 1;">star</span>Reviewed</span>`;
+    } else {
+      reviewBtn = `<button onclick="openReviewModal('${b.id}','${v ? v.make+' '+v.model : 'Vehicle'}',${hasDriver})" class="flex items-center gap-1.5 text-safari-green border border-safari-green/40 hover:bg-primary-fixed px-3 py-1.5 rounded-xl font-label-sm text-label-sm transition-colors">
+        <span class="material-symbols-outlined text-[16px]">star_rate</span> Leave Review
+      </button>`;
+    }
+  }
+
+  return `
+    <div class="flex items-center gap-5 p-5 rounded-2xl border border-outline-variant/30 hover:border-safari-green/40 hover:shadow-sm transition-all bg-surface">
+      ${img}
+      <div class="flex-1 min-w-0">
+        <div class="flex items-start justify-between gap-3 flex-wrap mb-1">
+          <h4 class="font-label-lg text-label-lg text-on-surface">${v ? v.make+' '+v.model : 'Vehicle'} <span class="text-on-surface-variant font-normal">${v ? v.year : ''}</span></h4>
+          <span class="${badge} font-label-sm text-label-sm px-3 py-1 rounded-full uppercase tracking-wide">${label}</span>
+        </div>
+        <p class="font-label-sm text-label-sm text-on-surface-variant mb-2">${b.booking_reference}</p>
+        <div class="flex flex-wrap gap-4 font-label-sm text-label-sm text-outline mb-3">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span>${fmtDate(b.start_datetime)} → ${fmtDate(b.end_datetime)}</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span>${days} day${days!==1?'s':''}</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">location_on</span>${b.pickup_location||'—'}</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">directions_car</span>${hasDriver?'With Driver':'Self Drive'}</span>
+        </div>
+        ${(cancelBtn || reviewBtn) ? `<div class="flex gap-2 flex-wrap">${cancelBtn}${reviewBtn}</div>` : ''}
+      </div>
+      <div class="text-right flex-shrink-0 space-y-1">
+        <p class="font-headline-md text-headline-md text-safari-green">${amt}</p>
+        <p class="font-label-sm text-label-sm text-outline">Total paid</p>
+      </div>
+    </div>`;
+}
+
+function emptyState(msg) {
+  return `<div class="text-center py-16 text-on-surface-variant">
+    <span class="material-symbols-outlined text-[56px] mb-4 block">calendar_month</span>
+    <p class="font-label-lg text-label-lg mb-4">${msg}</p>
+    <a href="/vehicles" class="bg-safari-green text-white px-6 py-2.5 rounded-xl font-label-lg text-label-lg hover:opacity-90" style="text-decoration:none;">Browse Vehicles</a>
+  </div>`;
+}
+
+function renderTab(tab) {
+  const list = tab==='all' ? allBookings
+    : tab==='upcoming'  ? allBookings.filter(b=>UPCOMING.includes(b.status))
+    : tab==='completed' ? allBookings.filter(b=>b.status==='completed')
+    : allBookings.filter(b=>b.status==='cancelled');
+  const msgs = { all:'No bookings yet.', upcoming:'No upcoming trips.', completed:'No completed trips yet.', cancelled:'No cancelled bookings.' };
+  document.getElementById('bookingList').innerHTML = list.length ? list.map(bookingCard).join('') : emptyState(msgs[tab]);
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.bk-tab').forEach(btn => {
+    const t = btn.id.replace('tab-','');
+    btn.classList.toggle('border-safari-green',       t===name);
+    btn.classList.toggle('text-safari-green',         t===name);
+    btn.classList.toggle('border-transparent',        t!==name);
+    btn.classList.toggle('text-on-surface-variant',   t!==name);
+  });
+  renderTab(name);
+}
+
+// ── Review Modal ───────────────────────────────────────────────────────────────
+let reviewModal = { bookingId:'', vehicleName:'', hasDriver:false, currentTarget:'trip' };
+const ratings   = { overall:0, punctuality:0, cleanliness:0, communication:0, value:0 };
+
+function openReviewModal(bookingId, vehicleName, hasDriver) {
+  reviewModal = { bookingId, vehicleName, hasDriver };
+  document.getElementById('rmVehicleName').textContent = vehicleName;
+
+  // Set default target to first unrevieweed
+  const done = myReviews[bookingId] || new Set();
+  const first = hasDriver && !done.has('trip') ? 'trip' : !done.has('trip') ? 'trip' : !done.has('driver') ? 'driver' : 'trip';
+  reviewModal.currentTarget = first;
+
+  // Show/hide driver tab
+  document.getElementById('rmDriverTab').style.display = hasDriver ? '' : 'none';
+
+  // Pre-mark already-reviewed tabs
+  ['trip','driver'].forEach(t => {
+    const btn = document.getElementById(`rm-tab-${t}`);
+    if (!btn) return;
+    if (done.has(t)) {
+      btn.classList.add('opacity-50','cursor-not-allowed');
+      btn.setAttribute('title','Already reviewed');
+    } else {
+      btn.classList.remove('opacity-50','cursor-not-allowed');
+      btn.removeAttribute('title');
+    }
+  });
+
+  switchReviewTarget(first);
+  Object.keys(ratings).forEach(k => { ratings[k]=0; setStars(k,0); });
+  document.getElementById('rmText').value = '';
+  document.getElementById('rmError').textContent = '';
+  document.getElementById('rmSubmitBtn').disabled = false;
+  document.getElementById('rmSubmitBtn').innerHTML = '<span class="material-symbols-outlined text-[18px]" style="font-variation-settings:\'FILL\' 1;">star</span> Submit Review';
+
+  document.getElementById('reviewModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeReviewModal() {
+  document.getElementById('reviewModal').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function switchReviewTarget(target) {
+  reviewModal.currentTarget = target;
+  ['trip','driver'].forEach(t => {
+    const btn = document.getElementById(`rm-tab-${t}`);
+    if (!btn) return;
+    const active = t===target;
+    btn.classList.toggle('bg-safari-green', active);
+    btn.classList.toggle('text-white',      active);
+    btn.classList.toggle('bg-surface-container', !active);
+    btn.classList.toggle('text-on-surface-variant', !active);
+  });
+  // Adjust sub-rating labels
+  const isDriver = target === 'driver';
+  document.getElementById('rmPunctualityLabel').textContent   = isDriver ? 'Punctuality'  : 'Value for Money';
+  document.getElementById('rmCleanlinessLabel').textContent   = isDriver ? 'Cleanliness'  : 'Cleanliness';
+  document.getElementById('rmCommunicationLabel').textContent = isDriver ? 'Communication': 'Communication';
+  document.getElementById('rmValueLabel').textContent         = isDriver ? 'Safety'       : 'Overall Experience';
+  document.getElementById('rmTitle').textContent              = isDriver ? 'Rate Your Driver' : 'Rate Your Trip';
+}
+
+function setStars(category, value) {
+  ratings[category] = value;
+  const row = document.getElementById(`stars-${category}`);
+  if (!row) return;
+  row.querySelectorAll('.star-btn').forEach((btn, i) => {
+    // stars are rendered 5→1 right-to-left for CSS hover trick; i=0 is star 5
+    const starVal = 5 - i;
+    btn.style.color = starVal <= value ? '#F9B115' : '#c2c9bb';
+    btn.setAttribute('aria-pressed', starVal <= value);
+  });
+}
+
+function buildStarRow(category) {
+  const stars = [5,4,3,2,1].map(v =>
+    `<button type="button" class="star-btn" onclick="setStars('${category}',${v})" onmouseover="hoverStars('${category}',${v})" onmouseout="setStars('${category}',ratings['${category}'])">★</button>`
+  ).join('');
+  return `<div id="stars-${category}" class="star-row">${stars}</div>`;
+}
+
+function hoverStars(category, value) {
+  const row = document.getElementById(`stars-${category}`);
+  if (!row) return;
+  row.querySelectorAll('.star-btn').forEach((btn, i) => {
+    btn.style.color = (5-i) <= value ? '#F9B115' : '#c2c9bb';
+  });
+}
+
+async function submitReview() {
+  const overall = ratings.overall;
+  if (!overall) { document.getElementById('rmError').textContent = 'Please give an overall rating.'; return; }
+  const done = myReviews[reviewModal.bookingId] || new Set();
+  if (done.has(reviewModal.currentTarget)) { document.getElementById('rmError').textContent = 'You already reviewed this.'; return; }
+
+  const btn = document.getElementById('rmSubmitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-[18px] spin">refresh</span> Submitting…';
+  document.getElementById('rmError').textContent = '';
+
+  try {
+    const res = await fetch(`${API}/reviews/`, {
+      method: 'POST',
+      headers: { Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        booking_id:           reviewModal.bookingId,
+        review_target:        reviewModal.currentTarget,
+        overall_rating:       ratings.overall,
+        punctuality_rating:   ratings.punctuality  || null,
+        cleanliness_rating:   ratings.cleanliness  || null,
+        communication_rating: ratings.communication|| null,
+        value_rating:         ratings.value        || null,
+        review_text:          document.getElementById('rmText').value.trim() || null,
+      }),
+    });
+    if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Submission failed'); }
+
+    // Mark as done
+    if (!myReviews[reviewModal.bookingId]) myReviews[reviewModal.bookingId] = new Set();
+    myReviews[reviewModal.bookingId].add(reviewModal.currentTarget);
+
+    // If driver also needs review and we just did trip, offer driver next
+    const hasDriver = reviewModal.hasDriver;
+    const driverDone = myReviews[reviewModal.bookingId].has('driver');
+    if (hasDriver && !driverDone) {
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined text-[18px]" style="font-variation-settings:\'FILL\' 1;">star</span> Submit Review';
+      document.getElementById('rmError').style.color='#15803D';
+      document.getElementById('rmError').textContent = 'Trip reviewed! Now rate your driver below.';
+      switchReviewTarget('driver');
+      Object.keys(ratings).forEach(k=>{ratings[k]=0;setStars(k,0);});
+      document.getElementById('rmText').value='';
+    } else {
+      closeReviewModal();
+      // Re-render to show "Reviewed" badge
+      const activeTab = document.querySelector('.bk-tab.border-safari-green');
+      renderTab(activeTab ? activeTab.id.replace('tab-','') : 'all');
+    }
+  } catch(e) {
+    document.getElementById('rmError').style.color='';
+    document.getElementById('rmError').textContent = e.message;
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]" style="font-variation-settings:\'FILL\' 1;">star</span> Submit Review';
+  }
+}
+
+// ── Cancel Modal ───────────────────────────────────────────────────────────────
+let cancelTarget = { id: '', ref: '' };
+
+function openCancelModal(bookingId, bookingRef) {
+  cancelTarget = { id: bookingId, ref: bookingRef };
+  document.getElementById('cancelRef').textContent = bookingRef;
+  document.getElementById('cancelReason').value = '';
+  document.getElementById('cancelError').textContent = '';
+  const btn = document.getElementById('cancelConfirmBtn');
+  btn.disabled = false;
+  btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">cancel</span> Confirm Cancellation';
+  document.getElementById('cancelModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCancelModal() {
+  document.getElementById('cancelModal').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+async function confirmCancel() {
+  const btn = document.getElementById('cancelConfirmBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-[18px] spin">refresh</span> Cancelling…';
+  document.getElementById('cancelError').textContent = '';
+
+  try {
+    const res = await fetch(`${API}/bookings/${cancelTarget.id}/cancel`, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cancellation_reason: document.getElementById('cancelReason').value.trim() }),
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Cancellation failed'); }
+
+    // Update local data
+    const b = allBookings.find(x => x.id === cancelTarget.id);
+    if (b) b.status = 'cancelled';
+
+    // Refresh counts
+    document.getElementById('countUpcoming').textContent  = allBookings.filter(b=>UPCOMING.includes(b.status)).length;
+    document.getElementById('countCancelled').textContent = allBookings.filter(b=>b.status==='cancelled').length;
+
+    closeCancelModal();
+    const activeTab = document.querySelector('.bk-tab.border-safari-green');
+    renderTab(activeTab ? activeTab.id.replace('tab-','') : 'all');
+  } catch(e) {
+    document.getElementById('cancelError').textContent = e.message;
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">cancel</span> Confirm Cancellation';
+  }
+}
+
+async function load() {
+  try {
+    const [uRes, bRes] = await Promise.all([
+      fetch(`${API}/users/me`, auth()),
+      fetch(`${API}/bookings/`, auth()),
+    ]);
+    if (!uRes.ok) { localStorage.clear(); window.location.href='/login'; return; }
+    const user = await uRes.json();
+    const name = user.full_name || user.email;
+    document.getElementById('sidebarName').textContent  = name;
+    document.getElementById('avatarCircle').textContent = initials(name);
+    document.getElementById('headerAvatar').textContent = initials(name);
+
+    allBookings = bRes.ok ? await bRes.json() : [];
+
+    // Load existing reviews so we can mark which bookings are done
+    try {
+      const rRes = await fetch(`${API}/reviews/me`, auth());
+      if (rRes.ok) {
+        const reviews = await rRes.json();
+        reviews.forEach(r => {
+          if (!myReviews[r.booking_id]) myReviews[r.booking_id] = new Set();
+          myReviews[r.booking_id].add(r.review_target);
+        });
+      }
+    } catch {}
+
+    document.getElementById('countAll').textContent       = allBookings.length;
+    document.getElementById('countUpcoming').textContent  = allBookings.filter(b=>UPCOMING.includes(b.status)).length;
+    document.getElementById('countCompleted').textContent = allBookings.filter(b=>b.status==='completed').length;
+    document.getElementById('countCancelled').textContent = allBookings.filter(b=>b.status==='cancelled').length;
+
+    renderTab('all');
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('pageContent').classList.remove('hidden');
+  } catch(e) {
+    document.getElementById('loadingState').innerHTML=`<div class="text-center"><span class="material-symbols-outlined text-error text-[48px]">error</span><p class="mt-4 text-on-surface-variant">Failed to load. <a href="/" class="text-primary underline">Go home</a></p></div>`;
+  }
+}
+load();
+</script>
+
+<!-- ── Cancel Modal ───────────────────────────────────────────────────────────── -->
+<div id="cancelModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" style="background:rgba(0,0,0,.5);">
+  <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-5">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <h2 class="font-headline-md text-headline-md text-on-surface">Cancel Booking</h2>
+        <p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Booking <span id="cancelRef" class="font-semibold text-on-surface"></span></p>
+      </div>
+      <button onclick="closeCancelModal()" class="p-2 text-on-surface-variant hover:text-on-surface rounded-xl hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="bg-error-container rounded-2xl px-5 py-4 flex gap-3">
+      <span class="material-symbols-outlined text-error flex-shrink-0 mt-0.5">warning</span>
+      <p class="font-label-sm text-label-sm text-error">This action cannot be undone. Please contact support if you need a refund.</p>
+    </div>
+    <div>
+      <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Reason for cancellation <span class="text-outline">(optional)</span></label>
+      <textarea id="cancelReason" rows="3" placeholder="e.g. Plans changed, found alternative transport…"
+        class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-error resize-none"></textarea>
+    </div>
+    <p id="cancelError" class="font-label-sm text-label-sm text-error min-h-[1rem]"></p>
+    <div class="flex gap-3">
+      <button onclick="closeCancelModal()" class="flex-1 py-3 rounded-xl font-label-lg text-label-lg border border-outline-variant text-on-surface hover:bg-surface-container transition-colors">Keep Booking</button>
+      <button id="cancelConfirmBtn" onclick="confirmCancel()" class="flex-1 bg-error text-white font-label-lg text-label-lg py-3 rounded-xl hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-[18px]">cancel</span> Confirm Cancellation
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Review Modal ───────────────────────────────────────────────────────────── -->
+<div id="reviewModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" style="background:rgba(0,0,0,.5);">
+  <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between px-8 pt-8 pb-4">
+      <div>
+        <h2 class="font-headline-md text-headline-md" id="rmTitle">Rate Your Trip</h2>
+        <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5" id="rmVehicleName"></p>
+      </div>
+      <button onclick="closeReviewModal()" class="p-2 text-on-surface-variant hover:text-on-surface rounded-xl hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <!-- Target tabs (trip / driver) -->
+    <div class="flex gap-2 px-8 pb-6">
+      <button id="rm-tab-trip"   onclick="switchReviewTarget('trip')"   class="flex-1 py-2 rounded-xl font-label-lg text-label-lg bg-safari-green text-white transition-colors">Trip</button>
+      <button id="rm-tab-driver" onclick="switchReviewTarget('driver')" class="flex-1 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant transition-colors" id="rmDriverTab">Driver</button>
+    </div>
+
+    <div class="px-8 pb-8 space-y-6">
+
+      <!-- Overall rating (large stars) -->
+      <div class="text-center">
+        <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-3">Overall Rating *</p>
+        <div class="flex justify-center gap-3" id="stars-overall">
+          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',1)" onmouseover="hoverStars('overall',1)" onmouseout="setStars('overall',ratings['overall'])">★</button>
+          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',2)" onmouseover="hoverStars('overall',2)" onmouseout="setStars('overall',ratings['overall'])">★</button>
+          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',3)" onmouseover="hoverStars('overall',3)" onmouseout="setStars('overall',ratings['overall'])">★</button>
+          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',4)" onmouseover="hoverStars('overall',4)" onmouseout="setStars('overall',ratings['overall'])">★</button>
+          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',5)" onmouseover="hoverStars('overall',5)" onmouseout="setStars('overall',ratings['overall'])">★</button>
+        </div>
+        <p class="font-label-sm text-label-sm text-outline mt-2" id="overallLabel">Tap to rate</p>
+      </div>
+
+      <!-- Sub-ratings grid -->
+      <div class="grid grid-cols-2 gap-5">
+        <div>
+          <p class="font-label-sm text-label-sm text-on-surface-variant mb-1" id="rmPunctualityLabel">Punctuality</p>
+          <div class="flex gap-1" id="stars-punctuality">
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',1)" onmouseover="hoverStars('punctuality',1)" onmouseout="setStars('punctuality',ratings['punctuality'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',2)" onmouseover="hoverStars('punctuality',2)" onmouseout="setStars('punctuality',ratings['punctuality'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',3)" onmouseover="hoverStars('punctuality',3)" onmouseout="setStars('punctuality',ratings['punctuality'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',4)" onmouseover="hoverStars('punctuality',4)" onmouseout="setStars('punctuality',ratings['punctuality'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',5)" onmouseover="hoverStars('punctuality',5)" onmouseout="setStars('punctuality',ratings['punctuality'])">★</button>
+          </div>
+        </div>
+        <div>
+          <p class="font-label-sm text-label-sm text-on-surface-variant mb-1" id="rmCleanlinessLabel">Cleanliness</p>
+          <div class="flex gap-1" id="stars-cleanliness">
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',1)" onmouseover="hoverStars('cleanliness',1)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',2)" onmouseover="hoverStars('cleanliness',2)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',3)" onmouseover="hoverStars('cleanliness',3)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',4)" onmouseover="hoverStars('cleanliness',4)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',5)" onmouseover="hoverStars('cleanliness',5)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">★</button>
+          </div>
+        </div>
+        <div>
+          <p class="font-label-sm text-label-sm text-on-surface-variant mb-1" id="rmCommunicationLabel">Communication</p>
+          <div class="flex gap-1" id="stars-communication">
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',1)" onmouseover="hoverStars('communication',1)" onmouseout="setStars('communication',ratings['communication'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',2)" onmouseover="hoverStars('communication',2)" onmouseout="setStars('communication',ratings['communication'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',3)" onmouseover="hoverStars('communication',3)" onmouseout="setStars('communication',ratings['communication'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',4)" onmouseover="hoverStars('communication',4)" onmouseout="setStars('communication',ratings['communication'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',5)" onmouseover="hoverStars('communication',5)" onmouseout="setStars('communication',ratings['communication'])">★</button>
+          </div>
+        </div>
+        <div>
+          <p class="font-label-sm text-label-sm text-on-surface-variant mb-1" id="rmValueLabel">Value for Money</p>
+          <div class="flex gap-1" id="stars-value">
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',1)" onmouseover="hoverStars('value',1)" onmouseout="setStars('value',ratings['value'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',2)" onmouseover="hoverStars('value',2)" onmouseout="setStars('value',ratings['value'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',3)" onmouseover="hoverStars('value',3)" onmouseout="setStars('value',ratings['value'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',4)" onmouseover="hoverStars('value',4)" onmouseout="setStars('value',ratings['value'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',5)" onmouseover="hoverStars('value',5)" onmouseout="setStars('value',ratings['value'])">★</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Written review -->
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Written Review <span class="text-outline">(optional)</span></label>
+        <textarea id="rmText" rows="4" placeholder="Share your experience — what stood out, what could be better…"
+          class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-safari-green resize-none"></textarea>
+      </div>
+
+      <p id="rmError" class="font-label-sm text-label-sm text-error min-h-[1rem]"></p>
+
+      <button id="rmSubmitBtn" onclick="submitReview()"
+        class="w-full bg-safari-green text-white font-label-lg text-label-lg py-3.5 rounded-xl hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1;">star</span> Submit Review
+      </button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

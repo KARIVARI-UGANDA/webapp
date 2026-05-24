@@ -28,6 +28,13 @@ from app.services import paystack_service, flutterwave_service
 router = APIRouter(prefix="/payments", tags=["payments"])
 
 
+# ── Stripe public config (no auth required) ────────────────────────────────────
+
+@router.get("/stripe-config")
+def stripe_config():
+    return {"publishable_key": settings.stripe_publishable_key}
+
+
 # ── Schemas ────────────────────────────────────────────────────────────────────
 
 class PaymentInitiateRequest(BaseModel):

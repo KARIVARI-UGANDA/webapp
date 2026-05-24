@@ -38,6 +38,7 @@ app.add_middleware(
 # Static files and templates
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
 templates = Jinja2Templates(directory="app/templates")
 
 # API routers — all under /api
@@ -107,6 +108,16 @@ def driver_dashboard(request: Request):
     return templates.TemplateResponse(request, "driver/dashboard.html")
 
 
+@app.get("/driver/trips")
+def driver_trips_page(request: Request):
+    return templates.TemplateResponse(request, "driver/my_trips.html")
+
+
+@app.get("/driver/training")
+def driver_training_page(request: Request):
+    return templates.TemplateResponse(request, "driver/training.html")
+
+
 # Customer portal
 @app.get("/dashboard")
 def customer_dashboard(request: Request):
@@ -123,6 +134,31 @@ def vehicle_detail(request: Request, vehicle_id: str):
     return templates.TemplateResponse(request, "customer/vehicle_detail.html")
 
 
+@app.get("/checkout")
+def checkout_page(request: Request):
+    return templates.TemplateResponse(request, "customer/checkout.html")
+
+
+@app.get("/my-bookings")
+def my_bookings_page(request: Request):
+    return templates.TemplateResponse(request, "customer/my_bookings.html")
+
+
+@app.get("/my-payments")
+def my_payments_page(request: Request):
+    return templates.TemplateResponse(request, "customer/my_payments.html")
+
+
+@app.get("/support")
+def support_page(request: Request):
+    return templates.TemplateResponse(request, "customer/support.html")
+
+
+@app.get("/settings")
+def settings_page(request: Request):
+    return templates.TemplateResponse(request, "settings.html")
+
+
 # Admin portal
 @app.get("/admin/login")
 def admin_login_page(request: Request):
@@ -132,3 +168,13 @@ def admin_login_page(request: Request):
 @app.get("/admin/dashboard")
 def admin_dashboard(request: Request):
     return templates.TemplateResponse(request, "admin/dashboard.html")
+
+
+@app.get("/admin/bookings")
+def admin_bookings_page(request: Request):
+    return templates.TemplateResponse(request, "admin/bookings.html")
+
+
+@app.get("/admin/users")
+def admin_users_page(request: Request):
+    return templates.TemplateResponse(request, "admin/users.html")
