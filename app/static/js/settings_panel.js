@@ -195,17 +195,17 @@ async function spSaveDriverProfile(btn) {
       police_clearance_exp:document.getElementById('sp-dPoliceExp')?.value||undefined,
       first_aid_cert_url:  _spUrls['firstaid']||undefined,
     };
-    let res = await fetch(`${API}/drivers/me/profile`, {
+    let res = await fetch(`${API}/owners/me/profile`, {
       method:'PATCH', headers:{Authorization:`Bearer ${spGetToken()}`,'Content-Type':'application/json'}, body:JSON.stringify(payload),
     });
     if (res.status === 404) {
-      res = await fetch(`${API}/drivers/me/profile`, {
+      res = await fetch(`${API}/owners/me/profile`, {
         method:'POST', headers:{Authorization:`Bearer ${spGetToken()}`,'Content-Type':'application/json'},
         body:JSON.stringify({...payload, license_number:licNum}),
       });
     }
     if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Save failed'); }
-    spToast('Driver profile saved');
+    spToast('Owner profile saved');
   } catch(e) { spToast(e.message, false); }
   finally { spSetBusy(btn, false); }
 }
@@ -261,10 +261,10 @@ async function spLoadSettings() {
     if (document.getElementById('sp-secType'))    document.getElementById('sp-secType').textContent    = user.account_type;
     if (document.getElementById('sp-secJoined'))  document.getElementById('sp-secJoined').textContent  = user.created_at ? new Date(user.created_at).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : '—';
 
-    // Show driver tab only for drivers
+    // Show driver profile tab for owners (owner IS the driver)
     const driverTabBtn = document.getElementById('sp-driverTabBtn');
     if (driverTabBtn) {
-      if (user.role === 'driver') {
+      if (user.role === 'owner') {
         driverTabBtn.classList.remove('hidden');
         spLoadDriverProfile();
       } else {
@@ -302,7 +302,7 @@ async function spLoadSettings() {
 
 async function spLoadDriverProfile() {
   try {
-    const res = await fetch(`${API}/drivers/me/profile`, { headers:{Authorization:`Bearer ${spGetToken()}`} });
+    const res = await fetch(`${API}/owners/me/profile`, { headers:{Authorization:`Bearer ${spGetToken()}`} });
     if (!res.ok) return;
     const p = await res.json();
     if (document.getElementById('sp-dLicNumber'))   document.getElementById('sp-dLicNumber').value   = p.license_number || '';

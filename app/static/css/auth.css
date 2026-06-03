@@ -27,13 +27,11 @@
 }
 
 .auth-role-owner { background-color: rgba(180, 83, 9, 0.1); color: #b45309; }
-.auth-role-driver { background-color: rgba(29, 78, 216, 0.1); color: #1d4ed8; }
 .auth-role-admin  { background-color: rgba(127, 29, 29, 0.1); color: #7f1d1d; }
 
 /* ── Role-specific page backgrounds ──────────────────────── */
 
 .auth-owner  { background-color: #fdf6ed; }
-.auth-driver { background-color: #eff4ff; }
 .auth-admin  { background-color: #fdf2f2; }
 
 /* ── Role-specific CTA buttons ───────────────────────────── */

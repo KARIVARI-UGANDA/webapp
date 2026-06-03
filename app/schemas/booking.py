@@ -6,13 +6,12 @@ from pydantic import BaseModel
 
 
 class BookingRequest(BaseModel):
-    """Simplified payload sent by the booking widget."""
+    """Simplified payload sent by the booking widget. All trips are with the car owner as driver."""
     vehicle_id: str
     pickup_date: str           # YYYY-MM-DD
     return_date: str           # YYYY-MM-DD
     pickup_location: str
     dropoff_location: str
-    booking_type: str          # "self_drive" or "with_driver"
     passenger_count: int = 1
     special_requests: Optional[str] = None
 
@@ -28,7 +27,6 @@ class BookingCreate(BaseModel):
     booking_reference: str
     customer_id: str
     vehicle_id: str
-    driver_id: Optional[str] = None
     booking_type: str
     trip_type: str
     pickup_location: str

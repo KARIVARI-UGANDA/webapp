@@ -3,7 +3,7 @@ from .base import Base
 
 
 class Message(Base):
-    """Booking-scoped chat between tourist and assigned driver (and admin)."""
+    """Booking-scoped chat between customer and car owner (and admin)."""
 
     __tablename__ = "messages"
 

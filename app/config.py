@@ -9,7 +9,7 @@ class Settings:
     algorithm: str = os.getenv("ALGORITHM", "HS256")
     access_token_expire_minutes: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
     refresh_token_expire_days: int = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", "14"))
-    database_url: str = os.environ["DATABASE_URL"]
+    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./karivari.db")
     cors_origins: list[str] = os.getenv(
         "CORS_ORIGINS", "http://localhost:8000,http://127.0.0.1:8000"
     ).split(",")

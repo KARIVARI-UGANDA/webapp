@@ -32,7 +32,6 @@ class Booking(Base):
     booking_reference = Column(String, nullable=False, unique=True)
     customer_id = Column(String(36), ForeignKey("users.id"), nullable=False)
     vehicle_id = Column(String(36), ForeignKey("vehicles.id"), nullable=False)
-    driver_id = Column(String(36), ForeignKey("driver_profiles.id"), nullable=True)
     booking_type = Column(String, nullable=False)
     trip_type = Column(String, nullable=False)
     pickup_location = Column(Text, nullable=False)

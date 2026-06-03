@@ -97,7 +97,7 @@ tailwind.config = {
   <!-- Loading state -->
   <div id="loadingState" class="flex flex-col items-center justify-center py-32 gap-4 text-on-surface-variant">
     <span class="material-symbols-outlined text-5xl animate-spin" style="font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 48;">refresh</span>
-    <p class="font-body-md text-body-md">Loading vehicle details…</p>
+    <p class="font-body-md text-body-md"></p>
   </div>
 
   <!-- Error state -->
@@ -192,22 +192,68 @@ tailwind.config = {
           <p id="vehicleDescriptionEmpty" class="hidden font-body-md text-body-md text-on-surface-variant italic">No description provided by the owner.</p>
         </section>
 
-        <!-- Owner Profile -->
+        <!-- Driver Profile -->
         <section class="border-t border-outline-variant pt-10">
-          <div id="ownerCard" class="p-6 rounded-2xl bg-surface-container border border-outline-variant flex flex-col md:flex-row items-center gap-6">
-            <div class="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0">
-              <span class="material-symbols-outlined text-4xl text-on-surface-variant">person</span>
+          <h2 class="font-headline-md text-headline-md mb-6">Your Driver</h2>
+          <div id="ownerCard" class="rounded-2xl bg-surface-container border border-outline-variant overflow-hidden">
+
+            <!-- Top strip -->
+            <div class="bg-primary/5 px-6 py-4 flex flex-col sm:flex-row items-center sm:items-start gap-5">
+              <!-- Avatar -->
+              <div id="driverAvatar"
+                   class="w-20 h-20 rounded-full bg-safari-green flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 overflow-hidden">
+                <span class="material-symbols-outlined text-4xl">person</span>
+              </div>
+              <!-- Name + badges -->
+              <div class="flex-1 text-center sm:text-left">
+                <h3 id="ownerName" class="font-headline-md text-headline-md text-on-background">Your Driver</h3>
+                <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Vehicle owner &amp; dedicated driver on Kari Vari Uganda</p>
+                <div class="flex flex-wrap gap-2 mt-3 justify-center sm:justify-start">
+                  <span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm inline-flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1;">verified</span> Verified Driver
+                  </span>
+                  <span class="px-3 py-1 rounded-full bg-safari-green/10 text-safari-green font-label-sm text-label-sm inline-flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1;">shield</span> Background Checked
+                  </span>
+                </div>
+              </div>
+              <!-- Contact button -->
+              <a href="/support"
+                 class="px-5 py-2.5 rounded-xl bg-safari-green text-white font-label-lg text-label-lg hover:brightness-110 transition-all flex-shrink-0 flex items-center gap-2"
+                 style="text-decoration:none;">
+                <span class="material-symbols-outlined text-[18px]">support_agent</span>
+                Contact Kari Vari
+              </a>
             </div>
-            <div class="flex-1 text-center md:text-left">
-              <h3 id="ownerName" class="font-headline-md text-headline-md text-on-background">Vehicle Owner</h3>
-              <p class="font-body-md text-body-md text-on-surface-variant mb-2">Verified car owner on Kari Vari Uganda</p>
-              <span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm inline-flex items-center gap-1">
-                <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1;">verified</span> Verified Owner
-              </span>
+
+            <!-- Driver stats grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-outline-variant/30 border-t border-outline-variant/30">
+              <div class="p-4 text-center">
+                <p class="font-headline-md text-headline-md text-safari-green" id="driverTrips">—</p>
+                <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Trips Completed</p>
+              </div>
+              <div class="p-4 text-center">
+                <p class="font-headline-md text-headline-md text-safari-green" id="driverRating">5.0 ★</p>
+                <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Average Rating</p>
+              </div>
+              <div class="p-4 text-center">
+                <p class="font-headline-md text-headline-md text-safari-green" id="driverExperience">5+ yrs</p>
+                <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Experience</p>
+              </div>
+              <div class="p-4 text-center">
+                <p class="font-headline-md text-headline-md text-safari-green" id="driverLanguages">English</p>
+                <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Languages</p>
+              </div>
             </div>
-            <button class="px-6 py-3 rounded-xl border border-outline font-label-lg text-label-lg hover:bg-surface-container-high transition-colors flex-shrink-0">
-              Contact Owner
-            </button>
+
+            <!-- CDW note -->
+            <div class="px-6 py-4 bg-safari-green/5 border-t border-outline-variant/30 flex items-start gap-3">
+              <span class="material-symbols-outlined text-safari-green text-[22px] flex-shrink-0 mt-0.5" style="font-variation-settings:'FILL' 1;">shield</span>
+              <p class="font-label-sm text-label-sm text-on-surface-variant">
+                <span class="font-semibold text-safari-green">Basic CDW (Collision Damage Waiver) included</span> — every vehicle on Kari Vari comes with basic collision damage coverage at no extra cost. For full coverage options, contact our support team.
+              </p>
+            </div>
+
           </div>
         </section>
 
@@ -256,12 +302,85 @@ tailwind.config = {
                 </div>
               </div>
               <div class="p-3">
-                <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-1">Service Option</label>
-                <select id="serviceOption" class="w-full bg-transparent border-none focus:ring-0 font-label-lg text-label-lg p-0 cursor-pointer" onchange="recalcTotal()">
-                  <option value="self">Self Drive</option>
-                  <option id="withDriverOption" value="driver">With Driver</option>
-                </select>
+                <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-1">Service</label>
+                <p class="font-label-lg text-label-lg text-on-surface">With Driver</p>
+                <input type="hidden" id="serviceOption" value="driver">
               </div>
+
+              <!-- Pick-up location -->
+              <div class="p-3">
+                <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Pick-up Location</label>
+
+                <!-- Mode toggle -->
+                <div class="flex gap-1 mb-2 p-0.5 bg-surface-container rounded-lg w-fit">
+                  <button id="modeStageBtn" onclick="setPickupMode('stage')"
+                          class="pickup-mode-btn px-3 py-1 rounded-md font-label-sm text-label-sm bg-white shadow text-primary transition-all">
+                    Stage
+                  </button>
+                  <button id="modeAddressBtn" onclick="setPickupMode('address')"
+                          class="pickup-mode-btn px-3 py-1 rounded-md font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all">
+                    Custom
+                  </button>
+                </div>
+
+                <!-- Stage dropdown -->
+                <div id="stagePickerWrap">
+                  <select id="pickupStage"
+                          class="w-full bg-transparent border-none focus:ring-0 font-label-lg text-label-lg p-0 text-on-surface cursor-pointer"
+                          onchange="onPickupChange()">
+                    <option value="">Select a stage…</option>
+                    <optgroup label="Kampala">
+                      <option>Kampala — Old Taxi Park</option>
+                      <option>Kampala — New Taxi Park</option>
+                      <option>Kampala — Kitgum House</option>
+                      <option>Kampala — Nakivubo</option>
+                      <option>Kampala — Kiira Road</option>
+                    </optgroup>
+                    <optgroup label="Airports">
+                      <option>Entebbe International Airport</option>
+                      <option>Kajjansi Airstrip</option>
+                    </optgroup>
+                    <optgroup label="Central Uganda">
+                      <option>Entebbe Town</option>
+                      <option>Jinja</option>
+                      <option>Mukono</option>
+                      <option>Kayunga</option>
+                    </optgroup>
+                    <optgroup label="Western Uganda">
+                      <option>Mbarara</option>
+                      <option>Fort Portal</option>
+                      <option>Kasese</option>
+                      <option>Kabale</option>
+                      <option>Ishaka</option>
+                      <option>Bushenyi</option>
+                    </optgroup>
+                    <optgroup label="Northern Uganda">
+                      <option>Gulu</option>
+                      <option>Lira</option>
+                      <option>Arua</option>
+                      <option>Kitgum</option>
+                    </optgroup>
+                    <optgroup label="Eastern Uganda">
+                      <option>Mbale</option>
+                      <option>Soroti</option>
+                      <option>Tororo</option>
+                      <option>Busia</option>
+                    </optgroup>
+                  </select>
+                </div>
+
+                <!-- Custom address input -->
+                <div id="customAddressWrap" class="hidden">
+                  <input id="pickupAddress" type="text"
+                         placeholder="e.g. 14 Kampala Road, Nakasero"
+                         class="w-full bg-transparent border-none focus:ring-0 font-label-lg text-label-lg p-0 text-on-surface"
+                         oninput="onPickupChange()">
+                </div>
+
+                <!-- Validation hint -->
+                <p id="pickupHint" class="hidden text-[11px] text-error mt-1 font-medium">Please select or enter a pick-up location.</p>
+              </div>
+
             </div>
           </div>
 
@@ -294,6 +413,10 @@ tailwind.config = {
             <div class="flex items-center gap-3 text-on-surface-variant">
               <span class="material-symbols-outlined text-[20px]">security</span>
               <span class="text-[13px]">Safe payment guarantee</span>
+            </div>
+            <div class="flex items-center gap-3 text-safari-green">
+              <span class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1;">shield</span>
+              <span class="text-[13px] font-semibold">Basic CDW included on all vehicles</span>
             </div>
           </div>
         </div>
@@ -500,7 +623,6 @@ const SERVICE_FEE = 15;
 const vehicleId = window.location.pathname.split('/').filter(Boolean).pop();
 let _vehicle = null;
 let _dailyRateUSD = 0;
-let _driverRateUSD = 0;
 
 function usd(ugx) { return (ugx / RATES.USD).toFixed(2); }
 
@@ -606,18 +728,44 @@ function initDates() {
   document.getElementById('returnDate').addEventListener('change', recalcTotal);
 }
 
+// ── Pick-up location helpers ──────────────────────────────────────────────────
+let _pickupMode = 'stage';
+
+function setPickupMode(mode) {
+  _pickupMode = mode;
+  const isStage = mode === 'stage';
+  document.getElementById('stagePickerWrap').classList.toggle('hidden', !isStage);
+  document.getElementById('customAddressWrap').classList.toggle('hidden', isStage);
+  document.getElementById('modeStageBtn').className   = isStage
+    ? 'pickup-mode-btn px-3 py-1 rounded-md font-label-sm text-label-sm bg-white shadow text-primary transition-all'
+    : 'pickup-mode-btn px-3 py-1 rounded-md font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all';
+  document.getElementById('modeAddressBtn').className = !isStage
+    ? 'pickup-mode-btn px-3 py-1 rounded-md font-label-sm text-label-sm bg-white shadow text-primary transition-all'
+    : 'pickup-mode-btn px-3 py-1 rounded-md font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all';
+  document.getElementById('pickupHint').classList.add('hidden');
+}
+
+function getPickupLocation() {
+  if (_pickupMode === 'stage') {
+    return document.getElementById('pickupStage')?.value?.trim() || '';
+  }
+  return document.getElementById('pickupAddress')?.value?.trim() || '';
+}
+
+function onPickupChange() {
+  if (getPickupLocation()) document.getElementById('pickupHint').classList.add('hidden');
+}
+
 function recalcTotal() {
   const p = document.getElementById('pickupDate').value;
   const r = document.getElementById('returnDate').value;
   if (!p || !r) return;
-  const days = Math.max(1, Math.round((new Date(r) - new Date(p)) / 86400000));
-  const isDriver = document.getElementById('serviceOption').value === 'driver';
-  const rate = isDriver && _driverRateUSD > 0 ? _driverRateUSD : _dailyRateUSD;
-  const subtotal = (rate * days).toFixed(2);
-  const total = (parseFloat(subtotal) + SERVICE_FEE).toFixed(2);
-  document.getElementById('breakdownLine').textContent = `$${rate.toFixed(2)} × ${days} day${days !== 1 ? 's' : ''}`;
+  const days     = Math.max(1, Math.round((new Date(r) - new Date(p)) / 86400000));
+  const subtotal = (_dailyRateUSD * days).toFixed(2);
+  const total    = (parseFloat(subtotal) + SERVICE_FEE).toFixed(2);
+  document.getElementById('breakdownLine').textContent  = `$${_dailyRateUSD.toFixed(2)} × ${days} day${days !== 1 ? 's' : ''}`;
   document.getElementById('breakdownTotal').textContent = `$${subtotal}`;
-  document.getElementById('grandTotal').textContent = `$${total}`;
+  document.getElementById('grandTotal').textContent     = `$${total}`;
 }
 
 // ── Similar vehicles ──────────────────────────────────────────────────────────
@@ -635,13 +783,21 @@ async function loadSimilar(currentId, vehicleType) {
         : `https://via.placeholder.com/400x300?text=${encodeURIComponent(v.make + ' ' + v.model)}`;
       const price = usd(v.base_daily_rate_ugx);
       const badge = v.status === 'verified'
-        ? `<span class="bg-status-success/90 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Available</span>`
+        ? `<span class="bg-safari-green text-white text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1 uppercase tracking-wider backdrop-blur-sm">
+             <span class="material-symbols-outlined text-[12px]" style="font-variation-settings:'FILL' 1;">verified</span>Verified
+           </span>`
         : `<span class="bg-status-pending/90 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Under Review</span>`;
+      const availBadge = v.status === 'verified'
+        ? `<span class="bg-white/90 text-safari-green text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 uppercase tracking-wider">
+             <span class="relative flex h-2 w-2 flex-shrink-0"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-status-success"></span></span>Available
+           </span>`
+        : '';
       return `
         <a href="/vehicles/${v.id}" style="text-decoration:none;" class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm group block hover:shadow-lg transition-all">
           <div class="h-48 overflow-hidden relative">
             <img class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" src="${img}" alt="${v.make} ${v.model}">
             <div class="absolute top-3 left-3">${badge}</div>
+            ${availBadge ? `<div class="absolute bottom-3 right-3">${availBadge}</div>` : ''}
           </div>
           <div class="p-4">
             <div class="flex justify-between items-start mb-1">
@@ -665,8 +821,7 @@ async function loadPage() {
     if (!res.ok) throw new Error('not found');
     const v = await res.json();
     _vehicle = v;
-    _dailyRateUSD  = parseFloat(usd(v.base_daily_rate_ugx));
-    _driverRateUSD = v.rate_with_driver_ugx ? parseFloat(usd(v.rate_with_driver_ugx)) : 0;
+    _dailyRateUSD = parseFloat(usd(v.base_daily_rate_ugx));
 
     // Title
     document.title = `${v.make} ${v.model} (${v.year}) | Kari Vari Uganda`;
@@ -705,12 +860,31 @@ async function loadPage() {
       document.getElementById('vehicleDescriptionEmpty').classList.remove('hidden');
     }
 
-    // Owner
+    // Driver (vehicle owner)
     try {
       const ownerRes = await fetch(`${API}/users/${v.owner_id}`);
       if (ownerRes.ok) {
         const owner = await ownerRes.json();
-        document.getElementById('ownerName').textContent = `Hosted by ${owner.full_name}`;
+        const name = owner.full_name || 'Your Driver';
+        document.getElementById('ownerName').textContent = name;
+
+        // Avatar initials
+        const avatarEl = document.getElementById('driverAvatar');
+        if (avatarEl) {
+          const initials = name.split(' ').slice(0, 2).map(w => w[0]?.toUpperCase() || '').join('');
+          avatarEl.textContent = initials || '?';
+        }
+
+        // Stats — populate from profile if returned, else sensible defaults
+        const g = id => document.getElementById(id);
+        if (owner.profile) {
+          if (g('driverTrips'))      g('driverTrips').textContent      = owner.profile.trips_completed ?? '—';
+          if (g('driverRating'))     g('driverRating').textContent     = owner.profile.rating_avg
+            ? `${parseFloat(owner.profile.rating_avg).toFixed(1)} ★` : '5.0 ★';
+          if (g('driverExperience')) g('driverExperience').textContent = owner.profile.years_experience
+            ? `${owner.profile.years_experience} yrs` : '—';
+          if (g('driverLanguages'))  g('driverLanguages').textContent  = owner.profile.languages_spoken || 'English';
+        }
       }
     } catch {}
 
@@ -721,23 +895,29 @@ async function loadPage() {
       ? 'text-label-sm font-label-sm px-3 py-1 rounded-full bg-status-success/10 text-status-success font-bold'
       : 'text-label-sm font-label-sm px-3 py-1 rounded-full bg-status-pending/10 text-status-pending font-bold';
 
-    if (_driverRateUSD > 0) {
-      document.getElementById('withDriverOption').textContent = `With Driver (+$${(_driverRateUSD - _dailyRateUSD).toFixed(2)}/day)`;
-    } else {
-      document.getElementById('withDriverOption').disabled = true;
-      document.getElementById('withDriverOption').textContent = 'With Driver (unavailable)';
-    }
-
     document.getElementById('reserveBtn').addEventListener('click', () => {
       if (!isVerified) {
         alert('This vehicle is pending verification and cannot be reserved yet.');
         return;
       }
-      const pickup  = document.getElementById('pickupDate').value;
-      const dropoff = document.getElementById('returnDate').value;
+      const pickup   = document.getElementById('pickupDate').value;
+      const dropoff  = document.getElementById('returnDate').value;
+      const location = getPickupLocation();
       if (!pickup || !dropoff) { alert('Please select pickup and return dates first.'); return; }
-      const isDriver = document.getElementById('serviceOption').value === 'driver';
-      window.location.href = `/checkout?vehicle_id=${v.id}&pickup_date=${pickup}&return_date=${dropoff}&booking_type=${isDriver ? 'with_driver' : 'self_drive'}`;
+      if (!location) {
+        document.getElementById('pickupHint').classList.remove('hidden');
+        document.getElementById('pickupStage')?.focus() || document.getElementById('pickupAddress')?.focus();
+        return;
+      }
+      document.getElementById('pickupHint').classList.add('hidden');
+      const params = new URLSearchParams({
+        vehicle_id:       v.id,
+        pickup_date:      pickup,
+        return_date:      dropoff,
+        booking_type:     'with_driver',
+        pickup_location:  location,
+      });
+      window.location.href = `/checkout?${params.toString()}`;
     });
 
     initDates();
@@ -855,9 +1035,8 @@ function openPaymentModal() {
   const dropoffDt = new Date(dropoff);
   if (dropoffDt <= pickupDt) { alert('Return date must be after pickup date.'); return; }
 
-  const days     = Math.max(1, Math.round((dropoffDt - pickupDt) / 86400000));
-  const isDriver = document.getElementById('serviceOption').value === 'driver';
-  const rate     = isDriver && _driverRateUSD > 0 ? _driverRateUSD : _dailyRateUSD;
+  const days = Math.max(1, Math.round((dropoffDt - pickupDt) / 86400000));
+  const rate = _dailyRateUSD;
   const SERVICE  = 15.0;
   const subtotal = rate * days;
   const total    = subtotal + SERVICE;
@@ -919,9 +1098,8 @@ async function _submitCard() {
   errDiv.style.display = 'none';
 
   try {
-    const pickup   = document.getElementById('pickupDate').value;
-    const dropoff  = document.getElementById('returnDate').value;
-    const isDriver = document.getElementById('serviceOption').value === 'driver';
+    const pickup  = document.getElementById('pickupDate').value;
+    const dropoff = document.getElementById('returnDate').value;
 
     // 1. Create booking on backend → get Stripe client_secret
     const bookRes = await fetch(`${API}/bookings/`, {
@@ -931,9 +1109,8 @@ async function _submitCard() {
         vehicle_id:       vehicleId,
         pickup_date:      pickup,
         return_date:      dropoff,
-        pickup_location:  'To be confirmed',
+        pickup_location:  getPickupLocation() || 'To be confirmed',
         dropoff_location: 'To be confirmed',
-        booking_type:     isDriver ? 'with_driver' : 'self_drive',
         passenger_count:  1,
       }),
     });
@@ -1001,9 +1178,8 @@ async function _submitMomo() {
   spinner.classList.remove('hidden');
 
   try {
-    const pickup   = document.getElementById('pickupDate').value;
-    const dropoff  = document.getElementById('returnDate').value;
-    const isDriver = document.getElementById('serviceOption').value === 'driver';
+    const pickup  = document.getElementById('pickupDate').value;
+    const dropoff = document.getElementById('returnDate').value;
 
     // 1. Create booking on backend (status = pending_payment, Stripe intent created but unused for momo)
     const bookRes = await fetch(`${API}/bookings/`, {
@@ -1013,9 +1189,8 @@ async function _submitMomo() {
         vehicle_id:       vehicleId,
         pickup_date:      pickup,
         return_date:      dropoff,
-        pickup_location:  'To be confirmed',
+        pickup_location:  getPickupLocation() || 'To be confirmed',
         dropoff_location: 'To be confirmed',
-        booking_type:     isDriver ? 'with_driver' : 'self_drive',
         passenger_count:  1,
       }),
     });

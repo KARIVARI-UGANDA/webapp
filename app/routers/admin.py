@@ -9,10 +9,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.deps import require_role
 from app.models import AuditLog, User, Vehicle
-from app.models.driver import DriverProfile
 from app.models.kyc import RefreshToken
-from app.models.training import TrainingModule
-from app.schemas.driver import AdminDriverDecision, DriverProfileRead, TrainingModuleCreate, TrainingModuleRead
 from app.schemas.vehicle import VerificationDecision, VehicleRead
 from app.security import create_access_token, create_refresh_token, hash_password
 from app.services.notifications import create_notification
@@ -130,7 +127,7 @@ def admin_stats(current_user=Depends(_admin), db: Session = Depends(get_db)):
 
 @router.get("/verifications/pending")
 def list_pending_verifications(
-    type: Optional[str] = Query("vehicle", regex="^(vehicle|owner|driver)$"),
+    type: Optional[str] = Query("vehicle", regex="^(vehicle|owner)$"),
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     current_user=Depends(_admin),
@@ -140,16 +137,6 @@ def list_pending_verifications(
 
     if type == "vehicle":
         return db.query(Vehicle).filter(Vehicle.status == "pending").offset(offset).limit(page_size).all()
-
-    if type == "driver":
-        profiles = (
-            db.query(DriverProfile)
-            .filter(DriverProfile.verification_status == "pending")
-            .offset(offset)
-            .limit(page_size)
-            .all()
-        )
-        return [DriverProfileRead.model_validate(p) for p in profiles]
 
     # owner stub — Phase TBD
     raise HTTPException(status_code=501, detail="Pending owner verifications not yet implemented")
@@ -240,119 +227,6 @@ def reject_vehicle(
     db.commit()
     db.refresh(v)
     return v
-
-
-# ---------------------------------------------------------------------------
-# Verifications — Drivers
-# ---------------------------------------------------------------------------
-
-@router.patch("/drivers/{driver_profile_id}/approve", response_model=DriverProfileRead)
-def approve_driver(
-    driver_profile_id: str,
-    payload: AdminDriverDecision = AdminDriverDecision(),
-    current_user=Depends(_admin),
-    db: Session = Depends(get_db),
-):
-    profile = db.query(DriverProfile).filter(DriverProfile.id == driver_profile_id).first()
-    if not profile:
-        raise HTTPException(status_code=404, detail="Driver profile not found")
-    if profile.verification_status != "pending":
-        raise HTTPException(status_code=400, detail=f"Driver status is '{profile.verification_status}', not pending")
-
-    profile.verification_status = "verified"
-    profile.updated_at = _now()
-    db.add(profile)
-
-    _write_audit(db, admin_id=current_user.id, action="verify_driver",
-                 entity_type="driver_profile", entity_id=driver_profile_id)
-
-    create_notification(db, user_id=profile.user_id,
-                        notification_type="verification_approved",
-                        title="Driver verification approved!",
-                        body="You are now verified on Karivari and can be assigned to trips.",
-                        related_entity_type="driver_profile", related_entity_id=driver_profile_id)
-    db.commit()
-    db.refresh(profile)
-    return profile
-
-
-@router.patch("/drivers/{driver_profile_id}/reject", response_model=DriverProfileRead)
-def reject_driver(
-    driver_profile_id: str,
-    payload: AdminDriverDecision,
-    current_user=Depends(_admin),
-    db: Session = Depends(get_db),
-):
-    if not payload.reason:
-        raise HTTPException(status_code=422, detail="A reason is required when rejecting a driver")
-
-    profile = db.query(DriverProfile).filter(DriverProfile.id == driver_profile_id).first()
-    if not profile:
-        raise HTTPException(status_code=404, detail="Driver profile not found")
-
-    profile.verification_status = "rejected"
-    profile.updated_at = _now()
-    db.add(profile)
-
-    _write_audit(db, admin_id=current_user.id, action="reject_driver",
-                 entity_type="driver_profile", entity_id=driver_profile_id,
-                 details={"reason": payload.reason})
-
-    create_notification(db, user_id=profile.user_id,
-                        notification_type="verification_rejected",
-                        title="Driver verification unsuccessful",
-                        body=f"Your application was not approved. Reason: {payload.reason}",
-                        related_entity_type="driver_profile", related_entity_id=driver_profile_id)
-    db.commit()
-    db.refresh(profile)
-    return profile
-
-
-# ---------------------------------------------------------------------------
-# Training Modules (admin manages the catalogue)
-# ---------------------------------------------------------------------------
-
-@router.get("/training-modules", response_model=List[TrainingModuleRead])
-def list_training_modules(current_user=Depends(_admin), db: Session = Depends(get_db)):
-    return db.query(TrainingModule).order_by(TrainingModule.order_index).all()
-
-
-@router.post("/training-modules", response_model=TrainingModuleRead, status_code=status.HTTP_201_CREATED)
-def create_training_module(
-    payload: TrainingModuleCreate,
-    current_user=Depends(_admin),
-    db: Session = Depends(get_db),
-):
-    module = TrainingModule(
-        id=str(uuid.uuid4()),
-        title=payload.title,
-        description=payload.description,
-        content_url=payload.content_url,
-        order_index=payload.order_index,
-        is_active=payload.is_active,
-    )
-    db.add(module)
-    db.commit()
-    db.refresh(module)
-    return module
-
-
-@router.patch("/training-modules/{module_id}", response_model=TrainingModuleRead)
-def update_training_module(
-    module_id: str,
-    payload: TrainingModuleCreate,
-    current_user=Depends(_admin),
-    db: Session = Depends(get_db),
-):
-    module = db.query(TrainingModule).filter(TrainingModule.id == module_id).first()
-    if not module:
-        raise HTTPException(status_code=404, detail="Training module not found")
-    for field, value in payload.model_dump(exclude_none=True).items():
-        setattr(module, field, value)
-    db.add(module)
-    db.commit()
-    db.refresh(module)
-    return module
 
 
 # ---------------------------------------------------------------------------
@@ -805,37 +679,6 @@ def analytics_funnel(current_user=Depends(_admin), db: Session = Depends(get_db)
         "payment_rate_pct": round(paid/total*100, 1) if total else 0,
         "completion_rate_pct": round(done/paid*100, 1) if paid else 0,
     }
-
-
-@router.get("/analytics/driver-performance")
-def analytics_driver_performance(
-    limit: int = Query(10, ge=1, le=50),
-    current_user=Depends(_admin),
-    db: Session = Depends(get_db),
-):
-    from app.models.review import Review
-
-    drivers = (
-        db.query(DriverProfile)
-        .filter(DriverProfile.total_trips > 0)
-        .order_by(DriverProfile.total_trips.desc())
-        .limit(limit)
-        .all()
-    )
-    result = []
-    for d in drivers:
-        user = db.query(User).filter(User.id == d.user_id).first()
-        avg_rating = db.query(
-            __import__('sqlalchemy', fromlist=['func']).func.avg(Review.overall_rating)
-        ).filter(Review.reviewee_id == d.user_id, Review.review_target == "driver").scalar()
-        result.append({
-            "driver_id": d.id,
-            "name": user.full_name if user else None,
-            "total_trips": d.total_trips,
-            "average_rating": round(float(avg_rating), 2) if avg_rating else None,
-            "verification_status": d.verification_status,
-        })
-    return result
 
 
 @router.get("/analytics/customer-segments")

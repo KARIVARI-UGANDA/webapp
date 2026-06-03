@@ -7,7 +7,6 @@ class TripLocationLog(Base):
 
     id = Column(String(36), primary_key=True, nullable=False)
     booking_id = Column(String(36), ForeignKey("bookings.id"), nullable=False)
-    driver_id = Column(String(36), ForeignKey("driver_profiles.id"), nullable=False)
     lat = Column(Numeric, nullable=False)
     lng = Column(Numeric, nullable=False)
     speed_kmh = Column(Numeric)

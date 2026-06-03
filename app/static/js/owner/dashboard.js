@@ -1,4 +1,4 @@
-const ROLE_HOME = { tourist: '/', driver: '/driver/dashboard', admin: '/admin/dashboard' };
+const ROLE_HOME = { customer: '/', admin: '/admin/dashboard' };
 const token = localStorage.getItem('access_token');
 const role  = localStorage.getItem('role');
 
@@ -151,12 +151,10 @@ document.getElementById('submitVehicleBtn').addEventListener('click', async () =
 		has_child_seat:     fd.get('has_child_seat') === 'on',
 	};
 
-	const serviceArea    = fd.get('service_area').trim();
-	const rateWithDriver = fd.get('rate_with_driver_ugx');
-	const description    = fd.get('description').trim();
-	if (serviceArea)    common.service_area         = serviceArea;
-	if (rateWithDriver) common.rate_with_driver_ugx = parseInt(rateWithDriver, 10);
-	if (description)    common.description          = description;
+	const serviceArea = fd.get('service_area').trim();
+	const description = fd.get('description').trim();
+	if (serviceArea) common.service_area = serviceArea;
+	if (description) common.description  = description;
 
 	// registration_plate is only sent on create (not in VehicleUpdate schema)
 	const payload = isEdit

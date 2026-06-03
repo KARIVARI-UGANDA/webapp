@@ -104,7 +104,7 @@
           email: email,
           phone_number: phone,
           password: password,
-          role: 'tourist'
+          role: 'customer'
         }),
       });
 

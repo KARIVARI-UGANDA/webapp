@@ -98,10 +98,8 @@
         localStorage.setItem('user_name', data.full_name);
         showAlert('Login successful! Redirecting...', 'success');
         const roleRedirects = {
-          tourist:  '/',
           customer: '/',
           owner:    '/owner/dashboard',
-          driver:   '/driver/dashboard',
           admin:    '/admin/dashboard',
         };
         setTimeout(() => {

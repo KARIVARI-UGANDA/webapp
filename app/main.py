@@ -8,7 +8,6 @@ from app.routers import (
     admin,
     auth,
     bookings,
-    drivers,
     kyc,
     messages,
     notifications,
@@ -20,7 +19,7 @@ from app.routers import (
 
 app = FastAPI(
     title="Karivari Uganda",
-    description="4×4 vehicle marketplace connecting international tourists with verified Ugandan vehicles and drivers.",
+    description="4×4 vehicle marketplace connecting customers with verified Ugandan car owners.",
     version="1.0.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
@@ -48,7 +47,6 @@ app.include_router(users.router, prefix=API)
 app.include_router(vehicles.router, prefix=API)
 app.include_router(bookings.router, prefix=API)
 app.include_router(payments.router, prefix=API)
-app.include_router(drivers.router, prefix=API)
 app.include_router(reviews.router, prefix=API)
 app.include_router(messages.router, prefix=API)
 app.include_router(notifications.router, prefix=API)
@@ -90,32 +88,6 @@ def owner_register_page(request: Request):
 @app.get("/owner/dashboard")
 def owner_dashboard(request: Request):
     return templates.TemplateResponse(request, "owner/dashboard.html")
-
-
-# Driver portal
-@app.get("/driver/login")
-def driver_login_page(request: Request):
-    return templates.TemplateResponse(request, "driver/login.html")
-
-
-@app.get("/driver/register")
-def driver_register_page(request: Request):
-    return templates.TemplateResponse(request, "driver/register.html")
-
-
-@app.get("/driver/dashboard")
-def driver_dashboard(request: Request):
-    return templates.TemplateResponse(request, "driver/dashboard.html")
-
-
-@app.get("/driver/trips")
-def driver_trips_page(request: Request):
-    return templates.TemplateResponse(request, "driver/my_trips.html")
-
-
-@app.get("/driver/training")
-def driver_training_page(request: Request):
-    return templates.TemplateResponse(request, "driver/training.html")
 
 
 # Customer portal

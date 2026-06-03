@@ -9,14 +9,13 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.deps import get_current_user
 from app.models import Booking, Review
-from app.models.driver import DriverProfile
 from app.models.vehicle import Vehicle
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
 _any_auth = get_current_user
 
 REVIEWABLE_STATUSES = {"confirmed", "completed"}
-VALID_TARGETS = {"driver", "vehicle", "trip"}
+VALID_TARGETS = {"vehicle", "trip"}
 
 
 def _now():
@@ -25,7 +24,7 @@ def _now():
 
 class ReviewRequest(BaseModel):
     booking_id: str
-    review_target: str          # "driver" | "vehicle" | "trip"
+    review_target: str          # "owner" | "vehicle" | "trip"
     overall_rating: int         # 1–5
     punctuality_rating: Optional[int] = None
     cleanliness_rating: Optional[int] = None
@@ -94,18 +93,10 @@ def create_review(
         raise HTTPException(status_code=400, detail=f"You have already reviewed the {payload.review_target} for this booking")
 
     # Determine who is being reviewed
-    if payload.review_target == "driver":
-        if not booking.driver_id:
-            raise HTTPException(status_code=400, detail="This booking has no driver assigned")
-        driver = db.query(DriverProfile).filter(DriverProfile.id == booking.driver_id).first()
-        if not driver:
-            raise HTTPException(status_code=404, detail="Driver profile not found")
-        reviewee_id = driver.user_id
-    else:
-        vehicle = db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
-        if not vehicle:
-            raise HTTPException(status_code=404, detail="Vehicle not found")
-        reviewee_id = vehicle.owner_id
+    vehicle = db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
+    if not vehicle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
+    reviewee_id = vehicle.owner_id
 
     review = Review(
         id=str(uuid.uuid4()),

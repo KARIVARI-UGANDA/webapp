@@ -70,7 +70,6 @@
         <button onclick="setRole(null)" id="role-all" class="role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white">All</button>
         <button onclick="setRole('customer')" id="role-customer" class="role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Customers</button>
         <button onclick="setRole('owner')" id="role-owner" class="role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Owners</button>
-        <button onclick="setRole('driver')" id="role-driver" class="role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Drivers</button>
         <button onclick="setRole('admin')" id="role-admin" class="role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Admins</button>
       </div>
     </div>
@@ -96,10 +95,9 @@ document.getElementById('logoutBtn').addEventListener('click', () => { localStor
 const AUTH = { headers: { Authorization: `Bearer ${token}` } };
 
 const ROLE_COLOR = {
-  customer:'bg-primary/10 text-primary',
-  owner:'bg-ugandan-sun/20 text-status-pending',
-  driver:'bg-safari-green/10 text-safari-green',
-  admin:'bg-error/10 text-error',
+  customer: 'bg-primary/10 text-primary',
+  owner:    'bg-ugandan-sun/20 text-status-pending',
+  admin:    'bg-error/10 text-error',
 };
 
 function fmtDate(s) {

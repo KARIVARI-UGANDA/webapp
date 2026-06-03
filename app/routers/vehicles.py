@@ -140,7 +140,6 @@ def create_vehicle(
         is_4wd=payload.is_4wd,
         description=payload.description,
         base_daily_rate_ugx=payload.base_daily_rate_ugx,
-        rate_with_driver_ugx=payload.rate_with_driver_ugx,
         service_area=payload.service_area,
         status="pending",
         created_at=now,

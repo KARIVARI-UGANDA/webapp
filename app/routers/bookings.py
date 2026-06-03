@@ -15,7 +15,6 @@ from app.services.stripe_service import create_payment_intent, get_payment_inten
 
 router = APIRouter(prefix="/bookings", tags=["bookings"])
 
-_driver = require_role("driver")
 _admin = require_role("admin")
 _any_auth = get_current_user
 
@@ -48,10 +47,7 @@ def create_booking(
     total_days = max(1, (end_dt - start_dt).days)
 
     # Server-side rate calculation
-    if payload.booking_type == "with_driver" and vehicle.rate_with_driver_ugx:
-        daily_ugx = vehicle.rate_with_driver_ugx
-    else:
-        daily_ugx = vehicle.base_daily_rate_ugx
+    daily_ugx = vehicle.base_daily_rate_ugx
     daily_usd = daily_ugx / RATES_UGX_PER_USD
     amount_usd = round(daily_usd * total_days + SERVICE_FEE_USD, 2)
 
@@ -64,7 +60,7 @@ def create_booking(
         booking_reference=booking_ref,
         customer_id=current_user.id,
         vehicle_id=payload.vehicle_id,
-        booking_type=payload.booking_type,
+        booking_type="with_driver",
         trip_type="daily_rental",
         pickup_location=payload.pickup_location,
         dropoff_location=payload.dropoff_location,
@@ -377,144 +373,6 @@ def cancel_booking(
     db.commit()
 
     return {"status": "cancelled", "booking_reference": booking.booking_reference}
-
-
-class AssignDriverRequest(BaseModel):
-    driver_profile_id: str
-
-
-# PATCH /api/bookings/{id}/assign-driver
-@router.patch("/{booking_id}/assign-driver")
-def assign_driver(
-    booking_id: str,
-    payload: AssignDriverRequest,
-    current_user=Depends(_admin),
-    db: Session = Depends(get_db),
-):
-    from app.models.driver import DriverProfile
-
-    booking = db.query(Booking).filter(Booking.id == booking_id).first()
-    if not booking:
-        raise HTTPException(status_code=404, detail="Booking not found")
-    if booking.status not in {"confirmed", "pending"}:
-        raise HTTPException(status_code=400, detail=f"Cannot assign driver to booking with status '{booking.status}'")
-
-    driver = db.query(DriverProfile).filter(DriverProfile.id == payload.driver_profile_id).first()
-    if not driver:
-        raise HTTPException(status_code=404, detail="Driver profile not found")
-    if driver.verification_status != "approved":
-        raise HTTPException(status_code=400, detail="Driver is not yet approved")
-
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
-    booking.driver_id = payload.driver_profile_id
-    booking.assigned_by_admin = current_user.id
-    booking.updated_at = now
-    db.commit()
-
-    return {"status": booking.status, "booking_reference": booking.booking_reference, "driver_id": driver.id}
-
-
-class RespondRequest(BaseModel):
-    action: str  # "accept" | "reject"
-
-
-# PATCH /api/bookings/{id}/respond
-@router.patch("/{booking_id}/respond")
-def respond_to_assignment(
-    booking_id: str,
-    payload: RespondRequest,
-    current_user=Depends(_driver),
-    db: Session = Depends(get_db),
-):
-    from app.models.driver import DriverProfile
-
-    profile = db.query(DriverProfile).filter(DriverProfile.user_id == current_user.id).first()
-    if not profile:
-        raise HTTPException(status_code=404, detail="Driver profile not found")
-
-    booking = db.query(Booking).filter(
-        Booking.id == booking_id,
-        Booking.driver_id == profile.id,
-    ).first()
-    if not booking:
-        raise HTTPException(status_code=404, detail="Booking not found or not assigned to you")
-
-    if payload.action not in {"accept", "reject"}:
-        raise HTTPException(status_code=400, detail="action must be 'accept' or 'reject'")
-
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
-    if payload.action == "reject":
-        booking.driver_id = None
-        booking.updated_at = now
-
-    db.commit()
-    return {"action": payload.action, "booking_reference": booking.booking_reference}
-
-
-# PATCH /api/bookings/{id}/start
-@router.patch("/{booking_id}/start")
-def start_trip(
-    booking_id: str,
-    current_user=Depends(_driver),
-    db: Session = Depends(get_db),
-):
-    from app.models.driver import DriverProfile
-
-    profile = db.query(DriverProfile).filter(DriverProfile.user_id == current_user.id).first()
-    if not profile:
-        raise HTTPException(status_code=404, detail="Driver profile not found")
-
-    booking = db.query(Booking).filter(
-        Booking.id == booking_id,
-        Booking.driver_id == profile.id,
-    ).first()
-    if not booking:
-        raise HTTPException(status_code=404, detail="Booking not found or not assigned to you")
-    if booking.status != "confirmed":
-        raise HTTPException(status_code=400, detail=f"Trip cannot be started from status '{booking.status}'")
-
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
-    booking.status = "in_progress"
-    booking.actual_start_at = now
-    booking.updated_at = now
-    db.commit()
-
-    return {"status": "in_progress", "booking_reference": booking.booking_reference}
-
-
-# PATCH /api/bookings/{id}/complete
-@router.patch("/{booking_id}/complete")
-def complete_trip(
-    booking_id: str,
-    current_user=Depends(_driver),
-    db: Session = Depends(get_db),
-):
-    from app.models.driver import DriverProfile
-
-    profile = db.query(DriverProfile).filter(DriverProfile.user_id == current_user.id).first()
-    if not profile:
-        raise HTTPException(status_code=404, detail="Driver profile not found")
-
-    booking = db.query(Booking).filter(
-        Booking.id == booking_id,
-        Booking.driver_id == profile.id,
-    ).first()
-    if not booking:
-        raise HTTPException(status_code=404, detail="Booking not found or not assigned to you")
-    if booking.status != "in_progress":
-        raise HTTPException(status_code=400, detail=f"Trip cannot be completed from status '{booking.status}'")
-
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
-    booking.status = "completed"
-    booking.actual_end_at = now
-    booking.updated_at = now
-
-    profile.total_trips = (profile.total_trips or 0) + 1
-    profile.updated_at = now
-
-    db.commit()
-
-    return {"status": "completed", "booking_reference": booking.booking_reference}
 
 
 # POST /api/bookings/{id}/review — handled by /api/reviews/ router

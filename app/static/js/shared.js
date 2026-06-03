@@ -22,10 +22,9 @@ async function signup(data, alertId) {
 			localStorage.setItem('role', json.role);
 			localStorage.setItem('full_name', json.full_name);
 			const redirects = {
-				tourist: '/',
-				owner:   '/owner/dashboard',
-				driver:  '/driver/dashboard',
-				admin:   '/admin/dashboard',
+				customer: '/',
+				owner:    '/owner/dashboard',
+				admin:    '/admin/dashboard',
 			};
 			window.location.href = redirects[json.role] || '/';
 		} else {
@@ -50,10 +49,9 @@ async function login(email, password, alertId, expectedRole) {
 		if (res.ok) {
 			if (expectedRole && json.role !== expectedRole) {
 				const portalLinks = {
-					tourist: '<a href="/login">Customer Login</a>',
-					owner:   '<a href="/owner/login">Owner Login</a>',
-					driver:  '<a href="/driver/login">Driver Login</a>',
-					admin:   '<a href="/admin/login">Admin Login</a>',
+					customer: '<a href="/login">Customer Login</a>',
+					owner:    '<a href="/owner/login">Owner Login</a>',
+					admin:    '<a href="/admin/login">Admin Login</a>',
 				};
 				const link = portalLinks[json.role] || '<a href="/">Home</a>';
 				showAlert(alertId, `Wrong portal — your account is a <strong>${json.role}</strong>. Please use the ${link} page.`);
@@ -64,10 +62,9 @@ async function login(email, password, alertId, expectedRole) {
 			localStorage.setItem('role', json.role);
 			localStorage.setItem('full_name', json.full_name);
 			const ROLE_HOME = {
-				tourist: '/',
-				owner:   '/owner/dashboard',
-				admin:   '/admin/dashboard',
-				driver:  '/driver/dashboard',
+				customer: '/',
+				owner:    '/owner/dashboard',
+				admin:    '/admin/dashboard',
 			};
 			window.location.href = ROLE_HOME[json.role] || '/';
 		} else {

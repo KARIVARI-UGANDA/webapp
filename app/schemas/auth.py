@@ -7,13 +7,13 @@ class SignupRequest(BaseModel):
     password: str
     full_name: str
     phone_number: str
-    role: str  # tourist | owner | driver
+    role: str  # customer | owner
     preferred_language: Optional[str] = "en"
 
     @field_validator("role")
     @classmethod
     def role_must_be_valid(cls, v: str) -> str:
-        allowed = {"tourist", "owner", "driver", "admin"}
+        allowed = {"customer", "owner", "admin"}
         if v not in allowed:
             raise ValueError(f"role must be one of {allowed}")
         return v

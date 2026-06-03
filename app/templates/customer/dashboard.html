@@ -196,6 +196,61 @@
         </div>
       </section>
 
+      <!-- ── Trip Progress Tracker ──────────────────────────────────────── -->
+      <section id="custTripTracker" class="bg-surface-container-lowest rounded-3xl border border-outline-variant/30 overflow-hidden hidden">
+        <div class="flex items-center justify-between px-8 pt-7 pb-5">
+          <div>
+            <h3 class="font-headline-md text-headline-md text-on-surface">Trip Progress</h3>
+            <p id="custTrackerVehicle" class="font-label-sm text-label-sm text-on-surface-variant mt-0.5"></p>
+          </div>
+          <span id="custTrackerRef" class="font-mono text-[12px] px-3 py-1 rounded-full bg-surface-container text-on-surface-variant"></span>
+        </div>
+
+        <!-- Stepper -->
+        <div class="px-8 pb-8">
+          <div class="flex items-start w-full gap-0">
+
+            <!-- Step 1: Booking Placed -->
+            <div class="flex flex-col items-center flex-1">
+              <div id="cst-circle-1" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 bg-surface-container text-on-surface-variant">1</div>
+              <p class="text-[11px] font-semibold text-center mt-2 text-on-surface-variant" id="cst-label-1">Booked</p>
+              <p class="text-[10px] text-outline text-center hidden md:block" id="cst-sub-1">Request sent</p>
+            </div>
+
+            <div id="cst-line-1" class="flex-1 h-0.5 mt-5 bg-outline-variant/40 transition-all duration-500"></div>
+
+            <!-- Step 2: Payment Confirmed -->
+            <div class="flex flex-col items-center flex-1">
+              <div id="cst-circle-2" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 bg-surface-container text-on-surface-variant">2</div>
+              <p class="text-[11px] font-semibold text-center mt-2 text-on-surface-variant" id="cst-label-2">Paid</p>
+              <p class="text-[10px] text-outline text-center hidden md:block" id="cst-sub-2">Payment received</p>
+            </div>
+
+            <div id="cst-line-2" class="flex-1 h-0.5 mt-5 bg-outline-variant/40 transition-all duration-500"></div>
+
+            <!-- Step 3: On the Road -->
+            <div class="flex flex-col items-center flex-1">
+              <div id="cst-circle-3" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 bg-surface-container text-on-surface-variant">3</div>
+              <p class="text-[11px] font-semibold text-center mt-2 text-on-surface-variant" id="cst-label-3">On the Road</p>
+              <p class="text-[10px] text-outline text-center hidden md:block" id="cst-sub-3">Trip in progress</p>
+            </div>
+
+            <div id="cst-line-3" class="flex-1 h-0.5 mt-5 bg-outline-variant/40 transition-all duration-500"></div>
+
+            <!-- Step 4: Completed -->
+            <div class="flex flex-col items-center flex-1">
+              <div id="cst-circle-4" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 bg-surface-container text-on-surface-variant">4</div>
+              <p class="text-[11px] font-semibold text-center mt-2 text-on-surface-variant" id="cst-label-4">Completed</p>
+              <p class="text-[10px] text-outline text-center hidden md:block" id="cst-sub-4">Trip finished</p>
+            </div>
+
+          </div>
+
+          <!-- Status message -->
+          <div id="custTrackerMsg" class="mt-6 px-4 py-3 rounded-xl text-[13px] font-medium bg-surface-container text-on-surface-variant"></div>
+        </div>
+      </section>
+
       <!-- Next Trip + Recent Activity -->
       <section class="grid grid-cols-1 lg:grid-cols-5 gap-6">
 
@@ -343,7 +398,6 @@
     <div class="flex gap-1 mb-8 p-1 bg-surface-container rounded-xl w-fit flex-wrap">
       <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg bg-white shadow text-primary transition-all" data-tab="profile" onclick="spShowTab('profile')">Profile</button>
       <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-all" data-tab="documents" onclick="spShowTab('documents')">Documents</button>
-      <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-all hidden" data-tab="driver" id="sp-driverTabBtn" onclick="spShowTab('driver')">Driver Profile</button>
       <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-all" data-tab="security" onclick="spShowTab('security')">Security</button>
     </div>
 
@@ -419,30 +473,6 @@
         </div>
         <button id="sp-kycSubmitBtn" onclick="spSubmitKYC(this)" class="mt-5 bg-primary text-white px-6 py-2.5 rounded-xl font-label-lg text-label-lg hover:bg-safari-green transition-colors flex items-center gap-2">
           <span class="material-symbols-outlined text-[18px]">verified_user</span>Submit for Verification
-        </button>
-      </div>
-    </div>
-
-    <!-- Driver Profile tab (hidden for customers) -->
-    <div id="sp-tab-driver" class="space-y-6 hidden">
-      <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6">
-        <h4 class="font-headline-md text-headline-md mb-5">Driver Profile</h4>
-        <div class="space-y-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div><label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Licence Number</label><input id="sp-dLicNumber" type="text" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md"></div>
-            <div><label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Licence Class</label><input id="sp-dLicClass" type="text" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md" placeholder="e.g. B, C"></div>
-            <div><label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Licence Expiry</label><input id="sp-dLicExpiry" type="date" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md"></div>
-            <div><label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Years of Experience</label><input id="sp-dYears" type="number" min="0" max="50" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md"></div>
-          </div>
-          <div><label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Languages Spoken</label><input id="sp-dLangs" type="text" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md" placeholder="e.g. English, Swahili"></div>
-          <div><label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Bio</label><textarea id="sp-dBio" rows="3" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md resize-none" placeholder="Tell travellers about yourself..."></textarea></div>
-          <div class="flex gap-6">
-            <label class="flex items-center gap-2 cursor-pointer"><input id="sp-dFirstAid" type="checkbox" class="w-4 h-4 accent-primary"><span class="font-label-lg text-label-lg">First Aid Certified</span></label>
-            <label class="flex items-center gap-2 cursor-pointer"><input id="sp-dPoliceExp" type="checkbox" class="w-4 h-4 accent-primary"><span class="font-label-lg text-label-lg">Police Clearance</span></label>
-          </div>
-        </div>
-        <button onclick="spSaveDriverProfile(this)" class="mt-5 bg-primary text-white px-6 py-2.5 rounded-xl font-label-lg text-label-lg hover:bg-safari-green transition-colors flex items-center gap-2">
-          <span class="material-symbols-outlined text-[18px]">save</span>Save Driver Profile
         </button>
       </div>
     </div>
@@ -564,6 +594,9 @@ async function loadDashboard() {
     document.getElementById('statActive').textContent   = String(completed + upcoming).padStart(2, '0');
     document.getElementById('statSpent').textContent    = spentUsd > 0 ? `$${spentUsd.toFixed(2)}` : '$0.00';
 
+    // ── Trip tracker ──────────────────────────────────────────────────────────
+    renderTripTracker(bookings, 'cust');
+
     // ── Next trip card ────────────────────────────────────────────────────────
     const nextBooking = bookings
       .filter(b => ['confirmed', 'pending'].includes(b.status) && b.start_datetime)
@@ -619,14 +652,23 @@ async function loadDashboard() {
         const price = `$${(v.base_daily_rate_ugx / 3700).toFixed(0)}`;
         return `
           <a href="/vehicles/${v.id}" style="text-decoration:none;" class="bg-surface-container-lowest rounded-2xl elevation-1 overflow-hidden group block">
-            <div class="h-48 overflow-hidden">
+            <div class="h-48 overflow-hidden relative">
               <img src="${img}" alt="${v.make} ${v.model}"
                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+              <div class="absolute top-3 left-3">
+                <span class="bg-safari-green text-white text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1 uppercase tracking-wider backdrop-blur-sm">
+                  <span class="material-symbols-outlined text-[12px]" style="font-variation-settings:'FILL' 1;">verified</span>Verified
+                </span>
+              </div>
+              <div class="absolute bottom-3 right-3">
+                <span class="bg-white/90 text-safari-green text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 uppercase tracking-wider">
+                  <span class="relative flex h-2 w-2 flex-shrink-0"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-status-success"></span></span>Available
+                </span>
+              </div>
             </div>
             <div class="p-5">
               <div class="flex justify-between items-start mb-2">
                 <h4 class="font-label-lg text-label-lg text-on-surface">${v.make} ${v.model}</h4>
-                <span class="bg-status-success/10 text-status-success font-label-sm text-label-sm px-2 py-0.5 rounded uppercase">Available</span>
               </div>
               <p class="font-body-md text-body-md text-on-surface-variant text-sm mb-4">${v.vehicle_type} · ${v.transmission} · ${v.fuel_type}</p>
               <div class="flex items-center justify-between">
@@ -726,6 +768,106 @@ async function loadDashboard() {
   }
 }
 
+// ── Trip Tracker (shared renderer used by customer dashboard) ─────────────────
+function renderTripTracker(bookings, prefix) {
+  // Priority: in_progress > confirmed > pending_payment > latest completed
+  const active = bookings.find(b => b.status === 'in_progress')
+    || bookings.find(b => b.status === 'confirmed')
+    || bookings.find(b => b.status === 'pending_payment')
+    || bookings.filter(b => b.status === 'completed').sort((a, b) =>
+        new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at))[0];
+
+  const section = document.getElementById(`${prefix}TripTracker`);
+  if (!section) return;
+  if (!active) { section.classList.add('hidden'); return; }
+  section.classList.remove('hidden');
+
+  // Populate header
+  const vName = active.vehicle ? `${active.vehicle.make} ${active.vehicle.model}` : '';
+  const refEl  = document.getElementById(`${prefix}TrackerRef`);
+  const vehEl  = document.getElementById(`${prefix}TrackerVehicle`);
+  if (refEl) refEl.textContent = active.booking_reference || '';
+  if (vehEl) vehEl.textContent = vName;
+  const custEl = document.getElementById(`${prefix}TrackerCustomer`);
+  if (custEl) custEl.textContent = active.customer_name ? `Customer: ${active.customer_name}` : '';
+
+  // Map status → completed step count (1-4)
+  const stepMap = {
+    pending_payment: 1,
+    confirmed:       2,
+    in_progress:     3,
+    completed:       4,
+    cancelled:       0,
+    disputed:        0,
+  };
+  const step = stepMap[active.status] ?? 1;
+
+  const DONE_CLS   = 'bg-safari-green text-white shadow-md shadow-safari-green/30';
+  const ACTIVE_CLS = 'bg-ugandan-sun text-slate-dark shadow-md shadow-ugandan-sun/40 scale-110 ring-4 ring-ugandan-sun/20';
+  const IDLE_CLS   = 'bg-surface-container text-on-surface-variant';
+  const LINE_DONE  = 'bg-safari-green';
+  const LINE_IDLE  = 'bg-outline-variant/40';
+
+  // Helper to set icon inside circle
+  const id_prefix = 'cst';
+  const setCircle = (n, cls, content) => {
+    const el = document.getElementById(`${id_prefix}-circle-${n}`);
+    if (el) { el.className = `w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 ${cls}`; el.innerHTML = content; }
+  };
+  const setLine = (n, cls) => {
+    const el = document.getElementById(`${id_prefix}-line-${n}`);
+    if (el) el.className = `flex-1 h-0.5 mt-5 transition-all duration-500 ${cls}`;
+  };
+
+  const CHECK = `<span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1;">check</span>`;
+  const SPIN_DOT = `<span class="relative flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-current"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-current"></span></span>`;
+
+  // Step 1
+  if (step > 1)      setCircle(1, DONE_CLS,   CHECK);
+  else if (step ===1) setCircle(1, ACTIVE_CLS, SPIN_DOT);
+  else                setCircle(1, IDLE_CLS,   '1');
+  setLine(1, step > 1 ? LINE_DONE : LINE_IDLE);
+
+  // Step 2
+  if (step > 2)      setCircle(2, DONE_CLS,   CHECK);
+  else if (step ===2) setCircle(2, ACTIVE_CLS, SPIN_DOT);
+  else                setCircle(2, IDLE_CLS,   '2');
+  setLine(2, step > 2 ? LINE_DONE : LINE_IDLE);
+
+  // Step 3
+  if (step > 3)      setCircle(3, DONE_CLS,   CHECK);
+  else if (step ===3) setCircle(3, ACTIVE_CLS, SPIN_DOT);
+  else                setCircle(3, IDLE_CLS,   '3');
+  setLine(3, step > 3 ? LINE_DONE : LINE_IDLE);
+
+  // Step 4
+  if (step === 4)    setCircle(4, DONE_CLS,   CHECK);
+  else               setCircle(4, IDLE_CLS,   '4');
+
+  // Status message
+  const msgs = {
+    pending_payment: '⏳ Awaiting payment — complete your payment to confirm this booking.',
+    confirmed:       '✅ Booking confirmed! Your driver will contact you before the trip starts.',
+    in_progress:     '🚗 Trip is currently in progress. Enjoy your journey across Uganda!',
+    completed:       '🏁 Trip completed! We hope you had a great experience.',
+    cancelled:       '❌ This booking was cancelled.',
+    disputed:        '⚠️ This booking is under dispute. Our team will be in touch.',
+  };
+  const msgEl = document.getElementById(`${prefix}TrackerMsg`);
+  if (msgEl) {
+    msgEl.textContent = msgs[active.status] || '';
+    const msgColors = {
+      pending_payment: 'bg-secondary-fixed/30 text-status-pending',
+      confirmed:       'bg-primary-fixed/30 text-safari-green',
+      in_progress:     'bg-ugandan-sun/20 text-on-secondary-container',
+      completed:       'bg-primary-fixed/30 text-safari-green',
+      cancelled:       'bg-error-container text-error',
+      disputed:        'bg-error-container text-error',
+    };
+    msgEl.className = `mt-6 px-4 py-3 rounded-xl text-[13px] font-medium ${msgColors[active.status] || 'bg-surface-container text-on-surface-variant'}`;
+  }
+}
+
 function switchTab(name) {
   ['upcoming', 'completed', 'refunded'].forEach(t => {
     const btn   = document.getElementById(`tab-${t}`);
@@ -739,7 +881,7 @@ function switchTab(name) {
   });
 }
 
-let _custSettingsLoaded = false;
+let _custSettingsLoaded = true; // pre-loaded at startup
 function showCustSection(name) {
   // The main content div wraps loadingState + dashContent + footer
   const mainWrap    = document.getElementById('cust-main');
@@ -765,7 +907,8 @@ function showCustSection(name) {
   }
 }
 
-loadDashboard();
+// Run dashboard load and settings pre-fetch in parallel
+Promise.allSettled([loadDashboard(), spLoadSettings()]);
 </script>
 </body>
 </html>

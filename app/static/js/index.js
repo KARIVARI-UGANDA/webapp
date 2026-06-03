@@ -36,12 +36,17 @@ function renderVehicleCards(vehicles, currency) {
 		].filter(Boolean).join('');
 
 		const statusBadge = v.status === 'verified'
-			? `<span class="bg-status-success text-white text-[12px] font-bold px-3 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px]">check_circle</span> Available</span>`
-			: `<span class="bg-status-pending text-white text-[12px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Under Review</span>`;
+			? `<span class="bg-safari-green text-white text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1 uppercase tracking-wider backdrop-blur-sm">
+			     <span class="material-symbols-outlined text-[12px]" style="font-variation-settings:'FILL' 1;">verified</span>Verified
+			   </span>`
+			: `<span class="bg-status-pending text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Under Review</span>`;
+		const availBadge = v.status === 'verified'
+			? `<span class="bg-white/90 text-safari-green text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 uppercase tracking-wider">
+			     <span class="relative flex h-2 w-2 flex-shrink-0"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-status-success"></span></span>Available
+			   </span>`
+			: '';
 
-		const actionBtn = v.status === 'verified'
-			? `<a href="/vehicles/${v.id}" class="border border-slate-dark text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-slate-dark hover:text-white transition-all" style="text-decoration:none;">Book Now</a>`
-			: `<a href="/vehicles/${v.id}" class="border border-outline-variant text-on-surface-variant px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:bg-surface-container transition-all" style="text-decoration:none;">View Details</a>`;
+		const actionBtn = `<a href="/vehicles/${v.id}" class="bg-safari-green text-white px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:brightness-110 transition-all" style="text-decoration:none;">View Details</a>`;
 
 		return `
 		<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
@@ -49,6 +54,7 @@ function renderVehicleCards(vehicles, currency) {
 				<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
 				     src="${imgSrc}" alt="${v.make} ${v.model}">
 				<div class="absolute top-4 left-4">${statusBadge}</div>
+				${availBadge ? `<div class="absolute bottom-4 right-4">${availBadge}</div>` : ''}
 			</div>
 			<div class="p-6">
 				<div class="flex justify-between items-start mb-2">
@@ -85,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			});
 			if (res.ok) {
 				const user = await res.json();
-				const dashboards = { owner: '/owner/dashboard', driver: '/driver/dashboard', admin: '/admin/dashboard' };
+				const dashboards = { owner: '/owner/dashboard', admin: '/admin/dashboard' };
 				if (dashboards[user.role]) {
 					window.location.href = dashboards[user.role];
 					return;

@@ -5,7 +5,7 @@ const role  = localStorage.getItem('role');
 if (!token) {
 	window.location.href = '/admin/login';
 } else if (role && role !== 'admin') {
-	const homes = { customer: '/', owner: '/owner/dashboard', driver: '/driver/dashboard' };
+	const homes = { customer: '/', owner: '/owner/dashboard' };
 	window.location.href = homes[role] || '/admin/login';
 }
 
@@ -125,9 +125,7 @@ const authHeaders = { 'Authorization': `Bearer ${token}` };
 		const roleColor = {
 			admin:    'text-tertiary bg-tertiary-fixed',
 			owner:    'text-secondary bg-secondary-fixed',
-			driver:   'text-safari-green bg-primary-fixed/40',
 			customer: 'text-on-surface-variant bg-surface-container',
-			tourist:  'text-on-surface-variant bg-surface-container',
 		};
 
 		tbody.innerHTML = users.map(u => `

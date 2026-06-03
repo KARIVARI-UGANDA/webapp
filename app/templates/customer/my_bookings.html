@@ -218,7 +218,7 @@ function bookingCard(b) {
   const label  = STATUS_LABEL[b.status] || b.status;
   const amt    = b.amount_usd != null ? `$${parseFloat(b.amount_usd).toFixed(2)}` : '—';
   const days   = b.total_days || 1;
-  const hasDriver = b.booking_type === 'with_driver';
+  const hasDriver = true; // all Kari Vari trips include the owner as driver
 
   // Cancel button — shown for upcoming bookings only
   let cancelBtn = '';
@@ -587,7 +587,7 @@ load();
     <!-- Target tabs (trip / driver) -->
     <div class="flex gap-2 px-8 pb-6">
       <button id="rm-tab-trip"   onclick="switchReviewTarget('trip')"   class="flex-1 py-2 rounded-xl font-label-lg text-label-lg bg-safari-green text-white transition-colors">Trip</button>
-      <button id="rm-tab-driver" onclick="switchReviewTarget('driver')" class="flex-1 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant transition-colors" id="rmDriverTab">Driver</button>
+      <button id="rm-tab-driver" onclick="switchReviewTarget('driver')" class="flex-1 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant transition-colors" id="rmDriverTab">Owner/Driver</button>
     </div>
 
     <div class="px-8 pb-8 space-y-6">

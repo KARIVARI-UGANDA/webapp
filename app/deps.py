@@ -55,35 +55,6 @@ def require_role(*roles: str):
     return dependency
 
 
-def require_driver_eligible(
-    current_user=Depends(get_current_user),
-    db: Session = Depends(get_db),
-):
-    """
-    Raises 422 if the driver is not both verified AND training-complete.
-    Used by the booking assignment endpoint (Phase 8).
-    """
-    from app.models.driver import DriverProfile
-
-    if current_user.role != "driver":
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only drivers can use this endpoint")
-
-    profile = db.query(DriverProfile).filter(DriverProfile.user_id == current_user.id).first()
-    if not profile:
-        raise HTTPException(status_code=422, detail="Driver profile not found")
-    if profile.verification_status != "verified":
-        raise HTTPException(
-            status_code=422,
-            detail=f"Driver is not verified (status: {profile.verification_status})",
-        )
-    if not profile.training_completed:
-        raise HTTPException(
-            status_code=422,
-            detail="Driver has not completed all required training modules",
-        )
-    return current_user
-
-
 # Typed shorthands used in routers
 CurrentUser = Annotated[object, Depends(get_current_user)]
 DbSession = Annotated[Session, Depends(get_db)]

@@ -10,6 +10,7 @@
   <!-- Bootstrap CSS — needed for the Add Vehicle modal -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -179,7 +180,9 @@
       <span class="material-symbols-outlined">payments</span>
       <span class="font-label-lg text-label-lg">Earnings</span>
     </a>
-    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200" href="#">
+    <a data-section="inspections"
+       class="nav-link flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all duration-200 cursor-pointer"
+       onclick="showSection('inspections')">
       <span class="material-symbols-outlined">fact_check</span>
       <span class="font-label-lg text-label-lg">Inspections</span>
     </a>
@@ -221,7 +224,7 @@
   </header>
 
   <!-- Stats Grid -->
-  <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+  <section class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
     <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-ugandan-sun">
       <p class="text-on-surface-variant font-label-lg text-label-lg">Total Revenue</p>
       <div class="flex items-end justify-between mt-2">
@@ -238,15 +241,6 @@
         <span class="text-on-surface-variant font-label-sm text-label-sm">In fleet</span>
       </div>
     </div>
-    <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-primary">
-      <p class="text-on-surface-variant font-label-lg text-label-lg">Fleet Utilization</p>
-      <div class="flex items-end justify-between mt-2">
-        <h3 class="font-headline-lg text-headline-lg">—%</h3>
-        <div class="w-16 h-2 bg-surface-container rounded-full overflow-hidden mb-2">
-          <div class="bg-primary h-full" style="width:0%"></div>
-        </div>
-      </div>
-    </div>
     <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-secondary-container cursor-pointer hover:shadow-md transition-shadow" onclick="showSection('bookings')">
       <p class="text-on-surface-variant font-label-lg text-label-lg">Pending Bookings</p>
       <div class="flex items-end justify-between mt-2">
@@ -256,35 +250,98 @@
     </div>
   </section>
 
+  <!-- ── Trip Progress Tracker ─────────────────────────────────────────── -->
+  <section id="ownerTripTracker" class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden mb-6 hidden">
+    <div class="flex items-center justify-between px-8 pt-7 pb-5 border-b border-outline-variant/20">
+      <div>
+        <h3 class="font-headline-md text-headline-md text-on-surface">Active Trip Progress</h3>
+        <p id="ownerTrackerVehicle" class="font-label-sm text-label-sm text-on-surface-variant mt-0.5"></p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span id="ownerTrackerRef" class="font-mono text-[12px] px-3 py-1 rounded-full bg-surface-container text-on-surface-variant"></span>
+        <span id="ownerTrackerCustomer" class="font-label-sm text-label-sm text-on-surface-variant"></span>
+      </div>
+    </div>
+
+    <!-- Stepper -->
+    <div class="px-8 py-7">
+      <div class="flex items-start w-full gap-0">
+
+        <!-- Step 1: Booking Received -->
+        <div class="flex flex-col items-center flex-1">
+          <div id="ost-circle-1" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 bg-surface-container text-on-surface-variant">1</div>
+          <p class="text-[11px] font-semibold text-center mt-2 text-on-surface-variant">Received</p>
+          <p class="text-[10px] text-outline text-center hidden md:block">Booking placed</p>
+        </div>
+
+        <div id="ost-line-1" class="flex-1 h-0.5 mt-5 bg-outline-variant/40 transition-all duration-500"></div>
+
+        <!-- Step 2: Confirmed -->
+        <div class="flex flex-col items-center flex-1">
+          <div id="ost-circle-2" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 bg-surface-container text-on-surface-variant">2</div>
+          <p class="text-[11px] font-semibold text-center mt-2 text-on-surface-variant">Confirmed</p>
+          <p class="text-[10px] text-outline text-center hidden md:block">Payment received</p>
+        </div>
+
+        <div id="ost-line-2" class="flex-1 h-0.5 mt-5 bg-outline-variant/40 transition-all duration-500"></div>
+
+        <!-- Step 3: Trip Started -->
+        <div class="flex flex-col items-center flex-1">
+          <div id="ost-circle-3" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 bg-surface-container text-on-surface-variant">3</div>
+          <p class="text-[11px] font-semibold text-center mt-2 text-on-surface-variant">On the Road</p>
+          <p class="text-[10px] text-outline text-center hidden md:block">Trip in progress</p>
+        </div>
+
+        <div id="ost-line-3" class="flex-1 h-0.5 mt-5 bg-outline-variant/40 transition-all duration-500"></div>
+
+        <!-- Step 4: Completed -->
+        <div class="flex flex-col items-center flex-1">
+          <div id="ost-circle-4" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 bg-surface-container text-on-surface-variant">4</div>
+          <p class="text-[11px] font-semibold text-center mt-2 text-on-surface-variant">Completed</p>
+          <p class="text-[10px] text-outline text-center hidden md:block">Trip finished</p>
+        </div>
+
+      </div>
+
+      <!-- Status message -->
+      <div id="ownerTrackerMsg" class="mt-6 px-4 py-3 rounded-xl text-[13px] font-medium bg-surface-container text-on-surface-variant"></div>
+    </div>
+  </section>
+
   <!-- Main Dashboard Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
     <!-- Left Column (2/3) -->
     <div class="lg:col-span-2 space-y-6">
 
-      <!-- Earnings Chart -->
+      <!-- Earnings & Bookings Charts -->
       <section class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)]">
-        <div class="flex justify-between items-center mb-8">
+        <div class="flex flex-wrap justify-between items-center mb-6 gap-3">
           <h4 class="font-headline-md text-headline-md">Earnings Trend</h4>
-          <select class="bg-surface border border-outline-variant rounded-lg font-label-sm text-label-sm p-2 outline-none focus:border-safari-green">
-            <option>Last 30 Days</option>
-            <option>Last Quarter</option>
-          </select>
+          <div class="flex gap-1 p-1 bg-surface-container rounded-xl">
+            <button onclick="setChartPeriod('daily')"   id="cp-daily"   class="chart-period-btn active px-3 py-1.5 rounded-lg font-label-sm text-label-sm bg-white shadow text-primary transition-all">Daily</button>
+            <button onclick="setChartPeriod('weekly')"  id="cp-weekly"  class="chart-period-btn px-3 py-1.5 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all">Weekly</button>
+            <button onclick="setChartPeriod('monthly')" id="cp-monthly" class="chart-period-btn px-3 py-1.5 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all">Monthly</button>
+            <button onclick="setChartPeriod('yearly')"  id="cp-yearly"  class="chart-period-btn px-3 py-1.5 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all">Yearly</button>
+          </div>
         </div>
-        <div class="h-64 flex items-end justify-between gap-2 px-4">
-          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:40%"></div>
-          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:60%"></div>
-          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:35%"></div>
-          <div class="w-full bg-safari-green       rounded-t chart-bar" style="height:85%"></div>
-          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:50%"></div>
-          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:75%"></div>
-          <div class="w-full bg-ugandan-sun         rounded-t chart-bar" style="height:95%"></div>
-          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:45%"></div>
-          <div class="w-full bg-surface-container-high rounded-t chart-bar" style="height:30%"></div>
-          <div class="w-full bg-safari-green        rounded-t chart-bar" style="height:70%"></div>
+        <div class="relative h-64">
+          <canvas id="earningsChartCanvas"></canvas>
         </div>
-        <div class="flex justify-between mt-4 text-[10px] text-on-surface-variant font-label-sm uppercase px-4">
-          <span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span>
+      </section>
+
+      <!-- Bookings Chart -->
+      <section class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)]">
+        <div class="flex flex-wrap justify-between items-center mb-6 gap-3">
+          <h4 class="font-headline-md text-headline-md">Booking Activity</h4>
+          <div class="flex gap-1 p-1 bg-surface-container rounded-xl">
+            <button onclick="setBkChartPeriod('weekly')"  id="bkcp-weekly"  class="bk-period-btn active px-3 py-1.5 rounded-lg font-label-sm text-label-sm bg-white shadow text-primary transition-all">Weekly</button>
+            <button onclick="setBkChartPeriod('monthly')" id="bkcp-monthly" class="bk-period-btn px-3 py-1.5 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all">Monthly</button>
+            <button onclick="setBkChartPeriod('yearly')"  id="bkcp-yearly"  class="bk-period-btn px-3 py-1.5 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all">Yearly</button>
+          </div>
+        </div>
+        <div class="relative h-56">
+          <canvas id="bookingsChartCanvas"></canvas>
         </div>
       </section>
 
@@ -312,7 +369,7 @@
             <tbody class="divide-y divide-outline-variant/20" id="vehiclesTableBody">
               <tr>
                 <td colspan="5" class="text-center py-6 text-on-surface-variant">
-                  <div class="spinner-border spinner-border-sm me-2"></div>Loading…
+                  <div class="spinner-border spinner-border-sm me-2"></div>
                 </td>
               </tr>
             </tbody>
@@ -489,39 +546,13 @@
 
     <!-- Vehicle Card Grid -->
     <section id="fleetGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-8">
-      <!-- Shimmer skeleton loading cards (replaced by JS) -->
+      <!-- Single skeleton card shown while fleet data loads -->
       <div class="rounded-2xl overflow-hidden border border-outline-variant/10">
         <div class="skeleton-shimmer aspect-[3/2]"></div>
         <div class="p-5 space-y-3">
           <div class="skeleton-shimmer h-5 w-3/4"></div>
           <div class="skeleton-shimmer h-4 w-1/2"></div>
           <div class="skeleton-shimmer h-4 w-1/3 mt-2"></div>
-          <div class="grid grid-cols-3 gap-2 pt-4 border-t border-outline-variant/10">
-            <div class="skeleton-shimmer h-10 rounded-xl"></div>
-            <div class="skeleton-shimmer h-10 rounded-xl"></div>
-            <div class="skeleton-shimmer h-10 rounded-xl"></div>
-          </div>
-        </div>
-      </div>
-      <div class="rounded-2xl overflow-hidden border border-outline-variant/10 hidden md:block">
-        <div class="skeleton-shimmer aspect-[3/2]" style="animation-delay:0.1s"></div>
-        <div class="p-5 space-y-3">
-          <div class="skeleton-shimmer h-5 w-4/5"></div>
-          <div class="skeleton-shimmer h-4 w-2/5"></div>
-          <div class="skeleton-shimmer h-4 w-1/2 mt-2"></div>
-          <div class="grid grid-cols-3 gap-2 pt-4 border-t border-outline-variant/10">
-            <div class="skeleton-shimmer h-10 rounded-xl"></div>
-            <div class="skeleton-shimmer h-10 rounded-xl"></div>
-            <div class="skeleton-shimmer h-10 rounded-xl"></div>
-          </div>
-        </div>
-      </div>
-      <div class="rounded-2xl overflow-hidden border border-outline-variant/10 hidden lg:block">
-        <div class="skeleton-shimmer aspect-[3/2]" style="animation-delay:0.2s"></div>
-        <div class="p-5 space-y-3">
-          <div class="skeleton-shimmer h-5 w-2/3"></div>
-          <div class="skeleton-shimmer h-4 w-3/5"></div>
-          <div class="skeleton-shimmer h-4 w-2/5 mt-2"></div>
           <div class="grid grid-cols-3 gap-2 pt-4 border-t border-outline-variant/10">
             <div class="skeleton-shimmer h-10 rounded-xl"></div>
             <div class="skeleton-shimmer h-10 rounded-xl"></div>
@@ -650,7 +681,7 @@
     <div id="earnTableWrap" class="overflow-x-auto">
       <div class="text-center py-16 text-on-surface-variant">
         <span class="material-symbols-outlined text-[48px] mb-3 block opacity-25">payments</span>
-        <p class="font-label-lg text-label-lg">Loading earnings…</p>
+        <p class="font-label-lg text-label-lg"></p>
       </div>
     </div>
   </section>
@@ -658,30 +689,24 @@
   <!-- Payout Method + Security -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <section class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/10">
-      <div class="flex items-center gap-4 mb-6">
-        <span class="material-symbols-outlined text-primary bg-primary-fixed/30 p-2 rounded-lg">account_balance</span>
-        <h3 class="font-headline-md text-headline-md text-on-surface">Payout Method</h3>
-      </div>
-      <div class="space-y-4">
-        <div class="p-4 rounded-xl border-2 border-safari-green bg-primary-fixed/10 relative">
-          <span class="material-symbols-outlined absolute top-4 right-4 text-safari-green">check_circle</span>
-          <p class="font-label-lg text-label-lg text-safari-green">Primary: Bank Transfer</p>
-          <p class="text-on-surface mt-1">Standard Chartered Uganda</p>
-          <p class="text-on-surface-variant text-sm">**** **** **** 4512</p>
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-4">
+          <span class="material-symbols-outlined text-primary bg-primary-fixed/30 p-2 rounded-lg">account_balance</span>
+          <h3 class="font-headline-md text-headline-md text-on-surface">Payout Methods</h3>
         </div>
-        <div class="p-4 rounded-xl border border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer group">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="font-label-lg text-label-lg text-on-surface">Mobile Money</p>
-              <p class="text-on-surface-variant text-sm">MTN Uganda — 0772 *** 889</p>
-            </div>
-            <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">radio_button_unchecked</span>
-          </div>
-        </div>
-        <button class="w-full py-3 border border-dashed border-outline-variant rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low transition-colors">
-          + Add New Payout Method
-        </button>
       </div>
+      <!-- Dynamic list rendered by JS -->
+      <div id="payoutMethodList" class="space-y-3">
+        <div class="text-center py-8 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[40px] block mb-2 opacity-30">account_balance_wallet</span>
+          <p class="font-label-lg text-label-lg"></p>
+        </div>
+      </div>
+      <button onclick="openPayoutModal(null)"
+              class="mt-4 w-full py-3 border border-dashed border-outline-variant rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:border-safari-green hover:text-safari-green transition-all flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-[18px]">add_circle</span>
+        Add New Payout Method
+      </button>
     </section>
 
     <section class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/10 flex flex-col">
@@ -711,6 +736,188 @@
 
 </div><!-- /section-earnings -->
 
+<!-- ═══════════ SECTION: Inspections / Compliance Docs ═══════════ -->
+<div id="section-inspections" style="display:none">
+
+  <header class="sticky top-0 z-30 bg-surface/80 backdrop-blur-md px-4 md:px-12 py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/30">
+    <div>
+      <h2 class="font-headline-lg text-headline-lg text-primary">Compliance Documents</h2>
+      <p class="font-body-md text-body-md text-on-surface-variant">All four documents are mandatory before your vehicles can be listed.</p>
+    </div>
+    <button id="submitAllDocsBtn" onclick="submitAllDocuments(this)"
+            class="bg-safari-green text-white px-6 py-3 rounded-xl font-label-lg text-label-lg flex items-center gap-2 hover:brightness-105 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+      <span class="material-symbols-outlined text-[18px]">upload_file</span>
+      Submit All for Review
+    </button>
+  </header>
+
+  <div class="px-4 md:px-12 py-8">
+
+    <!-- Compliance Status Banner -->
+    <div id="complianceBanner" class="hidden mb-8 rounded-2xl p-5 flex items-start gap-4"></div>
+
+    <!-- Progress strip -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/15 p-5 mb-8">
+      <div class="flex items-center justify-between mb-3">
+        <p class="font-label-lg text-label-lg text-on-surface">Upload progress</p>
+        <p class="font-label-sm text-label-sm text-on-surface-variant"><span id="docUploadCount">0</span> / 4 documents uploaded</p>
+      </div>
+      <div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+        <div id="docProgressBar" class="h-full bg-safari-green rounded-full transition-all duration-500" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Document Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- ── Driving Permit ── -->
+      <div class="bg-white rounded-2xl border border-outline-variant/20 p-6 shadow-[0px_2px_12px_rgba(0,0,0,0.04)]">
+        <div class="flex items-start justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[28px] text-primary bg-primary-fixed/30 p-2.5 rounded-xl" style="font-variation-settings:'FILL' 1;">badge</span>
+            <div>
+              <h4 class="font-headline-md text-headline-md leading-tight">Driving Permit</h4>
+              <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Valid government-issued driving permit</p>
+            </div>
+          </div>
+          <span id="doc-badge-permit" class="px-2.5 py-1 rounded-full font-label-sm text-label-sm bg-error-container text-error font-bold uppercase">Required</span>
+        </div>
+        <div class="border-2 border-dashed border-outline-variant rounded-xl p-6 text-center cursor-pointer hover:border-safari-green hover:bg-primary-fixed/5 transition-all"
+             onclick="document.getElementById('file-permit').click()"
+             ondragover="docDragOver(event,this)" ondragleave="docDragLeave(this)" ondrop="docDrop(event,this,'file-permit','permit')">
+          <input type="file" id="file-permit" accept="image/*,.pdf" class="hidden" onchange="docPreview(this,'permit')">
+          <div id="prev-permit">
+            <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
+            <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
+            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10 MB</p>
+          </div>
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Permit Number</label>
+            <input id="num-permit" type="text" placeholder="e.g. DL-123456"
+                   class="w-full px-3 py-2 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md text-[14px]">
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Expiry Date <span class="text-error">*</span></label>
+            <input id="exp-permit" type="date"
+                   class="w-full px-3 py-2 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md text-[14px]">
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Third Party Insurance ── -->
+      <div class="bg-white rounded-2xl border border-outline-variant/20 p-6 shadow-[0px_2px_12px_rgba(0,0,0,0.04)]">
+        <div class="flex items-start justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[28px] text-secondary bg-secondary-fixed/30 p-2.5 rounded-xl" style="font-variation-settings:'FILL' 1;">shield</span>
+            <div>
+              <h4 class="font-headline-md text-headline-md leading-tight">Third Party Insurance</h4>
+              <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Valid third party motor insurance certificate</p>
+            </div>
+          </div>
+          <span id="doc-badge-insurance" class="px-2.5 py-1 rounded-full font-label-sm text-label-sm bg-error-container text-error font-bold uppercase">Required</span>
+        </div>
+        <div class="border-2 border-dashed border-outline-variant rounded-xl p-6 text-center cursor-pointer hover:border-safari-green hover:bg-primary-fixed/5 transition-all"
+             onclick="document.getElementById('file-insurance').click()"
+             ondragover="docDragOver(event,this)" ondragleave="docDragLeave(this)" ondrop="docDrop(event,this,'file-insurance','insurance')">
+          <input type="file" id="file-insurance" accept="image/*,.pdf" class="hidden" onchange="docPreview(this,'insurance')">
+          <div id="prev-insurance">
+            <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
+            <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
+            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10 MB</p>
+          </div>
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Policy Number</label>
+            <input id="num-insurance" type="text" placeholder="e.g. INS-2024-001"
+                   class="w-full px-3 py-2 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md text-[14px]">
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Expiry Date <span class="text-error">*</span></label>
+            <input id="exp-insurance" type="date"
+                   class="w-full px-3 py-2 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md text-[14px]">
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Car Inspection Certificate ── -->
+      <div class="bg-white rounded-2xl border border-outline-variant/20 p-6 shadow-[0px_2px_12px_rgba(0,0,0,0.04)]">
+        <div class="flex items-start justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[28px] text-safari-green bg-primary-fixed/30 p-2.5 rounded-xl" style="font-variation-settings:'FILL' 1;">fact_check</span>
+            <div>
+              <h4 class="font-headline-md text-headline-md leading-tight">Car Inspection Certificate</h4>
+              <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Current roadworthiness / fitness certificate</p>
+            </div>
+          </div>
+          <span id="doc-badge-inspection" class="px-2.5 py-1 rounded-full font-label-sm text-label-sm bg-error-container text-error font-bold uppercase">Required</span>
+        </div>
+        <div class="border-2 border-dashed border-outline-variant rounded-xl p-6 text-center cursor-pointer hover:border-safari-green hover:bg-primary-fixed/5 transition-all"
+             onclick="document.getElementById('file-inspection').click()"
+             ondragover="docDragOver(event,this)" ondragleave="docDragLeave(this)" ondrop="docDrop(event,this,'file-inspection','inspection')">
+          <input type="file" id="file-inspection" accept="image/*,.pdf" class="hidden" onchange="docPreview(this,'inspection')">
+          <div id="prev-inspection">
+            <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
+            <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
+            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10 MB</p>
+          </div>
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Certificate Number</label>
+            <input id="num-inspection" type="text" placeholder="e.g. CERT-456"
+                   class="w-full px-3 py-2 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md text-[14px]">
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Expiry Date <span class="text-error">*</span></label>
+            <input id="exp-inspection" type="date"
+                   class="w-full px-3 py-2 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md text-[14px]">
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Certificate of Good Conduct ── -->
+      <div class="bg-white rounded-2xl border border-outline-variant/20 p-6 shadow-[0px_2px_12px_rgba(0,0,0,0.04)]">
+        <div class="flex items-start justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[28px] text-status-pending bg-secondary-fixed/30 p-2.5 rounded-xl" style="font-variation-settings:'FILL' 1;">verified_user</span>
+            <div>
+              <h4 class="font-headline-md text-headline-md leading-tight">Certificate of Good Conduct</h4>
+              <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Police clearance / good conduct certificate</p>
+            </div>
+          </div>
+          <span id="doc-badge-conduct" class="px-2.5 py-1 rounded-full font-label-sm text-label-sm bg-error-container text-error font-bold uppercase">Required</span>
+        </div>
+        <div class="border-2 border-dashed border-outline-variant rounded-xl p-6 text-center cursor-pointer hover:border-safari-green hover:bg-primary-fixed/5 transition-all"
+             onclick="document.getElementById('file-conduct').click()"
+             ondragover="docDragOver(event,this)" ondragleave="docDragLeave(this)" ondrop="docDrop(event,this,'file-conduct','conduct')">
+          <input type="file" id="file-conduct" accept="image/*,.pdf" class="hidden" onchange="docPreview(this,'conduct')">
+          <div id="prev-conduct">
+            <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
+            <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
+            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10 MB</p>
+          </div>
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Reference Number</label>
+            <input id="num-conduct" type="text" placeholder="e.g. UPF-2024-789"
+                   class="w-full px-3 py-2 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md text-[14px]">
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Issue Date <span class="text-error">*</span></label>
+            <input id="exp-conduct" type="date"
+                   class="w-full px-3 py-2 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md text-[14px]">
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /doc grid -->
+  </div>
+</div><!-- /section-inspections -->
+
 <!-- ═══════════ SECTION: Settings ═══════════ -->
 <div id="section-settings" style="display:none" class="p-4 md:p-12">
 
@@ -725,7 +932,7 @@
     <div class="flex gap-1 mb-8 p-1 bg-surface-container rounded-xl w-fit flex-wrap">
       <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg bg-white shadow text-primary transition-all" data-tab="profile" onclick="spShowTab('profile')">Profile</button>
       <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-all" data-tab="documents" onclick="spShowTab('documents')">Documents</button>
-      <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-all hidden" data-tab="driver" id="sp-driverTabBtn" onclick="spShowTab('driver')">Driver Profile</button>
+      <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-all" data-tab="driver" id="sp-driverTabBtn" onclick="spShowTab('driver')">Driving Credentials</button>
       <button class="sp-tab-btn px-5 py-2.5 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-all" data-tab="security" onclick="spShowTab('security')">Security</button>
     </div>
 
@@ -940,6 +1147,135 @@
   </div>
 </div><!-- /section-settings -->
 
+<!-- ───────────────────────── Payout Method Modal ───────────────────────── -->
+<div id="payoutModalOverlay"
+     class="fixed inset-0 z-[1060] flex items-center justify-center p-4 hidden"
+     style="background:rgba(0,0,0,0.45); backdrop-filter:blur(3px);"
+     onclick="if(event.target===this) closePayoutModal()">
+
+  <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between px-8 py-6 border-b border-outline-variant/20">
+      <h4 id="pmModalTitle" class="font-headline-md text-headline-md text-on-surface">Add Payout Method</h4>
+      <button onclick="closePayoutModal()" class="text-on-surface-variant hover:text-on-surface transition-colors p-1 rounded-lg hover:bg-surface-container">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <div class="px-8 py-6 space-y-5 overflow-y-auto max-h-[70vh]">
+      <div id="pmModalAlert" class="hidden p-4 rounded-xl text-sm font-medium"></div>
+
+      <!-- Method Type Selector -->
+      <div id="pmTypeWrap">
+        <label class="block font-label-lg text-label-lg text-on-surface-variant mb-2">Payment Type <span class="text-error">*</span></label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="pm-type-opt cursor-pointer">
+            <input type="radio" name="pmType" value="bank" class="sr-only" onchange="pmToggleFields()" checked>
+            <div class="pm-type-card p-4 rounded-xl border-2 border-safari-green bg-primary-fixed/10 text-center transition-all">
+              <span class="material-symbols-outlined text-[28px] text-primary block mb-1" style="font-variation-settings:'FILL' 1;">account_balance</span>
+              <p class="font-label-lg text-label-lg text-primary">Bank Transfer</p>
+            </div>
+          </label>
+          <label class="pm-type-opt cursor-pointer">
+            <input type="radio" name="pmType" value="momo" class="sr-only" onchange="pmToggleFields()">
+            <div class="pm-type-card p-4 rounded-xl border-2 border-outline-variant text-center transition-all hover:border-outline">
+              <span class="material-symbols-outlined text-[28px] text-on-surface-variant block mb-1" style="font-variation-settings:'FILL' 1;">smartphone</span>
+              <p class="font-label-lg text-label-lg text-on-surface-variant">Mobile Money</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Bank Transfer Fields -->
+      <div id="pmBankFields" class="space-y-4">
+        <div>
+          <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Bank Name <span class="text-error">*</span></label>
+          <select id="pmBankName" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+            <option value="">Select bank…</option>
+            <option>Stanbic Bank Uganda</option>
+            <option>Standard Chartered Uganda</option>
+            <option>Centenary Bank</option>
+            <option>DFCU Bank</option>
+            <option>Absa Bank Uganda</option>
+            <option>Equity Bank Uganda</option>
+            <option>Bank of Baroda Uganda</option>
+            <option>Housing Finance Bank</option>
+            <option>Cairo International Bank</option>
+            <option>PostBank Uganda</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Account Name <span class="text-error">*</span></label>
+          <input id="pmBankAccName" type="text" placeholder="Full name as on the account"
+                 class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+        </div>
+        <div>
+          <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Account Number <span class="text-error">*</span></label>
+          <input id="pmBankAccNum" type="text" placeholder="e.g. 9030012345678"
+                 class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+        </div>
+        <div>
+          <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Branch (optional)</label>
+          <input id="pmBankBranch" type="text" placeholder="e.g. Kampala Main"
+                 class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+        </div>
+      </div>
+
+      <!-- Mobile Money Fields -->
+      <div id="pmMomoFields" class="space-y-4 hidden">
+        <div>
+          <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Provider <span class="text-error">*</span></label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="cursor-pointer">
+              <input type="radio" name="momoProvider" value="mtn" class="sr-only" checked>
+              <div class="momo-prov-card p-3 rounded-xl border-2 border-safari-green bg-primary-fixed/10 text-center transition-all">
+                <p class="font-label-lg text-label-lg text-primary">MTN Mobile Money</p>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="momoProvider" value="airtel" class="sr-only">
+              <div class="momo-prov-card p-3 rounded-xl border-2 border-outline-variant text-center transition-all hover:border-outline">
+                <p class="font-label-lg text-label-lg text-on-surface-variant">Airtel Money</p>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div>
+          <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Phone Number <span class="text-error">*</span></label>
+          <input id="pmMomoPhone" type="tel" placeholder="e.g. 0772123456"
+                 class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+        </div>
+        <div>
+          <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Account Name <span class="text-error">*</span></label>
+          <input id="pmMomoName" type="text" placeholder="Name registered on this number"
+                 class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
+        </div>
+      </div>
+
+      <!-- Set as Primary -->
+      <label class="flex items-center gap-3 cursor-pointer p-3 rounded-xl hover:bg-surface-container transition-colors">
+        <input id="pmSetPrimary" type="checkbox" class="w-4 h-4 accent-safari-green" checked>
+        <span class="font-label-lg text-label-lg text-on-surface">Set as primary payout method</span>
+      </label>
+    </div>
+
+    <!-- Footer -->
+    <div class="flex gap-3 px-8 py-5 border-t border-outline-variant/20 bg-surface-container-low">
+      <button onclick="closePayoutModal()"
+              class="flex-1 py-3 border border-outline-variant rounded-xl font-label-lg text-label-lg text-on-surface hover:bg-surface-container transition-colors">
+        Cancel
+      </button>
+      <button id="pmSaveBtn" onclick="savePayoutMethod(this)"
+              class="flex-1 py-3 bg-safari-green text-white rounded-xl font-label-lg text-label-lg hover:brightness-105 transition-all active:scale-95 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-[18px]">save</span>
+        <span id="pmSaveBtnText">Save Method</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast for settings panel -->
 <div id="spToastEl" class="fixed bottom-6 right-6 z-[9999] hidden transition-all">
   <div class="spt-inner flex items-center gap-3 bg-on-surface text-surface px-5 py-3 rounded-2xl shadow-xl">
@@ -1075,17 +1411,10 @@
           <h6 class="fw-bold text-secondary text-uppercase small mb-3">Pricing (UGX)</h6>
           <div class="row g-3 mb-4">
             <div class="col-sm-6">
-              <label class="form-label">Daily Rate (without driver) <span class="text-danger">*</span></label>
+              <label class="form-label">Daily Rate <span class="text-danger">*</span></label>
               <div class="input-group">
                 <span class="input-group-text text-secondary">UGX</span>
-                <input type="number" name="base_daily_rate_ugx" class="form-control" placeholder="e.g. 150000" min="1" required>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <label class="form-label">Daily Rate (with driver)</label>
-              <div class="input-group">
-                <span class="input-group-text text-secondary">UGX</span>
-                <input type="number" name="rate_with_driver_ugx" class="form-control" placeholder="e.g. 250000" min="1">
+                <input type="number" name="base_daily_rate_ugx" class="form-control" placeholder="e.g. 200000" min="1" required>
               </div>
             </div>
           </div>
@@ -1178,6 +1507,10 @@
     <span class="material-symbols-outlined">payments</span>
     <span class="text-[10px]">Earnings</span>
   </a>
+  <a data-section="inspections" class="mob-nav-link flex flex-col items-center gap-1 text-on-surface-variant cursor-pointer" onclick="showSection('inspections')">
+    <span class="material-symbols-outlined">fact_check</span>
+    <span class="text-[10px]">Docs</span>
+  </a>
   <a class="flex flex-col items-center gap-1 text-on-surface-variant cursor-pointer" id="mobileLogoutBtn">
     <span class="material-symbols-outlined">logout</span>
     <span class="text-[10px]">Logout</span>
@@ -1194,19 +1527,24 @@
   // ── Section switcher ──
   let _allVehicles = [];
 
-  let _spLoaded = false;
-  let _bkLoaded = false;
-  let _earnLoaded = false;
+  let _spLoaded    = false;
+  let _bkLoaded    = false;
+  let _earnLoaded  = false;
+  let _inspLoaded  = false;
+
   function showSection(name) {
     // Toggle content sections
-    document.getElementById('section-overview').style.display  = name === 'overview'  ? 'block' : 'none';
-    document.getElementById('section-fleet').style.display     = name === 'fleet'     ? 'block' : 'none';
-    document.getElementById('section-bookings').style.display  = name === 'bookings'  ? 'block' : 'none';
-    document.getElementById('section-earnings').style.display  = name === 'earnings'  ? 'block' : 'none';
-    document.getElementById('section-settings').style.display  = name === 'settings'  ? 'block' : 'none';
-    if (name === 'settings' && !_spLoaded) { _spLoaded = true; spLoadSettings(); }
-    if (name === 'bookings' && !_bkLoaded) { _bkLoaded = true; loadOwnerBookings(); }
-    if (name === 'earnings' && !_earnLoaded) { _earnLoaded = true; loadOwnerEarnings(); }
+    document.getElementById('section-overview').style.display     = name === 'overview'     ? 'block' : 'none';
+    document.getElementById('section-fleet').style.display        = name === 'fleet'        ? 'block' : 'none';
+    document.getElementById('section-bookings').style.display     = name === 'bookings'     ? 'block' : 'none';
+    document.getElementById('section-earnings').style.display     = name === 'earnings'     ? 'block' : 'none';
+    document.getElementById('section-inspections').style.display  = name === 'inspections'  ? 'block' : 'none';
+    document.getElementById('section-settings').style.display     = name === 'settings'     ? 'block' : 'none';
+    // Data is pre-fetched at startup; flags guard against re-fetch only if background load failed
+    if (name === 'settings'    && !_spLoaded)   { _spLoaded   = true; spLoadSettings(); }
+    if (name === 'bookings'    && !_bkLoaded)   { _bkLoaded   = true; loadOwnerBookings(); }
+    if (name === 'earnings'    && !_earnLoaded) { _earnLoaded  = true; loadOwnerEarnings(); loadPayoutMethods(); }
+    if (name === 'inspections' && !_inspLoaded) { _inspLoaded  = true; loadComplianceDocs(); }
 
     // Update desktop sidebar active state
     document.querySelectorAll('#sidebarNav .nav-link').forEach(el => {
@@ -1555,7 +1893,6 @@
     set('passenger_capacity', v.passenger_capacity);
     set('service_area',       v.service_area);
     set('base_daily_rate_ugx', v.base_daily_rate_ugx);
-    set('rate_with_driver_ugx', v.rate_with_driver_ugx);
     set('description',        v.description);
     chk('has_ac',       v.has_ac);
     chk('has_wifi',     v.has_wifi);
@@ -1768,6 +2105,65 @@
     if (card) { card.style.setProperty('--cx', '-200px'); card.style.setProperty('--cy', '-200px'); }
   }, true);
 
+  // ── Owner Trip Tracker ─────────────────────────────────────────────────────────
+  function renderOwnerTripTracker(bookings) {
+    const active = bookings.find(b => b.status === 'in_progress')
+      || bookings.find(b => b.status === 'confirmed')
+      || bookings.find(b => b.status === 'pending_payment')
+      || bookings.filter(b => b.status === 'completed').sort((a, b) =>
+          new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at))[0];
+
+    const section = document.getElementById('ownerTripTracker');
+    if (!section) return;
+    if (!active) { section.classList.add('hidden'); return; }
+    section.classList.remove('hidden');
+
+    const vName = active.vehicle ? `${active.vehicle.make} ${active.vehicle.model}` : '';
+    const refEl  = document.getElementById('ownerTrackerRef');
+    const vehEl  = document.getElementById('ownerTrackerVehicle');
+    const custEl = document.getElementById('ownerTrackerCustomer');
+    if (refEl)  refEl.textContent  = active.booking_reference || '';
+    if (vehEl)  vehEl.textContent  = vName;
+    if (custEl) custEl.textContent = active.customer_name ? `Customer: ${active.customer_name}` : '';
+
+    const stepMap = { pending_payment:1, confirmed:2, in_progress:3, completed:4, cancelled:0, disputed:0 };
+    const step = stepMap[active.status] ?? 1;
+
+    const DONE   = 'w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 bg-safari-green text-white shadow-md';
+    const ACTIVE = 'w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 bg-ugandan-sun text-slate-dark shadow-md ring-4 ring-ugandan-sun/20 scale-110';
+    const IDLE   = 'w-10 h-10 rounded-full flex items-center justify-center font-bold text-[15px] transition-all duration-300 bg-surface-container text-on-surface-variant';
+    const CHECK  = `<span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1;">check</span>`;
+    const DOT    = `<span class="relative flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-current"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-current"></span></span>`;
+
+    const setC = (n, cls, html) => { const e = document.getElementById(`ost-circle-${n}`); if(e){e.className=cls;e.innerHTML=html;} };
+    const setL = (n, done) => { const e = document.getElementById(`ost-line-${n}`); if(e) e.className=`flex-1 h-0.5 mt-5 transition-all duration-500 ${done?'bg-safari-green':'bg-outline-variant/40'}`; };
+
+    setC(1, step>1?DONE:step===1?ACTIVE:IDLE, step>1?CHECK:step===1?DOT:'1'); setL(1, step>1);
+    setC(2, step>2?DONE:step===2?ACTIVE:IDLE, step>2?CHECK:step===2?DOT:'2'); setL(2, step>2);
+    setC(3, step>3?DONE:step===3?ACTIVE:IDLE, step>3?CHECK:step===3?DOT:'3'); setL(3, step>3);
+    setC(4, step===4?DONE:IDLE, step===4?CHECK:'4');
+
+    const msgs = {
+      pending_payment: '⏳ Awaiting payment from customer.',
+      confirmed:       '✅ Booking confirmed — prepare for the upcoming trip.',
+      in_progress:     '🚗 Trip is currently in progress.',
+      completed:       '🏁 Trip completed successfully.',
+      cancelled:       '❌ Booking was cancelled.',
+    };
+    const colors = {
+      pending_payment:'bg-secondary-fixed/30 text-status-pending',
+      confirmed:'bg-primary-fixed/30 text-safari-green',
+      in_progress:'bg-ugandan-sun/20 text-on-secondary-container',
+      completed:'bg-primary-fixed/30 text-safari-green',
+      cancelled:'bg-error-container text-error',
+    };
+    const msgEl = document.getElementById('ownerTrackerMsg');
+    if (msgEl) {
+      msgEl.textContent = msgs[active.status] || '';
+      msgEl.className = `mt-6 px-4 py-3 rounded-xl text-[13px] font-medium ${colors[active.status]||'bg-surface-container text-on-surface-variant'}`;
+    }
+  }
+
   // ── Owner Bookings ──────────────────────────────────────────────────────────────
   let _allOwnerBookings = [];
   let _bkFilter = null;
@@ -1805,6 +2201,9 @@
 
       // Sync overview pending stat
       if (g('statPending')) g('statPending').textContent = all.filter(b=>b.status==='pending').length;
+
+      // Trip tracker in overview
+      renderOwnerTripTracker(all);
 
       renderOwnerBookings();
     } catch {
@@ -2043,6 +2442,721 @@
       document.getElementById('logoutBtn').click();
     });
   }
+
+  // ═══════════════════════════════════════════════════════════════
+  // PAYOUT METHODS
+  // ═══════════════════════════════════════════════════════════════
+
+  let _payoutMethods   = [];
+  let _editPayoutId    = null;   // null = adding new
+
+  // ── Load payout methods from API ────────────────────────────────
+  async function loadPayoutMethods() {
+    const tok = localStorage.getItem('access_token');
+    if (!tok) return;
+    try {
+      const res = await fetch(`${API}/owners/me/payout-methods`, {
+        headers: { Authorization: `Bearer ${tok}` }
+      });
+      if (res.ok) {
+        _payoutMethods = await res.json();
+      } else if (res.status === 404) {
+        _payoutMethods = [];
+      } else {
+        _payoutMethods = [];
+      }
+    } catch (_) {
+      _payoutMethods = [];
+    }
+    renderPayoutMethods();
+  }
+
+  // ── Render the payout method list ───────────────────────────────
+  function renderPayoutMethods() {
+    const wrap = document.getElementById('payoutMethodList');
+    if (!wrap) return;
+
+    if (!_payoutMethods.length) {
+      wrap.innerHTML = `
+        <div class="text-center py-8 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[40px] block mb-2 opacity-25">account_balance_wallet</span>
+          <p class="font-label-lg text-label-lg">No payout methods added yet.</p>
+          <p class="font-label-sm text-label-sm mt-1">Add a bank account or mobile money number to receive payments.</p>
+        </div>`;
+      return;
+    }
+
+    wrap.innerHTML = _payoutMethods.map(m => {
+      const isPrimary = !!m.is_primary;
+      const icon      = m.method_type === 'bank' ? 'account_balance' : 'smartphone';
+      const title     = m.method_type === 'bank'
+        ? (m.bank_name || 'Bank Transfer')
+        : (m.provider === 'mtn' ? 'MTN Mobile Money' : 'Airtel Money');
+      const sub       = m.method_type === 'bank'
+        ? `${m.account_name || ''} · ****${(m.account_number || '').slice(-4)}`
+        : `${m.account_name || ''} · ${m.phone_number || ''}`;
+
+      return `
+        <div class="p-4 rounded-xl border-2 ${isPrimary ? 'border-safari-green bg-primary-fixed/10' : 'border-outline-variant bg-white'} relative transition-all">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="material-symbols-outlined text-[22px] ${isPrimary ? 'text-safari-green' : 'text-on-surface-variant'} flex-shrink-0"
+                    style="font-variation-settings:'FILL' 1;">${icon}</span>
+              <div class="min-w-0">
+                <p class="font-label-lg text-label-lg ${isPrimary ? 'text-safari-green' : 'text-on-surface'} flex items-center gap-2">
+                  ${title}
+                  ${isPrimary ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-safari-green text-white uppercase">Primary</span>' : ''}
+                </p>
+                <p class="font-label-sm text-label-sm text-on-surface-variant truncate mt-0.5">${sub}</p>
+              </div>
+            </div>
+            <!-- Action buttons -->
+            <div class="flex gap-1 flex-shrink-0">
+              ${!isPrimary ? `
+              <button onclick="setPrimaryPayout('${m.id}')" title="Set as primary"
+                      class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-safari-green transition-colors">
+                <span class="material-symbols-outlined text-[18px]">star</span>
+              </button>` : ''}
+              <button onclick="openPayoutModal('${m.id}')" title="Edit"
+                      class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-[18px]">edit</span>
+              </button>
+              <button onclick="deletePayoutMethod('${m.id}')" title="Delete"
+                      class="p-2 rounded-lg text-on-surface-variant hover:bg-error-container hover:text-error transition-colors">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── Open the add/edit modal ──────────────────────────────────────
+  function openPayoutModal(id) {
+    _editPayoutId = id;
+    const existing = id ? _payoutMethods.find(m => m.id === id) : null;
+
+    // Reset form
+    document.getElementById('pmModalAlert').classList.add('hidden');
+    document.getElementById('pmBankName').value    = '';
+    document.getElementById('pmBankAccName').value = '';
+    document.getElementById('pmBankAccNum').value  = '';
+    document.getElementById('pmBankBranch').value  = '';
+    document.getElementById('pmMomoPhone').value   = '';
+    document.getElementById('pmMomoName').value    = '';
+    document.getElementById('pmSetPrimary').checked = !_payoutMethods.length || (existing?.is_primary ?? false);
+    document.getElementById('pmSaveBtnText').textContent = id ? 'Save Changes' : 'Save Method';
+    document.getElementById('pmModalTitle').textContent  = id ? 'Edit Payout Method' : 'Add Payout Method';
+
+    // Lock type selector when editing
+    document.getElementById('pmTypeWrap').style.opacity  = id ? '0.5' : '1';
+    document.getElementById('pmTypeWrap').style.pointerEvents = id ? 'none' : '';
+
+    if (existing) {
+      // Pre-fill fields
+      const isMomo = existing.method_type === 'momo';
+      document.querySelector(`input[name="pmType"][value="${isMomo ? 'momo' : 'bank'}"]`).checked = true;
+      pmToggleFields();
+
+      if (isMomo) {
+        document.getElementById('pmMomoPhone').value = existing.phone_number  || '';
+        document.getElementById('pmMomoName').value  = existing.account_name  || '';
+        document.querySelector(`input[name="momoProvider"][value="${existing.provider || 'mtn'}"]`).checked = true;
+        pmSyncMomoProvider();
+      } else {
+        document.getElementById('pmBankName').value    = existing.bank_name      || '';
+        document.getElementById('pmBankAccName').value = existing.account_name   || '';
+        document.getElementById('pmBankAccNum').value  = existing.account_number || '';
+        document.getElementById('pmBankBranch').value  = existing.branch         || '';
+      }
+    } else {
+      document.querySelector('input[name="pmType"][value="bank"]').checked = true;
+      pmToggleFields();
+    }
+
+    pmSyncTypeCards();
+    document.getElementById('payoutModalOverlay').classList.remove('hidden');
+  }
+
+  function closePayoutModal() {
+    document.getElementById('payoutModalOverlay').classList.add('hidden');
+    _editPayoutId = null;
+  }
+
+  // Keep the radio-button card visuals in sync
+  function pmToggleFields() {
+    const isMomo = document.querySelector('input[name="pmType"]:checked')?.value === 'momo';
+    document.getElementById('pmBankFields').classList.toggle('hidden',  isMomo);
+    document.getElementById('pmMomoFields').classList.toggle('hidden', !isMomo);
+    pmSyncTypeCards();
+  }
+
+  function pmSyncTypeCards() {
+    const selected = document.querySelector('input[name="pmType"]:checked')?.value;
+    document.querySelectorAll('.pm-type-card').forEach(card => {
+      const isActive = card.closest('label').querySelector('input').value === selected;
+      card.classList.toggle('border-safari-green', isActive);
+      card.classList.toggle('bg-primary-fixed/10', isActive);
+      card.classList.toggle('border-outline-variant', !isActive);
+      card.querySelector('span')?.classList.toggle('text-primary', isActive);
+      card.querySelector('p')?.classList.toggle('text-primary', isActive);
+      card.querySelector('span')?.classList.toggle('text-on-surface-variant', !isActive);
+      card.querySelector('p')?.classList.toggle('text-on-surface-variant', !isActive);
+    });
+  }
+
+  function pmSyncMomoProvider() {
+    const selected = document.querySelector('input[name="momoProvider"]:checked')?.value;
+    document.querySelectorAll('.momo-prov-card').forEach(card => {
+      const isActive = card.closest('label').querySelector('input').value === selected;
+      card.classList.toggle('border-safari-green', isActive);
+      card.classList.toggle('bg-primary-fixed/10', isActive);
+      card.classList.toggle('border-outline-variant', !isActive);
+      card.querySelector('p')?.classList.toggle('text-primary', isActive);
+      card.querySelector('p')?.classList.toggle('text-on-surface-variant', !isActive);
+    });
+  }
+
+  // Keep momo provider cards reactive
+  document.querySelectorAll('input[name="momoProvider"]').forEach(r =>
+    r.addEventListener('change', pmSyncMomoProvider));
+  document.querySelectorAll('input[name="pmType"]').forEach(r =>
+    r.addEventListener('change', pmToggleFields));
+
+  // ── Save (add or update) ────────────────────────────────────────
+  async function savePayoutMethod(btn) {
+    const tok = localStorage.getItem('access_token');
+    if (!tok) return;
+
+    const isMomo   = document.querySelector('input[name="pmType"]:checked')?.value === 'momo';
+    const isPrimary = document.getElementById('pmSetPrimary').checked;
+    const alertEl   = document.getElementById('pmModalAlert');
+    alertEl.classList.add('hidden');
+
+    let payload = { method_type: isMomo ? 'momo' : 'bank', is_primary: isPrimary };
+
+    if (isMomo) {
+      const phone = document.getElementById('pmMomoPhone').value.trim();
+      const name  = document.getElementById('pmMomoName').value.trim();
+      const prov  = document.querySelector('input[name="momoProvider"]:checked')?.value || 'mtn';
+      if (!phone || !name) {
+        alertEl.textContent = 'Phone number and account name are required.';
+        alertEl.className   = 'p-4 rounded-xl text-sm font-medium bg-error-container text-error';
+        alertEl.classList.remove('hidden');
+        return;
+      }
+      Object.assign(payload, { provider: prov, phone_number: phone, account_name: name });
+    } else {
+      const bank    = document.getElementById('pmBankName').value.trim();
+      const accName = document.getElementById('pmBankAccName').value.trim();
+      const accNum  = document.getElementById('pmBankAccNum').value.trim();
+      const branch  = document.getElementById('pmBankBranch').value.trim();
+      if (!bank || !accName || !accNum) {
+        alertEl.textContent = 'Bank name, account name and account number are required.';
+        alertEl.className   = 'p-4 rounded-xl text-sm font-medium bg-error-container text-error';
+        alertEl.classList.remove('hidden');
+        return;
+      }
+      Object.assign(payload, { bank_name: bank, account_name: accName, account_number: accNum, branch });
+    }
+
+    // Busy state
+    btn.disabled = true;
+    document.getElementById('pmSaveBtnText').textContent = 'Saving…';
+
+    try {
+      const url    = _editPayoutId
+        ? `${API}/owners/me/payout-methods/${_editPayoutId}`
+        : `${API}/owners/me/payout-methods`;
+      const method = _editPayoutId ? 'PATCH' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { Authorization: `Bearer ${tok}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        closePayoutModal();
+        spToast(_editPayoutId ? 'Payout method updated.' : 'Payout method added.');
+        await loadPayoutMethods();
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alertEl.textContent = err.detail || 'Save failed. Please try again.';
+        alertEl.className   = 'p-4 rounded-xl text-sm font-medium bg-error-container text-error';
+        alertEl.classList.remove('hidden');
+      }
+    } catch (_) {
+      alertEl.textContent = 'Network error. Please check your connection.';
+      alertEl.className   = 'p-4 rounded-xl text-sm font-medium bg-error-container text-error';
+      alertEl.classList.remove('hidden');
+    } finally {
+      btn.disabled = false;
+      document.getElementById('pmSaveBtnText').textContent = _editPayoutId ? 'Save Changes' : 'Save Method';
+    }
+  }
+
+  // ── Set as primary ──────────────────────────────────────────────
+  async function setPrimaryPayout(id) {
+    const tok = localStorage.getItem('access_token');
+    if (!tok) return;
+    try {
+      const res = await fetch(`${API}/owners/me/payout-methods/${id}/set-primary`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${tok}` },
+      });
+      if (res.ok) {
+        spToast('Primary payout method updated.');
+        await loadPayoutMethods();
+      } else {
+        spToast('Could not update primary method.', false);
+      }
+    } catch (_) {
+      spToast('Network error.', false);
+    }
+  }
+
+  // ── Delete ──────────────────────────────────────────────────────
+  async function deletePayoutMethod(id) {
+    const m = _payoutMethods.find(x => x.id === id);
+    if (!confirm(`Remove this payout method (${m?.bank_name || m?.provider || 'method'})?`)) return;
+    const tok = localStorage.getItem('access_token');
+    if (!tok) return;
+    try {
+      const res = await fetch(`${API}/owners/me/payout-methods/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${tok}` },
+      });
+      if (res.ok || res.status === 204) {
+        spToast('Payout method removed.');
+        await loadPayoutMethods();
+      } else {
+        spToast('Could not remove method.', false);
+      }
+    } catch (_) {
+      spToast('Network error.', false);
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // CHARTS  –  Earnings Line + Bookings Bar (Chart.js)
+  // ═══════════════════════════════════════════════════════════════
+
+  let _earningsChart = null;
+  let _bookingsChart = null;
+  let _chartPeriod   = 'daily';
+  let _bkChartPeriod = 'weekly';
+
+  // Aggregate bookings into labelled buckets
+  function aggregateByPeriod(bookings, period) {
+    const now   = new Date();
+    const buckets = {};
+
+    const key = (d) => {
+      if (period === 'daily') {
+        return d.toISOString().slice(0, 10);
+      } else if (period === 'weekly') {
+        const start = new Date(d);
+        start.setDate(d.getDate() - d.getDay());
+        return start.toISOString().slice(0, 10);
+      } else if (period === 'monthly') {
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+      } else {
+        return String(d.getFullYear());
+      }
+    };
+
+    // Pre-fill last N buckets so chart never shows empty
+    const n = period === 'daily' ? 14 : period === 'weekly' ? 12 : period === 'monthly' ? 12 : 5;
+    for (let i = n - 1; i >= 0; i--) {
+      const d = new Date(now);
+      if (period === 'daily')        d.setDate(now.getDate() - i);
+      else if (period === 'weekly')  d.setDate(now.getDate() - i * 7);
+      else if (period === 'monthly') d.setMonth(now.getMonth() - i);
+      else                           d.setFullYear(now.getFullYear() - i);
+      buckets[key(d)] = { label: fmtBucketLabel(d, period), earn: 0, count: 0 };
+    }
+
+    bookings.forEach(b => {
+      if (!b.start_datetime) return;
+      const d = new Date(b.start_datetime);
+      const k = key(d);
+      if (!buckets[k]) return;
+      buckets[k].earn  += parseFloat(b.amount_usd || 0) * 3750 * (1 - COMMISSION_RATE);
+      buckets[k].count += 1;
+    });
+
+    const sorted = Object.keys(buckets).sort();
+    return {
+      labels: sorted.map(k => buckets[k].label),
+      earn:   sorted.map(k => Math.round(buckets[k].earn)),
+      count:  sorted.map(k => buckets[k].count),
+    };
+  }
+
+  function fmtBucketLabel(d, period) {
+    if (period === 'daily')   return d.toLocaleDateString('en-UG', {day:'numeric', month:'short'});
+    if (period === 'weekly')  return 'Wk ' + d.toLocaleDateString('en-UG', {day:'numeric', month:'short'});
+    if (period === 'monthly') return d.toLocaleDateString('en-UG', {month:'short', year:'2-digit'});
+    return String(d.getFullYear());
+  }
+
+  function buildEarningsChart(data) {
+    const ctx = document.getElementById('earningsChartCanvas');
+    if (!ctx) return;
+    if (_earningsChart) _earningsChart.destroy();
+
+    const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 260);
+    gradient.addColorStop(0, 'rgba(45,90,39,0.25)');
+    gradient.addColorStop(1, 'rgba(45,90,39,0.00)');
+
+    _earningsChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data.labels,
+        datasets: [{
+          label: 'Net Earnings (UGX)',
+          data: data.earn,
+          borderColor: '#2D5A27',
+          backgroundColor: gradient,
+          borderWidth: 2.5,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointBackgroundColor: '#2D5A27',
+          tension: 0.4,
+          fill: true,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => 'UGX ' + ctx.parsed.y.toLocaleString()
+            }
+          }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+          y: {
+            grid: { color: 'rgba(0,0,0,0.04)' },
+            ticks: {
+              font: { size: 11 },
+              callback: v => v >= 1000000 ? (v/1000000).toFixed(1)+'M' : v >= 1000 ? (v/1000).toFixed(0)+'K' : v
+            }
+          }
+        }
+      }
+    });
+  }
+
+  function buildBookingsChart(data) {
+    const ctx = document.getElementById('bookingsChartCanvas');
+    if (!ctx) return;
+    if (_bookingsChart) _bookingsChart.destroy();
+
+    _bookingsChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: data.labels,
+        datasets: [{
+          label: 'Bookings',
+          data: data.count,
+          backgroundColor: data.count.map((_, i) =>
+            i === data.count.indexOf(Math.max(...data.count))
+              ? '#F9B115' : 'rgba(45,90,39,0.25)'
+          ),
+          borderColor: '#2D5A27',
+          borderWidth: 1.5,
+          borderRadius: 6,
+          borderSkipped: false,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+          y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11 }, stepSize: 1 } }
+        }
+      }
+    });
+  }
+
+  function refreshCharts() {
+    if (!_allOwnerBookings || !_allOwnerBookings.length) return;
+    const eData = aggregateByPeriod(_allOwnerBookings, _chartPeriod);
+    const bData = aggregateByPeriod(_allOwnerBookings, _bkChartPeriod);
+    buildEarningsChart(eData);
+    buildBookingsChart(bData);
+  }
+
+  function setChartPeriod(p) {
+    _chartPeriod = p;
+    document.querySelectorAll('.chart-period-btn').forEach(b => {
+      const active = b.id === `cp-${p}`;
+      b.className = active
+        ? 'chart-period-btn active px-3 py-1.5 rounded-lg font-label-sm text-label-sm bg-white shadow text-primary transition-all'
+        : 'chart-period-btn px-3 py-1.5 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all';
+    });
+    const data = aggregateByPeriod(_allOwnerBookings, p);
+    buildEarningsChart(data);
+  }
+
+  function setBkChartPeriod(p) {
+    _bkChartPeriod = p;
+    document.querySelectorAll('.bk-period-btn').forEach(b => {
+      const active = b.id === `bkcp-${p}`;
+      b.className = active
+        ? 'bk-period-btn active px-3 py-1.5 rounded-lg font-label-sm text-label-sm bg-white shadow text-primary transition-all'
+        : 'bk-period-btn px-3 py-1.5 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all';
+    });
+    const data = aggregateByPeriod(_allOwnerBookings, p);
+    buildBookingsChart(data);
+  }
+
+  // Rebuild charts when booking data arrives from loadOwnerBookings
+  const _origLoadOwnerBookings = loadOwnerBookings;
+  document.addEventListener('kv:bookingsLoaded', refreshCharts);
+
+  // Also hook into existing loadOwnerBookings completion — patch after its fetch completes
+  // Charts are triggered by watching _allOwnerBookings via a post-load hook below
+  // (we attach in loadOwnerEarnings already; overview loads lazily via overview section)
+
+  // ═══════════════════════════════════════════════════════════════
+  // COMPLIANCE DOCS  –  upload, preview, validate, submit
+  // ═══════════════════════════════════════════════════════════════
+
+  const DOC_TYPES = ['permit', 'insurance', 'inspection', 'conduct'];
+  const _docFiles = {};   // { permit: File|null, ... }
+  DOC_TYPES.forEach(t => _docFiles[t] = null);
+
+  function docDragOver(e, zone) {
+    e.preventDefault();
+    zone.classList.add('border-safari-green', 'bg-primary-fixed/10');
+  }
+  function docDragLeave(zone) {
+    zone.classList.remove('border-safari-green', 'bg-primary-fixed/10');
+  }
+  function docDrop(e, zone, inputId, docType) {
+    e.preventDefault();
+    docDragLeave(zone);
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    const inp = document.getElementById(inputId);
+    const dt  = new DataTransfer();
+    dt.items.add(file);
+    inp.files = dt.files;
+    docPreviewWithFile(file, docType);
+  }
+
+  function docPreview(input, docType) {
+    if (!input.files[0]) return;
+    docPreviewWithFile(input.files[0], docType);
+  }
+
+  function docPreviewWithFile(file, docType) {
+    if (file.size > 10 * 1024 * 1024) {
+      spToast('File too large — max 10 MB', false);
+      return;
+    }
+    _docFiles[docType] = file;
+    const prev = document.getElementById(`prev-${docType}`);
+    const isImg = file.type.startsWith('image/');
+
+    if (isImg) {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        prev.innerHTML = `
+          <img src="${ev.target.result}" class="mx-auto max-h-32 rounded-xl object-contain mb-2">
+          <p class="font-label-sm text-label-sm text-safari-green flex items-center justify-center gap-1">
+            <span class="material-symbols-outlined text-[16px]" style="font-variation-settings:'FILL' 1;">check_circle</span>${file.name}
+          </p>`;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      prev.innerHTML = `
+        <span class="material-symbols-outlined text-[40px] text-primary mb-2 block">picture_as_pdf</span>
+        <p class="font-label-sm text-label-sm text-safari-green flex items-center justify-center gap-1">
+          <span class="material-symbols-outlined text-[16px]" style="font-variation-settings:'FILL' 1;">check_circle</span>${file.name}
+        </p>`;
+    }
+
+    // Update badge
+    const badge = document.getElementById(`doc-badge-${docType}`);
+    if (badge) {
+      badge.textContent = 'Ready';
+      badge.className = 'px-2.5 py-1 rounded-full font-label-sm text-label-sm bg-primary-fixed/40 text-safari-green font-bold uppercase';
+    }
+    updateDocProgress();
+  }
+
+  function updateDocProgress() {
+    const uploaded = DOC_TYPES.filter(t => _docFiles[t] !== null).length;
+    const pct      = (uploaded / DOC_TYPES.length) * 100;
+    document.getElementById('docUploadCount').textContent = uploaded;
+    document.getElementById('docProgressBar').style.width  = pct + '%';
+    document.getElementById('docProgressBar').style.backgroundColor =
+      uploaded === DOC_TYPES.length ? '#2D5A27' : '#F9B115';
+  }
+
+  async function loadComplianceDocs() {
+    const tok = localStorage.getItem('access_token');
+    if (!tok) return;
+    try {
+      const res = await fetch(`${API}/owners/me/compliance-docs`, {
+        headers: { Authorization: `Bearer ${tok}` }
+      });
+      if (!res.ok) return;
+      const docs = await res.json();
+
+      docs.forEach(d => {
+        const key = {
+          driving_permit:        'permit',
+          third_party_insurance: 'insurance',
+          inspection_certificate:'inspection',
+          good_conduct:          'conduct',
+        }[d.doc_type];
+        if (!key) return;
+
+        const badge = document.getElementById(`doc-badge-${key}`);
+        if (!badge) return;
+
+        const statusMap = {
+          pending:  { text:'Under Review', cls:'bg-secondary-fixed/40 text-status-pending' },
+          approved: { text:'Approved',     cls:'bg-primary-fixed/40 text-safari-green' },
+          rejected: { text:'Rejected',     cls:'bg-error-container text-error' },
+        };
+        const s = statusMap[d.status] || statusMap.pending;
+        badge.textContent = s.text;
+        badge.className   = `px-2.5 py-1 rounded-full font-label-sm text-label-sm ${s.cls} font-bold uppercase`;
+
+        if (d.doc_url) {
+          const prev = document.getElementById(`prev-${key}`);
+          if (prev) {
+            prev.innerHTML = `
+              <span class="material-symbols-outlined text-[36px] text-safari-green mb-2 block" style="font-variation-settings:'FILL' 1;">task</span>
+              <p class="font-label-sm text-label-sm text-safari-green">Document on file · <a href="${d.doc_url}" target="_blank" class="underline">View</a></p>`;
+          }
+        }
+      });
+
+      // Show banner if any rejected
+      const rejected = docs.filter(d => d.status === 'rejected');
+      const banner   = document.getElementById('complianceBanner');
+      if (banner && rejected.length > 0) {
+        banner.className = 'mb-8 rounded-2xl p-5 flex items-start gap-4 bg-error-container text-error';
+        banner.innerHTML = `
+          <span class="material-symbols-outlined text-[28px] flex-shrink-0" style="font-variation-settings:'FILL' 1;">error</span>
+          <div>
+            <p class="font-label-lg text-label-lg font-bold">Action Required</p>
+            <p class="text-[14px] mt-1">${rejected.length} document(s) were rejected. Please re-upload with corrected files.</p>
+          </div>`;
+        banner.classList.remove('hidden');
+      } else if (banner && docs.length === DOC_TYPES.length && docs.every(d => d.status === 'approved')) {
+        banner.className = 'mb-8 rounded-2xl p-5 flex items-start gap-4 bg-primary-fixed/30 text-safari-green';
+        banner.innerHTML = `
+          <span class="material-symbols-outlined text-[28px] flex-shrink-0" style="font-variation-settings:'FILL' 1;">verified</span>
+          <div>
+            <p class="font-label-lg text-label-lg font-bold">All Documents Approved</p>
+            <p class="text-[14px] mt-1">Your compliance documents are verified. Your vehicles are eligible for listing.</p>
+          </div>`;
+        banner.classList.remove('hidden');
+      }
+    } catch (_) {}
+  }
+
+  async function submitAllDocuments(btn) {
+    // Validate: all 4 files must be selected
+    const missing = DOC_TYPES.filter(t => !_docFiles[t]);
+    if (missing.length > 0) {
+      spToast(`Please upload all 4 documents before submitting (missing: ${missing.join(', ')})`, false);
+      return;
+    }
+
+    // Validate: expiry fields
+    const expFields = { permit:'exp-permit', insurance:'exp-insurance', inspection:'exp-inspection', conduct:'exp-conduct' };
+    for (const [type, fieldId] of Object.entries(expFields)) {
+      if (!document.getElementById(fieldId)?.value) {
+        spToast(`Please fill in the date field for ${type}`, false);
+        return;
+      }
+    }
+
+    const tok = localStorage.getItem('access_token');
+    if (!tok) return;
+
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> Uploading…'; }
+
+    const docTypeMap = { permit:'driving_permit', insurance:'third_party_insurance', inspection:'inspection_certificate', conduct:'good_conduct_certificate' };
+    const dateFieldMap = { permit:'exp-permit', insurance:'exp-insurance', inspection:'exp-inspection', conduct:'exp-conduct' };
+    const numFieldMap  = { permit:'num-permit',  insurance:'num-insurance',  inspection:'num-inspection',  conduct:'num-conduct' };
+
+    let successCount = 0;
+    for (const key of DOC_TYPES) {
+      try {
+        const fd = new FormData();
+        fd.append('doc_type',      docTypeMap[key]);
+        fd.append('document',      _docFiles[key]);
+        fd.append('expiry_date',   document.getElementById(dateFieldMap[key])?.value || '');
+        fd.append('doc_number',    document.getElementById(numFieldMap[key])?.value  || '');
+
+        const res = await fetch(`${API}/owners/me/compliance-docs`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${tok}` },
+          body: fd,
+        });
+
+        const badge = document.getElementById(`doc-badge-${key}`);
+        if (res.ok) {
+          successCount++;
+          if (badge) {
+            badge.textContent = 'Under Review';
+            badge.className   = 'px-2.5 py-1 rounded-full font-label-sm text-label-sm bg-secondary-fixed/40 text-status-pending font-bold uppercase';
+          }
+        } else {
+          const err = await res.json().catch(() => ({}));
+          spToast(`${key}: ${err.detail || 'Upload failed'}`, false);
+          if (badge) {
+            badge.textContent = 'Failed';
+            badge.className   = 'px-2.5 py-1 rounded-full font-label-sm text-label-sm bg-error-container text-error font-bold uppercase';
+          }
+        }
+      } catch {
+        spToast(`Network error uploading ${key}`, false);
+      }
+    }
+
+    if (btn) { btn.disabled = false; btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">upload_file</span> Submit All for Review'; }
+    if (successCount === DOC_TYPES.length) {
+      spToast('All documents submitted for review!');
+      _inspLoaded = false;
+      loadComplianceDocs();
+    } else if (successCount > 0) {
+      spToast(`${successCount}/${DOC_TYPES.length} documents uploaded`);
+    }
+  }
+
+  // Pre-fetch ALL section data in parallel right after vehicles load —
+  // so every tab shows data instantly with no spinner on first click.
+  document.addEventListener('kv:vehiclesLoaded', () => {
+    // Render empty charts immediately so layout doesn't jump
+    buildEarningsChart(aggregateByPeriod([], _chartPeriod));
+    buildBookingsChart(aggregateByPeriod([], _bkChartPeriod));
+
+    // Mark all sections as loading so showSection() skips re-fetching
+    _bkLoaded = true; _earnLoaded = true; _inspLoaded = true; _spLoaded = true;
+
+    // Fire everything in parallel
+    Promise.allSettled([
+      loadOwnerBookings(),
+      loadOwnerEarnings(),
+      loadPayoutMethods(),
+      loadComplianceDocs(),
+      spLoadSettings(),
+    ]);
+  });
 </script>
 </body>
 </html>

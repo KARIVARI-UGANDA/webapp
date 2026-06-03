@@ -1,0 +1,27 @@
+{
+  "name": "karivari-webapp",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "Karivari app",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ]
+    }
+  },
+  "remoteEnv": {
+    "DATABASE_URL": "sqlite:////workspaces/webapp/karivari.db",
+    "HOST": "0.0.0.0",
+    "PORT": "8000"
+  }
+}

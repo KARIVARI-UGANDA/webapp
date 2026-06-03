@@ -3,12 +3,6 @@ from .audit import AuditLogCreate, AuditLogRead
 from .booking import BookingCreate, BookingPromotionRead, BookingRead, BookingStopRead
 from .corporate import CorporateAccountCreate, CorporateAccountRead
 from .dispute import DisputeCreate, DisputeEvidenceCreate, DisputeEvidenceRead, DisputeRead
-from .driver import (
-    DriverProfileCreate,
-    DriverProfileRead,
-    DriverVehicleAssignmentCreate,
-    DriverVehicleAssignmentRead,
-)
 from .emergency import EmergencyAlertCreate, EmergencyAlertRead
 from .notification import NotificationCreate, NotificationRead
 from .payment import PaymentCreate, PaymentRead, PayoutCreate, PayoutRead
@@ -45,10 +39,6 @@ __all__ = [
     "DisputeEvidenceCreate",
     "DisputeEvidenceRead",
     "DisputeRead",
-    "DriverProfileCreate",
-    "DriverProfileRead",
-    "DriverVehicleAssignmentCreate",
-    "DriverVehicleAssignmentRead",
     "EmergencyAlertCreate",
     "EmergencyAlertRead",
     "NotificationCreate",

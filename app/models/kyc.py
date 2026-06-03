@@ -2,8 +2,8 @@ from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String, Tex
 from .base import Base
 
 
-class TouristKYC(Base):
-    __tablename__ = "tourist_kyc"
+class CustomerKYC(Base):
+    __tablename__ = "customer_kyc"
 
     user_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
     document_type = Column(String)           # 'passport' | 'national_id'

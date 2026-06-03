@@ -28,7 +28,6 @@ class VehicleSubmit(BaseModel):
     is_4wd: bool = False
     description: Optional[str] = None
     base_daily_rate_ugx: int          # primary rate in UGX
-    rate_with_driver_ugx: Optional[int] = None
     service_area: Optional[str] = None  # e.g. "Kampala, Entebbe"
 
     @field_validator("vehicle_type")
@@ -77,7 +76,6 @@ class VehicleUpdate(BaseModel):
     is_4wd: Optional[bool] = None
     description: Optional[str] = None
     base_daily_rate_ugx: Optional[int] = None
-    rate_with_driver_ugx: Optional[int] = None
     service_area: Optional[str] = None
 
 
@@ -113,7 +111,6 @@ class VehicleRead(BaseModel):
     is_4wd: bool
     description: Optional[str] = None
     base_daily_rate_ugx: int
-    rate_with_driver_ugx: Optional[int] = None
     status: str
     rejection_reason: Optional[str] = None
     service_area: Optional[str] = None

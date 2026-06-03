@@ -116,7 +116,6 @@
       <div class="flex gap-2 mb-8 flex-wrap">
         <button onclick="showTab('profile')"   class="tab-btn active px-5 py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Profile</button>
         <button onclick="showTab('documents')" class="tab-btn px-5 py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Documents</button>
-        <button id="driverTab" onclick="showTab('driver')" class="tab-btn hidden px-5 py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Driver Profile</button>
         <button onclick="showTab('security')"  class="tab-btn px-5 py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Security</button>
       </div>
 
@@ -247,111 +246,6 @@
         </div>
       </div>
 
-      <!-- ── Tab: Driver Profile ──────────────────────────────────────────── -->
-      <div id="tab-driver" class="space-y-6 hidden">
-
-        <!-- Verification status -->
-        <div id="driverStatusBanner" class="hidden rounded-2xl p-5 flex items-center gap-4"></div>
-
-        <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-6">
-          <h2 class="font-headline-md text-headline-md">Driving Licence</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Licence Number *</label>
-              <input id="dLicNumber" type="text" class="field" placeholder="DL-123456"/>
-            </div>
-            <div>
-              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Licence Class *</label>
-              <select id="dLicClass" class="field">
-                <option value="B">Class B – Private car</option>
-                <option value="C">Class C – Medium truck</option>
-                <option value="D">Class D – Bus / Minibus</option>
-                <option value="E">Class E – Heavy truck</option>
-                <option value="CM">Class CM – Motorcycle</option>
-              </select>
-            </div>
-            <div>
-              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Expiry Date *</label>
-              <input id="dLicExpiry" type="date" class="field"/>
-            </div>
-            <div>
-              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Years of Experience</label>
-              <input id="dYears" type="number" min="0" max="50" class="field" placeholder="e.g. 5"/>
-            </div>
-          </div>
-
-          <!-- Licence upload -->
-          <div>
-            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Licence Document *</label>
-            <div class="drop-zone rounded-2xl p-8 text-center cursor-pointer" onclick="document.getElementById('licInput').click()" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'licence')">
-              <input type="file" id="licInput" accept="image/*,application/pdf" class="hidden" onchange="previewDoc(this,'licence')"/>
-              <div id="licPreview">
-                <span class="material-symbols-outlined text-[48px] text-on-surface-variant block mb-2">badge</span>
-                <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag licence image / PDF</p>
-                <p class="font-label-sm text-label-sm text-outline mt-1">JPEG, PNG, WebP, PDF · max 10 MB</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-6">
-          <h2 class="font-headline-md text-headline-md">Additional Certifications</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Police Clearance Certificate</label>
-              <div class="drop-zone rounded-2xl p-6 text-center cursor-pointer" onclick="document.getElementById('policeInput').click()" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'police')">
-                <input type="file" id="policeInput" accept="image/*,application/pdf" class="hidden" onchange="previewDoc(this,'police')"/>
-                <div id="policePreview">
-                  <span class="material-symbols-outlined text-[36px] text-on-surface-variant block mb-1">policy</span>
-                  <p class="font-label-sm text-label-sm text-on-surface-variant">Upload clearance certificate</p>
-                </div>
-              </div>
-              <div class="mt-2">
-                <label class="font-label-sm text-label-sm text-on-surface-variant">Clearance Expiry</label>
-                <input id="dPoliceExp" type="date" class="field mt-1"/>
-              </div>
-            </div>
-            <div>
-              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">First Aid Certificate</label>
-              <div class="drop-zone rounded-2xl p-6 text-center cursor-pointer" onclick="document.getElementById('firstAidInput').click()" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'firstaid')">
-                <input type="file" id="firstAidInput" accept="image/*,application/pdf" class="hidden" onchange="previewDoc(this,'firstaid')"/>
-                <div id="firstaidPreview">
-                  <span class="material-symbols-outlined text-[36px] text-on-surface-variant block mb-1">emergency</span>
-                  <p class="font-label-sm text-label-sm text-on-surface-variant">Upload first aid certificate</p>
-                </div>
-              </div>
-              <div class="mt-3 flex items-center gap-2">
-                <input type="checkbox" id="dFirstAid" class="w-4 h-4 text-safari-green rounded"/>
-                <label for="dFirstAid" class="font-label-sm text-label-sm text-on-surface-variant">I hold a valid first aid certificate</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-5">
-          <h2 class="font-headline-md text-headline-md">Profile &amp; Bio</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Languages Spoken</label>
-              <input id="dLangs" type="text" class="field" placeholder="English, Swahili, French"/>
-            </div>
-            <div>
-              <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Specialties</label>
-              <input id="dSpecialties" type="text" class="field" placeholder="Wildlife, Photography, 4×4 off-road"/>
-            </div>
-          </div>
-          <div>
-            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Bio</label>
-            <textarea id="dBio" rows="4" class="field resize-none" placeholder="Tell travellers a bit about yourself…"></textarea>
-          </div>
-          <div class="flex justify-end">
-            <button onclick="saveDriverProfile()" class="bg-safari-green text-white px-8 py-3 rounded-xl font-label-lg text-label-lg hover:opacity-90 transition-all active:scale-95 flex items-center gap-2">
-              <span class="material-symbols-outlined text-[18px]">save</span> Save Driver Profile
-            </button>
-          </div>
-        </div>
-      </div>
-
       <!-- ── Tab: Security ───────────────────────────────────────────────── -->
       <div id="tab-security" class="space-y-6 hidden">
         <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-6">
@@ -464,20 +358,6 @@ const NAV = {
     {href:'/my-bookings',   icon:'calendar_month', label:'My Bookings'},
     {href:'/my-payments',   icon:'payments',       label:'Payments'},
     {href:'/support',       icon:'contact_support',label:'Support'},
-    {href:'/settings',      icon:'settings',       label:'Settings', active:true},
-  ],
-  tourist: [
-    {href:'/dashboard',     icon:'dashboard',      label:'Dashboard'},
-    {href:'/vehicles',      icon:'directions_car', label:'Browse Cars'},
-    {href:'/my-bookings',   icon:'calendar_month', label:'My Bookings'},
-    {href:'/my-payments',   icon:'payments',       label:'Payments'},
-    {href:'/support',       icon:'contact_support',label:'Support'},
-    {href:'/settings',      icon:'settings',       label:'Settings', active:true},
-  ],
-  driver: [
-    {href:'/driver/dashboard',icon:'dashboard',    label:'Dashboard'},
-    {href:'#',              icon:'map',            label:'My Trips'},
-    {href:'#',              icon:'school',         label:'Training'},
     {href:'/settings',      icon:'settings',       label:'Settings', active:true},
   ],
   owner: [
@@ -640,53 +520,6 @@ function showKYCBanner(status) {
   banner.classList.remove('hidden');
 }
 
-// ── Save Driver Profile ────────────────────────────────────────────────────────
-async function saveDriverProfile() {
-  const btn = event.currentTarget;
-  const licNum  = document.getElementById('dLicNumber').value.trim();
-  const licExp  = document.getElementById('dLicExpiry').value;
-  const licClass = document.getElementById('dLicClass').value;
-  if (!licNum || !licExp) { toast('Licence number and expiry are required', false); return; }
-  if (!uploadedUrls['licence'] && !window._existingLicUrl) { toast('Please upload your licence document', false); return; }
-
-  setBusy(btn, true);
-  try {
-    const payload = {
-      license_class: licClass,
-      license_expiry: licExp,
-      license_doc_url: uploadedUrls['licence'] || window._existingLicUrl,
-      years_experience: parseInt(document.getElementById('dYears').value)||undefined,
-      languages_spoken: document.getElementById('dLangs').value.trim()||undefined,
-      specialties: document.getElementById('dSpecialties').value.trim()||undefined,
-      bio: document.getElementById('dBio').value.trim()||undefined,
-      has_first_aid: document.getElementById('dFirstAid').checked,
-      police_clearance_url: uploadedUrls['police']||undefined,
-      police_clearance_exp: document.getElementById('dPoliceExp').value||undefined,
-      first_aid_cert_url: uploadedUrls['firstaid']||undefined,
-    };
-
-    // Try PATCH first, fall back to POST if 404
-    let res = await fetch(`${API}/drivers/me/profile`, {
-      method:'PATCH',
-      headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (res.status === 404) {
-      // Profile doesn't exist yet — create it
-      res = await fetch(`${API}/drivers/me/profile`, {
-        method:'POST',
-        headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
-        body: JSON.stringify({ ...payload, license_number: licNum }),
-      });
-    }
-
-    if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Save failed'); }
-    toast('Driver profile saved');
-  } catch(e) { toast(e.message, false); }
-  finally { setBusy(btn, false); }
-}
-
 // ── Change password ────────────────────────────────────────────────────────────
 async function changePassword() {
   const cur = document.getElementById('pwCurrent').value;
@@ -751,14 +584,8 @@ async function load() {
 
     buildSidebar(user.role);
 
-    // Show driver tab only for drivers
-    if (user.role === 'driver') {
-      document.getElementById('driverTab').classList.remove('hidden');
-      loadDriverProfile();
-    }
-
-    // Load KYC status for customer/tourist
-    if (['customer','tourist'].includes(user.role)) {
+    // Load KYC status for customers
+    if (user.role === 'customer') {
       try {
         const kRes = await fetch(`${API}/kyc/me`, auth());
         if (kRes.ok) {
@@ -789,41 +616,6 @@ async function load() {
   }
 }
 
-async function loadDriverProfile() {
-  try {
-    const res = await fetch(`${API}/drivers/me/profile`, auth());
-    if (!res.ok) return;
-    const p = await res.json();
-    document.getElementById('dLicNumber').value   = p.license_number || '';
-    document.getElementById('dLicClass').value    = p.license_class  || 'B';
-    document.getElementById('dLicExpiry').value   = p.license_expiry || '';
-    document.getElementById('dYears').value       = p.years_experience || '';
-    document.getElementById('dLangs').value       = p.languages_spoken || '';
-    document.getElementById('dSpecialties').value = p.specialties || '';
-    document.getElementById('dBio').value         = p.bio || '';
-    document.getElementById('dFirstAid').checked  = !!p.has_first_aid;
-    document.getElementById('dPoliceExp').value   = p.police_clearance_exp || '';
-
-    if (p.license_doc_url) {
-      window._existingLicUrl = p.license_doc_url;
-      document.getElementById('licPreview').innerHTML=`<img src="${p.license_doc_url}" class="mx-auto max-h-32 rounded-xl object-contain" onerror="this.style.display='none'"/><span class="material-symbols-outlined text-safari-green text-[20px]" style="font-variation-settings:'FILL' 1;">check_circle</span><p class="font-label-sm text-label-sm text-safari-green mt-1">Current licence on file</p>`;
-    }
-
-    // Verification status banner
-    const cfg = {
-      pending:  { cls:'bg-secondary-fixed text-secondary',  icon:'pending',      msg:'Your driver profile is under review. This may take 2–3 business days.' },
-      verified: { cls:'bg-primary-fixed text-safari-green', icon:'verified_user',msg:'Your driver profile is verified. You can accept trip assignments.' },
-      rejected: { cls:'bg-error-container text-error',      icon:'error',        msg:'Your driver profile was rejected. Update your details and resubmit.' },
-    };
-    const c = cfg[p.verification_status];
-    if (c) {
-      const b = document.getElementById('driverStatusBanner');
-      b.className = `rounded-2xl p-5 flex items-center gap-4 ${c.cls}`;
-      b.innerHTML = `<span class="material-symbols-outlined text-[32px]" style="font-variation-settings:'FILL' 1;">${c.icon}</span><p class="font-label-lg text-label-lg">${c.msg}</p>`;
-      b.classList.remove('hidden');
-    }
-  } catch {}
-}
 
 load();
 </script>
