@@ -262,7 +262,7 @@
 </div>
 </div>
 <div class="max-w-container-max mx-auto border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-<p class="text-surface-variant font-label-sm text-label-sm">Â© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+<p class="text-surface-variant font-label-sm text-label-sm">© 2026 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
 <div class="flex gap-6">
 <a class="text-surface-variant hover:text-ugandan-sun" href="#"><span class="material-symbols-outlined">public</span></a>
 <a class="text-surface-variant hover:text-ugandan-sun" href="#"><span class="material-symbols-outlined">mail</span></a>
@@ -276,7 +276,7 @@
 <span class="font-label-lg text-label-lg pr-2">Need Help?</span>
 </button>
 <script>
-// â”€â”€ Nav auth state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Nav auth state ────────────────────────────────────────────────────────────
 (function() {
   const token = localStorage.getItem('access_token');
   const auth  = document.getElementById('authButtons');
@@ -436,7 +436,7 @@ function vehicleCardHTML(v) {
       <div class="flex justify-between items-start mb-2">
         <div>
           <h3 class="font-headline-md text-headline-md text-on-surface">${v.make} ${v.model}</h3>
-          <p class="text-on-surface-variant font-label-sm text-label-sm mt-0.5">${v.year} Â· ${v.vehicle_type} Â· ${v.service_area || 'Uganda'}</p>
+          <p class="text-on-surface-variant font-label-sm text-label-sm mt-0.5">${v.year} · ${v.vehicle_type} · ${v.service_area || 'Uganda'}</p>
         </div>
       </div>
       <div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">${features}</div>
@@ -482,7 +482,7 @@ document.getElementById('sortSelect').addEventListener('change', () => renderGri
     }
   } catch {
     document.getElementById('vehicleGrid').innerHTML =
-      '<div class="col-span-2 text-center py-16 text-on-surface-variant">Network error â€” please refresh.</div>';
+      '<div class="col-span-2 text-center py-16 text-on-surface-variant">Network error — please refresh.</div>';
     document.getElementById('vehicleCount').textContent = '';
   }
 })();

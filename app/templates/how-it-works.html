@@ -43,7 +43,7 @@
       vertical-align: middle;
     }
 
-    /* â”€â”€ Hero â”€â”€ */
+    /* ── Hero ── */
     .hiw-hero {
       background: linear-gradient(155deg, #071505 0%, #0f2a0d 20%, #1a4a14 50%, #2d7028 80%, #154212 100%);
       min-height: 480px;
@@ -69,7 +69,7 @@
       background: radial-gradient(circle, rgba(45,112,40,0.25) 0%, transparent 70%);
     }
 
-    /* â”€â”€ Step cards â”€â”€ */
+    /* ── Step cards ── */
     .step-card {
       background: white;
       border-radius: 1.25rem;
@@ -111,7 +111,7 @@
       color: #c2c9bb;
     }
 
-    /* â”€â”€ Owner steps â”€â”€ */
+    /* ── Owner steps ── */
     .owner-step {
       display: flex;
       gap: 1.5rem;
@@ -135,7 +135,7 @@
       font-family: 'Montserrat', sans-serif;
     }
 
-    /* â”€â”€ Trust pillars â”€â”€ */
+    /* ── Trust pillars ── */
     .trust-card {
       text-align: center;
       padding: 2rem 1.5rem;
@@ -152,7 +152,7 @@
       margin: 0 auto 1rem;
     }
 
-    /* â”€â”€ FAQ â”€â”€ */
+    /* ── FAQ ── */
     .faq-item {
       border: 1px solid #e2e2e5;
       border-radius: 0.75rem;
@@ -190,7 +190,7 @@
     .faq-icon { transition: transform 0.3s; flex-shrink: 0; }
     .faq-icon.open { transform: rotate(45deg); }
 
-    /* â”€â”€ Timeline connector line â”€â”€ */
+    /* ── Timeline connector line ── */
     .timeline-line {
       width: 2px;
       flex: 1;
@@ -199,7 +199,7 @@
       margin: 0 auto;
     }
 
-    /* â”€â”€ Comparison table â”€â”€ */
+    /* ── Comparison table ── */
     .compare-table th { background: #f3f3f6; font-weight: 700; }
     .compare-table td, .compare-table th { vertical-align: middle; padding: 0.875rem 1.25rem; }
     .check { color: #15803D; }
@@ -208,7 +208,7 @@
 </head>
 <body>
 
-<!-- â”€â”€ Navbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ── Navbar ────────────────────────────────────────────────────────────── -->
 <nav class="sticky top-0 w-full z-50 flex justify-between items-center px-4 md:px-12 py-4 max-w-[1280px] mx-auto" style="background:rgba(249,249,252,0.85);backdrop-filter:blur(8px);box-shadow:0 1px 3px rgba(0,0,0,0.05);">
   <div class="flex items-center gap-8">
     <a href="/" class="flex items-center gap-2 font-bold text-[20px] no-underline" style="color:#2D5A27;">
@@ -237,7 +237,7 @@
 
 <main>
 
-  <!-- â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
   <section class="hiw-hero">
     <div class="container position-relative" style="z-index:2;">
       <div class="row justify-content-center text-center">
@@ -247,7 +247,7 @@
             How Kari Vari Works
           </h1>
           <p class="mb-5" style="color:rgba(255,255,255,0.75);font-size:1.125rem;max-width:580px;margin:0 auto;">
-            From browsing verified vehicles to picking up the keys â€” a simple, secure process designed around your journey across Uganda.
+            From browsing verified vehicles to picking up the keys — a simple, secure process designed around your journey across Uganda.
           </p>
           <div class="d-flex flex-wrap gap-3 justify-content-center">
             <a href="/vehicles" class="btn btn-accent px-5 py-3 fw-bold" style="font-size:0.95rem;">Browse Vehicles</a>
@@ -258,13 +258,13 @@
     </div>
   </section>
 
-  <!-- â”€â”€ Steps â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- ── Steps ────────────────────────────────────────────────────────────── -->
   <section class="container py-5" style="max-width:1100px;">
     <div>
       <div class="text-center mb-5">
         <span class="badge-soft-success">3 EASY STEPS</span>
         <h2 class="fw-bold mt-2" style="font-family:'Montserrat',sans-serif;font-size:2rem;">Rent a Vehicle in Minutes</h2>
-        <p class="text-secondary mt-2">Everything from search to keys â€” handled securely on one platform.</p>
+        <p class="text-secondary mt-2">Everything from search to keys — handled securely on one platform.</p>
       </div>
 
       <!-- Step cards row -->
@@ -279,8 +279,8 @@
             <h4 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Browse & Compare</h4>
             <p class="text-secondary mb-3">Filter by vehicle type, location, dates, and budget. Every listing is verified by our team before going live.</p>
             <ul class="list-unstyled small" style="color:#42493e;">
-              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>4Ã—4s, saloons, minibuses & more</li>
-              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>Real photos â€” no stock images</li>
+              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>4×4s, saloons, minibuses & more</li>
+              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>Real photos — no stock images</li>
               <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>Transparent per-day pricing</li>
             </ul>
           </div>
@@ -319,7 +319,7 @@
         </div>
       </div>
 
-      <!-- Detailed timeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+      <!-- Detailed timeline ──────────────────────────────────────────────── -->
       <div class="row align-items-start g-5 mt-4">
         <div class="col-lg-7">
           <h3 class="fw-bold mb-5" style="font-family:'Montserrat',sans-serif;">Your Journey in Detail</h3>
@@ -366,7 +366,7 @@
               </div>
               <div class="pb-4">
                 <h5 class="fw-bold mb-1">Pay Securely</h5>
-                <p class="text-secondary mb-0">Complete checkout via Mobile Money (MTN / Airtel) or card. Payment is held in escrow â€” the owner is only paid after successful pickup.</p>
+                <p class="text-secondary mb-0">Complete checkout via Mobile Money (MTN / Airtel) or card. Payment is held in escrow — the owner is only paid after successful pickup.</p>
               </div>
             </div>
 
@@ -423,7 +423,7 @@
     </div>
   </section>
 
-  <!-- â”€â”€ Trust Pillars â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- ── Trust Pillars ─────────────────────────────────────────────────────── -->
   <section class="py-5" style="background:#f3f3f6;">
     <div class="container" style="max-width:1100px;">
       <div class="text-center mb-5">
@@ -455,7 +455,7 @@
               <span class="material-symbols-outlined text-[30px]" style="color:#00695c;font-variation-settings:'FILL' 1;">support_agent</span>
             </div>
             <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">24/7 Support</h5>
-            <p class="text-secondary small mb-0">A dedicated team reachable by WhatsApp, phone, and email â€” any time, anywhere in Uganda.</p>
+            <p class="text-secondary small mb-0">A dedicated team reachable by WhatsApp, phone, and email — any time, anywhere in Uganda.</p>
           </div>
         </div>
         <div class="col-sm-6 col-lg-3">
@@ -471,7 +471,7 @@
     </div>
   </section>
 
-  <!-- â”€â”€ Comparison â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- ── Comparison ────────────────────────────────────────────────────────── -->
   <section class="container py-5" style="max-width:900px;">
     <div class="text-center mb-5">
       <span class="badge-soft-success">COMPARISON</span>
@@ -527,7 +527,7 @@
     </div>
   </section>
 
-  <!-- â”€â”€ FAQ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- ── FAQ ───────────────────────────────────────────────────────────────── -->
   <section class="py-5" style="background:#f3f3f6;">
     <div class="container" style="max-width:780px;">
       <div class="text-center mb-5">
@@ -542,7 +542,7 @@
             <span class="material-symbols-outlined faq-icon">add</span>
           </button>
           <div class="faq-body">
-            <p class="text-secondary mb-0">An international driving permit (IDP) or a valid foreign licence with an official English translation is accepted. Some owners may require a local endorsement for off-road routes â€” this is always stated on the listing.</p>
+            <p class="text-secondary mb-0">An international driving permit (IDP) or a valid foreign licence with an official English translation is accepted. Some owners may require a local endorsement for off-road routes — this is always stated on the listing.</p>
           </div>
         </div>
 
@@ -552,7 +552,7 @@
             <span class="material-symbols-outlined faq-icon">add</span>
           </button>
           <div class="faq-body">
-            <p class="text-secondary mb-0">Contact our 24/7 support line. We coordinate with the owner and our roadside partner network to get you back on the road or into a replacement vehicle within 4 hours. Towing is covered for mechanical breakdowns â€” not accidents.</p>
+            <p class="text-secondary mb-0">Contact our 24/7 support line. We coordinate with the owner and our roadside partner network to get you back on the road or into a replacement vehicle within 4 hours. Towing is covered for mechanical breakdowns — not accidents.</p>
           </div>
         </div>
 
@@ -600,7 +600,7 @@
     </div>
   </section>
 
-  <!-- â”€â”€ CTA Banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- ── CTA Banner ────────────────────────────────────────────────────────── -->
   <section class="container py-5 my-4">
     <div class="cta-banner p-5 rounded-4 text-center">
       <h2 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;font-size:2rem;">Ready to Hit the Road?</h2>
@@ -614,8 +614,8 @@
 
 </main>
 
-<!-- â”€â”€ Footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-<footer class="footer-dark pt-5 pb-4 mt-4">
+<!-- ── Footer ─────────────────────────────────────────────────────────────── -->
+<footer class="footer-dark pt-5 pb-4 mt-4" style="background-color:#111314!important;color:#e2e2e5!important;">
   <div class="container">
     <div class="row g-4">
       <div class="col-md-3">
@@ -650,14 +650,14 @@
       </div>
     </div>
     <hr class="opacity-25 mt-4">
-    <div class="text-center small opacity-50">Â© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</div>
+    <div class="text-center small opacity-50">© 2026 Kari Vari Uganda. Exploring the Pearl of Africa.</div>
   </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/shared.js?v=2"></script>
 <script>
-// â”€â”€ FAQ accordion â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── FAQ accordion ───────────────────────────────────────────────────────────
 function toggleFaq(btn) {
   const body = btn.nextElementSibling;
   const icon = btn.querySelector('.faq-icon');
@@ -673,7 +673,7 @@ function toggleFaq(btn) {
   }
 }
 
-// â”€â”€ Auth nav â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Auth nav ────────────────────────────────────────────────────────────────
 (function () {
   const token = localStorage.getItem('access_token');
   const name  = localStorage.getItem('full_name');

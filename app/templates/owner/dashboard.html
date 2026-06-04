@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <!-- Bootstrap CSS â€” needed for the Add Vehicle modal -->
+  <!-- Bootstrap CSS — needed for the Add Vehicle modal -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
@@ -91,7 +91,7 @@
     /* Image drop zone hover */
     #imageDropZone.drag-over { border-color: #2D5A27; background:#f0fdf4; }
 
-    /* â”€â”€ Vehicle card entrance â”€â”€ */
+    /* ── Vehicle card entrance ── */
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0);    }
@@ -100,7 +100,7 @@
       animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    /* â”€â”€ Shimmer skeleton â”€â”€ */
+    /* ── Shimmer skeleton ── */
     @keyframes shimmer {
       0%   { background-position: -700px 0; }
       100% { background-position:  700px 0; }
@@ -112,11 +112,11 @@
       border-radius: 0.75rem;
     }
 
-    /* â”€â”€ Override Bootstrap's .text-primary with brand green â”€â”€ */
+    /* ── Override Bootstrap's .text-primary with brand green ── */
     .text-primary { color: #154212 !important; }
     .bg-primary   { background-color: #154212 !important; }
 
-    /* â”€â”€ Fleet action button â”€â”€ */
+    /* ── Fleet action button ── */
     .fleet-action-btn {
       display: flex;
       flex-direction: column;
@@ -129,7 +129,7 @@
     .fleet-action-btn:hover { background-color: rgba(21,66,18,0.05); }
     .fleet-action-btn:active { transform: scale(0.96); }
 
-    /* â”€â”€ Spotlight card hover overlay â”€â”€ */
+    /* ── Spotlight card hover overlay ── */
     .card-spotlight { position: relative; }
     .card-spotlight::after {
       content: '';
@@ -150,7 +150,7 @@
 </head>
 <body class="bg-background text-on-background font-body-md text-body-md">
 
-<!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ───────────────────────── Sidebar ───────────────────────── -->
 <aside class="hidden md:flex h-screen w-64 fixed left-0 top-0 bg-surface-container-low shadow-md flex-col p-6 space-y-4 z-40">
   <div class="mb-8">
     <h1 class="font-headline-md text-headline-md font-bold text-primary">Kari Vari</h1>
@@ -202,7 +202,7 @@
   </div>
 </aside>
 
-<!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Main Content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ───────────────────────── Main Content ───────────────────────── -->
 <main class="md:ml-64 min-h-screen pb-24 md:pb-12">
 
 <!-- â•â•â•â•â•â•â•â•â•â•â• SECTION: Overview (Dashboard) â•â•â•â•â•â•â•â•â•â•â• -->
@@ -215,7 +215,7 @@
       <span class="inline-block px-3 py-1 mb-2 bg-ugandan-sun/20 border border-ugandan-sun/30 text-secondary rounded-full font-label-sm text-label-sm uppercase tracking-wider">
         Owner Portal
       </span>
-      <h2 class="font-headline-lg text-headline-lg text-primary">Welcome back, <span id="ownerName">â€¦</span></h2>
+      <h2 class="font-headline-lg text-headline-lg text-primary">Welcome back, <span id="ownerName">…</span></h2>
       <p class="text-on-surface-variant">Manage your fleet and track performance from here.</p>
     </div>
     <button class="bg-safari-green text-white px-6 py-3 rounded-lg flex items-center gap-2 hover:shadow-lg hover:brightness-105 transition-all"
@@ -230,7 +230,7 @@
     <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-ugandan-sun">
       <p class="text-on-surface-variant font-label-lg text-label-lg">Total Revenue</p>
       <div class="flex items-end justify-between mt-2">
-        <h3 class="font-headline-lg text-headline-lg" id="statEarnings">UGX â€”</h3>
+        <h3 class="font-headline-lg text-headline-lg" id="statEarnings">UGX —</h3>
         <span class="text-status-success font-label-sm text-label-sm flex items-center gap-1">
           <span class="material-symbols-outlined text-[16px]">trending_up</span>
         </span>
@@ -239,20 +239,20 @@
     <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-safari-green">
       <p class="text-on-surface-variant font-label-lg text-label-lg">My Vehicles</p>
       <div class="flex items-end justify-between mt-2">
-        <h3 class="font-headline-lg text-headline-lg" id="statVehicles">â€”</h3>
+        <h3 class="font-headline-lg text-headline-lg" id="statVehicles">—</h3>
         <span class="text-on-surface-variant font-label-sm text-label-sm">In fleet</span>
       </div>
     </div>
     <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-secondary-container cursor-pointer hover:shadow-md transition-shadow" onclick="showSection('bookings')">
       <p class="text-on-surface-variant font-label-lg text-label-lg">Pending Bookings</p>
       <div class="flex items-end justify-between mt-2">
-        <h3 class="font-headline-lg text-headline-lg" id="statPending">â€”</h3>
+        <h3 class="font-headline-lg text-headline-lg" id="statPending">—</h3>
         <span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-[10px] font-bold">REVIEW</span>
       </div>
     </div>
   </section>
 
-  <!-- â”€â”€ Trip Progress Tracker â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- ── Trip Progress Tracker ─────────────────────────────────────────── -->
   <section id="ownerTripTracker" class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden mb-6 hidden">
     <div class="flex items-center justify-between px-8 pt-7 pb-5 border-b border-outline-variant/20">
       <div>
@@ -390,7 +390,7 @@
           <div class="absolute inset-0 rounded-full border-[12px] border-surface-container"></div>
           <div class="absolute inset-0 rounded-full border-[12px] border-safari-green border-t-transparent border-l-transparent transform rotate-45"></div>
           <div class="absolute inset-0 flex flex-col items-center justify-center">
-            <span class="font-headline-lg text-headline-lg" id="fleetTotal">â€”</span>
+            <span class="font-headline-lg text-headline-lg" id="fleetTotal">—</span>
             <span class="text-on-surface-variant font-label-sm uppercase text-[10px]">Total Cars</span>
           </div>
         </div>
@@ -400,21 +400,21 @@
               <div class="w-3 h-3 rounded-full bg-safari-green"></div>
               <span class="font-label-lg text-label-lg">Verified</span>
             </div>
-            <span class="font-bold" id="fleetVerified">â€”</span>
+            <span class="font-bold" id="fleetVerified">—</span>
           </div>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <div class="w-3 h-3 rounded-full bg-ugandan-sun"></div>
               <span class="font-label-lg text-label-lg">Pending Review</span>
             </div>
-            <span class="font-bold" id="fleetPending">â€”</span>
+            <span class="font-bold" id="fleetPending">—</span>
           </div>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <div class="w-3 h-3 rounded-full bg-error"></div>
               <span class="font-label-lg text-label-lg">Rejected</span>
             </div>
-            <span class="font-bold" id="fleetRejected">â€”</span>
+            <span class="font-bold" id="fleetRejected">—</span>
           </div>
         </div>
       </section>
@@ -475,17 +475,17 @@
       </button>
       <div class="hidden sm:flex items-center gap-3 pl-6 border-l border-outline-variant">
         <div class="text-right">
-          <p class="font-label-lg text-label-lg text-on-surface" id="fleetOwnerName">â€¦</p>
+          <p class="font-label-lg text-label-lg text-on-surface" id="fleetOwnerName">…</p>
           <p class="text-[10px] font-bold text-primary uppercase tracking-widest">Verified Owner</p>
         </div>
-        <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-sm" id="fleetOwnerAvatar">â€¦</div>
+        <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-sm" id="fleetOwnerAvatar">…</div>
       </div>
     </div>
   </header>
 
   <div class="px-4 md:px-12 py-8">
 
-    <!-- Fleet Stats Bento â€” asymmetric grid: featured total + 3 compact stats -->
+    <!-- Fleet Stats Bento — asymmetric grid: featured total + 3 compact stats -->
     <section class="grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1fr] gap-4 mb-10">
 
       <!-- Featured: Total Fleet -->
@@ -495,7 +495,7 @@
           <span class="material-symbols-outlined text-[18px] text-outline-variant" style="font-variation-settings:'FILL' 1;">garage</span>
         </div>
         <div>
-          <h3 class="font-mono text-[44px] font-bold leading-none tracking-tighter text-on-background" id="fleetStatTotal">â€”</h3>
+          <h3 class="font-mono text-[44px] font-bold leading-none tracking-tighter text-on-background" id="fleetStatTotal">—</h3>
           <p class="text-[12px] text-outline mt-1.5">vehicles in portfolio</p>
         </div>
       </div>
@@ -509,19 +509,19 @@
           </span>
           <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest">Available</p>
         </div>
-        <h3 class="font-mono text-[32px] font-bold leading-none tracking-tight text-status-success" id="fleetStatVerified">â€”</h3>
+        <h3 class="font-mono text-[32px] font-bold leading-none tracking-tight text-status-success" id="fleetStatVerified">—</h3>
       </div>
 
       <!-- Pending Review -->
       <div class="bg-surface-container-lowest px-5 py-6 rounded-2xl border border-outline-variant/15 hover:border-outline-variant/25 transition-all duration-200">
         <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-4">Pending</p>
-        <h3 class="font-mono text-[32px] font-bold leading-none tracking-tight text-primary" id="fleetStatPending">â€”</h3>
+        <h3 class="font-mono text-[32px] font-bold leading-none tracking-tight text-primary" id="fleetStatPending">—</h3>
       </div>
 
       <!-- Rejected -->
       <div class="bg-surface-container-lowest px-5 py-6 rounded-2xl border border-outline-variant/15 hover:border-outline-variant/25 transition-all duration-200">
         <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-4">Rejected</p>
-        <h3 class="font-mono text-[32px] font-bold leading-none tracking-tight text-status-pending" id="fleetStatRejected">â€”</h3>
+        <h3 class="font-mono text-[32px] font-bold leading-none tracking-tight text-status-pending" id="fleetStatRejected">—</h3>
       </div>
 
     </section>
@@ -533,7 +533,7 @@
           <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none">search</span>
           <input id="fleetSearch" type="text"
                  class="w-full pl-12 pr-4 py-3 bg-surface rounded-xl border border-transparent focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-safari-green font-body-md text-body-md transition-all"
-                 placeholder="Search by vehicle name or plate numberâ€¦"/>
+                 placeholder="Search by vehicle name or plate number…"/>
         </div>
         <div class="flex gap-2 w-full md:w-auto">
           <select id="fleetStatusFilter"
@@ -586,19 +586,19 @@
     <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
       <div class="bg-surface-container-lowest px-5 py-5 rounded-2xl border border-outline-variant/15">
         <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-3">Total</p>
-        <h3 class="font-mono text-[32px] font-bold leading-none text-on-background" id="bkStatTotal">â€”</h3>
+        <h3 class="font-mono text-[32px] font-bold leading-none text-on-background" id="bkStatTotal">—</h3>
       </div>
       <div class="bg-surface-container-lowest px-5 py-5 rounded-2xl border border-outline-variant/15">
         <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-3">Pending</p>
-        <h3 class="font-mono text-[32px] font-bold leading-none text-status-pending" id="bkStatPending">â€”</h3>
+        <h3 class="font-mono text-[32px] font-bold leading-none text-status-pending" id="bkStatPending">—</h3>
       </div>
       <div class="bg-surface-container-lowest px-5 py-5 rounded-2xl border border-outline-variant/15">
         <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-3">Confirmed</p>
-        <h3 class="font-mono text-[32px] font-bold leading-none text-status-success" id="bkStatConfirmed">â€”</h3>
+        <h3 class="font-mono text-[32px] font-bold leading-none text-status-success" id="bkStatConfirmed">—</h3>
       </div>
       <div class="bg-surface-container-lowest px-5 py-5 rounded-2xl border border-outline-variant/15">
         <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-widest mb-3">Completed</p>
-        <h3 class="font-mono text-[32px] font-bold leading-none text-primary" id="bkStatCompleted">â€”</h3>
+        <h3 class="font-mono text-[32px] font-bold leading-none text-primary" id="bkStatCompleted">—</h3>
       </div>
     </section>
 
@@ -653,24 +653,24 @@
     <div class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/10">
       <div class="flex items-center justify-between mb-4">
         <span class="material-symbols-outlined text-primary bg-primary-fixed/30 p-2 rounded-lg">account_balance_wallet</span>
-        <span class="font-label-sm text-label-sm text-status-success" id="earnLifetimeGrowth">â€”</span>
+        <span class="font-label-sm text-label-sm text-status-success" id="earnLifetimeGrowth">—</span>
       </div>
       <p class="font-label-lg text-label-lg text-on-surface-variant">Lifetime Earnings (Net)</p>
-      <p class="font-headline-md text-headline-md text-on-surface mt-1" id="earnLifetime">UGX â€”</p>
+      <p class="font-headline-md text-headline-md text-on-surface mt-1" id="earnLifetime">UGX —</p>
     </div>
     <div class="bg-white p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant/10">
       <div class="flex items-center justify-between mb-4">
         <span class="material-symbols-outlined text-secondary bg-secondary-fixed/30 p-2 rounded-lg">pending_actions</span>
       </div>
       <p class="font-label-lg text-label-lg text-on-surface-variant">Pending Payout</p>
-      <p class="font-headline-md text-headline-md text-on-surface mt-1" id="earnPending">UGX â€”</p>
+      <p class="font-headline-md text-headline-md text-on-surface mt-1" id="earnPending">UGX —</p>
     </div>
     <div class="bg-ugandan-sun p-8 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.1)]">
       <div class="flex items-center justify-between mb-4">
         <span class="material-symbols-outlined text-slate-dark bg-white/30 p-2 rounded-lg">event_upcoming</span>
       </div>
       <p class="font-label-lg text-label-lg text-slate-dark/70">Next Payout Date</p>
-      <p class="font-headline-md text-headline-md text-slate-dark mt-1" id="earnNextPayout">â€”</p>
+      <p class="font-headline-md text-headline-md text-slate-dark mt-1" id="earnNextPayout">—</p>
     </div>
   </div>
 
@@ -680,7 +680,7 @@
       <h3 class="font-headline-md text-headline-md text-on-surface">Recent Earnings</h3>
       <div class="relative">
         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
-        <input id="earnSearch" oninput="filterEarnings(this.value)" class="pl-10 pr-4 py-2 border border-outline-variant rounded-lg text-body-md focus:ring-safari-green focus:border-safari-green outline-none" placeholder="Search bookingâ€¦" type="text"/>
+        <input id="earnSearch" oninput="filterEarnings(this.value)" class="pl-10 pr-4 py-2 border border-outline-variant rounded-lg text-body-md focus:ring-safari-green focus:border-safari-green outline-none" placeholder="Search booking…" type="text"/>
       </div>
     </div>
     <div id="earnTableWrap" class="overflow-x-auto">
@@ -776,7 +776,7 @@
     <!-- Document Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-      <!-- â”€â”€ Driving Permit â”€â”€ -->
+      <!-- ── Driving Permit ── -->
       <div class="bg-white rounded-2xl border border-outline-variant/20 p-6 shadow-[0px_2px_12px_rgba(0,0,0,0.04)]">
         <div class="flex items-start justify-between mb-5">
           <div class="flex items-center gap-3">
@@ -795,7 +795,7 @@
           <div id="prev-permit">
             <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
             <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
-            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF Â· max 10 MB</p>
+            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10 MB</p>
           </div>
         </div>
         <div class="mt-4 grid grid-cols-2 gap-3">
@@ -812,7 +812,7 @@
         </div>
       </div>
 
-      <!-- â”€â”€ Third Party Insurance â”€â”€ -->
+      <!-- ── Third Party Insurance ── -->
       <div class="bg-white rounded-2xl border border-outline-variant/20 p-6 shadow-[0px_2px_12px_rgba(0,0,0,0.04)]">
         <div class="flex items-start justify-between mb-5">
           <div class="flex items-center gap-3">
@@ -831,7 +831,7 @@
           <div id="prev-insurance">
             <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
             <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
-            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF Â· max 10 MB</p>
+            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10 MB</p>
           </div>
         </div>
         <div class="mt-4 grid grid-cols-2 gap-3">
@@ -848,7 +848,7 @@
         </div>
       </div>
 
-      <!-- â”€â”€ Car Inspection Certificate â”€â”€ -->
+      <!-- ── Car Inspection Certificate ── -->
       <div class="bg-white rounded-2xl border border-outline-variant/20 p-6 shadow-[0px_2px_12px_rgba(0,0,0,0.04)]">
         <div class="flex items-start justify-between mb-5">
           <div class="flex items-center gap-3">
@@ -867,7 +867,7 @@
           <div id="prev-inspection">
             <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
             <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
-            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF Â· max 10 MB</p>
+            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10 MB</p>
           </div>
         </div>
         <div class="mt-4 grid grid-cols-2 gap-3">
@@ -884,7 +884,7 @@
         </div>
       </div>
 
-      <!-- â”€â”€ Certificate of Good Conduct â”€â”€ -->
+      <!-- ── Certificate of Good Conduct ── -->
       <div class="bg-white rounded-2xl border border-outline-variant/20 p-6 shadow-[0px_2px_12px_rgba(0,0,0,0.04)]">
         <div class="flex items-start justify-between mb-5">
           <div class="flex items-center gap-3">
@@ -903,7 +903,7 @@
           <div id="prev-conduct">
             <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
             <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
-            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF Â· max 10 MB</p>
+            <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10 MB</p>
           </div>
         </div>
         <div class="mt-4 grid grid-cols-2 gap-3">
@@ -1020,7 +1020,7 @@
                  ondragover="spDragOver(event,this)" ondragleave="spDragLeave(event,this)" ondrop="spDropFile(event,this,'sp-file-front','front')">
               <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
               <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
-              <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF Â· max 10MB</p>
+              <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10MB</p>
               <input type="file" id="sp-file-front" accept="image/*,.pdf" class="hidden" onchange="spPreviewDoc(this,'front')">
             </div>
             <div id="sp-prev-front" class="mt-2 hidden"></div>
@@ -1032,7 +1032,7 @@
                  ondragover="spDragOver(event,this)" ondragleave="spDragLeave(event,this)" ondrop="spDropFile(event,this,'sp-file-back','back')">
               <span class="material-symbols-outlined text-[40px] text-outline-variant mb-2 block">upload_file</span>
               <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag to upload</p>
-              <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF Â· max 10MB</p>
+              <p class="font-label-sm text-label-sm text-outline mt-1">JPG, PNG or PDF · max 10MB</p>
               <input type="file" id="sp-file-back" accept="image/*,.pdf" class="hidden" onchange="spPreviewDoc(this,'back')">
             </div>
             <div id="sp-prev-back" class="mt-2 hidden"></div>
@@ -1103,15 +1103,15 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-1">Role</p>
-            <p class="font-label-lg text-label-lg capitalize" id="sp-secRole">â€”</p>
+            <p class="font-label-lg text-label-lg capitalize" id="sp-secRole">—</p>
           </div>
           <div>
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-1">Account Type</p>
-            <p class="font-label-lg text-label-lg capitalize" id="sp-secType">â€”</p>
+            <p class="font-label-lg text-label-lg capitalize" id="sp-secType">—</p>
           </div>
           <div>
             <p class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider mb-1">Member Since</p>
-            <p class="font-label-lg text-label-lg" id="sp-secJoined">â€”</p>
+            <p class="font-label-lg text-label-lg" id="sp-secJoined">—</p>
           </div>
         </div>
       </div>
@@ -1154,7 +1154,7 @@
   </div>
 </div><!-- /section-settings -->
 
-<!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Payout Method Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ───────────────────────── Payout Method Modal ───────────────────────── -->
 <div id="payoutModalOverlay"
      class="fixed inset-0 z-[1060] flex items-center justify-center p-4 hidden"
      style="background:rgba(0,0,0,0.45); backdrop-filter:blur(3px);"
@@ -1199,7 +1199,7 @@
         <div>
           <label class="block font-label-lg text-label-lg text-on-surface-variant mb-1.5">Bank Name <span class="text-error">*</span></label>
           <select id="pmBankName" class="w-full px-4 py-2.5 border border-outline-variant rounded-xl bg-surface focus:outline-none focus:ring-2 focus:ring-safari-green font-body-md">
-            <option value="">Select bankâ€¦</option>
+            <option value="">Select bank…</option>
             <option>Stanbic Bank Uganda</option>
             <option>Standard Chartered Uganda</option>
             <option>Centenary Bank</option>
@@ -1293,7 +1293,7 @@
 
 </main>
 
-<!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Add Vehicle Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ───────────────────────── Add Vehicle Modal ───────────────────────── -->
 <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
@@ -1342,8 +1342,8 @@
             <div class="col-sm-6">
               <label class="form-label">Vehicle Type <span class="text-danger">*</span></label>
               <select name="vehicle_type" class="form-select" required>
-                <option value="">Select typeâ€¦</option>
-                <option value="safari">4Ã—4 Safari</option>
+                <option value="">Select type…</option>
+                <option value="safari">4×4 Safari</option>
                 <option value="suv">SUV</option>
                 <option value="luxury">Luxury Sedan</option>
                 <option value="minibus">Minibus / Van</option>
@@ -1354,7 +1354,7 @@
             <div class="col-sm-3">
               <label class="form-label">Transmission <span class="text-danger">*</span></label>
               <select name="transmission" class="form-select" required>
-                <option value="">Selectâ€¦</option>
+                <option value="">Select…</option>
                 <option value="manual">Manual</option>
                 <option value="automatic">Automatic</option>
               </select>
@@ -1362,7 +1362,7 @@
             <div class="col-sm-3">
               <label class="form-label">Fuel Type <span class="text-danger">*</span></label>
               <select name="fuel_type" class="form-select" required>
-                <option value="">Selectâ€¦</option>
+                <option value="">Select…</option>
                 <option value="diesel">Diesel</option>
                 <option value="petrol">Petrol</option>
                 <option value="hybrid">Hybrid</option>
@@ -1429,19 +1429,19 @@
           <!-- Description -->
           <h6 class="fw-bold text-secondary text-uppercase small mb-3">Description</h6>
           <textarea name="description" class="form-control mb-4" rows="3"
-                    placeholder="Describe your vehicle â€” condition, extras, safari history, etc."></textarea>
+                    placeholder="Describe your vehicle — condition, extras, safari history, etc."></textarea>
 
-          <!-- â”€â”€ Current Photos (edit mode only) â”€â”€ -->
+          <!-- ── Current Photos (edit mode only) ── -->
           <div id="currentPhotosSection" class="d-none mb-4">
             <h6 class="fw-bold text-secondary text-uppercase small mb-2">Current Photos</h6>
             <p class="text-secondary small mb-2">
-              <i class="bi bi-star-fill text-warning me-1"></i><strong>Star</strong> = set as main card image &nbsp;Â·&nbsp;
+              <i class="bi bi-star-fill text-warning me-1"></i><strong>Star</strong> = set as main card image &nbsp;·&nbsp;
               <i class="bi bi-trash text-danger me-1"></i>= delete permanently
             </p>
             <div class="row g-2" id="currentPhotosGrid"></div>
           </div>
 
-          <!-- â”€â”€ Vehicle Images (upload feature) â”€â”€ -->
+          <!-- ── Vehicle Images (upload feature) ── -->
           <h6 class="fw-bold text-secondary text-uppercase small mb-2">Add More Photos</h6>
           <div class="alert alert-info py-2 px-3 mb-3 small d-flex gap-2 align-items-start" style="background:#eff8ff;border-color:#bfdbfe;color:#1e40af;">
             <i class="bi bi-info-circle-fill mt-1 flex-shrink-0"></i>
@@ -1457,7 +1457,7 @@
                  onclick="document.getElementById('vehicleImages').click()">
               <i class="bi bi-images fs-1 text-secondary mb-2 d-block"></i>
               <p class="fw-semibold text-secondary mb-1">Drag & drop photos here, or click to browse</p>
-              <p class="text-secondary small mb-0">JPG, PNG â€” up to 8 photos, 10 MB each &nbsp;Â·&nbsp; <strong>1st photo = main card image</strong></p>
+              <p class="text-secondary small mb-0">JPG, PNG — up to 8 photos, 10 MB each &nbsp;·&nbsp; <strong>1st photo = main card image</strong></p>
               <input type="file" name="images" id="vehicleImages" accept="image/*" multiple style="display:none">
             </div>
             <div class="row g-2 mt-2" id="imagePreviewGrid"></div>
@@ -1478,7 +1478,7 @@
   </div>
 </div>
 
-<!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ───────────────────────── Footer ───────────────────────── -->
 <footer class="py-6 px-4 md:px-10 mt-8 bg-on-background md:ml-64">
   <div class="flex flex-col md:flex-row justify-between items-center gap-4">
     <div class="text-center md:text-left">
@@ -1486,7 +1486,7 @@
         <span class="material-symbols-outlined text-[28px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
         Kari Vari Uganda
       </span>
-      <p class="text-surface-bright/50 font-label-sm text-label-sm mt-1">Â© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+      <p class="text-surface-bright/50 font-label-sm text-label-sm mt-1">© 2026 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
     </div>
     <div class="flex gap-5 flex-wrap justify-center">
       <a class="text-surface-bright/60 font-label-sm text-label-sm hover:text-ugandan-sun transition-colors" href="#">Privacy Policy</a>
@@ -1496,7 +1496,7 @@
   </div>
 </footer>
 
-<!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Mobile Bottom Nav â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ───────────────────────── Mobile Bottom Nav ───────────────────────── -->
 <nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-low border-t border-outline-variant flex justify-around py-3 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]" id="mobileNav">
   <a data-section="overview" class="mob-nav-link flex flex-col items-center gap-1 text-primary cursor-pointer" onclick="showSection('overview')">
     <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span>
@@ -1524,14 +1524,14 @@
   </a>
 </nav>
 
-<!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Scripts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ───────────────────────── Scripts ───────────────────────── -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/shared.js"></script>
 <script src="/static/js/owner/dashboard.js"></script>
 <script src="/static/js/settings_panel.js"></script>
 
 <script>
-  // â”€â”€ Section switcher â”€â”€
+  // ── Section switcher ──
   let _allVehicles = [];
 
   let _spLoaded    = false;
@@ -1584,7 +1584,7 @@
     }
   }
 
-  // â”€â”€ Skeleton markup reused by loadFleetData â”€â”€
+  // ── Skeleton markup reused by loadFleetData ──
   function fleetSkeletonHTML() {
     const card = `
       <div class="rounded-2xl overflow-hidden border border-outline-variant/10 bg-surface-container-lowest">
@@ -1669,8 +1669,8 @@
     }
   }
 
-  // â”€â”€ Fleet card rendering â”€â”€
-  // Note: backend uses 'pending' (not 'pending_review') â€” both mapped here for safety
+  // ── Fleet card rendering ──
+  // Note: backend uses 'pending' (not 'pending_review') — both mapped here for safety
   const STATUS_CONFIG = {
     verified:       { label: 'Verified',     bg: 'bg-status-success', text: 'text-white' },
     pending:        { label: 'Under Review', bg: 'bg-ugandan-sun',    text: 'text-slate-dark' },
@@ -1747,7 +1747,7 @@
           <div class="flex justify-between items-start mb-2.5">
             <div class="min-w-0 pr-2">
               <h4 class="font-semibold text-[15px] leading-snug tracking-tight text-on-background truncate">${v.make} ${v.model}</h4>
-              <p class="text-[12px] text-outline mt-0.5 font-mono">${v.year}${v.registration_plate ? ' Â· ' + v.registration_plate : ''}</p>
+              <p class="text-[12px] text-outline mt-0.5 font-mono">${v.year}${v.registration_plate ? ' · ' + v.registration_plate : ''}</p>
             </div>
             <span class="material-symbols-outlined text-[20px] text-outline-variant cursor-pointer
                          hover:text-primary hover:bg-surface-container-high rounded-lg p-0.5
@@ -1871,7 +1871,7 @@
   document.getElementById('fleetSearch')?.addEventListener('input',  () => renderFleet(_allVehicles));
   document.getElementById('fleetStatusFilter')?.addEventListener('change', () => renderFleet(_allVehicles));
 
-  // â”€â”€ Edit vehicle â€” pre-fill modal and switch to PATCH mode â”€â”€
+  // ── Edit vehicle — pre-fill modal and switch to PATCH mode ──
   window._editVehicleId = null;
 
   function openEditVehicle(id) {
@@ -1881,7 +1881,7 @@
     window._editVehicleId = id;
 
     // Update modal chrome
-    document.getElementById('addVehicleModalLabel').textContent = `Edit Vehicle â€” ${v.make} ${v.model}`;
+    document.getElementById('addVehicleModalLabel').textContent = `Edit Vehicle — ${v.make} ${v.model}`;
     document.getElementById('submitVehicleBtnText').textContent = 'Save Changes';
 
     // Pre-fill every field
@@ -1948,7 +1948,7 @@
     const grid = document.getElementById('currentPhotosGrid');
     const photos = v.photos || [];
     if (photos.length === 0) {
-      grid.innerHTML = '<p class="text-secondary small col-12 mb-0">No photos yet â€” upload below.</p>';
+      grid.innerHTML = '<p class="text-secondary small col-12 mb-0">No photos yet — upload below.</p>';
       return;
     }
     grid.innerHTML = photos.map(p => `
@@ -2011,7 +2011,7 @@
     if (plateInput) { plateInput.readOnly = false; plateInput.classList.remove('bg-surface-container'); }
   });
 
-  // â”€â”€ Fleet status sidebar cards (populated after dashboard.js loads vehicles) â”€â”€
+  // ── Fleet status sidebar cards (populated after dashboard.js loads vehicles) ──
   document.addEventListener('kv:vehiclesLoaded', (e) => {
     _allVehicles = e.detail || [];
     const vehicles = _allVehicles;
@@ -2041,7 +2041,7 @@
     }
   });
 
-  // â”€â”€ Image upload preview â”€â”€
+  // ── Image upload preview ──
   const vehicleImages   = document.getElementById('vehicleImages');
   const imagePreview    = document.getElementById('imagePreviewGrid');
   const dropZone        = document.getElementById('imageDropZone');
@@ -2099,7 +2099,7 @@
     renderPreviews({ target: vehicleImages });
   }
 
-  // â”€â”€ Spotlight hover effect for fleet cards â”€â”€
+  // ── Spotlight hover effect for fleet cards ──
   document.getElementById('fleetGrid')?.addEventListener('mousemove', (e) => {
     const card = e.target.closest('.card-spotlight');
     if (!card) return;
@@ -2112,7 +2112,7 @@
     if (card) { card.style.setProperty('--cx', '-200px'); card.style.setProperty('--cy', '-200px'); }
   }, true);
 
-  // â”€â”€ Owner Trip Tracker â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Owner Trip Tracker ─────────────────────────────────────────────────────────
   function renderOwnerTripTracker(bookings) {
     const active = bookings.find(b => b.status === 'in_progress')
       || bookings.find(b => b.status === 'confirmed')
@@ -2152,7 +2152,7 @@
 
     const msgs = {
       pending_payment: 'â³ Awaiting payment from customer.',
-      confirmed:       'âœ… Booking confirmed â€” prepare for the upcoming trip.',
+      confirmed:       'âœ… Booking confirmed — prepare for the upcoming trip.',
       in_progress:     'ðŸš— Trip is currently in progress.',
       completed:       'ðŸ Trip completed successfully.',
       cancelled:       'âŒ Booking was cancelled.',
@@ -2171,7 +2171,7 @@
     }
   }
 
-  // â”€â”€ Owner Bookings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Owner Bookings ──────────────────────────────────────────────────────────────
   let _allOwnerBookings = [];
   let _bkFilter = null;
 
@@ -2185,7 +2185,7 @@
   };
 
   function fmtBkDate(s) {
-    if (!s) return 'â€”';
+    if (!s) return '—';
     return new Date(s).toLocaleDateString('en-UG', { day:'numeric', month:'short', year:'numeric' });
   }
 
@@ -2249,21 +2249,21 @@
         ? `<img src="${v.primary_photo_url}" class="w-10 h-10 rounded-lg object-cover flex-shrink-0" alt="">`
         : `<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-[18px] text-outline-variant">directions_car</span></div>`;
       const sc = BK_STATUS[b.status] || { label: b.status, cls:'bg-surface-container text-on-surface-variant' };
-      const amtStr = b.amount_usd != null ? `$${parseFloat(b.amount_usd).toFixed(2)}` : 'â€”';
-      const custName = b.customer_name || 'â€”';
+      const amtStr = b.amount_usd != null ? `$${parseFloat(b.amount_usd).toFixed(2)}` : '—';
+      const custName = b.customer_name || '—';
       return `<tr class="border-b border-outline-variant/20 hover:bg-surface-container-low transition-colors">
         <td class="px-5 py-4">
           <div class="flex items-center gap-3">
             ${imgHtml}
             <div>
-              <p class="font-label-lg text-label-lg text-on-surface">${v ? v.make+' '+v.model : 'â€”'}</p>
+              <p class="font-label-lg text-label-lg text-on-surface">${v ? v.make+' '+v.model : '—'}</p>
               <p class="font-label-sm text-label-sm text-on-surface-variant font-mono">${b.booking_reference}</p>
             </div>
           </div>
         </td>
         <td class="px-5 py-4 font-label-lg text-label-lg text-on-surface">${custName}</td>
         <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${fmtBkDate(b.start_datetime)}<br>${fmtBkDate(b.end_datetime)}</td>
-        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${b.total_days || 'â€”'} day${b.total_days===1?'':'s'}</td>
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${b.total_days || '—'} day${b.total_days===1?'':'s'}</td>
         <td class="px-5 py-4"><span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm ${sc.cls}">${sc.label}</span></td>
         <td class="px-5 py-4 font-label-lg text-label-lg text-on-surface">${amtStr}</td>
       </tr>`;
@@ -2290,13 +2290,13 @@
       </div>`;
   }
 
-  // â”€â”€ Owner Earnings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Owner Earnings ─────────────────────────────────────────────────────────────
   const COMMISSION_RATE = 0.10; // 10% platform fee
 
   let _allEarningsRows = []; // processed rows cached for search/filter
 
   function fmtUGX(usd) {
-    if (usd == null) return 'UGX â€”';
+    if (usd == null) return 'UGX —';
     // Approx conversion; display in UGX (1 USD ~ 3750 UGX)
     const ugx = Math.round(parseFloat(usd) * 3750);
     return 'UGX ' + ugx.toLocaleString('en-UG');
@@ -2345,9 +2345,9 @@
           const comm    = total * COMMISSION_RATE;
           const net     = total - comm;
           const v       = b.vehicle;
-          const vehicle = v ? `${v.make} ${v.model}` : 'â€”';
+          const vehicle = v ? `${v.make} ${v.model}` : '—';
           return {
-            date:      b.start_datetime ? new Date(b.start_datetime).toLocaleDateString('en-UG', {day:'numeric',month:'short',year:'numeric'}) : 'â€”',
+            date:      b.start_datetime ? new Date(b.start_datetime).toLocaleDateString('en-UG', {day:'numeric',month:'short',year:'numeric'}) : '—',
             ref:       b.booking_reference || `#${b.id}`,
             vehicle,
             total,
@@ -2441,7 +2441,7 @@
     a.click();
   }
 
-  // â”€â”€ Mobile logout mirror â”€â”€
+  // ── Mobile logout mirror ──
   const mobileLogout = document.getElementById('mobileLogoutBtn');
   if (mobileLogout) {
     mobileLogout.addEventListener('click', (e) => {
@@ -2457,7 +2457,7 @@
   let _payoutMethods   = [];
   let _editPayoutId    = null;   // null = adding new
 
-  // â”€â”€ Load payout methods from API â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Load payout methods from API ────────────────────────────────
   async function loadPayoutMethods() {
     const tok = localStorage.getItem('access_token');
     if (!tok) return;
@@ -2478,7 +2478,7 @@
     renderPayoutMethods();
   }
 
-  // â”€â”€ Render the payout method list â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Render the payout method list ───────────────────────────────
   function renderPayoutMethods() {
     const wrap = document.getElementById('payoutMethodList');
     if (!wrap) return;
@@ -2500,8 +2500,8 @@
         ? (m.bank_name || 'Bank Transfer')
         : (m.provider === 'mtn' ? 'MTN Mobile Money' : 'Airtel Money');
       const sub       = m.method_type === 'bank'
-        ? `${m.account_name || ''} Â· ****${(m.account_number || '').slice(-4)}`
-        : `${m.account_name || ''} Â· ${m.phone_number || ''}`;
+        ? `${m.account_name || ''} · ****${(m.account_number || '').slice(-4)}`
+        : `${m.account_name || ''} · ${m.phone_number || ''}`;
 
       return `
         <div class="p-4 rounded-xl border-2 ${isPrimary ? 'border-safari-green bg-primary-fixed/10' : 'border-outline-variant bg-white'} relative transition-all">
@@ -2538,7 +2538,7 @@
     }).join('');
   }
 
-  // â”€â”€ Open the add/edit modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Open the add/edit modal ──────────────────────────────────────
   function openPayoutModal(id) {
     _editPayoutId = id;
     const existing = id ? _payoutMethods.find(m => m.id === id) : null;
@@ -2630,7 +2630,7 @@
   document.querySelectorAll('input[name="pmType"]').forEach(r =>
     r.addEventListener('change', pmToggleFields));
 
-  // â”€â”€ Save (add or update) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Save (add or update) ────────────────────────────────────────
   async function savePayoutMethod(btn) {
     const tok = localStorage.getItem('access_token');
     if (!tok) return;
@@ -2669,7 +2669,7 @@
 
     // Busy state
     btn.disabled = true;
-    document.getElementById('pmSaveBtnText').textContent = 'Savingâ€¦';
+    document.getElementById('pmSaveBtnText').textContent = 'Saving…';
 
     try {
       const url    = _editPayoutId
@@ -2703,7 +2703,7 @@
     }
   }
 
-  // â”€â”€ Set as primary â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Set as primary ──────────────────────────────────────────────
   async function setPrimaryPayout(id) {
     const tok = localStorage.getItem('access_token');
     if (!tok) return;
@@ -2723,7 +2723,7 @@
     }
   }
 
-  // â”€â”€ Delete â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Delete ──────────────────────────────────────────────────────
   async function deletePayoutMethod(id) {
     const m = _payoutMethods.find(x => x.id === id);
     if (!confirm(`Remove this payout method (${m?.bank_name || m?.provider || 'method'})?`)) return;
@@ -2746,7 +2746,7 @@
   }
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // CHARTS  â€“  Earnings Line + Bookings Bar (Chart.js)
+  // CHARTS  –  Earnings Line + Bookings Bar (Chart.js)
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
   let _earningsChart = null;
@@ -2927,12 +2927,12 @@
   const _origLoadOwnerBookings = loadOwnerBookings;
   document.addEventListener('kv:bookingsLoaded', refreshCharts);
 
-  // Also hook into existing loadOwnerBookings completion â€” patch after its fetch completes
+  // Also hook into existing loadOwnerBookings completion — patch after its fetch completes
   // Charts are triggered by watching _allOwnerBookings via a post-load hook below
   // (we attach in loadOwnerEarnings already; overview loads lazily via overview section)
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // COMPLIANCE DOCS  â€“  upload, preview, validate, submit
+  // COMPLIANCE DOCS  –  upload, preview, validate, submit
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
   const DOC_TYPES = ['permit', 'insurance', 'inspection', 'conduct'];
@@ -2965,7 +2965,7 @@
 
   function docPreviewWithFile(file, docType) {
     if (file.size > 10 * 1024 * 1024) {
-      spToast('File too large â€” max 10 MB', false);
+      spToast('File too large — max 10 MB', false);
       return;
     }
     _docFiles[docType] = file;
@@ -3044,7 +3044,7 @@
           if (prev) {
             prev.innerHTML = `
               <span class="material-symbols-outlined text-[36px] text-safari-green mb-2 block" style="font-variation-settings:'FILL' 1;">task</span>
-              <p class="font-label-sm text-label-sm text-safari-green">Document on file Â· <a href="${d.doc_url}" target="_blank" class="underline">View</a></p>`;
+              <p class="font-label-sm text-label-sm text-safari-green">Document on file · <a href="${d.doc_url}" target="_blank" class="underline">View</a></p>`;
           }
         }
       });
@@ -3094,7 +3094,7 @@
     const tok = localStorage.getItem('access_token');
     if (!tok) return;
 
-    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> Uploadingâ€¦'; }
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> Uploading…'; }
 
     const docTypeMap = { permit:'driving_permit', insurance:'third_party_insurance', inspection:'inspection_certificate', conduct:'good_conduct_certificate' };
     const dateFieldMap = { permit:'exp-permit', insurance:'exp-insurance', inspection:'exp-inspection', conduct:'exp-conduct' };
@@ -3145,7 +3145,7 @@
     }
   }
 
-  // Pre-fetch ALL section data in parallel right after vehicles load â€”
+  // Pre-fetch ALL section data in parallel right after vehicles load —
   // so every tab shows data instantly with no spinner on first click.
   document.addEventListener('kv:vehiclesLoaded', () => {
     // Render empty charts immediately so layout doesn't jump

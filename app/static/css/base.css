@@ -143,6 +143,15 @@ body {
   display: inline-block;
 }
 
+/* ── Footer ───────────────────────────────────────────────── */
+
+.footer-dark {
+  background-color: #111314 !important;
+  color: #e2e2e5 !important;
+}
+
+.footer-dark .text-light { color: #e2e2e5 !important; }
+
 /* ── Utilities ────────────────────────────────────────────── */
 
 .text-accent { color: var(--ugandan-sun) !important; }

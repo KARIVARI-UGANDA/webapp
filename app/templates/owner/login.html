@@ -88,7 +88,7 @@
 <body class="bg-background text-on-surface selection:bg-ugandan-sun selection:text-slate-dark">
 <main class="min-h-screen flex flex-col md:flex-row">
 
-  <!-- â”€â”€ Left Hero Panel â”€â”€ -->
+  <!-- ── Left Hero Panel ── -->
   <section class="relative w-full md:w-1/2 lg:w-[55%] h-64 md:h-screen overflow-hidden">
     <!-- Gradient fallback (always visible) -->
     <div class="absolute inset-0"
@@ -122,7 +122,7 @@
     </div>
   </section>
 
-  <!-- â”€â”€ Right Form Panel â”€â”€ -->
+  <!-- ── Right Form Panel ── -->
   <section class="w-full md:w-1/2 lg:w-[45%] flex items-center justify-center p-6 md:p-margin-desktop bg-surface-container-lowest">
     <div class="w-full max-w-md">
 
@@ -159,7 +159,7 @@
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-safari-green transition-colors pointer-events-none">lock</span>
             <input id="password" name="password" type="password"
                    class="w-full pl-12 pr-12 py-4 bg-soft-gray border border-transparent rounded-xl font-body-md text-body-md focus:bg-white focus:outline-none focus:ring-2 focus:ring-safari-green/20 focus:border-safari-green transition-all shadow-sm"
-                   placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required autocomplete="current-password"/>
+                   placeholder="••••••••" required autocomplete="current-password"/>
             <button id="togglePassword" type="button"
                     class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors">
               <span class="material-symbols-outlined">visibility</span>
@@ -201,7 +201,7 @@
         <div class="mt-4">
           <button id="qa-btn" onclick="devSignIn('owner','/owner/dashboard')"
                   class="w-full py-3 rounded-xl font-label-lg text-label-lg flex items-center justify-center gap-2 bg-surface-container border border-dashed border-outline-variant text-on-surface hover:bg-surface-container-high transition-all">
-            <span class="text-[16px]">âš¡</span> Quick Access â€” Sign in as Owner
+            <span class="text-[16px]">âš¡</span> Quick Access — Sign in as Owner
           </button>
         </div>
       </footer>
@@ -216,7 +216,7 @@
   // Dev Quick Access
   async function devSignIn(role, redirect) {
     const btn = document.getElementById('qa-btn');
-    if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; btn.textContent = 'Signing inâ€¦'; }
+    if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; btn.textContent = 'Signing in…'; }
     try {
       const res  = await fetch(`/api/auth/dev-signin?role=${role}`, { method: 'POST' });
       const json = await res.json();
@@ -228,11 +228,11 @@
         window.location.href = redirect;
       } else {
         alert(json.detail || 'Quick access failed');
-        if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span class="text-[16px]">âš¡</span> Quick Access â€” Sign in as Owner'; }
+        if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span class="text-[16px]">âš¡</span> Quick Access — Sign in as Owner'; }
       }
     } catch {
       alert('Network error');
-      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span class="text-[16px]">âš¡</span> Quick Access â€” Sign in as Owner'; }
+      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span class="text-[16px]">âš¡</span> Quick Access — Sign in as Owner'; }
     }
   }
 

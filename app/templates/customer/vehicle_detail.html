@@ -128,7 +128,7 @@ tailwind.config = {
           <h1 id="vehicleTitle" class="font-headline-lg text-headline-lg text-on-background"></h1>
           <div class="flex items-center gap-2 mt-2 flex-wrap">
             <span id="statusBadge"></span>
-            <span class="text-outline-variant">â€¢</span>
+            <span class="text-outline-variant">•</span>
             <span id="serviceArea" class="font-label-lg text-label-lg text-status-success font-bold"></span>
           </div>
         </div>
@@ -230,11 +230,11 @@ tailwind.config = {
             <!-- Driver stats grid -->
             <div class="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-outline-variant/30 border-t border-outline-variant/30">
               <div class="p-4 text-center">
-                <p class="font-headline-md text-headline-md text-safari-green" id="driverTrips">â€”</p>
+                <p class="font-headline-md text-headline-md text-safari-green" id="driverTrips">—</p>
                 <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Trips Completed</p>
               </div>
               <div class="p-4 text-center">
-                <p class="font-headline-md text-headline-md text-safari-green" id="driverRating">5.0 â˜…</p>
+                <p class="font-headline-md text-headline-md text-safari-green" id="driverRating">5.0 ★</p>
                 <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Average Rating</p>
               </div>
               <div class="p-4 text-center">
@@ -251,7 +251,7 @@ tailwind.config = {
             <div class="px-6 py-4 bg-safari-green/5 border-t border-outline-variant/30 flex items-start gap-3">
               <span class="material-symbols-outlined text-safari-green text-[22px] flex-shrink-0 mt-0.5" style="font-variation-settings:'FILL' 1;">shield</span>
               <p class="font-label-sm text-label-sm text-on-surface-variant">
-                <span class="font-semibold text-safari-green">Basic CDW (Collision Damage Waiver) included</span> â€” every vehicle on Kari Vari comes with basic collision damage coverage at no extra cost. For full coverage options, contact our support team.
+                <span class="font-semibold text-safari-green">Basic CDW (Collision Damage Waiver) included</span> — every vehicle on Kari Vari comes with basic collision damage coverage at no extra cost. For full coverage options, contact our support team.
               </p>
             </div>
 
@@ -329,13 +329,13 @@ tailwind.config = {
                   <select id="pickupStage"
                           class="w-full bg-transparent border-none focus:ring-0 font-label-lg text-label-lg p-0 text-on-surface cursor-pointer"
                           onchange="onPickupChange()">
-                    <option value="">Select a stageâ€¦</option>
+                    <option value="">Select a stage…</option>
                     <optgroup label="Kampala">
-                      <option>Kampala â€” Old Taxi Park</option>
-                      <option>Kampala â€” New Taxi Park</option>
-                      <option>Kampala â€” Kitgum House</option>
-                      <option>Kampala â€” Nakivubo</option>
-                      <option>Kampala â€” Kiira Road</option>
+                      <option>Kampala — Old Taxi Park</option>
+                      <option>Kampala — New Taxi Park</option>
+                      <option>Kampala — Kitgum House</option>
+                      <option>Kampala — Nakivubo</option>
+                      <option>Kampala — Kiira Road</option>
                     </optgroup>
                     <optgroup label="Airports">
                       <option>Entebbe International Airport</option>
@@ -397,7 +397,7 @@ tailwind.config = {
             </div>
             <div class="pt-3 border-t border-outline-variant flex justify-between font-bold text-on-background font-headline-md text-headline-md">
               <span>Total</span>
-              <span id="grandTotal">â€”</span>
+              <span id="grandTotal">—</span>
             </div>
           </div>
 
@@ -436,12 +436,12 @@ tailwind.config = {
   </div><!-- /pageContent -->
 </main>
 
-<!-- â”€â”€ Payment Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ── Payment Modal ────────────────────────────────────────────────────────── -->
 <div id="paymentModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4"
      style="background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden" style="max-height:90vh;overflow-y:auto;">
 
-    <!-- â”€â”€ Form state â”€â”€ -->
+    <!-- ── Form state ── -->
     <div id="pmForm">
 
       <!-- Header -->
@@ -458,8 +458,8 @@ tailwind.config = {
       <!-- Booking summary -->
       <div class="px-5 py-4 bg-surface-container-low space-y-1.5 text-[14px]">
         <div class="flex justify-between text-on-surface-variant">
-          <span id="pmDateRange">â€”</span>
-          <span id="pmSubtotal">â€”</span>
+          <span id="pmDateRange">—</span>
+          <span id="pmSubtotal">—</span>
         </div>
         <div class="flex justify-between text-on-surface-variant">
           <span>Kari Vari service fee</span>
@@ -467,7 +467,7 @@ tailwind.config = {
         </div>
         <div class="flex justify-between font-bold text-on-background pt-2 border-t border-outline-variant text-[18px]">
           <span>Total</span>
-          <span id="pmTotal" class="text-primary">â€”</span>
+          <span id="pmTotal" class="text-primary">—</span>
         </div>
       </div>
 
@@ -495,7 +495,7 @@ tailwind.config = {
             <!-- Loading placeholder shown until Stripe mounts -->
             <div id="stripeLoading" class="flex items-center gap-2 text-on-surface-variant text-[13px]">
               <span class="material-symbols-outlined text-[16px]" style="animation:spin 1s linear infinite;">refresh</span>
-              Loading secure card inputâ€¦
+              Loading secure card input…
             </div>
           </div>
           <div id="cardError" class="hidden items-center gap-2 text-red-600 text-[13px] mt-2">
@@ -555,12 +555,12 @@ tailwind.config = {
 
         <div class="pb-5 flex items-center justify-center gap-2 text-on-surface-variant">
           <span class="material-symbols-outlined text-[15px]">lock</span>
-          <span class="text-[12px]">Secured by Stripe &amp; Flutterwave Â· 256-bit SSL</span>
+          <span class="text-[12px]">Secured by Stripe &amp; Flutterwave · 256-bit SSL</span>
         </div>
       </div>
     </div><!-- /pmForm -->
 
-    <!-- â”€â”€ Success state â”€â”€ -->
+    <!-- ── Success state ── -->
     <div id="pmSuccess" class="hidden p-10 text-center">
       <div class="w-20 h-20 rounded-full bg-status-success/10 flex items-center justify-center mx-auto mb-5">
         <span class="material-symbols-outlined text-status-success text-[48px]"
@@ -606,7 +606,7 @@ tailwind.config = {
       </div>
     </div>
     <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-      <p class="text-surface-variant font-label-sm text-label-sm">Â© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+      <p class="text-surface-variant font-label-sm text-label-sm">© 2026 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
       <div class="flex gap-6">
         <span class="material-symbols-outlined text-surface-variant hover:text-ugandan-sun cursor-pointer">public</span>
         <span class="material-symbols-outlined text-surface-variant hover:text-ugandan-sun cursor-pointer">mail</span>
@@ -627,7 +627,7 @@ let _dailyRateUSD = 0;
 
 function usd(ugx) { return (ugx / RATES.USD).toFixed(2); }
 
-// â”€â”€ Auth state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Auth state ──────────────────────────────────────────────────────────────
 (async () => {
   const token = localStorage.getItem('access_token');
   if (!token) return;
@@ -651,7 +651,7 @@ function usd(ugx) { return (ugx / RATES.USD).toFixed(2); }
   });
 })();
 
-// â”€â”€ Gallery â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Gallery ─────────────────────────────────────────────────────────────────
 function buildGallery(photos) {
   const grid = document.getElementById('galleryGrid');
 
@@ -693,7 +693,7 @@ function setMainPhoto(src) {
   document.getElementById('mainPhoto').src = src;
 }
 
-// â”€â”€ Features â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Features ─────────────────────────────────────────────────────────────────
 function buildFeatures(v) {
   const features = [];
   if (v.has_ac)        features.push({ icon: 'ac_unit',                    label: 'Air Conditioning',  sub: 'Climate Control' });
@@ -715,7 +715,7 @@ function buildFeatures(v) {
     </div>`).join('');
 }
 
-// â”€â”€ Booking widget â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Booking widget ────────────────────────────────────────────────────────────
 function initDates() {
   const today = new Date();
   const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
@@ -729,7 +729,7 @@ function initDates() {
   document.getElementById('returnDate').addEventListener('change', recalcTotal);
 }
 
-// â”€â”€ Pick-up location helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Pick-up location helpers ──────────────────────────────────────────────────
 let _pickupMode = 'stage';
 
 function setPickupMode(mode) {
@@ -764,12 +764,12 @@ function recalcTotal() {
   const days     = Math.max(1, Math.round((new Date(r) - new Date(p)) / 86400000));
   const subtotal = (_dailyRateUSD * days).toFixed(2);
   const total    = (parseFloat(subtotal) + SERVICE_FEE).toFixed(2);
-  document.getElementById('breakdownLine').textContent  = `$${_dailyRateUSD.toFixed(2)} Ã— ${days} day${days !== 1 ? 's' : ''}`;
+  document.getElementById('breakdownLine').textContent  = `$${_dailyRateUSD.toFixed(2)} × ${days} day${days !== 1 ? 's' : ''}`;
   document.getElementById('breakdownTotal').textContent = `$${subtotal}`;
   document.getElementById('grandTotal').textContent     = `$${total}`;
 }
 
-// â”€â”€ Similar vehicles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Similar vehicles ──────────────────────────────────────────────────────────
 async function loadSimilar(currentId, vehicleType) {
   try {
     const res = await fetch(`${API}/vehicles/?page=1&page_size=8`);
@@ -804,7 +804,7 @@ async function loadSimilar(currentId, vehicleType) {
             <div class="flex justify-between items-start mb-1">
               <h3 class="font-label-lg text-label-lg font-bold text-on-surface">${v.make} ${v.model}</h3>
             </div>
-            <p class="text-on-surface-variant text-[12px] mb-3 capitalize">${v.vehicle_type} Â· ${v.passenger_capacity} Seats Â· ${v.transmission}</p>
+            <p class="text-on-surface-variant text-[12px] mb-3 capitalize">${v.vehicle_type} · ${v.passenger_capacity} Seats · ${v.transmission}</p>
             <div class="flex justify-between items-center">
               <span class="font-bold text-primary">$${price}/day</span>
               <span class="material-symbols-outlined text-primary">arrow_forward_ios</span>
@@ -815,7 +815,7 @@ async function loadSimilar(currentId, vehicleType) {
   } catch {}
 }
 
-// â”€â”€ Main load â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Main load ─────────────────────────────────────────────────────────────────
 async function loadPage() {
   try {
     const res = await fetch(`${API}/vehicles/${vehicleId}`);
@@ -848,7 +848,7 @@ async function loadPage() {
     document.getElementById('specSeats').textContent = v.passenger_capacity;
     document.getElementById('specTransmission').textContent = v.transmission;
     document.getElementById('specFuel').textContent = v.fuel_type;
-    document.getElementById('specColor').textContent = v.color || 'â€”';
+    document.getElementById('specColor').textContent = v.color || '—';
 
     // Features
     buildFeatures(v);
@@ -876,14 +876,14 @@ async function loadPage() {
           avatarEl.textContent = initials || '?';
         }
 
-        // Stats â€” populate from profile if returned, else sensible defaults
+        // Stats — populate from profile if returned, else sensible defaults
         const g = id => document.getElementById(id);
         if (owner.profile) {
-          if (g('driverTrips'))      g('driverTrips').textContent      = owner.profile.trips_completed ?? 'â€”';
+          if (g('driverTrips'))      g('driverTrips').textContent      = owner.profile.trips_completed ?? '—';
           if (g('driverRating'))     g('driverRating').textContent     = owner.profile.rating_avg
-            ? `${parseFloat(owner.profile.rating_avg).toFixed(1)} â˜…` : '5.0 â˜…';
+            ? `${parseFloat(owner.profile.rating_avg).toFixed(1)} ★` : '5.0 ★';
           if (g('driverExperience')) g('driverExperience').textContent = owner.profile.years_experience
-            ? `${owner.profile.years_experience} yrs` : 'â€”';
+            ? `${owner.profile.years_experience} yrs` : '—';
           if (g('driverLanguages'))  g('driverLanguages').textContent  = owner.profile.languages_spoken || 'English';
         }
       }
@@ -937,7 +937,7 @@ async function loadPage() {
   }
 }
 
-// â”€â”€ Payment modal state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Payment modal state ───────────────────────────────────────────────────────
 
 let _stripe       = null;
 let _cardElement  = null;
@@ -945,7 +945,7 @@ let _activeTab    = 'card';  // 'card' | 'momo'
 let _momoPaymentId = null;   // returned by /api/payments/initiate for mobile money
 let _momoBookingId = null;
 
-// â”€â”€ Tab switcher â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Tab switcher ──────────────────────────────────────────────────────────────
 
 function switchTab(tab) {
   _activeTab = tab;
@@ -971,7 +971,7 @@ function switchTab(tab) {
   document.getElementById('payBtn').classList.toggle('hidden', tab === 'momo' && !document.getElementById('momoPending').classList.contains('hidden'));
 }
 
-// â”€â”€ Stripe card init â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Stripe card init ──────────────────────────────────────────────────────────
 
 async function initStripe() {
   if (_stripe) {
@@ -1018,7 +1018,7 @@ async function initStripe() {
   }
 }
 
-// â”€â”€ Open / close modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Open / close modal ────────────────────────────────────────────────────────
 
 function openPaymentModal() {
   const token = localStorage.getItem('access_token');
@@ -1069,14 +1069,14 @@ function closePaymentModal() {
   document.getElementById('paymentModal').classList.add('hidden');
 }
 
-// â”€â”€ Submit payment (card or momo) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Submit payment (card or momo) ─────────────────────────────────────────────
 
 async function submitPayment() {
   if (_activeTab === 'card') await _submitCard();
   else await _submitMomo();
 }
 
-// â”€â”€ Card (Stripe) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Card (Stripe) ─────────────────────────────────────────────────────────────
 
 async function _submitCard() {
   const token = localStorage.getItem('access_token');
@@ -1123,9 +1123,9 @@ async function _submitCard() {
     }
 
     const bookData = await bookRes.json();
-    btnText.textContent = `Confirmingâ€¦`;
+    btnText.textContent = `Confirming…`;
 
-    // 2. Confirm card with Stripe.js (PCI-compliant â€” card data never hits our server)
+    // 2. Confirm card with Stripe.js (PCI-compliant — card data never hits our server)
     const { error, paymentIntent } = await _stripe.confirmCardPayment(bookData.client_secret, {
       payment_method: { card: _cardElement },
     });
@@ -1154,7 +1154,7 @@ async function _submitCard() {
   }
 }
 
-// â”€â”€ Mobile Money (Flutterwave) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Mobile Money (Flutterwave) ────────────────────────────────────────────────
 
 async function _submitMomo() {
   const token = localStorage.getItem('access_token');
@@ -1226,7 +1226,7 @@ async function _submitMomo() {
     const momoData = await momoRes.json();
     _momoPaymentId = momoData.payment_id;
 
-    // 3. Show "check your phone" panel â€” user approves prompt, then clicks Verify
+    // 3. Show "check your phone" panel — user approves prompt, then clicks Verify
     payBtn.classList.add('hidden');
     document.getElementById('momoPending').classList.remove('hidden');
 
@@ -1239,7 +1239,7 @@ async function _submitMomo() {
   }
 }
 
-// â”€â”€ Verify Mobile Money (poll after user approves) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Verify Mobile Money (poll after user approves) ────────────────────────────
 
 async function verifyMomoPayment() {
   const token = localStorage.getItem('access_token');
@@ -1254,7 +1254,7 @@ async function verifyMomoPayment() {
 
   btn.disabled = true;
   spinner.classList.remove('hidden');
-  btnText.textContent = 'Verifyingâ€¦';
+  btnText.textContent = 'Verifying…';
   errDiv.style.display = 'none';
 
   try {
@@ -1265,7 +1265,7 @@ async function verifyMomoPayment() {
     const data = await res.json().catch(() => ({}));
 
     if (data.status === 'completed') {
-      _showSuccess(null);  // success â€” booking ref not returned here, show generic message
+      _showSuccess(null);  // success — booking ref not returned here, show generic message
     } else if (data.status === 'failed') {
       showErr('Payment failed or was declined. Please try again.');
       document.getElementById('momoPending').classList.add('hidden');
@@ -1282,16 +1282,16 @@ async function verifyMomoPayment() {
   }
 }
 
-// â”€â”€ Show success screen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Show success screen ───────────────────────────────────────────────────────
 
 function _showSuccess(bookingRef) {
   document.getElementById('pmForm').classList.add('hidden');
   if (bookingRef) document.getElementById('pmBookingRef').textContent = bookingRef;
-  else document.getElementById('pmBookingRef').textContent = 'Processingâ€¦';
+  else document.getElementById('pmBookingRef').textContent = 'Processing…';
   document.getElementById('pmSuccess').classList.remove('hidden');
 }
 
-// â”€â”€ Reviews â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Reviews ───────────────────────────────────────────────────────────────────
 
 async function loadReviews(vehicleId) {
   try {
@@ -1324,7 +1324,7 @@ async function loadReviews(vehicleId) {
         r.cleanliness_rating   != null ? `<span class="text-xs text-on-surface-variant">Cleanliness ${r.cleanliness_rating}/5</span>` : '',
         r.communication_rating != null ? `<span class="text-xs text-on-surface-variant">Communication ${r.communication_rating}/5</span>` : '',
         r.value_rating         != null ? `<span class="text-xs text-on-surface-variant">Value ${r.value_rating}/5</span>` : '',
-      ].filter(Boolean).join('<span class="text-outline-variant mx-1">Â·</span>');
+      ].filter(Boolean).join('<span class="text-outline-variant mx-1">·</span>');
 
       return `
         <div class="p-5 rounded-2xl bg-surface-container border border-outline-variant/30">

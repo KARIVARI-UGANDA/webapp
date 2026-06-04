@@ -28,7 +28,7 @@
   <div class="mb-8">
     <h1 class="font-headline-md text-headline-md font-bold text-primary">Kari Vari Admin</h1>
     <p class="font-label-sm text-label-sm uppercase tracking-wider text-outline mt-2">Logged in as</p>
-    <p class="font-label-lg text-label-lg text-on-surface" id="adminName">â€”</p>
+    <p class="font-label-lg text-label-lg text-on-surface" id="adminName">—</p>
   </div>
   <nav class="flex-1 space-y-1">
     <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="/admin/dashboard">
@@ -64,19 +64,19 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="statsRow">
       <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
         <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Total</p>
-        <p class="font-headline-md text-headline-md" id="statTotal">â€”</p>
+        <p class="font-headline-md text-headline-md" id="statTotal">—</p>
       </div>
       <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
         <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Confirmed</p>
-        <p class="font-headline-md text-headline-md text-safari-green" id="statConfirmed">â€”</p>
+        <p class="font-headline-md text-headline-md text-safari-green" id="statConfirmed">—</p>
       </div>
       <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
         <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Completed</p>
-        <p class="font-headline-md text-headline-md text-primary" id="statCompleted">â€”</p>
+        <p class="font-headline-md text-headline-md text-primary" id="statCompleted">—</p>
       </div>
       <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
         <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Cancelled</p>
-        <p class="font-headline-md text-headline-md text-error" id="statCancelled">â€”</p>
+        <p class="font-headline-md text-headline-md text-error" id="statCancelled">—</p>
       </div>
     </div>
 
@@ -156,7 +156,7 @@ const STATUS_LABEL = {
 };
 
 function fmtDate(s) {
-  if (!s) return 'â€”';
+  if (!s) return '—';
   return new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'});
 }
 
@@ -177,7 +177,7 @@ function closeOverride() { document.getElementById('overrideModal').classList.ad
 async function submitOverride() {
   const btn = document.getElementById('overrideBtn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="material-symbols-outlined text-[18px] spin">refresh</span> Savingâ€¦';
+  btn.innerHTML = '<span class="material-symbols-outlined text-[18px] spin">refresh</span> Saving…';
   document.getElementById('overrideError').textContent = '';
   try {
     const res = await fetch(`${API}/admin/bookings/${overrideTarget.id}/override-status`, {
@@ -231,10 +231,10 @@ async function loadBookings(statusFilter) {
       const label = STATUS_LABEL[b.status] || b.status;
       return `<tr class="border-b border-outline-variant/20 hover:bg-surface-container-low transition-colors">
         <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${b.booking_reference}</td>
-        <td class="px-5 py-4 font-body-md text-body-md">${b.customer_name || 'â€”'}<br><span class="text-on-surface-variant text-xs">${b.customer_email||''}</span></td>
+        <td class="px-5 py-4 font-body-md text-body-md">${b.customer_name || '—'}<br><span class="text-on-surface-variant text-xs">${b.customer_email||''}</span></td>
         <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${fmtDate(b.start_datetime)} â†’ ${fmtDate(b.end_datetime)}</td>
         <td class="px-5 py-4"><span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm ${badge}">${label}</span></td>
-        <td class="px-5 py-4 font-label-lg text-label-lg">${b.amount_usd != null ? '$'+parseFloat(b.amount_usd).toFixed(2) : 'â€”'}</td>
+        <td class="px-5 py-4 font-label-lg text-label-lg">${b.amount_usd != null ? '$'+parseFloat(b.amount_usd).toFixed(2) : '—'}</td>
         <td class="px-5 py-4">
           <button onclick="openOverride('${b.id}','${b.booking_reference}','${b.status}')" class="text-on-surface-variant hover:text-on-surface p-1.5 rounded-lg hover:bg-surface-container transition-colors" title="Override status">
             <span class="material-symbols-outlined text-[18px]">edit</span>
@@ -269,10 +269,10 @@ async function loadStats() {
     const res = await fetch(`${API}/admin/analytics/overview`, AUTH);
     if (!res.ok) return;
     const d = await res.json();
-    document.getElementById('statTotal').textContent     = d.total_bookings ?? 'â€”';
-    document.getElementById('statConfirmed').textContent = d.confirmed_bookings ?? 'â€”';
-    document.getElementById('statCompleted').textContent = d.completed_bookings ?? 'â€”';
-    document.getElementById('statCancelled').textContent = d.cancelled_bookings ?? 'â€”';
+    document.getElementById('statTotal').textContent     = d.total_bookings ?? '—';
+    document.getElementById('statConfirmed').textContent = d.confirmed_bookings ?? '—';
+    document.getElementById('statCompleted').textContent = d.completed_bookings ?? '—';
+    document.getElementById('statCancelled').textContent = d.cancelled_bookings ?? '—';
   } catch {}
 }
 

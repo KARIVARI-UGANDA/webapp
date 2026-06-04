@@ -200,7 +200,7 @@ if (!token) { window.location.href = '/login'; }
 document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
 
 function initials(n) { return n ? n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?'; }
-function fmtDate(s)  { return s ? new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : 'â€”'; }
+function fmtDate(s)  { return s ? new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : '—'; }
 function auth()      { return { headers: { Authorization: `Bearer ${token}` } }; }
 
 const STATUS_BADGE  = { confirmed:'bg-status-success/10 text-status-success', completed:'bg-primary-fixed text-safari-green', pending:'bg-secondary-fixed text-secondary', pending_payment:'bg-secondary-fixed text-secondary', cancelled:'bg-error-container text-error' };
@@ -218,11 +218,11 @@ function bookingCard(b) {
     : `<div class="w-20 h-20 rounded-xl bg-surface-container flex items-center justify-center flex-shrink-0 text-outline-variant"><span class="material-symbols-outlined text-[36px]">directions_car</span></div>`;
   const badge  = STATUS_BADGE[b.status] || 'bg-surface-container text-on-surface-variant';
   const label  = STATUS_LABEL[b.status] || b.status;
-  const amt    = b.amount_usd != null ? `$${parseFloat(b.amount_usd).toFixed(2)}` : 'â€”';
+  const amt    = b.amount_usd != null ? `$${parseFloat(b.amount_usd).toFixed(2)}` : '—';
   const days   = b.total_days || 1;
   const hasDriver = true; // all Kari Vari trips include the owner as driver
 
-  // Cancel button â€” shown for upcoming bookings only
+  // Cancel button — shown for upcoming bookings only
   let cancelBtn = '';
   if (UPCOMING.includes(b.status)) {
     cancelBtn = `<button onclick="openCancelModal('${b.id}','${b.booking_reference}')" class="flex items-center gap-1.5 text-error border border-error/30 hover:bg-error-container px-3 py-1.5 rounded-xl font-label-sm text-label-sm transition-colors">
@@ -230,7 +230,7 @@ function bookingCard(b) {
     </button>`;
   }
 
-  // Review action â€” shown for reviewable bookings
+  // Review action — shown for reviewable bookings
   let reviewBtn = '';
   if (REVIEWABLE.includes(b.status)) {
     const done  = myReviews[b.id] || new Set();
@@ -257,7 +257,7 @@ function bookingCard(b) {
         <div class="flex flex-wrap gap-4 font-label-sm text-label-sm text-outline mb-3">
           <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span>${fmtDate(b.start_datetime)} â†’ ${fmtDate(b.end_datetime)}</span>
           <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span>${days} day${days!==1?'s':''}</span>
-          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">location_on</span>${b.pickup_location||'â€”'}</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">location_on</span>${b.pickup_location||'—'}</span>
           <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">directions_car</span>${hasDriver?'With Driver':'Self Drive'}</span>
         </div>
         ${(cancelBtn || reviewBtn) ? `<div class="flex gap-2 flex-wrap">${cancelBtn}${reviewBtn}</div>` : ''}
@@ -297,7 +297,7 @@ function switchTab(name) {
   renderTab(name);
 }
 
-// â”€â”€ Review Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Review Modal ───────────────────────────────────────────────────────────────
 let reviewModal = { bookingId:'', vehicleName:'', hasDriver:false, currentTarget:'trip' };
 const ratings   = { overall:0, punctuality:0, cleanliness:0, communication:0, value:0 };
 
@@ -376,7 +376,7 @@ function setStars(category, value) {
 
 function buildStarRow(category) {
   const stars = [5,4,3,2,1].map(v =>
-    `<button type="button" class="star-btn" onclick="setStars('${category}',${v})" onmouseover="hoverStars('${category}',${v})" onmouseout="setStars('${category}',ratings['${category}'])">â˜…</button>`
+    `<button type="button" class="star-btn" onclick="setStars('${category}',${v})" onmouseover="hoverStars('${category}',${v})" onmouseout="setStars('${category}',ratings['${category}'])">★</button>`
   ).join('');
   return `<div id="stars-${category}" class="star-row">${stars}</div>`;
 }
@@ -397,7 +397,7 @@ async function submitReview() {
 
   const btn = document.getElementById('rmSubmitBtn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="material-symbols-outlined text-[18px] spin">refresh</span> Submittingâ€¦';
+  btn.innerHTML = '<span class="material-symbols-outlined text-[18px] spin">refresh</span> Submitting…';
   document.getElementById('rmError').textContent = '';
 
   try {
@@ -446,7 +446,7 @@ async function submitReview() {
   }
 }
 
-// â”€â”€ Cancel Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Cancel Modal ───────────────────────────────────────────────────────────────
 let cancelTarget = { id: '', ref: '' };
 
 function openCancelModal(bookingId, bookingRef) {
@@ -469,7 +469,7 @@ function closeCancelModal() {
 async function confirmCancel() {
   const btn = document.getElementById('cancelConfirmBtn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="material-symbols-outlined text-[18px] spin">refresh</span> Cancellingâ€¦';
+  btn.innerHTML = '<span class="material-symbols-outlined text-[18px] spin">refresh</span> Cancelling…';
   document.getElementById('cancelError').textContent = '';
 
   try {
@@ -540,7 +540,7 @@ async function load() {
 load();
 </script>
 
-<!-- â”€â”€ Cancel Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ── Cancel Modal ───────────────────────────────────────────────────────────── -->
 <div id="cancelModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" style="background:rgba(0,0,0,.5);">
   <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-5">
     <div class="flex items-start justify-between gap-4">
@@ -558,7 +558,7 @@ load();
     </div>
     <div>
       <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Reason for cancellation <span class="text-outline">(optional)</span></label>
-      <textarea id="cancelReason" rows="3" placeholder="e.g. Plans changed, found alternative transportâ€¦"
+      <textarea id="cancelReason" rows="3" placeholder="e.g. Plans changed, found alternative transport…"
         class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-error resize-none"></textarea>
     </div>
     <p id="cancelError" class="font-label-sm text-label-sm text-error min-h-[1rem]"></p>
@@ -571,7 +571,7 @@ load();
   </div>
 </div>
 
-<!-- â”€â”€ Review Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ── Review Modal ───────────────────────────────────────────────────────────── -->
 <div id="reviewModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" style="background:rgba(0,0,0,.5);">
   <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
 
@@ -598,11 +598,11 @@ load();
       <div class="text-center">
         <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-3">Overall Rating *</p>
         <div class="flex justify-center gap-3" id="stars-overall">
-          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',1)" onmouseover="hoverStars('overall',1)" onmouseout="setStars('overall',ratings['overall'])">â˜…</button>
-          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',2)" onmouseover="hoverStars('overall',2)" onmouseout="setStars('overall',ratings['overall'])">â˜…</button>
-          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',3)" onmouseover="hoverStars('overall',3)" onmouseout="setStars('overall',ratings['overall'])">â˜…</button>
-          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',4)" onmouseover="hoverStars('overall',4)" onmouseout="setStars('overall',ratings['overall'])">â˜…</button>
-          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',5)" onmouseover="hoverStars('overall',5)" onmouseout="setStars('overall',ratings['overall'])">â˜…</button>
+          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',1)" onmouseover="hoverStars('overall',1)" onmouseout="setStars('overall',ratings['overall'])">★</button>
+          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',2)" onmouseover="hoverStars('overall',2)" onmouseout="setStars('overall',ratings['overall'])">★</button>
+          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',3)" onmouseover="hoverStars('overall',3)" onmouseout="setStars('overall',ratings['overall'])">★</button>
+          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',4)" onmouseover="hoverStars('overall',4)" onmouseout="setStars('overall',ratings['overall'])">★</button>
+          <button type="button" class="star-btn text-[40px]" onclick="setStars('overall',5)" onmouseover="hoverStars('overall',5)" onmouseout="setStars('overall',ratings['overall'])">★</button>
         </div>
         <p class="font-label-sm text-label-sm text-outline mt-2" id="overallLabel">Tap to rate</p>
       </div>
@@ -612,41 +612,41 @@ load();
         <div>
           <p class="font-label-sm text-label-sm text-on-surface-variant mb-1" id="rmPunctualityLabel">Punctuality</p>
           <div class="flex gap-1" id="stars-punctuality">
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',1)" onmouseover="hoverStars('punctuality',1)" onmouseout="setStars('punctuality',ratings['punctuality'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',2)" onmouseover="hoverStars('punctuality',2)" onmouseout="setStars('punctuality',ratings['punctuality'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',3)" onmouseover="hoverStars('punctuality',3)" onmouseout="setStars('punctuality',ratings['punctuality'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',4)" onmouseover="hoverStars('punctuality',4)" onmouseout="setStars('punctuality',ratings['punctuality'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',5)" onmouseover="hoverStars('punctuality',5)" onmouseout="setStars('punctuality',ratings['punctuality'])">â˜…</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',1)" onmouseover="hoverStars('punctuality',1)" onmouseout="setStars('punctuality',ratings['punctuality'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',2)" onmouseover="hoverStars('punctuality',2)" onmouseout="setStars('punctuality',ratings['punctuality'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',3)" onmouseover="hoverStars('punctuality',3)" onmouseout="setStars('punctuality',ratings['punctuality'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',4)" onmouseover="hoverStars('punctuality',4)" onmouseout="setStars('punctuality',ratings['punctuality'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('punctuality',5)" onmouseover="hoverStars('punctuality',5)" onmouseout="setStars('punctuality',ratings['punctuality'])">★</button>
           </div>
         </div>
         <div>
           <p class="font-label-sm text-label-sm text-on-surface-variant mb-1" id="rmCleanlinessLabel">Cleanliness</p>
           <div class="flex gap-1" id="stars-cleanliness">
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',1)" onmouseover="hoverStars('cleanliness',1)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',2)" onmouseover="hoverStars('cleanliness',2)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',3)" onmouseover="hoverStars('cleanliness',3)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',4)" onmouseover="hoverStars('cleanliness',4)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',5)" onmouseover="hoverStars('cleanliness',5)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">â˜…</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',1)" onmouseover="hoverStars('cleanliness',1)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',2)" onmouseover="hoverStars('cleanliness',2)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',3)" onmouseover="hoverStars('cleanliness',3)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',4)" onmouseover="hoverStars('cleanliness',4)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('cleanliness',5)" onmouseover="hoverStars('cleanliness',5)" onmouseout="setStars('cleanliness',ratings['cleanliness'])">★</button>
           </div>
         </div>
         <div>
           <p class="font-label-sm text-label-sm text-on-surface-variant mb-1" id="rmCommunicationLabel">Communication</p>
           <div class="flex gap-1" id="stars-communication">
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',1)" onmouseover="hoverStars('communication',1)" onmouseout="setStars('communication',ratings['communication'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',2)" onmouseover="hoverStars('communication',2)" onmouseout="setStars('communication',ratings['communication'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',3)" onmouseover="hoverStars('communication',3)" onmouseout="setStars('communication',ratings['communication'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',4)" onmouseover="hoverStars('communication',4)" onmouseout="setStars('communication',ratings['communication'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',5)" onmouseover="hoverStars('communication',5)" onmouseout="setStars('communication',ratings['communication'])">â˜…</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',1)" onmouseover="hoverStars('communication',1)" onmouseout="setStars('communication',ratings['communication'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',2)" onmouseover="hoverStars('communication',2)" onmouseout="setStars('communication',ratings['communication'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',3)" onmouseover="hoverStars('communication',3)" onmouseout="setStars('communication',ratings['communication'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',4)" onmouseover="hoverStars('communication',4)" onmouseout="setStars('communication',ratings['communication'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('communication',5)" onmouseover="hoverStars('communication',5)" onmouseout="setStars('communication',ratings['communication'])">★</button>
           </div>
         </div>
         <div>
           <p class="font-label-sm text-label-sm text-on-surface-variant mb-1" id="rmValueLabel">Value for Money</p>
           <div class="flex gap-1" id="stars-value">
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',1)" onmouseover="hoverStars('value',1)" onmouseout="setStars('value',ratings['value'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',2)" onmouseover="hoverStars('value',2)" onmouseout="setStars('value',ratings['value'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',3)" onmouseover="hoverStars('value',3)" onmouseout="setStars('value',ratings['value'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',4)" onmouseover="hoverStars('value',4)" onmouseout="setStars('value',ratings['value'])">â˜…</button>
-            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',5)" onmouseover="hoverStars('value',5)" onmouseout="setStars('value',ratings['value'])">â˜…</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',1)" onmouseover="hoverStars('value',1)" onmouseout="setStars('value',ratings['value'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',2)" onmouseover="hoverStars('value',2)" onmouseout="setStars('value',ratings['value'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',3)" onmouseover="hoverStars('value',3)" onmouseout="setStars('value',ratings['value'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',4)" onmouseover="hoverStars('value',4)" onmouseout="setStars('value',ratings['value'])">★</button>
+            <button type="button" class="star-btn text-[22px]" onclick="setStars('value',5)" onmouseover="hoverStars('value',5)" onmouseout="setStars('value',ratings['value'])">★</button>
           </div>
         </div>
       </div>
@@ -654,7 +654,7 @@ load();
       <!-- Written review -->
       <div>
         <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Written Review <span class="text-outline">(optional)</span></label>
-        <textarea id="rmText" rows="4" placeholder="Share your experience â€” what stood out, what could be betterâ€¦"
+        <textarea id="rmText" rows="4" placeholder="Share your experience — what stood out, what could be better…"
           class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-safari-green resize-none"></textarea>
       </div>
 

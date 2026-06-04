@@ -153,7 +153,7 @@
             <div class="relative">
               <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline pointer-events-none">lock</span>
               <input id="password" name="password" type="password" required
-                     placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                     placeholder="••••••••••••"
                      class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-safari-green rounded-lg py-3.5 pl-12 pr-12 text-on-surface placeholder:text-outline-variant transition-all"/>
               <button type="button" onclick="togglePasswordVisibility()"
                       class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors">
@@ -182,7 +182,7 @@
         <div class="mt-6">
           <button id="qa-btn" onclick="devSignIn('admin','/admin/dashboard')"
                   class="w-full py-3 rounded-xl font-label-lg text-label-lg flex items-center justify-center gap-2 bg-surface-container border border-dashed border-outline-variant text-on-surface hover:bg-surface-container-high transition-all">
-            <span class="text-[16px]">âš¡</span> Quick Access â€” Sign in as Admin
+            <span class="text-[16px]">âš¡</span> Quick Access — Sign in as Admin
           </button>
         </div>
 
@@ -202,7 +202,7 @@
   <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
     <div class="flex flex-col items-center md:items-start space-y-2">
       <span class="font-headline-md text-headline-md font-bold text-ugandan-sun">Kari Vari Uganda</span>
-      <p class="font-label-sm text-label-sm text-surface-variant opacity-70">Â© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+      <p class="font-label-sm text-label-sm text-surface-variant opacity-70">© 2026 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
     </div>
     <div class="flex flex-wrap justify-center gap-gutter">
       <a href="#" class="text-surface-variant font-label-sm text-label-sm hover:text-ugandan-sun transition-colors">Privacy Policy</a>
@@ -218,7 +218,7 @@
 <script>
 async function devSignIn(role, redirect) {
   const btn = document.getElementById('qa-btn');
-  if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; btn.textContent = 'Signing inâ€¦'; }
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; btn.textContent = 'Signing in…'; }
   try {
     const res  = await fetch(`/api/auth/dev-signin?role=${role}`, { method: 'POST' });
     const json = await res.json();
@@ -230,11 +230,11 @@ async function devSignIn(role, redirect) {
       window.location.href = redirect;
     } else {
       showLoginAlert(json.detail || 'Quick access failed');
-      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span class="text-[16px]">âš¡</span> Quick Access â€” Sign in as Admin'; }
+      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span class="text-[16px]">âš¡</span> Quick Access — Sign in as Admin'; }
     }
   } catch {
     showLoginAlert('Network error');
-    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span class="text-[16px]">âš¡</span> Quick Access â€” Sign in as Admin'; }
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span class="text-[16px]">âš¡</span> Quick Access — Sign in as Admin'; }
   }
 }
 
@@ -266,7 +266,7 @@ document.getElementById('adminLoginForm').addEventListener('submit', async (e) =
 
   // Loading state
   btn.disabled  = true;
-  btnText.textContent = 'Authenticatingâ€¦';
+  btnText.textContent = 'Authenticating…';
   btnIcon.innerHTML = `<svg class="animate-spin h-5 w-5 text-slate-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -282,7 +282,7 @@ document.getElementById('adminLoginForm').addEventListener('submit', async (e) =
 
     if (res.ok) {
       if (json.role !== 'admin') {
-        showLoginAlert('Access denied â€” this portal is for administrators only.');
+        showLoginAlert('Access denied — this portal is for administrators only.');
         btn.disabled = false;
         btnText.textContent = 'Sign In to Admin Portal';
         btnIcon.innerHTML   = '<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>';
@@ -292,7 +292,7 @@ document.getElementById('adminLoginForm').addEventListener('submit', async (e) =
       localStorage.setItem('refresh_token', json.refresh_token);
       localStorage.setItem('role',          json.role);
       localStorage.setItem('full_name',     json.full_name);
-      showLoginAlert('Login successful â€” redirectingâ€¦', false);
+      showLoginAlert('Login successful — redirecting…', false);
       setTimeout(() => { window.location.href = '/admin/dashboard'; }, 800);
     } else {
       showLoginAlert(json.detail || 'Invalid email or password.');
@@ -301,7 +301,7 @@ document.getElementById('adminLoginForm').addEventListener('submit', async (e) =
       btnIcon.innerHTML   = '<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>';
     }
   } catch (err) {
-    showLoginAlert('Network error â€” please check your connection.');
+    showLoginAlert('Network error — please check your connection.');
     btn.disabled = false;
     btnText.textContent = 'Sign In to Admin Portal';
     btnIcon.innerHTML   = '<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>';

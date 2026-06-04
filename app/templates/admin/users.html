@@ -28,7 +28,7 @@
   <div class="mb-8">
     <h1 class="font-headline-md text-headline-md font-bold text-primary">Kari Vari Admin</h1>
     <p class="font-label-sm text-label-sm uppercase tracking-wider text-outline mt-2">Logged in as</p>
-    <p class="font-label-lg text-label-lg text-on-surface" id="adminName">â€”</p>
+    <p class="font-label-lg text-label-lg text-on-surface" id="adminName">—</p>
   </div>
   <nav class="flex-1 space-y-1">
     <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="/admin/dashboard">
@@ -64,7 +64,7 @@
     <div class="flex flex-wrap gap-3">
       <div class="flex-1 min-w-[200px] relative">
         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
-        <input id="searchInput" type="text" placeholder="Search by name or emailâ€¦" oninput="debouncedSearch()"
+        <input id="searchInput" type="text" placeholder="Search by name or email…" oninput="debouncedSearch()"
           class="w-full pl-10 pr-4 py-2.5 border border-outline-variant rounded-xl font-body-md text-body-md bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-safari-green">
       </div>
       <div class="flex gap-2 flex-wrap">
@@ -102,7 +102,7 @@ const ROLE_COLOR = {
 };
 
 function fmtDate(s) {
-  if (!s) return 'â€”';
+  if (!s) return '—';
   return new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'});
 }
 
@@ -170,7 +170,7 @@ async function loadUsers() {
               ${u.full_name ? u.full_name[0].toUpperCase() : '?'}
             </div>
             <div>
-              <p class="font-label-lg text-label-lg text-on-surface">${u.full_name || 'â€”'}</p>
+              <p class="font-label-lg text-label-lg text-on-surface">${u.full_name || '—'}</p>
               <p class="font-label-sm text-label-sm text-on-surface-variant">${u.email}</p>
             </div>
           </div>
