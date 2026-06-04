@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In — Kari Vari Uganda</title>
+  <title>Sign In â€” Kari Vari Uganda</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -12,6 +13,7 @@
 <body>
 <div class="app-wrapper">
   <header class="main-header">
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
     <div class="header-inner">
       <div class="logo-area">
         <a href="/" class="logo-text" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:8px;">
@@ -75,7 +77,7 @@
             <label class="field-label" for="password">Password</label>
             <div class="input-icon-wrapper">
               <span class="material-symbols-outlined input-icon">lock</span>
-              <input type="password" id="password" name="password" class="form-control-icon" placeholder="••••••••" required>
+              <input type="password" id="password" name="password" class="form-control-icon" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
               <button type="button" class="password-eye" id="togglePassword">
                 <span class="material-symbols-outlined">visibility</span>
               </button>
@@ -111,7 +113,7 @@
             <button onclick="devSignIn('customer','/')" id="qa-btn"
               style="width:100%;padding:10px 16px;border-radius:12px;background:#f3f3f6;color:#154212;font-size:13px;font-weight:700;border:1px dashed #c2c9bb;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s;"
               onmouseover="this.style.background='#e8e8ea'" onmouseout="this.style.background='#f3f3f6'">
-              <span style="font-size:16px;">⚡</span> Quick Access — Sign in as Customer
+              <span style="font-size:16px;">âš¡</span> Quick Access â€” Sign in as Customer
             </button>
           </div>
         </div>
@@ -121,7 +123,7 @@
 
   <footer class="main-footer">
     <div class="footer-container">
-      <p class="footer-copyright">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+      <p class="footer-copyright">Â© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
       <div class="footer-links">
         <a href="#" class="footer-link">Privacy Policy</a>
         <a href="#" class="footer-link">Terms of Service</a>
@@ -135,7 +137,7 @@
 <script>
 async function devSignIn(role, redirect) {
   const btn = document.getElementById('qa-btn');
-  if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; btn.textContent = 'Signing in…'; }
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; btn.textContent = 'Signing inâ€¦'; }
   try {
     const res  = await fetch(`/api/auth/dev-signin?role=${role}`, { method: 'POST' });
     const json = await res.json();
@@ -147,13 +149,14 @@ async function devSignIn(role, redirect) {
       window.location.href = redirect;
     } else {
       alert(json.detail || 'Quick access failed');
-      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span style="font-size:16px;">⚡</span> Quick Access — Sign in as Customer'; }
+      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span style="font-size:16px;">âš¡</span> Quick Access â€” Sign in as Customer'; }
     }
   } catch {
     alert('Network error');
-    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span style="font-size:16px;">⚡</span> Quick Access — Sign in as Customer'; }
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span style="font-size:16px;">âš¡</span> Quick Access â€” Sign in as Customer'; }
   }
 }
 </script>
+    <script src="//code.tidio.co/z2re40p08rwgmv2hiwlvw8ymzkzacmxb.js" async></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html class="light" lang="en"><head>
+﻿<!DOCTYPE html><html class="light" lang="en"><head>
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>Vehicle Listings | Kari Vari Uganda</title>
@@ -216,7 +217,7 @@
   <!-- Currency toggle -->
   <div class="flex rounded-lg overflow-hidden border border-outline-variant text-label-sm font-label-sm">
     <button id="btn-usd" onclick="setCurrency('USD')" class="px-3 py-1.5 bg-primary text-white transition-colors">$ USD</button>
-    <button id="btn-eur" onclick="setCurrency('EUR')" class="px-3 py-1.5 text-on-surface-variant hover:bg-surface-container transition-colors">€ EUR</button>
+    <button id="btn-eur" onclick="setCurrency('EUR')" class="px-3 py-1.5 text-on-surface-variant hover:bg-surface-container transition-colors">â‚¬ EUR</button>
   </div>
   <div class="flex items-center gap-3 bg-surface-container p-1 rounded-lg">
     <span class="px-3 py-1 font-label-lg text-label-lg text-on-surface-variant">Sort by:</span>
@@ -261,7 +262,7 @@
 </div>
 </div>
 <div class="max-w-container-max mx-auto border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-<p class="text-surface-variant font-label-sm text-label-sm">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+<p class="text-surface-variant font-label-sm text-label-sm">Â© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
 <div class="flex gap-6">
 <a class="text-surface-variant hover:text-ugandan-sun" href="#"><span class="material-symbols-outlined">public</span></a>
 <a class="text-surface-variant hover:text-ugandan-sun" href="#"><span class="material-symbols-outlined">mail</span></a>
@@ -275,7 +276,7 @@
 <span class="font-label-lg text-label-lg pr-2">Need Help?</span>
 </button>
 <script>
-// ── Nav auth state ────────────────────────────────────────────────────────────
+// â”€â”€ Nav auth state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function() {
   const token = localStorage.getItem('access_token');
   const auth  = document.getElementById('authButtons');
@@ -296,7 +297,7 @@
 })();
 
 const RATES   = { USD: 3700, EUR: 4050 };
-const SYMBOLS = { USD: '$', EUR: '€' };
+const SYMBOLS = { USD: '$', EUR: 'â‚¬' };
 let _vehicles = [];
 let _currency = 'USD';
 
@@ -435,7 +436,7 @@ function vehicleCardHTML(v) {
       <div class="flex justify-between items-start mb-2">
         <div>
           <h3 class="font-headline-md text-headline-md text-on-surface">${v.make} ${v.model}</h3>
-          <p class="text-on-surface-variant font-label-sm text-label-sm mt-0.5">${v.year} · ${v.vehicle_type} · ${v.service_area || 'Uganda'}</p>
+          <p class="text-on-surface-variant font-label-sm text-label-sm mt-0.5">${v.year} Â· ${v.vehicle_type} Â· ${v.service_area || 'Uganda'}</p>
         </div>
       </div>
       <div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">${features}</div>
@@ -481,9 +482,10 @@ document.getElementById('sortSelect').addEventListener('change', () => renderGri
     }
   } catch {
     document.getElementById('vehicleGrid').innerHTML =
-      '<div class="col-span-2 text-center py-16 text-on-surface-variant">Network error — please refresh.</div>';
+      '<div class="col-span-2 text-center py-16 text-on-surface-variant">Network error â€” please refresh.</div>';
     document.getElementById('vehicleCount').textContent = '';
   }
 })();
 </script>
+    <script src="//code.tidio.co/z2re40p08rwgmv2hiwlvw8ymzkzacmxb.js" async></script>
 </body></html>

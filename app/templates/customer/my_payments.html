@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Payments - Kari Vari Uganda</title>
@@ -124,6 +125,7 @@
 <!-- Main -->
 <main class="ml-64 min-h-screen bg-surface">
   <header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md flex justify-between items-center px-10 py-4 shadow-sm">
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
     <div>
       <h1 class="font-headline-md text-headline-md text-on-surface">Payments</h1>
       <p class="font-label-sm text-label-sm text-on-surface-variant">Your full transaction history</p>
@@ -205,7 +207,7 @@ if (!token) { window.location.href = '/login'; }
 document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
 
 function initials(n) { return n ? n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?'; }
-function fmtDate(s) { return s ? new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : '—'; }
+function fmtDate(s) { return s ? new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : 'â€”'; }
 
 const METHOD_ICON = { card:'credit_card', mobile_money:'phone_android' };
 const METHOD_LABEL = { card:'Credit Card', mobile_money:'Mobile Money' };
@@ -222,7 +224,7 @@ let allTx = [];
 
 function txRow(b) {
   const v     = b.vehicle;
-  const amt   = b.amount_usd != null ? `$${parseFloat(b.amount_usd).toFixed(2)}` : '—';
+  const amt   = b.amount_usd != null ? `$${parseFloat(b.amount_usd).toFixed(2)}` : 'â€”';
   const badge = b.payment_status ? (TX_BADGE[b.payment_status] || 'bg-surface-container text-on-surface-variant') : TX_BADGE[b.status === 'confirmed' || b.status === 'completed' ? 'completed' : 'pending'];
   const label = b.payment_status ? (TX_LABEL[b.payment_status] || b.payment_status) : (b.status === 'confirmed' || b.status === 'completed' ? 'Paid' : 'Pending');
   const method = METHOD_LABEL[b.payment_method] || b.payment_method || 'Card';
@@ -243,7 +245,7 @@ function txRow(b) {
       <div class="md:col-span-2 font-label-sm text-label-sm text-on-surface-variant">${fmtDate(b.created_at)}</div>
       <div class="md:col-span-2 flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant">
         <span class="material-symbols-outlined text-[16px]">${icon}</span>
-        <span>${method}${channel ? ' · '+channel : ''}</span>
+        <span>${method}${channel ? ' Â· '+channel : ''}</span>
       </div>
       <div class="md:col-span-2 text-right font-headline-md text-headline-md text-safari-green">${amt}</div>
       <div class="md:col-span-2 text-right">
@@ -299,5 +301,6 @@ async function load() {
 }
 load();
 </script>
+    <script src="//code.tidio.co/z2re40p08rwgmv2hiwlvw8ymzkzacmxb.js" async></script>
 </body>
 </html>

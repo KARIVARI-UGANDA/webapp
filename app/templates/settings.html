@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Settings - Kari Vari Uganda</title>
@@ -57,7 +58,7 @@
 </head>
 <body class="selection:bg-ugandan-sun selection:text-slate-dark">
 
-<!-- ── Sidebar ─────────────────────────────────────────────────────────────── -->
+<!-- â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
 <aside id="sidebar" class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low shadow-md flex flex-col p-6 space-y-4 z-50">
   <div class="mb-6">
     <a href="/" class="flex items-center gap-2 font-bold text-[20px]" style="color:#154212;text-decoration:none;">
@@ -68,8 +69,8 @@
   <div class="flex items-center space-x-3 px-2">
     <div id="avatarCircle" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg flex-shrink-0">?</div>
     <div class="overflow-hidden">
-      <p class="font-label-lg text-label-lg text-on-surface truncate" id="sidebarName">—</p>
-      <p class="font-label-sm text-label-sm text-on-surface-variant" id="sidebarRole">—</p>
+      <p class="font-label-lg text-label-lg text-on-surface truncate" id="sidebarName">â€”</p>
+      <p class="font-label-sm text-label-sm text-on-surface-variant" id="sidebarRole">â€”</p>
     </div>
   </div>
   <nav id="sidebarNav" class="flex-1 space-y-1 pt-2"></nav>
@@ -84,9 +85,10 @@
   </div>
 </aside>
 
-<!-- ── Main ────────────────────────────────────────────────────────────────── -->
+<!-- â”€â”€ Main â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
 <main class="ml-64 min-h-screen bg-surface">
   <header class="sticky top-0 z-40 bg-surface/80 backdrop-blur-md flex justify-between items-center px-10 py-4 shadow-sm">
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
     <div>
       <h1 class="font-headline-md text-headline-md">Account Settings</h1>
       <p class="font-label-sm text-label-sm text-on-surface-variant">Manage your profile, documents, and security</p>
@@ -119,7 +121,7 @@
         <button onclick="showTab('security')"  class="tab-btn px-5 py-2.5 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Security</button>
       </div>
 
-      <!-- ── Tab: Profile ─────────────────────────────────────────────────── -->
+      <!-- â”€â”€ Tab: Profile â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <div id="tab-profile" class="space-y-6">
         <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-6">
           <h2 class="font-headline-md text-headline-md">Personal Information</h2>
@@ -129,7 +131,7 @@
             <div id="profileAvatar" class="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-white font-bold text-3xl overflow-hidden flex-shrink-0">?</div>
             <div class="space-y-2">
               <p class="font-label-lg text-label-lg text-on-surface">Profile Photo</p>
-              <p class="font-label-sm text-label-sm text-on-surface-variant">JPG, PNG or WebP · max 10 MB</p>
+              <p class="font-label-sm text-label-sm text-on-surface-variant">JPG, PNG or WebP Â· max 10 MB</p>
               <label class="cursor-pointer inline-flex items-center gap-2 bg-surface-container px-4 py-2 rounded-xl font-label-sm text-label-sm text-on-surface hover:bg-surface-container-high transition-colors">
                 <span class="material-symbols-outlined text-[16px]">upload</span>
                 Upload Photo
@@ -168,7 +170,7 @@
           <!-- Bio (owners only) -->
           <div id="bioSection" class="hidden">
             <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">About Me</label>
-            <textarea id="pBio" rows="4" class="field resize-none" placeholder="Tell customers about yourself — your experience, specialties, and why they should choose you…"></textarea>
+            <textarea id="pBio" rows="4" class="field resize-none" placeholder="Tell customers about yourself â€” your experience, specialties, and why they should choose youâ€¦"></textarea>
             <p class="mt-1 font-label-sm text-label-sm text-outline">Displayed on your public owner profile.</p>
           </div>
 
@@ -180,7 +182,7 @@
         </div>
       </div>
 
-      <!-- ── Tab: Documents ──────────────────────────────────────────────── -->
+      <!-- â”€â”€ Tab: Documents â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <div id="tab-documents" class="space-y-6 hidden">
 
         <!-- KYC status banner -->
@@ -227,7 +229,7 @@
               <div id="docFrontPreview">
                 <span class="material-symbols-outlined text-[48px] text-on-surface-variant block mb-2">upload_file</span>
                 <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag &amp; drop</p>
-                <p class="font-label-sm text-label-sm text-outline mt-1">JPEG, PNG, WebP, PDF · max 10 MB</p>
+                <p class="font-label-sm text-label-sm text-outline mt-1">JPEG, PNG, WebP, PDF Â· max 10 MB</p>
               </div>
             </div>
           </div>
@@ -240,7 +242,7 @@
               <div id="docBackPreview">
                 <span class="material-symbols-outlined text-[48px] text-on-surface-variant block mb-2">upload_file</span>
                 <p class="font-label-lg text-label-lg text-on-surface-variant">Click or drag &amp; drop</p>
-                <p class="font-label-sm text-label-sm text-outline mt-1">JPEG, PNG, WebP, PDF · max 10 MB</p>
+                <p class="font-label-sm text-label-sm text-outline mt-1">JPEG, PNG, WebP, PDF Â· max 10 MB</p>
               </div>
             </div>
           </div>
@@ -253,7 +255,7 @@
         </div>
       </div>
 
-      <!-- ── Tab: Security ───────────────────────────────────────────────── -->
+      <!-- â”€â”€ Tab: Security â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <div id="tab-security" class="space-y-6 hidden">
         <div class="bg-surface-container-lowest rounded-3xl elevation-1 p-8 space-y-6">
           <h2 class="font-headline-md text-headline-md">Change Password</h2>
@@ -296,19 +298,19 @@
           <div class="grid grid-cols-2 gap-4 max-w-md">
             <div>
               <p class="font-label-sm text-label-sm text-on-surface-variant">Account Type</p>
-              <p class="font-label-lg text-label-lg text-on-surface capitalize" id="secAccountType">—</p>
+              <p class="font-label-lg text-label-lg text-on-surface capitalize" id="secAccountType">â€”</p>
             </div>
             <div>
               <p class="font-label-sm text-label-sm text-on-surface-variant">Role</p>
-              <p class="font-label-lg text-label-lg text-on-surface capitalize" id="secRole">—</p>
+              <p class="font-label-lg text-label-lg text-on-surface capitalize" id="secRole">â€”</p>
             </div>
             <div>
               <p class="font-label-sm text-label-sm text-on-surface-variant">Member Since</p>
-              <p class="font-label-lg text-label-lg text-on-surface" id="secJoined">—</p>
+              <p class="font-label-lg text-label-lg text-on-surface" id="secJoined">â€”</p>
             </div>
             <div>
               <p class="font-label-sm text-label-sm text-on-surface-variant">Last Login</p>
-              <p class="font-label-lg text-label-lg text-on-surface" id="secLastLogin">—</p>
+              <p class="font-label-lg text-label-lg text-on-surface" id="secLastLogin">â€”</p>
             </div>
           </div>
         </div>
@@ -335,9 +337,9 @@ const token = localStorage.getItem('access_token');
 if (!token) { window.location.href = '/login'; }
 document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
 
-// ── Helpers ────────────────────────────────────────────────────────────────────
+// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function initials(n) { return n ? n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?'; }
-function fmtDate(s) { return s ? new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : '—'; }
+function fmtDate(s) { return s ? new Date(s).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : 'â€”'; }
 function auth() { return { headers: { Authorization: `Bearer ${token}` } }; }
 
 let toastTimer;
@@ -353,11 +355,11 @@ function toast(msg, ok=true) {
 }
 
 function setBusy(btn, busy) {
-  if (busy) { btn.disabled=true; btn.dataset.orig=btn.innerHTML; btn.innerHTML='<span class="material-symbols-outlined text-[18px] spin">refresh</span> Saving…'; }
+  if (busy) { btn.disabled=true; btn.dataset.orig=btn.innerHTML; btn.innerHTML='<span class="material-symbols-outlined text-[18px] spin">refresh</span> Savingâ€¦'; }
   else       { btn.disabled=false; btn.innerHTML=btn.dataset.orig; }
 }
 
-// ── Sidebar nav per role ───────────────────────────────────────────────────────
+// â”€â”€ Sidebar nav per role â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const NAV = {
   customer: [
     {href:'/dashboard',     icon:'dashboard',      label:'Dashboard'},
@@ -387,7 +389,7 @@ function buildSidebar(role) {
     </a>`).join('');
 }
 
-// ── Tabs ───────────────────────────────────────────────────────────────────────
+// â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function showTab(name) {
   document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden'));
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -395,7 +397,7 @@ function showTab(name) {
   event.currentTarget.classList.add('active');
 }
 
-// ── Drop zones ─────────────────────────────────────────────────────────────────
+// â”€â”€ Drop zones â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function dragOver(e,el) { e.preventDefault(); el.classList.add('drag-over'); }
 function dragLeave(el)  { el.classList.remove('drag-over'); }
 function dropFile(e,el,slot) {
@@ -417,11 +419,11 @@ async function previewDoc(input, slot) {
   if (file.type.startsWith('image/')) {
     const reader = new FileReader();
     reader.onload = e => {
-      previewEl.innerHTML = `<img src="${e.target.result}" class="mx-auto max-h-40 rounded-xl object-contain"/><p class="font-label-sm text-label-sm text-on-surface-variant mt-2">Uploading…</p>`;
+      previewEl.innerHTML = `<img src="${e.target.result}" class="mx-auto max-h-40 rounded-xl object-contain"/><p class="font-label-sm text-label-sm text-on-surface-variant mt-2">Uploadingâ€¦</p>`;
     };
     reader.readAsDataURL(file);
   } else {
-    previewEl.innerHTML = `<span class="material-symbols-outlined text-[36px] text-safari-green block mb-1">picture_as_pdf</span><p class="font-label-sm text-label-sm">${file.name}</p><p class="font-label-sm text-label-sm text-on-surface-variant">Uploading…</p>`;
+    previewEl.innerHTML = `<span class="material-symbols-outlined text-[36px] text-safari-green block mb-1">picture_as_pdf</span><p class="font-label-sm text-label-sm">${file.name}</p><p class="font-label-sm text-label-sm text-on-surface-variant">Uploadingâ€¦</p>`;
   }
 
   try {
@@ -431,7 +433,7 @@ async function previewDoc(input, slot) {
     if (!res.ok) throw new Error('Upload failed');
     const { url } = await res.json();
     uploadedUrls[slot] = url;
-    const done = `<span class="material-symbols-outlined text-safari-green text-[20px]" style="font-variation-settings:'FILL' 1;">check_circle</span><p class="font-label-sm text-label-sm text-safari-green mt-1">Uploaded ✓</p>`;
+    const done = `<span class="material-symbols-outlined text-safari-green text-[20px]" style="font-variation-settings:'FILL' 1;">check_circle</span><p class="font-label-sm text-label-sm text-safari-green mt-1">Uploaded âœ“</p>`;
     if (file.type.startsWith('image/')) {
       previewEl.innerHTML = `<img src="${url}" class="mx-auto max-h-40 rounded-xl object-contain"/>${done}`;
     } else {
@@ -447,7 +449,7 @@ function toggleBackSide() {
   document.getElementById('backSideWrap').style.display = type === 'passport' ? 'none' : '';
 }
 
-// ── Upload avatar ──────────────────────────────────────────────────────────────
+// â”€â”€ Upload avatar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function uploadAvatar(input) {
   const file = input.files[0];
   if (!file) return;
@@ -464,7 +466,7 @@ async function uploadAvatar(input) {
   } catch { toast('Avatar upload failed', false); }
 }
 
-// ── Save profile ───────────────────────────────────────────────────────────────
+// â”€â”€ Save profile â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function saveProfile() {
   const btn = event.currentTarget;
   setBusy(btn, true);
@@ -485,7 +487,7 @@ async function saveProfile() {
   finally { setBusy(btn, false); }
 }
 
-// ── Submit KYC ─────────────────────────────────────────────────────────────────
+// â”€â”€ Submit KYC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function submitKYC() {
   const btn = document.getElementById('kycSubmitBtn');
   const frontUrl = uploadedUrls['front'];
@@ -514,7 +516,7 @@ async function submitKYC() {
 
 function showKYCBanner(status) {
   const cfg = {
-    pending:    { cls:'bg-secondary-fixed text-secondary',       icon:'pending',       title:'Verification Pending', sub:'We\'re reviewing your document. This usually takes 1–2 business days.' },
+    pending:    { cls:'bg-secondary-fixed text-secondary',       icon:'pending',       title:'Verification Pending', sub:'We\'re reviewing your document. This usually takes 1â€“2 business days.' },
     approved:   { cls:'bg-primary-fixed text-safari-green',      icon:'verified_user', title:'Identity Verified',    sub:'Your identity has been successfully verified.' },
     rejected:   { cls:'bg-error-container text-error',           icon:'error',         title:'Verification Rejected', sub:'Please resubmit with a clear, valid document.' },
     not_submitted:{ cls:'bg-tertiary-fixed text-tertiary',       icon:'info',          title:'Not Yet Verified',     sub:'Upload your ID to unlock full booking features.' },
@@ -528,7 +530,7 @@ function showKYCBanner(status) {
   banner.classList.remove('hidden');
 }
 
-// ── Change password ────────────────────────────────────────────────────────────
+// â”€â”€ Change password â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function changePassword() {
   const cur = document.getElementById('pwCurrent').value;
   const nw  = document.getElementById('pwNew').value;
@@ -557,7 +559,7 @@ function togglePw(id, btn) {
   btn.querySelector('.material-symbols-outlined').textContent = showing ? 'visibility' : 'visibility_off';
 }
 
-// ── Load page ──────────────────────────────────────────────────────────────────
+// â”€â”€ Load page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function load() {
   try {
     const uRes = await fetch(`${API}/users/me`, auth());
@@ -632,5 +634,6 @@ async function load() {
 
 load();
 </script>
+    <script src="//code.tidio.co/z2re40p08rwgmv2hiwlvw8ymzkzacmxb.js" async></script>
 </body>
 </html>

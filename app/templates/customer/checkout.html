@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Checkout | Kari Vari Uganda</title>
@@ -61,7 +62,7 @@
 </head>
 <body class="bg-background text-on-surface">
 
-<!-- ── Nav (same as index) ────────────────────────────────────────────────── -->
+<!-- â”€â”€ Nav (same as index) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
 <nav class="sticky top-0 w-full z-50 flex justify-between items-center px-4 md:px-12 py-4 max-w-[1280px] mx-auto bg-surface/80 backdrop-blur-md shadow-sm">
   <div class="flex items-center gap-8">
     <a id="backBtn" href="/vehicles" class="flex items-center text-on-surface-variant hover:text-primary transition-colors mr-2">
@@ -92,7 +93,7 @@
   </div>
 </nav>
 
-<!-- ── Loading / Error states ────────────────────────────────────────────────── -->
+<!-- â”€â”€ Loading / Error states â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
 <div id="loadingState" class="flex items-center justify-center min-h-[60vh]">
   <div class="text-center">
     <span class="material-symbols-outlined text-primary text-[48px] spin">refresh</span>
@@ -109,7 +110,7 @@
   </div>
 </div>
 
-<!-- ── Success state ──────────────────────────────────────────────────────────── -->
+<!-- â”€â”€ Success state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
 <div id="successState" class="hidden flex items-center justify-center min-h-[70vh] px-4">
   <div class="max-w-md text-center">
     <div class="w-24 h-24 rounded-full bg-status-success/10 flex items-center justify-center mx-auto mb-6">
@@ -117,18 +118,19 @@
     </div>
     <h2 class="text-2xl font-bold text-slate-dark mb-2">Booking Confirmed!</h2>
     <p class="text-on-surface-variant mb-1">Your booking reference:</p>
-    <p class="text-2xl font-bold text-safari-green tracking-widest mb-6" id="successRef">—</p>
+    <p class="text-2xl font-bold text-safari-green tracking-widest mb-6" id="successRef">â€”</p>
     <p class="text-on-surface-variant text-sm mb-8">A confirmation will be sent to your email. The car owner will contact you with pickup details.</p>
     <a href="/" class="inline-block px-10 py-4 bg-ugandan-sun text-slate-dark font-bold rounded-lg shadow-lg hover:bg-[#E2A113] transition-all" style="text-decoration:none;">Back to Home</a>
   </div>
 </div>
 
-<!-- ── Main checkout layout ───────────────────────────────────────────────────── -->
+<!-- â”€â”€ Main checkout layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
 <main id="checkoutMain" class="hidden max-w-[1280px] mx-auto py-8 px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
 
   <!-- Left column -->
   <div class="lg:col-span-8 space-y-8">
     <header>
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
       <h1 class="text-2xl font-bold text-slate-dark mb-2">Finalize Your Reservation</h1>
       <p class="text-on-surface-variant text-sm" id="headerSubtitle">Complete the details below to secure your vehicle.</p>
     </header>
@@ -154,10 +156,10 @@
           <label class="text-sm font-semibold text-on-surface">Phone Number <span class="text-on-surface-variant font-normal">(for booking updates)</span></label>
           <div class="flex gap-2">
             <select id="phoneCode" class="h-12 w-28 rounded-lg border border-outline-variant px-2 bg-background text-sm">
-              <option value="+256">🇺🇬 +256</option>
-              <option value="+1">🇺🇸 +1</option>
-              <option value="+44">🇬🇧 +44</option>
-              <option value="+49">🇩🇪 +49</option>
+              <option value="+256">ðŸ‡ºðŸ‡¬ +256</option>
+              <option value="+1">ðŸ‡ºðŸ‡¸ +1</option>
+              <option value="+44">ðŸ‡¬ðŸ‡§ +44</option>
+              <option value="+49">ðŸ‡©ðŸ‡ª +49</option>
             </select>
             <input id="travelerPhone" type="tel" placeholder="700 123 456"
                    class="flex-1 h-12 rounded-lg border border-outline-variant px-4 focus:border-primary focus:ring-1 focus:ring-primary bg-background text-sm"/>
@@ -344,7 +346,7 @@
         <div class="p-5 space-y-5">
           <div>
             <div class="flex items-start justify-between mb-1">
-              <h3 class="text-lg font-bold text-slate-dark" id="sidebarVehicleName">—</h3>
+              <h3 class="text-lg font-bold text-slate-dark" id="sidebarVehicleName">â€”</h3>
               <span id="sidebarBadge" class="bg-primary-container text-on-primary-container text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider ml-2 flex-shrink-0"></span>
             </div>
             <p class="text-on-surface-variant text-sm flex items-center gap-1">
@@ -356,22 +358,22 @@
           <div class="grid grid-cols-2 gap-4 py-4 border-y border-surface-container">
             <div>
               <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-0.5">Pickup Date</p>
-              <p class="font-bold text-slate-dark text-sm" id="sidebarPickup">—</p>
+              <p class="font-bold text-slate-dark text-sm" id="sidebarPickup">â€”</p>
             </div>
             <div>
               <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-0.5">Return</p>
-              <p class="font-bold text-slate-dark text-sm" id="sidebarReturn">—</p>
+              <p class="font-bold text-slate-dark text-sm" id="sidebarReturn">â€”</p>
             </div>
           </div>
           <div class="py-3 border-b border-surface-container">
             <p class="text-[10px] font-bold text-on-surface-variant uppercase mb-0.5">Pick-up Location</p>
-            <p class="font-bold text-slate-dark text-sm" id="sidebarPickupLocation">—</p>
+            <p class="font-bold text-slate-dark text-sm" id="sidebarPickupLocation">â€”</p>
           </div>
           <div class="space-y-2.5">
             <h4 class="text-xs font-bold text-slate-dark uppercase tracking-wider">Price Breakdown</h4>
             <div class="flex justify-between text-sm">
-              <span class="text-on-surface-variant" id="sidebarRateLine">Daily rate × — days</span>
-              <span class="font-medium" id="sidebarRateTotal">—</span>
+              <span class="text-on-surface-variant" id="sidebarRateLine">Daily rate Ã— â€” days</span>
+              <span class="font-medium" id="sidebarRateTotal">â€”</span>
             </div>
             <div class="flex justify-between text-sm">
               <span class="text-on-surface-variant">Service fee</span>
@@ -380,7 +382,7 @@
             <div id="addonBreakdown" class="space-y-1.5"></div>
             <div class="pt-3 border-t border-surface-container flex justify-between items-center">
               <span class="font-bold text-slate-dark">Total</span>
-              <span class="text-lg font-bold text-safari-green" id="sidebarTotal">—</span>
+              <span class="text-lg font-bold text-safari-green" id="sidebarTotal">â€”</span>
             </div>
           </div>
         </div>
@@ -416,7 +418,7 @@
 </main>
 
 <footer class="mt-12 py-8 border-t border-surface-container-high text-center">
-  <p class="text-on-surface-variant text-sm">© 2024 Kari Vari Uganda. All rights reserved.</p>
+  <p class="text-on-surface-variant text-sm">Â© 2024 Kari Vari Uganda. All rights reserved.</p>
   <div class="flex justify-center gap-6 mt-4 opacity-40">
     <span class="material-symbols-outlined">verified</span>
     <span class="material-symbols-outlined">security</span>
@@ -446,10 +448,10 @@ let _activeMethod = 'card';  // 'card' | 'mtn' | 'airtel'
 let _momoPaymentId = null;
 let _momoBookingId = null;
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function fmt(dateStr) {
-  if (!dateStr) return '—';
+  if (!dateStr) return 'â€”';
   return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-UG', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
@@ -476,7 +478,7 @@ function updateSidebar() {
   }).join('');
 }
 
-// ── Payment method tabs ───────────────────────────────────────────────────────
+// â”€â”€ Payment method tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function selectPayMethod(method) {
   _activeMethod = method;
@@ -510,7 +512,7 @@ function selectPayMethod(method) {
   if (method === 'card') initStripe();
 }
 
-// ── Stripe ───────────────────────────────────────────────────────────────────
+// â”€â”€ Stripe â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function initStripe() {
   if (_stripe) return;
@@ -542,14 +544,14 @@ async function initStripe() {
   }
 }
 
-// ── Confirm button ────────────────────────────────────────────────────────────
+// â”€â”€ Confirm button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function confirmPayment() {
   if (_activeMethod === 'card') await payWithCard();
   else await payWithMomo();
 }
 
-// ── Card payment ──────────────────────────────────────────────────────────────
+// â”€â”€ Card payment â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function payWithCard() {
   const token = localStorage.getItem('access_token');
@@ -592,7 +594,7 @@ async function payWithCard() {
     }
 
     const bookData = await bookRes.json();
-    btnText.textContent = 'Confirming payment…';
+    btnText.textContent = 'Confirming paymentâ€¦';
 
     // 2. Confirm card with Stripe.js (card data never hits our server)
     const { error, paymentIntent } = await _stripe.confirmCardPayment(bookData.client_secret, {
@@ -618,7 +620,7 @@ async function payWithCard() {
   }
 }
 
-// ── Mobile money ──────────────────────────────────────────────────────────────
+// â”€â”€ Mobile money â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function payWithMomo() {
   const token = localStorage.getItem('access_token');
@@ -701,7 +703,7 @@ async function payWithMomo() {
   }
 }
 
-// ── Verify mobile money ───────────────────────────────────────────────────────
+// â”€â”€ Verify mobile money â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function verifyMomo() {
   const token = localStorage.getItem('access_token');
@@ -717,7 +719,7 @@ async function verifyMomo() {
 
   const btn = document.getElementById(btnId);
   btn.disabled = true;
-  document.getElementById(textId).textContent = 'Verifying…';
+  document.getElementById(textId).textContent = 'Verifyingâ€¦';
   showEl(spinnerId);
   document.getElementById(errId).style.display = 'none';
 
@@ -745,7 +747,7 @@ async function verifyMomo() {
   }
 }
 
-// ── Show success ──────────────────────────────────────────────────────────────
+// â”€â”€ Show success â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function showSuccess(ref) {
   hideEl('checkoutMain');
@@ -756,7 +758,7 @@ function showSuccess(ref) {
   setTimeout(() => { window.location.href = '/dashboard'; }, 2500);
 }
 
-// ── Load page data ────────────────────────────────────────────────────────────
+// â”€â”€ Load page data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function loadPage() {
   const token = localStorage.getItem('access_token');
@@ -803,7 +805,7 @@ async function loadPage() {
     const locEl = document.getElementById('sidebarPickupLocation');
     if (locEl) locEl.textContent = pickupLocation;
     document.getElementById('sidebarReturn').textContent      = fmt(returnDate);
-    document.getElementById('sidebarRateLine').textContent    = `$${(_baseUSD / _days).toFixed(2)}/day × ${_days} day${_days > 1 ? 's' : ''}`;
+    document.getElementById('sidebarRateLine').textContent    = `$${(_baseUSD / _days).toFixed(2)}/day Ã— ${_days} day${_days > 1 ? 's' : ''}`;
     document.getElementById('sidebarRateTotal').textContent   = `$${_baseUSD.toFixed(2)}`;
 
     document.getElementById('headerSubtitle').textContent =
@@ -825,7 +827,7 @@ async function loadPage() {
   }
 }
 
-// ── Nav auth state ────────────────────────────────────────────────────────────
+// â”€â”€ Nav auth state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function() {
   const token = localStorage.getItem('access_token');
   const authBtn = document.getElementById('authButtons');
@@ -844,5 +846,6 @@ async function loadPage() {
 
 loadPage();
 </script>
+    <script src="//code.tidio.co/z2re40p08rwgmv2hiwlvw8ymzkzacmxb.js" async></script>
 </body>
 </html>
