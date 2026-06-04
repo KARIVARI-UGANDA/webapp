@@ -13,6 +13,7 @@ class User(Base):
     role = Column(String, nullable=False)
     profile_photo_url = Column(Text)
     preferred_language = Column(String)
+    bio = Column(Text)
     is_verified = Column(BOOLEAN, nullable=False, default=False)
     is_active = Column(BOOLEAN, nullable=False, default=True)
     account_type = Column(String, nullable=False)

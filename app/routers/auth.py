@@ -226,3 +226,71 @@ def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db))
     db.commit()
 
     return {"message": "Password updated successfully"}
+
+
+# ── Prototype Dev Sign-in ─────────────────────────────────────────────────────
+# Grants instant access for demo/prototype purposes. Remove before production.
+
+_DEV_ACCOUNTS = {
+    "customer": {
+        "email":      "demo.customer@karivari.ug",
+        "password":   "demo_customer_2024",
+        "full_name":  "Demo Customer",
+        "phone_number": "+256700000001",
+        "account_type": "individual",
+    },
+    "owner": {
+        "email":      "demo.owner@karivari.ug",
+        "password":   "demo_owner_2024",
+        "full_name":  "Demo Car Owner",
+        "phone_number": "+256700000002",
+        "account_type": "individual",
+    },
+    "admin": {
+        "email":      "demo.admin@karivari.ug",
+        "password":   "demo_admin_2024",
+        "full_name":  "Demo Admin",
+        "phone_number": "+256700000003",
+        "account_type": "individual",
+    },
+}
+
+
+@router.post("/dev-signin")
+def dev_signin(role: str = "customer", db: Session = Depends(get_db)):
+    """Prototype-only: provision a demo account and return tokens. Remove before production."""
+    allowed = {"customer", "owner", "admin"}
+    if role not in allowed:
+        raise HTTPException(status_code=400, detail=f"role must be one of {allowed}")
+
+    cfg = _DEV_ACCOUNTS[role]
+
+    # Find or create the demo user
+    user = db.query(User).filter(User.email == cfg["email"]).first()
+    if not user:
+        now = datetime.now(timezone.utc).replace(tzinfo=None)
+        user = User(
+            id=str(uuid.uuid4()),
+            email=cfg["email"],
+            password_hash=hash_password(cfg["password"]),
+            full_name=cfg["full_name"],
+            phone_number=cfg["phone_number"],
+            role=role,
+            account_type=cfg["account_type"],
+            is_verified=True,
+            is_active=True,
+            created_at=now,
+            updated_at=now,
+        )
+        db.add(user)
+        try:
+            db.commit()
+            db.refresh(user)
+        except IntegrityError:
+            db.rollback()
+            user = db.query(User).filter(User.email == cfg["email"]).first()
+
+    if not user or not user.is_active:
+        raise HTTPException(status_code=403, detail="Demo account unavailable")
+
+    return _issue_token_pair(user, db)

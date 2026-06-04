@@ -5,6 +5,7 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>Admin Dashboard | Kari Vari Uganda</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script id="tailwind-config">
@@ -111,11 +112,11 @@
   </div>
 
   <nav class="flex-1 space-y-1">
-    <a id="navDashboard" class="flex items-center gap-3 px-4 py-2.5 bg-secondary-container text-on-secondary-container rounded-lg transition-all" href="/admin/dashboard">
+    <a id="navDashboard" onclick="showAdminSection('overview')" class="admin-nav-link flex items-center gap-3 px-4 py-2.5 bg-secondary-container text-on-secondary-container rounded-lg transition-all cursor-pointer">
       <span class="material-symbols-outlined text-[20px]">dashboard</span>
       <span class="font-body-md text-body-md">Dashboard</span>
     </a>
-    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg" href="/admin/users">
+    <a id="navUsers" onclick="showAdminSection('users')" class="admin-nav-link flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg cursor-pointer">
       <span class="material-symbols-outlined text-[20px]">group</span>
       <span class="font-body-md text-body-md">User Management</span>
     </a>
@@ -123,9 +124,13 @@
       <span class="material-symbols-outlined text-[20px]">directions_car</span>
       <span class="font-body-md text-body-md">Vehicle Management</span>
     </a>
-    <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg" href="/admin/bookings">
+    <a id="navBookings" onclick="showAdminSection('bookings')" class="admin-nav-link flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg cursor-pointer">
       <span class="material-symbols-outlined text-[20px]">book_online</span>
       <span class="font-body-md text-body-md">Booking Management</span>
+    </a>
+    <a id="navAnalytics" onclick="showAdminSection('analytics')" class="admin-nav-link flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg cursor-pointer">
+      <span class="material-symbols-outlined text-[20px]">analytics</span>
+      <span class="font-body-md text-body-md">Analytics</span>
     </a>
     <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg" href="#">
       <span class="material-symbols-outlined text-[20px]">payments</span>
@@ -159,7 +164,10 @@
 </aside>
 
 <!-- Main Content -->
-<main class="ml-64 min-h-screen p-[48px] bg-surface">
+<main class="ml-64 min-h-screen bg-surface">
+
+<!-- ═══════ SECTION: Overview ═══════ -->
+<div id="section-overview" class="p-[48px]">
 
   <!-- Header -->
   <header class="flex justify-between items-center mb-10">
@@ -297,7 +305,7 @@
       <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] p-6">
         <div class="flex justify-between items-center mb-6">
           <h3 class="font-headline-md text-headline-md text-on-surface">Recent Users</h3>
-          <a href="#" class="text-safari-green font-label-lg text-label-lg hover:underline">View All</a>
+          <button onclick="showAdminSection('users')" class="text-safari-green font-label-lg text-label-lg hover:underline">View All →</button>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left">
@@ -373,6 +381,270 @@
 
     </div>
   </div>
+
+</div><!-- /section-overview -->
+
+<!-- ═══════ SECTION: Users ═══════ -->
+<div id="section-users" style="display:none" class="p-[48px]">
+
+  <div class="max-w-[1200px] mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="font-headline-lg text-headline-lg text-primary">User Management</h2>
+        <p class="text-on-surface-variant font-label-sm text-label-sm mt-1">Manage all platform users — customers, owners and admins</p>
+      </div>
+    </div>
+
+    <!-- Search + Role Filters -->
+    <div class="flex flex-wrap gap-3">
+      <div class="flex-1 min-w-[220px] relative">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+        <input id="um-search" type="text" placeholder="Search by name or email…" oninput="umDebouncedSearch()"
+          class="w-full pl-10 pr-4 py-2.5 border border-outline-variant rounded-xl font-body-md text-body-md bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-safari-green">
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        <button onclick="umSetRole(null)"        id="um-role-all"      class="um-role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white">All</button>
+        <button onclick="umSetRole('customer')"  id="um-role-customer" class="um-role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Customers</button>
+        <button onclick="umSetRole('owner')"     id="um-role-owner"    class="um-role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Owners</button>
+        <button onclick="umSetRole('admin')"     id="um-role-admin"    class="um-role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Admins</button>
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm">
+      <div id="um-tableWrap">
+        <div class="text-center py-16 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[48px] animate-spin">refresh</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /section-users -->
+
+<!-- ═══════ SECTION: Bookings ═══════ -->
+<div id="section-bookings" style="display:none" class="p-[48px]">
+  <div class="max-w-[1200px] mx-auto space-y-6">
+
+    <!-- Header -->
+    <div>
+      <h2 class="font-headline-lg text-headline-lg text-primary">Booking Management</h2>
+      <p class="text-on-surface-variant font-label-sm text-label-sm mt-1">View and manage all platform bookings</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Total</p>
+        <p class="font-headline-md text-headline-md" id="bm-statTotal">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Confirmed</p>
+        <p class="font-headline-md text-headline-md text-safari-green" id="bm-statConfirmed">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Completed</p>
+        <p class="font-headline-md text-headline-md text-primary" id="bm-statCompleted">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Cancelled</p>
+        <p class="font-headline-md text-headline-md text-error" id="bm-statCancelled">—</p>
+      </div>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="flex gap-2 flex-wrap">
+      <button onclick="bmLoadBookings(null)"               id="bm-filter-all"             class="bm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white">All</button>
+      <button onclick="bmLoadBookings('confirmed')"        id="bm-filter-confirmed"        class="bm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Confirmed</button>
+      <button onclick="bmLoadBookings('in_progress')"      id="bm-filter-in_progress"      class="bm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">In Progress</button>
+      <button onclick="bmLoadBookings('completed')"        id="bm-filter-completed"        class="bm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Completed</button>
+      <button onclick="bmLoadBookings('cancelled')"        id="bm-filter-cancelled"        class="bm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Cancelled</button>
+      <button onclick="bmLoadBookings('pending_payment')"  id="bm-filter-pending_payment"  class="bm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Pending Payment</button>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm">
+      <div id="bm-tableWrap">
+        <div class="text-center py-16 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[48px] animate-spin">refresh</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /section-bookings -->
+
+<!-- ═══════ SECTION: Analytics ═══════ -->
+<div id="section-analytics" style="display:none" class="p-[48px]">
+  <div class="max-w-[1280px] mx-auto space-y-8">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <h2 class="font-headline-lg text-headline-lg text-primary">Analytics Dashboard</h2>
+        <p class="text-on-surface-variant font-body-md mt-1">Real-time performance tracking for Kari Vari Uganda.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="flex gap-1 p-1 bg-surface-container rounded-xl">
+          <button onclick="anSetPeriod('weekly')"  id="an-period-weekly"  class="an-period-btn active px-3 py-1.5 rounded-lg font-label-sm text-label-sm bg-white shadow text-primary transition-all">Weekly</button>
+          <button onclick="anSetPeriod('monthly')" id="an-period-monthly" class="an-period-btn px-3 py-1.5 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all">Monthly</button>
+          <button onclick="anSetPeriod('yearly')"  id="an-period-yearly"  class="an-period-btn px-3 py-1.5 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all">Yearly</button>
+        </div>
+        <button onclick="anExportCSV()" class="bg-safari-green text-white p-2.5 rounded-xl hover:brightness-105 transition-all" title="Export CSV">
+          <span class="material-symbols-outlined text-[20px]">download</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-safari-green">
+        <div class="flex justify-between items-start mb-4">
+          <div class="p-2 bg-surface-container-low rounded-lg"><span class="material-symbols-outlined text-safari-green">payments</span></div>
+          <span id="an-revTrend" class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">—</span>
+        </div>
+        <p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Total Revenue</p>
+        <p class="font-headline-md text-headline-md text-on-surface" id="an-revenue">—</p>
+        <p class="text-label-sm text-on-surface-variant mt-2" id="an-revSub">from completed bookings</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-ugandan-sun">
+        <div class="flex justify-between items-start mb-4">
+          <div class="p-2 bg-surface-container-low rounded-lg"><span class="material-symbols-outlined text-ugandan-sun">avg_pace</span></div>
+          <span class="font-label-sm text-label-sm text-on-surface-variant" id="an-adrTarget">—</span>
+        </div>
+        <p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Avg. Booking Value</p>
+        <p class="font-headline-md text-headline-md text-on-surface" id="an-adr">—</p>
+        <p class="text-label-sm text-on-surface-variant mt-2">per booking</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-safari-green">
+        <div class="flex justify-between items-start mb-4">
+          <div class="p-2 bg-surface-container-low rounded-lg"><span class="material-symbols-outlined text-safari-green">directions_car</span></div>
+          <span class="font-label-sm text-label-sm text-on-surface-variant" id="an-fleetSub">—</span>
+        </div>
+        <p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Verified Vehicles</p>
+        <p class="font-headline-md text-headline-md text-on-surface" id="an-vehicles">—</p>
+        <p class="text-label-sm text-on-surface-variant mt-2" id="an-vehicleSub">active in fleet</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-ugandan-sun">
+        <div class="flex justify-between items-start mb-4">
+          <div class="p-2 bg-surface-container-low rounded-lg"><span class="material-symbols-outlined text-ugandan-sun">person_add</span></div>
+          <span class="font-label-sm text-label-sm text-status-success flex items-center gap-1" id="an-userTrend">—</span>
+        </div>
+        <p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Total Users</p>
+        <p class="font-headline-md text-headline-md text-on-surface" id="an-users">—</p>
+        <p class="text-label-sm text-on-surface-variant mt-2" id="an-userSub">customers &amp; owners</p>
+      </div>
+    </div>
+
+    <!-- Charts row -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <!-- Revenue Line Chart (2/3) -->
+      <div class="lg:col-span-2 bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden">
+        <div class="p-6 border-b border-outline-variant/20 flex justify-between items-center">
+          <h3 class="font-headline-md text-headline-md">Revenue Overview</h3>
+          <span class="font-label-sm text-label-sm text-on-surface-variant" id="an-chartLabel">last 7 periods</span>
+        </div>
+        <div class="p-6 relative h-[320px]">
+          <canvas id="an-revenueChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Booking Status Doughnut (1/3) -->
+      <div class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden">
+        <div class="p-6 border-b border-outline-variant/20">
+          <h3 class="font-headline-md text-headline-md">Booking Status</h3>
+        </div>
+        <div class="p-6 flex flex-col items-center">
+          <div class="relative h-48 w-48 mb-6">
+            <canvas id="an-statusChart"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <span class="font-headline-md text-headline-md text-on-surface" id="an-totalBookings">—</span>
+              <p class="font-label-sm text-label-sm text-on-surface-variant">Total</p>
+            </div>
+          </div>
+          <ul class="w-full space-y-2.5" id="an-statusLegend"></ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Fleet performance + Locations -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+      <!-- Fleet performance -->
+      <div class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] p-6">
+        <h3 class="font-headline-md text-headline-md mb-6">Fleet by Vehicle Type</h3>
+        <div class="space-y-5" id="an-fleetBars">
+          <div class="text-center py-8 text-on-surface-variant">
+            <span class="material-symbols-outlined animate-spin text-[32px]">refresh</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top booking locations -->
+      <div class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden">
+        <div class="p-6 border-b border-outline-variant/20 flex justify-between items-center">
+          <h3 class="font-headline-md text-headline-md">Top Pick-up Locations</h3>
+          <span class="material-symbols-outlined text-on-surface-variant">map</span>
+        </div>
+        <div class="p-6 space-y-3" id="an-locations">
+          <div class="text-center py-8 text-on-surface-variant">
+            <span class="material-symbols-outlined animate-spin text-[32px]">refresh</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recent bookings summary bar -->
+    <div class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] p-6">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="font-headline-md text-headline-md">Booking Pipeline</h3>
+        <button onclick="showAdminSection('bookings')" class="text-safari-green font-label-lg text-label-lg hover:underline">View All →</button>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4" id="an-pipeline"></div>
+    </div>
+
+  </div>
+</div><!-- /section-analytics -->
+
+<!-- Override Status Modal -->
+<div id="bm-overrideModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" style="background:rgba(0,0,0,.5);">
+  <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-5">
+    <div class="flex items-start justify-between">
+      <h2 class="font-headline-md text-headline-md">Override Booking Status</h2>
+      <button onclick="bmCloseOverride()" class="p-2 text-on-surface-variant hover:text-on-surface rounded-xl">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <p class="font-label-sm text-label-sm text-on-surface-variant">Booking: <span id="bm-overrideRef" class="font-semibold text-on-surface"></span></p>
+    <div>
+      <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">New Status</label>
+      <select id="bm-overrideStatus" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-safari-green">
+        <option value="pending">Pending</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="in_progress">In Progress</option>
+        <option value="completed">Completed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+    <div>
+      <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Reason <span class="text-outline">(optional)</span></label>
+      <textarea id="bm-overrideReason" rows="2" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-safari-green resize-none"></textarea>
+    </div>
+    <p id="bm-overrideError" class="font-label-sm text-label-sm text-error min-h-[1rem]"></p>
+    <div class="flex gap-3">
+      <button onclick="bmCloseOverride()" class="flex-1 py-3 rounded-xl border border-outline-variant text-on-surface font-label-lg text-label-lg hover:bg-surface-container">Cancel</button>
+      <button id="bm-overrideBtn" onclick="bmSubmitOverride()" class="flex-1 bg-primary text-white font-label-lg text-label-lg py-3 rounded-xl hover:opacity-90 active:scale-95 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-[18px]">edit</span> Apply Override
+      </button>
+    </div>
+  </div>
+</div>
+
 </main>
 
 <!-- Footer -->
@@ -397,5 +669,564 @@
 
 <script src="/static/js/shared.js"></script>
 <script src="/static/js/admin/dashboard.js"></script>
+
+<script>
+// ── Admin section switcher ────────────────────────────────────────────────────
+let _umLoaded = false;
+let _bmLoaded = false;
+let _anLoaded = false;
+
+function showAdminSection(name) {
+  ['overview','users','bookings','analytics'].forEach(s => {
+    document.getElementById(`section-${s}`).style.display = s === name ? 'block' : 'none';
+  });
+
+  document.querySelectorAll('.admin-nav-link').forEach(el => {
+    const navId  = `nav${name.charAt(0).toUpperCase() + name.slice(1)}`;
+    const active = el.id === navId;
+    el.classList.toggle('bg-secondary-container',     active);
+    el.classList.toggle('text-on-secondary-container', active);
+    el.classList.toggle('text-on-surface-variant',    !active);
+  });
+
+  if (name === 'users'     && !_umLoaded) { _umLoaded  = true; umLoadUsers(); }
+  if (name === 'bookings'  && !_bmLoaded) { _bmLoaded  = true; bmLoadStats(); bmLoadBookings(null); }
+  if (name === 'analytics' && !_anLoaded) { _anLoaded  = true; anLoad(); }
+}
+
+// ── Analytics ────────────────────────────────────────────────────────────────
+let _anRevChart    = null;
+let _anStatusChart = null;
+let _anPeriod      = 'weekly';
+let _anBookings    = [];
+let _anStats       = {};
+
+async function anLoad() {
+  const auth = { headers: { Authorization: `Bearer ${token}` } };
+
+  try {
+    // Parallel fetch: stats + bookings
+    const [statsRes, bkRes, verifRes] = await Promise.allSettled([
+      fetch(`${API}/admin/stats`,            auth),
+      fetch(`${API}/admin/bookings?page_size=200`, auth),
+      fetch(`${API}/admin/verifications/pending?type=vehicle`, auth),
+    ]);
+
+    // Stats
+    if (statsRes.status === 'fulfilled' && statsRes.value.ok) {
+      _anStats = await statsRes.value.json();
+      const el = id => document.getElementById(id);
+      if (el('an-vehicles'))  el('an-vehicles').textContent  = _anStats.active_vehicles ?? '—';
+      if (el('an-users'))     el('an-users').textContent     = _anStats.total_users     ?? '—';
+      if (el('an-vehicleSub')) el('an-vehicleSub').textContent = `${_anStats.active_vehicles ?? '—'} verified · ${_anStats.pending_verifications ?? '—'} pending`;
+    }
+
+    // Bookings
+    if (bkRes.status === 'fulfilled' && bkRes.value.ok) {
+      const data  = await bkRes.value.json();
+      _anBookings = data.bookings || [];
+      anBuildCharts();
+      anBuildFleet();
+      anBuildLocations();
+      anBuildPipeline();
+    }
+  } catch {}
+}
+
+function anFmtUSD(v) {
+  if (v == null) return '$—';
+  if (v >= 1000000) return '$' + (v/1000000).toFixed(1) + 'M';
+  if (v >= 1000)    return '$' + (v/1000).toFixed(1)    + 'K';
+  return '$' + v.toFixed(0);
+}
+
+function anBuckets(period) {
+  const now = new Date();
+  const n   = period === 'weekly' ? 8 : period === 'monthly' ? 12 : 5;
+  const buckets = {};
+  for (let i = n - 1; i >= 0; i--) {
+    const d = new Date(now);
+    if (period === 'weekly')       d.setDate(now.getDate() - i * 7);
+    else if (period === 'monthly') d.setMonth(now.getMonth() - i);
+    else                           d.setFullYear(now.getFullYear() - i);
+    const k = period === 'weekly'
+      ? `Wk ${d.toLocaleDateString('en-UG',{day:'numeric',month:'short'})}`
+      : period === 'monthly'
+      ? d.toLocaleDateString('en-UG',{month:'short',year:'2-digit'})
+      : String(d.getFullYear());
+    buckets[k] = 0;
+  }
+
+  _anBookings.filter(b => b.status === 'completed').forEach(b => {
+    if (!b.start_datetime) return;
+    const d = new Date(b.start_datetime);
+    let k;
+    if (period === 'weekly') {
+      const wk = new Date(d); wk.setDate(d.getDate() - d.getDay());
+      k = `Wk ${wk.toLocaleDateString('en-UG',{day:'numeric',month:'short'})}`;
+    } else if (period === 'monthly') {
+      k = d.toLocaleDateString('en-UG',{month:'short',year:'2-digit'});
+    } else {
+      k = String(d.getFullYear());
+    }
+    if (k in buckets) buckets[k] += parseFloat(b.amount_usd || 0);
+  });
+
+  return { labels: Object.keys(buckets), values: Object.values(buckets) };
+}
+
+function anBuildCharts() {
+  const data = anBuckets(_anPeriod);
+
+  // ── Revenue line chart ──
+  const revCtx = document.getElementById('an-revenueChart');
+  if (revCtx) {
+    if (_anRevChart) _anRevChart.destroy();
+    const grad = revCtx.getContext('2d').createLinearGradient(0,0,0,300);
+    grad.addColorStop(0,'rgba(45,90,39,0.25)');
+    grad.addColorStop(1,'rgba(45,90,39,0)');
+    _anRevChart = new Chart(revCtx, {
+      type:'line',
+      data:{ labels:data.labels, datasets:[{
+        label:'Revenue (USD)', data:data.values, borderColor:'#2D5A27',
+        backgroundColor:grad, borderWidth:2.5, pointRadius:4, pointHoverRadius:6,
+        pointBackgroundColor:'#2D5A27', tension:0.4, fill:true,
+      }]},
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false}, tooltip:{callbacks:{label:ctx=>'$'+ctx.parsed.y.toFixed(2)}} },
+        scales:{
+          x:{ grid:{display:false}, ticks:{font:{size:11}} },
+          y:{ grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:11}, callback:v=>anFmtUSD(v)} }
+        }
+      }
+    });
+  }
+
+  // Revenue KPI
+  const totalRev = _anBookings.filter(b=>b.status==='completed').reduce((s,b)=>s+parseFloat(b.amount_usd||0),0);
+  const totalBk  = _anBookings.length;
+  const avgBk    = totalBk > 0 ? totalRev / _anBookings.filter(b=>b.status==='completed').length : 0;
+  const el = id => document.getElementById(id);
+  if (el('an-revenue')) el('an-revenue').textContent = anFmtUSD(totalRev);
+  if (el('an-adr'))     el('an-adr').textContent     = isNaN(avgBk) || avgBk === 0 ? '$—' : '$' + avgBk.toFixed(2);
+  if (el('an-chartLabel')) el('an-chartLabel').textContent = `last ${data.labels.length} ${_anPeriod === 'weekly' ? 'weeks' : _anPeriod === 'monthly' ? 'months' : 'years'}`;
+
+  // ── Status doughnut ──
+  const statusMap = {};
+  _anBookings.forEach(b => { statusMap[b.status] = (statusMap[b.status] || 0) + 1; });
+  const statusColors = {
+    completed:'#2D5A27', confirmed:'#15803D', in_progress:'#F9B115',
+    pending_payment:'#B45309', pending:'#72796e', cancelled:'#ba1a1a',
+  };
+  const statusLabels = {
+    completed:'Completed', confirmed:'Confirmed', in_progress:'In Progress',
+    pending_payment:'Awaiting Pay', pending:'Pending', cancelled:'Cancelled',
+  };
+  const sLabels = Object.keys(statusMap);
+  const sData   = sLabels.map(k => statusMap[k]);
+  const sColors = sLabels.map(k => statusColors[k] || '#eeeef0');
+
+  const doCtx = document.getElementById('an-statusChart');
+  if (doCtx) {
+    if (_anStatusChart) _anStatusChart.destroy();
+    _anStatusChart = new Chart(doCtx, {
+      type:'doughnut',
+      data:{ labels:sLabels.map(k=>statusLabels[k]||k), datasets:[{ data:sData, backgroundColor:sColors, borderWidth:2, borderColor:'#ffffff', hoverOffset:6 }] },
+      options:{ responsive:true, maintainAspectRatio:false, cutout:'70%', plugins:{ legend:{display:false} } }
+    });
+  }
+
+  if (el('an-totalBookings')) el('an-totalBookings').textContent = totalBk;
+  const legend = document.getElementById('an-statusLegend');
+  if (legend) legend.innerHTML = sLabels.map((k,i) => `
+    <li class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:${sColors[i]}"></span>
+        <span class="font-label-sm text-label-sm text-on-surface">${statusLabels[k]||k}</span>
+      </div>
+      <span class="font-label-lg text-label-lg text-on-surface">${sData[i]}</span>
+    </li>`).join('');
+}
+
+function anSetPeriod(p) {
+  _anPeriod = p;
+  document.querySelectorAll('.an-period-btn').forEach(b => {
+    const active = b.id === `an-period-${p}`;
+    b.className = active
+      ? 'an-period-btn active px-3 py-1.5 rounded-lg font-label-sm text-label-sm bg-white shadow text-primary transition-all'
+      : 'an-period-btn px-3 py-1.5 rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all';
+  });
+  if (_anBookings.length) anBuildCharts();
+}
+
+function anBuildFleet() {
+  const wrap = document.getElementById('an-fleetBars');
+  if (!wrap) return;
+  const typeCount = {};
+  _anBookings.forEach(b => {
+    if (b.vehicle?.vehicle_type) typeCount[b.vehicle.vehicle_type] = (typeCount[b.vehicle.vehicle_type]||0)+1;
+  });
+  if (!Object.keys(typeCount).length) { wrap.innerHTML = '<p class="text-on-surface-variant text-sm text-center py-4">No vehicle data yet.</p>'; return; }
+  const total = Math.max(...Object.values(typeCount));
+  const icons = { safari:'terrain', suv:'directions_car', luxury:'directions_car', minibus:'airport_shuttle', sedan:'directions_car', other:'garage' };
+  const colors = ['#2D5A27','#F9B115','#2D5A27','#F9B115','#2D5A27','#72796e'];
+  wrap.innerHTML = Object.entries(typeCount).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([type,count],i)=>`
+    <div class="space-y-1.5">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[16px] text-on-surface-variant">${icons[type]||'directions_car'}</span>
+          <span class="font-label-lg text-label-lg capitalize">${type}</span>
+        </div>
+        <span class="font-label-sm text-label-sm text-safari-green">${count} booking${count!==1?'s':''}</span>
+      </div>
+      <div class="h-2.5 w-full bg-surface-container rounded-full overflow-hidden">
+        <div class="h-full rounded-full transition-all duration-700" style="width:${Math.round(count/total*100)}%;background:${colors[i%colors.length]}"></div>
+      </div>
+    </div>`).join('');
+}
+
+function anBuildLocations() {
+  const wrap = document.getElementById('an-locations');
+  if (!wrap) return;
+  const locs = {};
+  _anBookings.forEach(b => {
+    const l = (b.pickup_location||'').trim();
+    if (l && l !== 'To be confirmed') locs[l] = (locs[l]||0)+1;
+  });
+  const sorted = Object.entries(locs).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  if (!sorted.length) { wrap.innerHTML = '<p class="text-on-surface-variant text-sm text-center py-4">No location data yet.</p>'; return; }
+  const max = sorted[0][1];
+  wrap.innerHTML = sorted.map(([loc,count],i)=>`
+    <div class="flex items-center justify-between p-3 rounded-xl transition-all ${i===0?'bg-surface-container-low border-l-4 border-safari-green':'hover:bg-surface-container-low'}">
+      <div class="flex items-center gap-3 min-w-0">
+        <span class="material-symbols-outlined text-[18px] flex-shrink-0 ${i===0?'text-safari-green':'text-on-surface-variant'}" style="font-variation-settings:'FILL' 1;">location_on</span>
+        <div class="min-w-0">
+          <p class="font-label-lg text-label-lg text-on-surface truncate">${loc}</p>
+          <div class="h-1.5 w-full bg-surface-container rounded-full mt-1 overflow-hidden">
+            <div class="h-full rounded-full bg-safari-green" style="width:${Math.round(count/max*100)}%"></div>
+          </div>
+        </div>
+      </div>
+      <span class="font-label-lg text-label-lg text-safari-green ml-4 flex-shrink-0">${count}</span>
+    </div>`).join('');
+}
+
+function anBuildPipeline() {
+  const wrap = document.getElementById('an-pipeline');
+  if (!wrap) return;
+  const labels = { pending_payment:'Awaiting Pay', confirmed:'Confirmed', in_progress:'In Progress', completed:'Completed', cancelled:'Cancelled' };
+  const colors = { pending_payment:'text-status-pending', confirmed:'text-safari-green', in_progress:'text-ugandan-sun', completed:'text-primary', cancelled:'text-error' };
+  const counts = {};
+  Object.keys(labels).forEach(k => counts[k] = 0);
+  _anBookings.forEach(b => { if (b.status in counts) counts[b.status]++; });
+  wrap.innerHTML = Object.entries(labels).map(([k,label])=>`
+    <div class="bg-surface-container-low rounded-2xl p-5 text-center border border-outline-variant/20">
+      <p class="font-mono text-[28px] font-bold ${colors[k]}">${counts[k]}</p>
+      <p class="font-label-sm text-label-sm text-on-surface-variant mt-1">${label}</p>
+    </div>`).join('');
+}
+
+function anExportCSV() {
+  if (!_anBookings.length) return;
+  const rows = _anBookings.map(b => [
+    b.booking_reference, b.customer_name||'', b.status,
+    b.start_datetime?.slice(0,10)||'', b.end_datetime?.slice(0,10)||'',
+    b.amount_usd?.toFixed(2)||'0', b.pickup_location||'', b.vehicle?.make||'', b.vehicle?.model||''
+  ].join(','));
+  const csv = ['Reference,Customer,Status,Start,End,Amount USD,Pickup,Vehicle Make,Vehicle Model', ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv,' + encodeURIComponent(csv);
+  a.download = 'karivari-analytics.csv';
+  a.click();
+}
+
+// ── Booking Management ───────────────────────────────────────────────────────
+const BM_STATUS_COLOR = {
+  confirmed:       'bg-status-success/10 text-status-success',
+  in_progress:     'bg-ugandan-sun/10 text-status-pending',
+  completed:       'bg-primary/10 text-primary',
+  cancelled:       'bg-error/10 text-error',
+  pending_payment: 'bg-surface-container text-on-surface-variant',
+  pending:         'bg-surface-container text-on-surface-variant',
+};
+const BM_STATUS_LABEL = {
+  confirmed:'Confirmed', in_progress:'In Progress', completed:'Completed',
+  cancelled:'Cancelled', pending_payment:'Awaiting Payment', pending:'Pending',
+};
+
+function bmFmtDate(s) {
+  if (!s) return '—';
+  return new Date(s).toLocaleDateString('en-UG', { day:'numeric', month:'short', year:'numeric' });
+}
+
+let _bmOverrideTarget = { id:'', ref:'' };
+let _bmCurrentFilter  = null;
+
+function bmOpenOverride(id, ref, status) {
+  _bmOverrideTarget = { id, ref };
+  document.getElementById('bm-overrideRef').textContent    = ref;
+  document.getElementById('bm-overrideStatus').value       = status;
+  document.getElementById('bm-overrideReason').value       = '';
+  document.getElementById('bm-overrideError').textContent  = '';
+  document.getElementById('bm-overrideBtn').disabled       = false;
+  document.getElementById('bm-overrideBtn').innerHTML      = '<span class="material-symbols-outlined text-[18px]">edit</span> Apply Override';
+  document.getElementById('bm-overrideModal').classList.remove('hidden');
+}
+function bmCloseOverride() { document.getElementById('bm-overrideModal').classList.add('hidden'); }
+
+async function bmSubmitOverride() {
+  const btn = document.getElementById('bm-overrideBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> Saving…';
+  document.getElementById('bm-overrideError').textContent = '';
+  try {
+    const res = await fetch(`${API}/admin/bookings/${_bmOverrideTarget.id}/override-status`, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        status: document.getElementById('bm-overrideStatus').value,
+        reason: document.getElementById('bm-overrideReason').value.trim() || null,
+      }),
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Failed'); }
+    bmCloseOverride();
+    bmLoadBookings(_bmCurrentFilter);
+  } catch(e) {
+    document.getElementById('bm-overrideError').textContent = e.message;
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">edit</span> Apply Override';
+  }
+}
+
+async function bmLoadStats() {
+  try {
+    const res = await fetch(`${API}/admin/analytics/overview`, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok) return;
+    const d = await res.json();
+    document.getElementById('bm-statTotal').textContent     = d.total_bookings     ?? '—';
+    document.getElementById('bm-statConfirmed').textContent = d.confirmed_bookings ?? '—';
+    document.getElementById('bm-statCompleted').textContent = d.completed_bookings ?? '—';
+    document.getElementById('bm-statCancelled').textContent = d.cancelled_bookings ?? '—';
+  } catch {}
+}
+
+async function bmLoadBookings(statusFilter) {
+  _bmCurrentFilter = statusFilter;
+
+  document.querySelectorAll('.bm-filter-btn').forEach(btn => {
+    const active = (statusFilter === null && btn.id === 'bm-filter-all')
+      || (statusFilter && btn.id === `bm-filter-${statusFilter}`);
+    btn.className = active
+      ? 'bm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white'
+      : 'bm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high';
+  });
+
+  const wrap = document.getElementById('bm-tableWrap');
+  wrap.innerHTML = '<div class="text-center py-16 text-on-surface-variant"><span class="material-symbols-outlined text-[48px] animate-spin">refresh</span></div>';
+
+  const url = `${API}/admin/bookings?page_size=100${statusFilter ? `&status=${statusFilter}` : ''}`;
+  try {
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    if (res.status === 401 || res.status === 403) { localStorage.clear(); window.location.href = '/admin/login'; return; }
+    const data     = await res.json();
+    const bookings = data.bookings || [];
+
+    if (!bookings.length) {
+      wrap.innerHTML = `<div class="text-center py-16 text-on-surface-variant">
+        <span class="material-symbols-outlined text-[48px] mb-3 block opacity-25">book_online</span>
+        <p class="font-label-lg text-label-lg">No bookings found.</p>
+      </div>`;
+      return;
+    }
+
+    const rows = bookings.map(b => {
+      const badge = BM_STATUS_COLOR[b.status] || 'bg-surface-container text-on-surface-variant';
+      const label = BM_STATUS_LABEL[b.status]  || b.status;
+      const v     = b.vehicle;
+      const vehicleName = v ? `${v.make} ${v.model}` : '—';
+      return `<tr class="border-b border-outline-variant/20 hover:bg-surface-container-low transition-colors">
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant font-mono">${b.booking_reference}</td>
+        <td class="px-5 py-4">
+          <p class="font-label-lg text-label-lg text-on-surface">${b.customer_name || '—'}</p>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">${b.customer_email || ''}</p>
+        </td>
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${vehicleName}</td>
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${bmFmtDate(b.start_datetime)} → ${bmFmtDate(b.end_datetime)}</td>
+        <td class="px-5 py-4"><span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm ${badge}">${label}</span></td>
+        <td class="px-5 py-4 font-label-lg text-label-lg">${b.amount_usd != null ? '$' + parseFloat(b.amount_usd).toFixed(2) : '—'}</td>
+        <td class="px-5 py-4">
+          <button onclick="bmOpenOverride('${b.id}','${b.booking_reference}','${b.status}')"
+            class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors" title="Override status">
+            <span class="material-symbols-outlined text-[18px]">edit</span>
+          </button>
+        </td>
+      </tr>`;
+    }).join('');
+
+    wrap.innerHTML = `
+      <table class="w-full text-left">
+        <thead class="bg-surface-container-low border-b border-outline-variant/30">
+          <tr>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Reference</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Customer</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Vehicle</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Dates</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Status</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Amount</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="px-5 py-3 text-on-surface-variant font-label-sm text-label-sm border-t border-outline-variant/20">
+        Showing ${bookings.length} of ${data.total || bookings.length} bookings
+      </div>`;
+  } catch(e) {
+    wrap.innerHTML = `<div class="text-center py-16 text-error font-label-lg text-label-lg">Failed to load bookings.</div>`;
+  }
+}
+
+// ── User Management ──────────────────────────────────────────────────────────
+const UM_ROLE_COLOR = {
+  customer: 'bg-primary/10 text-primary',
+  tourist:  'bg-primary/10 text-primary',  // legacy — treated as customer
+  owner:    'bg-ugandan-sun/20 text-status-pending',
+  admin:    'bg-error/10 text-error',
+};
+
+function umRoleLabel(role) {
+  if (role === 'tourist') return 'customer';  // map legacy role to customer
+  return role;
+}
+
+function umFmtDate(s) {
+  if (!s) return '—';
+  return new Date(s).toLocaleDateString('en-UG', { day:'numeric', month:'short', year:'numeric' });
+}
+
+let _umRole = null;
+let _umTimeout = null;
+
+function umSetRole(role) {
+  _umRole = role;
+  document.querySelectorAll('.um-role-btn').forEach(btn => {
+    const active = (role === null && btn.id === 'um-role-all') || btn.id === `um-role-${role}`;
+    btn.className = active
+      ? 'um-role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white'
+      : 'um-role-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high';
+  });
+  umLoadUsers();
+}
+
+function umDebouncedSearch() {
+  clearTimeout(_umTimeout);
+  _umTimeout = setTimeout(umLoadUsers, 350);
+}
+
+async function umToggleSuspend(userId, isActive) {
+  if (!confirm(`${isActive ? 'Suspend' : 'Unsuspend'} this user?`)) return;
+  try {
+    const res = await fetch(`${API}/admin/users/${userId}/suspend`, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Failed'); }
+    umLoadUsers();
+  } catch(e) { alert(e.message); }
+}
+
+async function umLoadUsers() {
+  const search = (document.getElementById('um-search')?.value || '').trim();
+  // When filtering by 'customer', also include legacy 'tourist' role
+  let roleParam = _umRole;
+  let url = `${API}/admin/users?page_size=100`;
+  if (roleParam) url += `&role=${roleParam}`;
+  if (search)    url += `&search=${encodeURIComponent(search)}`;
+
+  const wrap = document.getElementById('um-tableWrap');
+  if (wrap) wrap.innerHTML = '<div class="text-center py-16 text-on-surface-variant"><span class="material-symbols-outlined text-[48px] animate-spin">refresh</span></div>';
+
+  try {
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    if (res.status === 401 || res.status === 403) { localStorage.clear(); window.location.href = '/admin/login'; return; }
+    let users = await res.json();
+
+    // If filtering customers, also show tourist-role legacy users
+    if (_umRole === 'customer') {
+      const touristRes = await fetch(`${API}/admin/users?page_size=100&role=tourist`, { headers: { Authorization: `Bearer ${token}` } });
+      if (touristRes.ok) {
+        const tourists = await touristRes.json();
+        users = [...users, ...tourists];
+      }
+    }
+
+    if (!users.length) {
+      wrap.innerHTML = `<div class="text-center py-16 text-on-surface-variant">
+        <span class="material-symbols-outlined text-[48px] mb-3 block opacity-25">group</span>
+        <p class="font-label-lg text-label-lg">No users found.</p>
+      </div>`;
+      return;
+    }
+
+    const rows = users.map(u => {
+      const displayRole = umRoleLabel(u.role);
+      const roleClass   = UM_ROLE_COLOR[u.role] || 'bg-surface-container text-on-surface-variant';
+      const statusCls   = u.is_active ? 'text-status-success' : 'text-error';
+      const statusLbl   = u.is_active ? 'Active' : 'Suspended';
+      const verIcon     = u.is_verified
+        ? `<span class="material-symbols-outlined text-[16px] text-status-success" style="font-variation-settings:'FILL' 1;">verified</span>`
+        : `<span class="material-symbols-outlined text-[16px] text-outline">unpublished</span>`;
+      const initials    = u.full_name ? u.full_name.split(' ').slice(0,2).map(w=>w[0]?.toUpperCase()||'').join('') : '?';
+
+      return `<tr class="border-b border-outline-variant/20 hover:bg-surface-container-low transition-colors">
+        <td class="px-5 py-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-safari-green flex items-center justify-center text-white font-bold text-sm flex-shrink-0">${initials}</div>
+            <div>
+              <p class="font-label-lg text-label-lg text-on-surface">${u.full_name || '—'}</p>
+              <p class="font-label-sm text-label-sm text-on-surface-variant">${u.email}</p>
+            </div>
+          </div>
+        </td>
+        <td class="px-5 py-4">
+          <span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm ${roleClass} capitalize">${displayRole}</span>
+        </td>
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${u.phone_number || '—'}</td>
+        <td class="px-5 py-4 font-label-sm text-label-sm ${statusCls}">${statusLbl}</td>
+        <td class="px-5 py-4">${verIcon}</td>
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${umFmtDate(u.created_at)}</td>
+        <td class="px-5 py-4">
+          <button onclick="umToggleSuspend('${u.id}', ${u.is_active})"
+            class="px-3 py-1.5 rounded-lg font-label-sm text-label-sm border transition-colors ${u.is_active ? 'border-error/40 text-error hover:bg-error-container' : 'border-status-success/40 text-status-success hover:bg-primary/10'}">
+            ${u.is_active ? 'Suspend' : 'Unsuspend'}
+          </button>
+        </td>
+      </tr>`;
+    }).join('');
+
+    wrap.innerHTML = `
+      <table class="w-full text-left">
+        <thead class="bg-surface-container-low border-b border-outline-variant/30">
+          <tr>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">User</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Role</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Phone</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Status</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Verified</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Joined</th>
+            <th class="px-5 py-3 font-label-sm text-label-sm text-on-surface-variant uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="px-5 py-3 text-on-surface-variant font-label-sm text-label-sm border-t border-outline-variant/20">
+        Showing ${users.length} user${users.length !== 1 ? 's' : ''}
+      </div>`;
+  } catch(e) {
+    if (wrap) wrap.innerHTML = `<div class="text-center py-16 text-error font-label-lg text-label-lg">Failed to load users.</div>`;
+  }
+}
+</script>
 </body>
 </html>

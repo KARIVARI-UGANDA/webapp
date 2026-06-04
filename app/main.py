@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -35,6 +36,7 @@ app.add_middleware(
 )
 
 # Static files and templates
+os.makedirs("uploads", exist_ok=True)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
@@ -142,11 +144,18 @@ def admin_dashboard(request: Request):
     return templates.TemplateResponse(request, "admin/dashboard.html")
 
 
+@app.get("/how-it-works")
+def how_it_works_page(request: Request):
+    return templates.TemplateResponse(request, "how-it-works.html")
+
+
 @app.get("/admin/bookings")
-def admin_bookings_page(request: Request):
-    return templates.TemplateResponse(request, "admin/bookings.html")
+def admin_bookings_redirect(request: Request):
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 
 @app.get("/admin/users")
-def admin_users_page(request: Request):
-    return templates.TemplateResponse(request, "admin/users.html")
+def admin_users_redirect(request: Request):
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/admin/dashboard", status_code=302)

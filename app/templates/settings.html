@@ -165,6 +165,13 @@
             </div>
           </div>
 
+          <!-- Bio (owners only) -->
+          <div id="bioSection" class="hidden">
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">About Me</label>
+            <textarea id="pBio" rows="4" class="field resize-none" placeholder="Tell customers about yourself — your experience, specialties, and why they should choose you…"></textarea>
+            <p class="mt-1 font-label-sm text-label-sm text-outline">Displayed on your public owner profile.</p>
+          </div>
+
           <div class="flex justify-end">
             <button onclick="saveProfile()" class="save-btn bg-safari-green text-white px-8 py-3 rounded-xl font-label-lg text-label-lg hover:opacity-90 transition-all active:scale-95 flex items-center gap-2">
               <span class="material-symbols-outlined text-[18px]">save</span> Save Changes
@@ -469,6 +476,7 @@ async function saveProfile() {
         full_name: document.getElementById('pName').value.trim() || undefined,
         phone_number: document.getElementById('pPhone').value.trim() || undefined,
         preferred_language: document.getElementById('pLang').value || undefined,
+        bio: document.getElementById('pBio').value.trim() || undefined,
       }),
     });
     if (!res.ok) { const e=await res.json(); throw new Error(e.detail||'Save failed'); }
@@ -575,6 +583,11 @@ async function load() {
     document.getElementById('pEmail').value = user.email || '';
     document.getElementById('pPhone').value = user.phone_number || '';
     document.getElementById('pLang').value  = user.preferred_language || '';
+
+    if (user.role === 'owner') {
+      document.getElementById('bioSection').classList.remove('hidden');
+      document.getElementById('pBio').value = user.bio || '';
+    }
 
     // Security tab
     document.getElementById('secAccountType').textContent = user.account_type;

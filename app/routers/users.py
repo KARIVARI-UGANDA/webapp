@@ -25,6 +25,7 @@ class UserUpdate(BaseModel):
     phone_number: Optional[str] = None
     preferred_language: Optional[str] = None
     profile_photo_url: Optional[str] = None
+    bio: Optional[str] = None
 
 
 class ChangePasswordRequest(BaseModel):

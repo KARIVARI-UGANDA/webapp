@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How It Works | Kari Vari Uganda</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/base.css">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      corePlugins: { preflight: false },
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary":        "#154212",
+            "safari-green":   "#2D5A27",
+            "ugandan-sun":    "#F9B115",
+            "slate-dark":     "#1A1C1E",
+            "on-surface-variant": "#42493e",
+            "outline-variant":"#c2c9bb",
+            "surface":        "#f9f9fc",
+            "surface-container": "#eeeef0",
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --primary: #154212;
+      --safari-green: #2D5A27;
+      --ugandan-sun: #F9B115;
+      --slate-dark: #1A1C1E;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+
+    /* ── Hero ── */
+    .hiw-hero {
+      background: linear-gradient(155deg, #071505 0%, #0f2a0d 20%, #1a4a14 50%, #2d7028 80%, #154212 100%);
+      min-height: 480px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .hiw-hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 380px; height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(249,177,21,0.18) 0%, transparent 70%);
+    }
+    .hiw-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(45,112,40,0.25) 0%, transparent 70%);
+    }
+
+    /* ── Step cards ── */
+    .step-card {
+      background: white;
+      border-radius: 1.25rem;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      transition: transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .step-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+    }
+    .step-card::before {
+      content: attr(data-num);
+      position: absolute;
+      top: -10px; right: 16px;
+      font-size: 5rem;
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(45,90,39,0.06);
+      font-family: 'Montserrat', sans-serif;
+      pointer-events: none;
+    }
+    .step-icon {
+      width: 56px; height: 56px;
+      border-radius: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-bottom: 1.25rem;
+    }
+    .step-icon.green  { background: rgba(45,90,39,0.12);  color: #2D5A27; }
+    .step-icon.gold   { background: rgba(249,177,21,0.15); color: #7e5700; }
+    .step-icon.teal   { background: rgba(0,137,123,0.12);  color: #00695c; }
+    .step-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c2c9bb;
+    }
+
+    /* ── Owner steps ── */
+    .owner-step {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      transition: box-shadow 0.2s;
+    }
+    .owner-step:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); }
+    .owner-step-num {
+      width: 44px; height: 44px;
+      background: var(--ugandan-sun);
+      color: var(--slate-dark);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      flex-shrink: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* ── Trust pillars ── */
+    .trust-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      background: white;
+      border-radius: 1.25rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      transition: transform 0.25s;
+    }
+    .trust-card:hover { transform: translateY(-4px); }
+    .trust-icon {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+    }
+
+    /* ── FAQ ── */
+    .faq-item {
+      border: 1px solid #e2e2e5;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .faq-item:focus-within { border-color: var(--safari-green); }
+    .faq-btn {
+      background: white;
+      border: none;
+      width: 100%;
+      text-align: left;
+      padding: 1.25rem 1.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #1a1c1e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      gap: 1rem;
+    }
+    .faq-btn:hover { background: #f9f9fc; }
+    .faq-body {
+      background: #f9f9fc;
+      padding: 0 1.5rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s;
+    }
+    .faq-body.open {
+      max-height: 300px;
+      padding: 1rem 1.5rem 1.25rem;
+    }
+    .faq-icon { transition: transform 0.3s; flex-shrink: 0; }
+    .faq-icon.open { transform: rotate(45deg); }
+
+    /* ── Timeline connector line ── */
+    .timeline-line {
+      width: 2px;
+      flex: 1;
+      min-height: 32px;
+      background: linear-gradient(to bottom, #c2c9bb, transparent);
+      margin: 0 auto;
+    }
+
+    /* ── Comparison table ── */
+    .compare-table th { background: #f3f3f6; font-weight: 700; }
+    .compare-table td, .compare-table th { vertical-align: middle; padding: 0.875rem 1.25rem; }
+    .check { color: #15803D; }
+    .cross { color: #ba1a1a; }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ────────────────────────────────────────────────────────────── -->
+<nav class="sticky top-0 w-full z-50 flex justify-between items-center px-4 md:px-12 py-4 max-w-[1280px] mx-auto" style="background:rgba(249,249,252,0.85);backdrop-filter:blur(8px);box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+  <div class="flex items-center gap-8">
+    <a href="/" class="flex items-center gap-2 font-bold text-[20px] no-underline" style="color:#2D5A27;">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+      Kari Vari Uganda
+    </a>
+    <div class="hidden md:flex gap-6">
+      <a href="/" class="text-[14px] font-semibold no-underline transition-colors hover:text-[#2D5A27]" style="color:#42493e;">Listings</a>
+      <a href="/how-it-works" class="text-[14px] font-semibold no-underline border-b-2 pb-1" style="color:#154212;border-color:#154212;">How it Works</a>
+      <a href="#" class="text-[14px] font-semibold no-underline transition-colors hover:text-[#2D5A27]" style="color:#42493e;">About</a>
+      <a href="#" class="text-[14px] font-semibold no-underline transition-colors hover:text-[#2D5A27]" style="color:#42493e;">Contact</a>
+    </div>
+  </div>
+  <div class="flex items-center gap-4" id="authButtons">
+    <a href="/login" class="text-[14px] font-semibold no-underline transition-colors hover:text-[#2D5A27]" style="color:#42493e;">Sign In</a>
+    <a href="/register" class="px-6 py-2 rounded-lg text-[14px] font-bold no-underline transition-all hover:shadow-lg active:scale-95" style="background:#F9B115;color:#1A1C1E;">Register</a>
+  </div>
+  <div class="hidden items-center gap-4" id="userButtons">
+    <a href="#" id="dashboardLink" class="text-[14px] font-semibold no-underline flex items-center gap-1 transition-colors hover:text-[#154212]" style="color:#42493e;">
+      <span class="material-symbols-outlined text-[18px]">dashboard</span> Dashboard
+    </a>
+    <span class="text-[14px] font-semibold" id="userName"></span>
+    <button id="logoutBtn" class="px-6 py-2 rounded-lg text-[14px] font-bold border-0 cursor-pointer" style="background:#F9B115;color:#1A1C1E;">Logout</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+  <section class="hiw-hero">
+    <div class="container position-relative" style="z-index:2;">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-8">
+          <span class="badge-soft-success mb-3 d-inline-block" style="background:rgba(249,177,21,0.15);color:#F9B115;border:1px solid rgba(249,177,21,0.3);">TRANSPARENT PROCESS</span>
+          <h1 class="text-white fw-bold mb-4" style="font-family:'Montserrat',sans-serif;font-size:clamp(2rem,5vw,3.5rem);line-height:1.15;letter-spacing:-0.02em;">
+            How Kari Vari Works
+          </h1>
+          <p class="mb-5" style="color:rgba(255,255,255,0.75);font-size:1.125rem;max-width:580px;margin:0 auto;">
+            From browsing verified vehicles to picking up the keys — a simple, secure process designed around your journey across Uganda.
+          </p>
+          <div class="d-flex flex-wrap gap-3 justify-content-center">
+            <a href="/vehicles" class="btn btn-accent px-5 py-3 fw-bold" style="font-size:0.95rem;">Browse Vehicles</a>
+            <a href="/register" class="btn px-5 py-3 fw-bold" style="background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.3);font-size:0.95rem;">Create Free Account</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Steps ────────────────────────────────────────────────────────────── -->
+  <section class="container py-5" style="max-width:1100px;">
+    <div>
+      <div class="text-center mb-5">
+        <span class="badge-soft-success">3 EASY STEPS</span>
+        <h2 class="fw-bold mt-2" style="font-family:'Montserrat',sans-serif;font-size:2rem;">Rent a Vehicle in Minutes</h2>
+        <p class="text-secondary mt-2">Everything from search to keys — handled securely on one platform.</p>
+      </div>
+
+      <!-- Step cards row -->
+      <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+
+        <!-- Step 1 -->
+        <div class="col">
+          <div class="step-card h-100" data-num="01">
+            <div class="step-icon green">
+              <span class="material-symbols-outlined text-[28px]" style="font-variation-settings:'FILL' 1;">search</span>
+            </div>
+            <h4 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Browse & Compare</h4>
+            <p class="text-secondary mb-3">Filter by vehicle type, location, dates, and budget. Every listing is verified by our team before going live.</p>
+            <ul class="list-unstyled small" style="color:#42493e;">
+              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>4×4s, saloons, minibuses & more</li>
+              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>Real photos — no stock images</li>
+              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>Transparent per-day pricing</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="col">
+          <div class="step-card h-100" data-num="02">
+            <div class="step-icon gold">
+              <span class="material-symbols-outlined text-[28px]" style="font-variation-settings:'FILL' 1;">lock</span>
+            </div>
+            <h4 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Secure Booking</h4>
+            <p class="text-secondary mb-3">Book with confidence. Your payment is held in escrow until you confirm the vehicle is in good condition at pickup.</p>
+            <ul class="list-unstyled small" style="color:#42493e;">
+              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>Instant booking confirmation</li>
+              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>Funds held until pickup</li>
+              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>Full refund on valid cancellations</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="col">
+          <div class="step-card h-100" data-num="03">
+            <div class="step-icon teal">
+              <span class="material-symbols-outlined text-[28px]" style="font-variation-settings:'FILL' 1;">car_rental</span>
+            </div>
+            <h4 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Pick Up & Drive</h4>
+            <p class="text-secondary mb-3">Meet your driver at the agreed location or request delivery to Entebbe Airport, your hotel, or anywhere in Kampala.</p>
+            <ul class="list-unstyled small" style="color:#42493e;">
+              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>Airport & hotel delivery available</li>
+              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>24/7 roadside assistance</li>
+              <li class="mb-1"><i class="bi bi-check2-circle me-2" style="color:#2D5A27;"></i>GPS tracking on every trip</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed timeline ──────────────────────────────────────────────── -->
+      <div class="row align-items-start g-5 mt-4">
+        <div class="col-lg-7">
+          <h3 class="fw-bold mb-5" style="font-family:'Montserrat',sans-serif;">Your Journey in Detail</h3>
+          <div class="d-flex flex-column gap-0">
+
+            <!-- Item -->
+            <div class="d-flex gap-4 align-items-start">
+              <div class="d-flex flex-column align-items-center" style="min-width:44px;">
+                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white" style="width:44px;height:44px;background:#2D5A27;font-family:'Montserrat',sans-serif;flex-shrink:0;">1</div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="pb-4">
+                <h5 class="fw-bold mb-1">Create a Free Account</h5>
+                <p class="text-secondary mb-0">Sign up in under 60 seconds with your email. No credit card required until you book.</p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-4 align-items-start">
+              <div class="d-flex flex-column align-items-center" style="min-width:44px;">
+                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white" style="width:44px;height:44px;background:#2D5A27;font-family:'Montserrat',sans-serif;flex-shrink:0;">2</div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="pb-4">
+                <h5 class="fw-bold mb-1">Search & Filter</h5>
+                <p class="text-secondary mb-0">Enter your pickup location, travel dates, and preferred vehicle type. Use price sliders and feature filters to narrow down your perfect match.</p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-4 align-items-start">
+              <div class="d-flex flex-column align-items-center" style="min-width:44px;">
+                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white" style="width:44px;height:44px;background:#2D5A27;font-family:'Montserrat',sans-serif;flex-shrink:0;">3</div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="pb-4">
+                <h5 class="fw-bold mb-1">Review the Listing</h5>
+                <p class="text-secondary mb-0">Read owner reviews, inspect the photo gallery, check the vehicle spec sheet, and confirm availability for your exact dates.</p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-4 align-items-start">
+              <div class="d-flex flex-column align-items-center" style="min-width:44px;">
+                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white" style="width:44px;height:44px;background:#2D5A27;font-family:'Montserrat',sans-serif;flex-shrink:0;">4</div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="pb-4">
+                <h5 class="fw-bold mb-1">Pay Securely</h5>
+                <p class="text-secondary mb-0">Complete checkout via Mobile Money (MTN / Airtel) or card. Payment is held in escrow — the owner is only paid after successful pickup.</p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-4 align-items-start">
+              <div class="d-flex flex-column align-items-center" style="min-width:44px;">
+                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white" style="width:44px;height:44px;background:#2D5A27;font-family:'Montserrat',sans-serif;flex-shrink:0;">5</div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="pb-4">
+                <h5 class="fw-bold mb-1">Pick Up the Vehicle</h5>
+                <p class="text-secondary mb-0">Meet your driver at your agreed point. Do a quick walk-around inspection together, confirm the condition in the app, and the trip begins.</p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-4 align-items-start">
+              <div class="d-flex flex-column align-items-center" style="min-width:44px;">
+                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white" style="width:44px;height:44px;background:#F9B115;color:#1A1C1E;font-family:'Montserrat',sans-serif;flex-shrink:0;">6</div>
+              </div>
+              <div class="pb-2">
+                <h5 class="fw-bold mb-1">Return & Review</h5>
+                <p class="text-secondary mb-0">Return the vehicle, settle any extra charges, and leave a review to help the community. Your deposit is released automatically.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Scenic Uganda photo -->
+        <div class="col-lg-5 d-none d-lg-block">
+          <div class="position-sticky" style="top:100px;">
+            <div class="rounded-4 overflow-hidden" style="box-shadow:0 12px 40px rgba(0,0,0,0.15);">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMw5tbUi-Y6wOXCUayytfzreDMu4lxAA1s3cDdFD80OamJPGWCCFAqsGtXUQi0zV6nACslT06JHYCQ4noHOCxGCQRiHoBz07-SWzRXe7jM_CLobh_vvL2GFR4PP05q_OdD5MvqkfKO0OCA2mzWIM0tBxJGchrgJXbQi-YeEzj1ZdHopVjTf8L2m9Wq-lA4Ym9PcCE2xZ1RSfSHy7jsjE6PdBGnlufZhAKGxv99k4CAJ1gQPOJ5LO19AGilPwbI5qH20M8FKHo3tmA"
+                   alt="Bwindi Impenetrable Forest, Uganda"
+                   style="width:100%;height:420px;object-fit:cover;">
+            </div>
+            <div class="rounded-3 p-4 mt-4" style="background:#f3f3f6;">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <span class="material-symbols-outlined" style="color:#2D5A27;font-variation-settings:'FILL' 1;">verified_user</span>
+                <span class="fw-semibold">Every vehicle is inspected &amp; verified</span>
+              </div>
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <span class="material-symbols-outlined" style="color:#2D5A27;font-variation-settings:'FILL' 1;">location_on</span>
+                <span class="fw-semibold">Real-time GPS on every trip</span>
+              </div>
+              <div class="d-flex align-items-center gap-3">
+                <span class="material-symbols-outlined" style="color:#2D5A27;font-variation-settings:'FILL' 1;">support_agent</span>
+                <span class="fw-semibold">24/7 roadside assistance</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Trust Pillars ─────────────────────────────────────────────────────── -->
+  <section class="py-5" style="background:#f3f3f6;">
+    <div class="container" style="max-width:1100px;">
+      <div class="text-center mb-5">
+        <span class="badge-soft-success">WHY KARI VARI</span>
+        <h2 class="fw-bold mt-2" style="font-family:'Montserrat',sans-serif;font-size:2rem;">Built on Trust & Transparency</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-sm-6 col-lg-3">
+          <div class="trust-card">
+            <div class="trust-icon" style="background:rgba(45,90,39,0.12);">
+              <span class="material-symbols-outlined text-[30px]" style="color:#2D5A27;font-variation-settings:'FILL' 1;">verified_user</span>
+            </div>
+            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Verified Owners</h5>
+            <p class="text-secondary small mb-0">Every owner completes KYC verification, vehicle inspection, and document review before listing.</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="trust-card">
+            <div class="trust-icon" style="background:rgba(249,177,21,0.15);">
+              <span class="material-symbols-outlined text-[30px]" style="color:#7e5700;font-variation-settings:'FILL' 1;">lock</span>
+            </div>
+            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Escrow Payments</h5>
+            <p class="text-secondary small mb-0">Your money is protected. Funds are only released to the owner after you confirm a successful pickup.</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="trust-card">
+            <div class="trust-icon" style="background:rgba(0,137,123,0.1);">
+              <span class="material-symbols-outlined text-[30px]" style="color:#00695c;font-variation-settings:'FILL' 1;">support_agent</span>
+            </div>
+            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">24/7 Support</h5>
+            <p class="text-secondary small mb-0">A dedicated team reachable by WhatsApp, phone, and email — any time, anywhere in Uganda.</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="trust-card">
+            <div class="trust-icon" style="background:rgba(186,26,26,0.08);">
+              <span class="material-symbols-outlined text-[30px]" style="color:#ba1a1a;font-variation-settings:'FILL' 1;">favorite</span>
+            </div>
+            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">12,000+ Happy Trips</h5>
+            <p class="text-secondary small mb-0">Trusted by safari groups, NGOs, corporate travellers, and backpackers since 2022.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Comparison ────────────────────────────────────────────────────────── -->
+  <section class="container py-5" style="max-width:900px;">
+    <div class="text-center mb-5">
+      <span class="badge-soft-success">COMPARISON</span>
+      <h2 class="fw-bold mt-2" style="font-family:'Montserrat',sans-serif;font-size:2rem;">Why Not a Traditional Rental?</h2>
+    </div>
+    <div class="table-responsive rounded-3 overflow-hidden" style="box-shadow:0 4px 20px rgba(0,0,0,0.06);">
+      <table class="table mb-0 compare-table">
+        <thead>
+          <tr>
+            <th class="py-4">Feature</th>
+            <th class="py-4 text-center" style="color:#2D5A27;">Kari Vari</th>
+            <th class="py-4 text-center text-secondary">Traditional Rental</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Verified local owners</td>
+            <td class="text-center check"><i class="bi bi-check-circle-fill fs-5"></i></td>
+            <td class="text-center cross"><i class="bi bi-x-circle-fill fs-5"></i></td>
+          </tr>
+          <tr style="background:#fafafa;">
+            <td>Escrow payment protection</td>
+            <td class="text-center check"><i class="bi bi-check-circle-fill fs-5"></i></td>
+            <td class="text-center cross"><i class="bi bi-x-circle-fill fs-5"></i></td>
+          </tr>
+          <tr>
+            <td>Real-time GPS tracking</td>
+            <td class="text-center check"><i class="bi bi-check-circle-fill fs-5"></i></td>
+            <td class="text-center cross"><i class="bi bi-x-circle-fill fs-5"></i></td>
+          </tr>
+          <tr style="background:#fafafa;">
+            <td>Airport & hotel delivery</td>
+            <td class="text-center check"><i class="bi bi-check-circle-fill fs-5"></i></td>
+            <td class="text-center text-secondary">Extra charge</td>
+          </tr>
+          <tr>
+            <td>Transparent pricing (no hidden fees)</td>
+            <td class="text-center check"><i class="bi bi-check-circle-fill fs-5"></i></td>
+            <td class="text-center cross"><i class="bi bi-x-circle-fill fs-5"></i></td>
+          </tr>
+          <tr style="background:#fafafa;">
+            <td>24/7 roadside assistance</td>
+            <td class="text-center check"><i class="bi bi-check-circle-fill fs-5"></i></td>
+            <td class="text-center text-secondary">Business hours only</td>
+          </tr>
+          <tr>
+            <td>Owner reviews & ratings</td>
+            <td class="text-center check"><i class="bi bi-check-circle-fill fs-5"></i></td>
+            <td class="text-center cross"><i class="bi bi-x-circle-fill fs-5"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── FAQ ───────────────────────────────────────────────────────────────── -->
+  <section class="py-5" style="background:#f3f3f6;">
+    <div class="container" style="max-width:780px;">
+      <div class="text-center mb-5">
+        <span class="badge-soft-success">FAQ</span>
+        <h2 class="fw-bold mt-2" style="font-family:'Montserrat',sans-serif;font-size:2rem;">Common Questions</h2>
+      </div>
+      <div class="d-flex flex-column gap-3" id="faqList">
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            Do I need a Ugandan driving licence?
+            <span class="material-symbols-outlined faq-icon">add</span>
+          </button>
+          <div class="faq-body">
+            <p class="text-secondary mb-0">An international driving permit (IDP) or a valid foreign licence with an official English translation is accepted. Some owners may require a local endorsement for off-road routes — this is always stated on the listing.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            What happens if the vehicle breaks down?
+            <span class="material-symbols-outlined faq-icon">add</span>
+          </button>
+          <div class="faq-body">
+            <p class="text-secondary mb-0">Contact our 24/7 support line. We coordinate with the owner and our roadside partner network to get you back on the road or into a replacement vehicle within 4 hours. Towing is covered for mechanical breakdowns — not accidents.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            Can I cancel my booking?
+            <span class="material-symbols-outlined faq-icon">add</span>
+          </button>
+          <div class="faq-body">
+            <p class="text-secondary mb-0">Yes. Cancellations made more than 48 hours before pickup receive a full refund. Cancellations within 48 hours are subject to a 20% cancellation fee. No-shows forfeit the full payment.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            How are payment disputes handled?
+            <span class="material-symbols-outlined faq-icon">add</span>
+          </button>
+          <div class="faq-body">
+            <p class="text-secondary mb-0">All disputes are reviewed by our team within 48 hours. Pre- and post-trip inspection photos serve as the evidence baseline. Funds are held in escrow until resolution, so neither party is disadvantaged during the process.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            Is there insurance on rented vehicles?
+            <span class="material-symbols-outlined faq-icon">add</span>
+          </button>
+          <div class="faq-body">
+            <p class="text-secondary mb-0">All listed vehicles must have valid third-party insurance as a minimum. Comprehensive cover is marked on the listing. We recommend renters purchase our optional damage waiver (from $5/day) for peace of mind on off-road routes.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">
+            How long does vehicle approval take for owners?
+            <span class="material-symbols-outlined faq-icon">add</span>
+          </button>
+          <div class="faq-body">
+            <p class="text-secondary mb-0">Our team reviews new vehicle submissions within 48 business hours. We check photos, log-book authenticity, and ensure the listing meets our quality standards. You'll receive an email with the outcome and any feedback.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA Banner ────────────────────────────────────────────────────────── -->
+  <section class="container py-5 my-4">
+    <div class="cta-banner p-5 rounded-4 text-center">
+      <h2 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;font-size:2rem;">Ready to Hit the Road?</h2>
+      <p class="text-secondary mb-4 mx-auto" style="max-width:560px;">Whether you're planning a gorilla trek in Bwindi or a business drive to Jinja, we have the perfect vehicle for you.</p>
+      <div class="d-flex flex-wrap gap-3 justify-content-center">
+        <a href="/vehicles" class="btn btn-primary btn-lg px-5">Browse Vehicles</a>
+        <a href="/register" class="btn btn-accent btn-lg px-5">Create Free Account</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────────── -->
+<footer class="footer-dark pt-5 pb-4 mt-4">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-3">
+        <h4 class="text-accent mb-3">Kari Vari</h4>
+        <p class="small opacity-75">Your trusted partner for exploring the beauty of Uganda with safety and reliability.</p>
+      </div>
+      <div class="col-md-3">
+        <h6 class="text-uppercase small fw-bold text-accent mb-3">Links</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a href="/how-it-works" class="text-light text-decoration-none opacity-75">How it Works</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Privacy Policy</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Terms of Service</a></li>
+          <li><a href="#" class="text-light text-decoration-none opacity-75">Partner Program</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h6 class="text-uppercase small fw-bold text-accent mb-3">Destinations</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Kampala</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Entebbe</a></li>
+          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Jinja</a></li>
+          <li><a href="#" class="text-light text-decoration-none opacity-75">Fort Portal</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h6 class="text-uppercase small fw-bold text-accent mb-3">Connect</h6>
+        <div class="d-flex gap-3 fs-5">
+          <i class="bi bi-journal-bookmark-fill text-light opacity-75"></i>
+          <i class="bi bi-share-fill text-light opacity-75"></i>
+          <i class="bi bi-envelope-fill text-light opacity-75"></i>
+        </div>
+      </div>
+    </div>
+    <hr class="opacity-25 mt-4">
+    <div class="text-center small opacity-50">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/shared.js?v=2"></script>
+<script>
+// ── FAQ accordion ───────────────────────────────────────────────────────────
+function toggleFaq(btn) {
+  const body = btn.nextElementSibling;
+  const icon = btn.querySelector('.faq-icon');
+  const isOpen = body.classList.contains('open');
+
+  // Close all
+  document.querySelectorAll('.faq-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('open'));
+
+  if (!isOpen) {
+    body.classList.add('open');
+    icon.classList.add('open');
+  }
+}
+
+// ── Auth nav ────────────────────────────────────────────────────────────────
+(function () {
+  const token = localStorage.getItem('access_token');
+  const name  = localStorage.getItem('full_name');
+  const role  = localStorage.getItem('role');
+  if (token && name) {
+    document.getElementById('authButtons').classList.add('d-none');
+    const ub = document.getElementById('userButtons');
+    ub.classList.remove('hidden');
+    ub.style.display = 'flex';
+    document.getElementById('userName').textContent = name;
+    const dash = document.getElementById('dashboardLink');
+    if (role === 'owner') dash.href = '/owner/dashboard';
+    else if (role === 'admin') dash.href = '/admin/dashboard';
+    else dash.href = '/dashboard';
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.clear(); window.location.href = '/';
+    });
+  }
+})();
+</script>
+</body>
+</html>

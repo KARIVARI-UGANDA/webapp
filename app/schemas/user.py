@@ -27,6 +27,7 @@ class UserRead(BaseModel):
     account_type: str
     profile_photo_url: Optional[str] = None
     preferred_language: Optional[str] = None
+    bio: Optional[str] = None
     corporate_id: Optional[str] = None
     is_verified: bool
     is_active: bool

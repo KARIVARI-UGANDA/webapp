@@ -133,21 +133,6 @@
     form.addEventListener('submit', handleLogin);
   }
 
-  const googleBtn = document.getElementById('googleLoginBtn');
-  const facebookBtn = document.getElementById('facebookLoginBtn');
-
-  if (googleBtn) {
-    googleBtn.addEventListener('click', function() {
-      window.location.href = '/api/auth/google';
-    });
-  }
-
-  if (facebookBtn) {
-    facebookBtn.addEventListener('click', function() {
-      window.location.href = '/api/auth/facebook';
-    });
-  }
-
   loadSavedCredentials();
 
   console.log('Kari Vari Uganda — Customer Sign In ready');

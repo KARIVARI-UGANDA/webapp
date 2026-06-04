@@ -1,57 +1,310 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Sign In — Karivari Uganda</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="/static/css/base.css">
-  <link rel="stylesheet" href="/static/css/auth.css">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Admin Portal | Kari Vari Uganda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "safari-green":"#2D5A27","on-secondary":"#ffffff","surface-variant":"#e2e2e5",
+            "on-primary-container":"#9dd090","secondary-fixed":"#ffdeac","status-success":"#15803D",
+            "tertiary-fixed":"#d8e2ff","surface-container-highest":"#e2e2e5","on-secondary-fixed":"#281900",
+            "secondary-fixed-dim":"#ffba35","surface-bright":"#f9f9fc","slate-dark":"#1A1C1E",
+            "soft-gray":"#F5F5F5","primary-fixed-dim":"#a1d494","on-primary-fixed":"#002201",
+            "on-secondary-container":"#6c4a00","outline":"#72796e","on-error":"#ffffff",
+            "on-primary":"#ffffff","primary-fixed":"#bcf0ae","outline-variant":"#c2c9bb",
+            "on-tertiary":"#ffffff","surface-dim":"#dadadc","status-pending":"#B45309",
+            "error-container":"#ffdad6","inverse-surface":"#2f3133","surface-tint":"#3b6934",
+            "primary-container":"#2d5a27","tertiary-container":"#004da6","surface-container-lowest":"#ffffff",
+            "surface-container":"#eeeef0","secondary-container":"#ffb61e","on-surface":"#1a1c1e",
+            "primary":"#154212","ugandan-sun":"#F9B115","inverse-primary":"#a1d494",
+            "error":"#ba1a1a","surface-container-high":"#e8e8ea","surface-container-low":"#f3f3f6",
+            "on-surface-variant":"#42493e","background":"#f9f9fc","tertiary":"#00377a",
+            "on-background":"#1a1c1e","surface":"#f9f9fc","secondary":"#7e5700"
+          },
+          borderRadius: { DEFAULT:"0.25rem", lg:"0.5rem", xl:"0.75rem", full:"9999px" },
+          spacing: { base:"8px", gutter:"24px", "container-max":"1280px", "margin-mobile":"16px", "margin-desktop":"48px" },
+          fontFamily: {
+            "headline-lg-mobile":["Montserrat"],"label-sm":["Inter"],"label-lg":["Inter"],
+            "body-lg":["Inter"],"headline-xl":["Montserrat"],"headline-md":["Montserrat"],
+            "headline-lg":["Montserrat"],"body-md":["Inter"]
+          },
+          fontSize: {
+            "headline-lg-mobile":["28px",{lineHeight:"34px",fontWeight:"700"}],
+            "label-sm":["12px",{lineHeight:"16px",fontWeight:"500"}],
+            "label-lg":["14px",{lineHeight:"20px",letterSpacing:"0.05em",fontWeight:"600"}],
+            "body-lg":["18px",{lineHeight:"28px",fontWeight:"400"}],
+            "headline-xl":["48px",{lineHeight:"56px",letterSpacing:"-0.02em",fontWeight:"700"}],
+            "headline-md":["24px",{lineHeight:"32px",fontWeight:"600"}],
+            "headline-lg":["32px",{lineHeight:"40px",letterSpacing:"-0.01em",fontWeight:"700"}],
+            "body-md":["16px",{lineHeight:"24px",fontWeight:"400"}]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; vertical-align:middle; }
+    .bg-pattern {
+      background-color:#f9f9fc;
+      background-image:radial-gradient(#2D5A27 0.5px,transparent 0.5px),radial-gradient(#2D5A27 0.5px,#f9f9fc 0.5px);
+      background-size:20px 20px; background-position:0 0,10px 10px; opacity:0.05;
+    }
+    .glass-card { background:rgba(255,255,255,0.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+  </style>
 </head>
-<body class="auth-page auth-admin d-flex align-items-center justify-content-center min-vh-100">
-<div class="auth-card card shadow p-4 p-md-5">
-  <a href="/" class="text-decoration-none mb-2 d-inline-block">
-    <span class="fw-bold fs-5" style="color:#2d5a27">Karivari Uganda</span>
-  </a>
-  <div class="auth-role-badge auth-role-admin mb-3">
-    <i class="bi bi-shield-lock-fill me-1"></i> Admin Portal
-  </div>
-  <h4 class="mb-1 fw-bold">Administrator Sign In</h4>
-  <p class="text-secondary small mb-4">Restricted access — authorised personnel only</p>
-  <div id="adminLoginAlert" class="alert d-none" role="alert"></div>
-  <form id="adminLoginForm" method="post">
-    <div class="mb-3">
-      <label class="form-label">Email address</label>
-      <input type="email" name="email" class="form-control" placeholder="admin@karivari.ug" required>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md text-body-md">
+
+<main class="flex-grow flex items-center justify-center relative overflow-hidden px-margin-mobile py-12">
+
+  <!-- Background decoration -->
+  <div class="absolute inset-0 bg-pattern pointer-events-none"></div>
+  <div class="absolute -top-[10%] -right-[5%] w-[40%] h-[60%] bg-safari-green/5 rounded-full blur-[100px] pointer-events-none"></div>
+  <div class="absolute -bottom-[10%] -left-[5%] w-[40%] h-[60%] bg-ugandan-sun/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+  <div class="max-w-container-max w-full grid grid-cols-1 md:grid-cols-2 gap-gutter items-center relative z-10">
+
+    <!-- Left: branding -->
+    <div class="hidden md:flex flex-col space-y-8 pr-12">
+      <div>
+        <h1 class="font-headline-xl text-headline-xl text-primary mb-4">
+          Kari Vari <span class="text-ugandan-sun">Uganda</span>
+        </h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
+          Empowering mobility across the Pearl of Africa. Manage logistics, fleets, and marketplace operations from a single high-security command center.
+        </p>
+      </div>
+      <div class="space-y-6">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-safari-green/10 flex items-center justify-center text-safari-green flex-shrink-0">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">shield_with_heart</span>
+          </div>
+          <div>
+            <h3 class="font-label-lg text-label-lg text-on-surface">Enterprise Security</h3>
+            <p class="font-label-sm text-label-sm text-on-surface-variant">Multi-layered authentication and encrypted data streams for total peace of mind.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-safari-green/10 flex items-center justify-center text-safari-green flex-shrink-0">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">insights</span>
+          </div>
+          <div>
+            <h3 class="font-label-lg text-label-lg text-on-surface">Real-time Analytics</h3>
+            <p class="font-label-sm text-label-sm text-on-surface-variant">Monitor bookings, vehicle health, and vendor performance with zero latency.</p>
+          </div>
+        </div>
+      </div>
+      <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-xl border border-white/20">
+        <img alt="Kampala Skyline" class="w-full h-full object-cover"
+             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj8nvf5piHjuy0dchD4Xs4OFb8dV2cIXAEdbFT2q99fOiXoTOr4L4PLahYa9a5bVbxXsSR0G33hZ7_jVIbKgkPNiNadE2yGIXuvytVYSa6moJufEli_AVmAKw8EUO6e9ZVG-ISh9eXRWkKyly_ARzbql422OAA2FvLz9MGl7Vuxl8TxiU2h053r1whYpkb5qeq_pX8-ePT09Imkdbo2TGlO1LpaHs8WlD6gEom3lhje_MgWLPUDF3BfmS5oIgDfrUu5HUcRe4x-NM"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent flex items-end p-6">
+          <span class="text-white font-label-lg text-label-lg">Official Operations Dashboard</span>
+        </div>
+      </div>
     </div>
-    <div class="mb-4">
-      <label class="form-label">Password</label>
-      <input type="password" name="password" class="form-control" required>
+
+    <!-- Right: login form -->
+    <div class="flex justify-center">
+      <div class="w-full max-w-[480px] glass-card p-8 md:p-10 rounded-xl shadow-lg border border-white/40">
+
+        <!-- Mobile logo -->
+        <div class="md:hidden flex justify-center mb-8">
+          <h1 class="font-headline-md text-headline-md text-primary font-bold">Kari Vari <span class="text-ugandan-sun">Uganda</span></h1>
+        </div>
+
+        <header class="mb-8">
+          <h2 class="font-headline-md text-headline-md text-on-surface mb-2">Admin Portal</h2>
+          <p class="text-on-surface-variant font-body-md text-body-md">
+            Secure access for Kari Vari administrators only.
+          </p>
+        </header>
+
+        <!-- Alert -->
+        <div id="adminLoginAlert" class="hidden mb-5 px-4 py-3 rounded-xl text-sm font-medium"></div>
+
+        <form id="adminLoginForm" class="space-y-6" novalidate>
+
+          <!-- Email -->
+          <div class="space-y-2">
+            <label class="font-label-lg text-label-lg text-on-surface" for="email">Email Address</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline pointer-events-none">mail</span>
+              <input id="email" name="email" type="email" required
+                     placeholder="admin@karivari.ug"
+                     class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-safari-green rounded-lg py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline-variant transition-all"/>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <label class="font-label-lg text-label-lg text-on-surface" for="password">Password</label>
+              <a href="#" class="text-safari-green font-label-sm text-label-sm hover:underline">Forgot Password?</a>
+            </div>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline pointer-events-none">lock</span>
+              <input id="password" name="password" type="password" required
+                     placeholder="••••••••••••"
+                     class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-safari-green rounded-lg py-3.5 pl-12 pr-12 text-on-surface placeholder:text-outline-variant transition-all"/>
+              <button type="button" onclick="togglePasswordVisibility()"
+                      class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors">
+                <span class="material-symbols-outlined" id="eyeIcon">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember me -->
+          <div class="flex items-center">
+            <input id="remember" name="remember" type="checkbox"
+                   class="w-5 h-5 rounded text-safari-green focus:ring-safari-green bg-surface-container-low border-outline-variant cursor-pointer"/>
+            <label for="remember" class="ml-3 font-label-sm text-label-sm text-on-surface-variant cursor-pointer">Remember this device for 30 days</label>
+          </div>
+
+          <!-- Submit -->
+          <button id="loginBtn" type="submit"
+                  class="w-full bg-ugandan-sun hover:bg-ugandan-sun/90 active:scale-[0.98] text-slate-dark font-bold py-4 rounded-lg shadow-md transition-all flex items-center justify-center gap-2 group">
+            <span id="loginBtnText">Sign In to Admin Portal</span>
+            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" id="loginBtnIcon">arrow_forward</span>
+          </button>
+
+        </form>
+
+        <!-- Prototype Quick Access -->
+        <div class="mt-6">
+          <button id="qa-btn" onclick="devSignIn('admin','/admin/dashboard')"
+                  class="w-full py-3 rounded-xl font-label-lg text-label-lg flex items-center justify-center gap-2 bg-surface-container border border-dashed border-outline-variant text-on-surface hover:bg-surface-container-high transition-all">
+            <span class="text-[16px]">⚡</span> Quick Access — Sign in as Admin
+          </button>
+        </div>
+
+        <!-- Trust footer -->
+        <div class="mt-6 pt-4 border-t border-outline-variant/20 flex items-center justify-center gap-2 text-on-surface-variant">
+          <span class="material-symbols-outlined text-[18px]">verified_user</span>
+          <span class="font-label-sm text-label-sm">Protected by Enterprise Grade Encryption</span>
+        </div>
+
+      </div>
     </div>
-    <button type="submit" class="btn btn-admin w-100 py-2 fw-bold">Sign In</button>
-  </form>
 
-  <div class="d-flex align-items-center my-3 gap-2">
-    <hr class="flex-grow-1 opacity-25 m-0">
-    <span class="text-secondary small">or</span>
-    <hr class="flex-grow-1 opacity-25 m-0">
   </div>
+</main>
 
-  <button type="button" id="devSignInBtn" class="btn btn-outline-secondary w-100 py-2">
-    <i class="bi bi-lightning-fill me-1 text-warning"></i> Dev Quick Access
-  </button>
-  <p class="text-center text-secondary" style="font-size:0.72rem; margin-top:0.4rem;">
-    Auto-provisions <code>admin@karivari.ug</code> — remove before going live
-  </p>
+<footer class="w-full py-12 px-margin-mobile md:px-margin-desktop bg-on-background text-white mt-auto">
+  <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+    <div class="flex flex-col items-center md:items-start space-y-2">
+      <span class="font-headline-md text-headline-md font-bold text-ugandan-sun">Kari Vari Uganda</span>
+      <p class="font-label-sm text-label-sm text-surface-variant opacity-70">© 2024 Kari Vari Uganda. Exploring the Pearl of Africa.</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-gutter">
+      <a href="#" class="text-surface-variant font-label-sm text-label-sm hover:text-ugandan-sun transition-colors">Privacy Policy</a>
+      <a href="#" class="text-surface-variant font-label-sm text-label-sm hover:text-ugandan-sun transition-colors">Terms of Service</a>
+      <a href="#" class="text-surface-variant font-label-sm text-label-sm hover:text-ugandan-sun transition-colors">Partner Program</a>
+      <a href="#" class="text-surface-variant font-label-sm text-label-sm hover:text-ugandan-sun transition-colors">Careers</a>
+      <a href="/support" class="text-surface-variant font-label-sm text-label-sm hover:text-ugandan-sun transition-colors font-bold">Support</a>
+    </div>
+  </div>
+</footer>
 
-  <hr class="my-3 opacity-25">
-  <p class="text-center small text-secondary mb-0">
-    <a href="/" class="text-decoration-none"><i class="bi bi-arrow-left me-1"></i>Back to main site</a>
-  </p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/shared.js"></script>
-<script src="/static/js/admin/login.js"></script>
+<script>
+async function devSignIn(role, redirect) {
+  const btn = document.getElementById('qa-btn');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; btn.textContent = 'Signing in…'; }
+  try {
+    const res  = await fetch(`/api/auth/dev-signin?role=${role}`, { method: 'POST' });
+    const json = await res.json();
+    if (res.ok) {
+      localStorage.setItem('access_token',  json.access_token);
+      localStorage.setItem('refresh_token', json.refresh_token);
+      localStorage.setItem('role',          json.role);
+      localStorage.setItem('full_name',     json.full_name);
+      window.location.href = redirect;
+    } else {
+      showLoginAlert(json.detail || 'Quick access failed');
+      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span class="text-[16px]">⚡</span> Quick Access — Sign in as Admin'; }
+    }
+  } catch {
+    showLoginAlert('Network error');
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span class="text-[16px]">⚡</span> Quick Access — Sign in as Admin'; }
+  }
+}
+
+function togglePasswordVisibility() {
+  const inp  = document.getElementById('password');
+  const icon = document.getElementById('eyeIcon');
+  if (inp.type === 'password') { inp.type = 'text';     icon.innerText = 'visibility_off'; }
+  else                         { inp.type = 'password'; icon.innerText = 'visibility'; }
+}
+
+function showLoginAlert(msg, isError = true) {
+  const el = document.getElementById('adminLoginAlert');
+  el.textContent = msg;
+  el.className = isError
+    ? 'mb-5 px-4 py-3 rounded-xl text-sm font-medium bg-error-container text-error'
+    : 'mb-5 px-4 py-3 rounded-xl text-sm font-medium bg-primary-fixed/40 text-safari-green';
+  el.classList.remove('hidden');
+}
+
+document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const btn      = document.getElementById('loginBtn');
+  const btnText  = document.getElementById('loginBtnText');
+  const btnIcon  = document.getElementById('loginBtnIcon');
+
+  document.getElementById('adminLoginAlert').classList.add('hidden');
+
+  // Loading state
+  btn.disabled  = true;
+  btnText.textContent = 'Authenticating…';
+  btnIcon.innerHTML = `<svg class="animate-spin h-5 w-5 text-slate-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+  </svg>`;
+
+  try {
+    const res  = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const json = await res.json();
+
+    if (res.ok) {
+      if (json.role !== 'admin') {
+        showLoginAlert('Access denied — this portal is for administrators only.');
+        btn.disabled = false;
+        btnText.textContent = 'Sign In to Admin Portal';
+        btnIcon.innerHTML   = '<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>';
+        return;
+      }
+      localStorage.setItem('access_token',  json.access_token);
+      localStorage.setItem('refresh_token', json.refresh_token);
+      localStorage.setItem('role',          json.role);
+      localStorage.setItem('full_name',     json.full_name);
+      showLoginAlert('Login successful — redirecting…', false);
+      setTimeout(() => { window.location.href = '/admin/dashboard'; }, 800);
+    } else {
+      showLoginAlert(json.detail || 'Invalid email or password.');
+      btn.disabled = false;
+      btnText.textContent = 'Sign In to Admin Portal';
+      btnIcon.innerHTML   = '<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>';
+    }
+  } catch (err) {
+    showLoginAlert('Network error — please check your connection.');
+    btn.disabled = false;
+    btnText.textContent = 'Sign In to Admin Portal';
+    btnIcon.innerHTML   = '<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>';
+  }
+});
+</script>
 </body>
 </html>
