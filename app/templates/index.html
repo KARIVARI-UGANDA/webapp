@@ -77,10 +77,10 @@
       Kari Vari Uganda
     </a>
     <div class="hidden md:flex gap-6">
-      <a class="font-label-lg text-label-lg border-b-2 border-primary pb-1 transition-all duration-200" href="#" style="color:#154212;text-decoration:none;">Listings</a>
+      <a class="font-label-lg text-label-lg border-b-2 border-primary pb-1 transition-all duration-200" href="/vehicles" style="color:#154212;text-decoration:none;">Listings</a>
       <a class="font-label-lg text-label-lg hover:text-secondary transition-colors duration-200" href="/how-it-works" style="color:#42493e;text-decoration:none;">How it Works</a>
       <a class="font-label-lg text-label-lg hover:text-secondary transition-colors duration-200" href="#" style="color:#42493e;text-decoration:none;">About</a>
-      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors duration-200" href="#" style="color:#42493e;text-decoration:none;">Contact</a>
+      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors duration-200" href="/support" style="color:#42493e;text-decoration:none;">Contact</a>
     </div>
   </div>
   <div class="flex items-center gap-4" id="authButtons">
@@ -110,28 +110,71 @@
       </div>
       <!-- Search Bar Card -->
       <div class="search-card bg-white p-4 p-lg-5 rounded-4 shadow-lg">
-        <form id="searchForm" class="row g-4 align-items-end">
+        <form id="searchForm" class="row g-3 align-items-end">
+          <!-- Location -->
           <div class="col-md-3">
             <label class="form-label small fw-semibold text-secondary">
-              <i class="bi bi-geo-alt-fill me-1" style="color: #2d5a27;"></i> PICK-UP LOCATION
+              <i class="bi bi-geo-alt-fill me-1" style="color:#2d5a27;"></i> LOCATION
             </label>
-            <input id="searchLocation" type="text" class="form-control form-control-lg" placeholder="e.g. Kampala, Entebbe">
+            <input id="searchLocation" type="text" list="cityList"
+              class="form-control form-control-lg" placeholder="e.g. Kampala, Entebbe" autocomplete="off">
+            <datalist id="cityList">
+              <option value="Kampala">
+              <option value="Entebbe">
+              <option value="Jinja">
+              <option value="Fort Portal">
+              <option value="Mbarara">
+              <option value="Gulu">
+              <option value="Bwindi">
+              <option value="Queen Elizabeth">
+              <option value="Kidepo">
+            </datalist>
           </div>
-          <div class="col-md-3">
+          <!-- Pick-up Date -->
+          <div class="col-md-2">
             <label class="form-label small fw-semibold text-secondary">
-              <i class="bi bi-calendar3 me-1" style="color: #2d5a27;"></i> DATES
+              <i class="bi bi-calendar-event me-1" style="color:#2d5a27;"></i> PICK-UP DATE
             </label>
-            <input type="text" class="form-control form-control-lg" placeholder="Nov 12 - Nov 19">
+            <input id="searchStartDate" type="date" class="form-control form-control-lg">
           </div>
-          <div class="col-md-3">
+          <!-- Return Date -->
+          <div class="col-md-2">
             <label class="form-label small fw-semibold text-secondary">
-              <i class="bi bi-car-front-fill me-1" style="color: #2d5a27;"></i> VEHICLE TYPE
+              <i class="bi bi-calendar-check me-1" style="color:#2d5a27;"></i> RETURN DATE
+            </label>
+            <input id="searchEndDate" type="date" class="form-control form-control-lg">
+          </div>
+          <!-- Vehicle Type -->
+          <div class="col-md-2">
+            <label class="form-label small fw-semibold text-secondary">
+              <i class="bi bi-car-front-fill me-1" style="color:#2d5a27;"></i> VEHICLE TYPE
             </label>
             <select id="searchType" class="form-select form-select-lg">
-              <option value="">All Vehicles</option>
+              <option value="">All Types</option>
+              <option value="safari">Safari 4×4</option>
+              <option value="suv">SUV</option>
+              <option value="luxury">Luxury</option>
+              <option value="minibus">Minibus</option>
+              <option value="sedan">Sedan</option>
+              <option value="other">Other</option>
             </select>
           </div>
-          <div class="col-md-3">
+          <!-- Passengers -->
+          <div class="col-md-1">
+            <label class="form-label small fw-semibold text-secondary">
+              <i class="bi bi-people-fill me-1" style="color:#2d5a27;"></i> SEATS
+            </label>
+            <select id="searchSeats" class="form-select form-select-lg">
+              <option value="">Any</option>
+              <option value="2">2+</option>
+              <option value="4">4+</option>
+              <option value="7">7+</option>
+              <option value="10">10+</option>
+              <option value="14">14+</option>
+            </select>
+          </div>
+          <!-- Submit -->
+          <div class="col-md-2">
             <button type="submit" id="searchBtn" class="btn btn-accent w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
               <i class="bi bi-search"></i> FIND A VEHICLE
             </button>
@@ -293,10 +336,10 @@
       <div class="col-md-3">
         <h6 class="text-uppercase small fw-bold text-accent mb-3">Destinations</h6>
         <ul class="list-unstyled small">
-          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Kampala</a></li>
-          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Entebbe</a></li>
-          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Jinja</a></li>
-          <li><a href="#" class="text-light text-decoration-none opacity-75">Fort Portal</a></li>
+          <li class="mb-2"><a href="/vehicles?city=Kampala" class="text-light text-decoration-none opacity-75">Kampala</a></li>
+          <li class="mb-2"><a href="/vehicles?city=Entebbe" class="text-light text-decoration-none opacity-75">Entebbe</a></li>
+          <li class="mb-2"><a href="/vehicles?city=Jinja" class="text-light text-decoration-none opacity-75">Jinja</a></li>
+          <li><a href="/vehicles?city=Fort Portal" class="text-light text-decoration-none opacity-75">Fort Portal</a></li>
         </ul>
       </div>
       <div class="col-md-3">

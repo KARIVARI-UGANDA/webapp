@@ -76,15 +76,29 @@
 </head>
 <body class="selection:bg-ugandan-sun selection:text-slate-dark">
 
-<!-- ── Sidebar ───────────────────────────────────────────────────────────────── -->
-<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low shadow-md flex flex-col p-6 space-y-4 z-50">
-  <div class="mb-6">
-    <a href="/" class="flex items-center gap-2 font-bold text-[20px]" style="color:#154212;text-decoration:none;">
-      <span class="material-symbols-outlined text-[24px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+<!-- ── Top Navbar (same as index.html) ───────────────────────────────────── -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 md:px-12 py-4 bg-surface/90 backdrop-blur-md shadow-sm">
+  <div class="flex items-center gap-8">
+    <a href="/" class="font-headline-md text-headline-md font-bold flex items-center gap-2" style="color:#2D5A27;text-decoration:none;">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
       Kari Vari Uganda
     </a>
+    <div class="hidden md:flex gap-6">
+      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors" href="/vehicles" style="color:#42493e;text-decoration:none;">Listings</a>
+      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors" href="/how-it-works" style="color:#42493e;text-decoration:none;">How it Works</a>
+      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors" href="#" style="color:#42493e;text-decoration:none;">About</a>
+      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors" href="/support" style="color:#42493e;text-decoration:none;">Contact</a>
+    </div>
   </div>
+  <!-- Always show user section (portal = always authenticated) -->
+  <div class="flex items-center gap-4" id="navUserSection">
+    <span class="font-label-lg text-label-lg font-semibold" style="color:#1a1c1e;" id="navUserName"></span>
+    <button id="navLogoutBtn" class="bg-ugandan-sun text-slate-dark px-5 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Logout</button>
+  </div>
+</nav>
 
+<!-- ── Sidebar ───────────────────────────────────────────────────────────────── -->
+<aside class="h-[calc(100vh-4rem)] w-64 fixed left-0 top-16 bg-surface-container-low shadow-md flex flex-col p-6 space-y-4 z-40">
   <!-- User info -->
   <div class="flex items-center space-x-3 mb-6 px-2">
     <div id="avatarCircle" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg flex-shrink-0">?</div>
@@ -136,7 +150,7 @@
 </aside>
 
 <!-- ── Main ──────────────────────────────────────────────────────────────────── -->
-<main class="ml-64 min-h-screen bg-surface">
+<main class="ml-64 min-h-screen bg-surface pt-16">
 
   <!-- Top bar -->
   <header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md flex justify-between items-center px-10 py-4 shadow-sm">
@@ -556,6 +570,10 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   localStorage.clear();
   window.location.href = '/';
 });
+document.getElementById('navLogoutBtn').addEventListener('click', () => {
+  localStorage.clear();
+  window.location.href = '/';
+});
 
 // ── Load dashboard ────────────────────────────────────────────────────────────
 async function loadDashboard() {
@@ -568,6 +586,7 @@ async function loadDashboard() {
     // Set names & avatars
     const name = user.full_name || user.email;
     document.getElementById('sidebarName').textContent = name;
+    document.getElementById('navUserName').textContent  = name;
     document.getElementById('headerName').textContent  = name;
     document.getElementById('avatarCircle').textContent  = initials(name);
     document.getElementById('headerAvatar').textContent  = initials(name);

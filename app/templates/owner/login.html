@@ -90,18 +90,10 @@
 <main class="min-h-screen flex flex-col md:flex-row">
 
   <!-- ── Left Hero Panel ── -->
-  <section class="relative w-full md:w-1/2 lg:w-[55%] h-64 md:h-screen overflow-hidden">
-    <!-- Gradient fallback (always visible) -->
-    <div class="absolute inset-0"
-         style="background: radial-gradient(ellipse at 25% 70%, rgba(249,177,21,0.2) 0%, transparent 55%),
-                            radial-gradient(ellipse at 75% 20%, rgba(45,90,39,0.5) 0%, transparent 50%),
-                            linear-gradient(155deg, #071505 0%, #0f2a0d 20%, #1a4a14 45%, #2d7028 65%, #154212 100%);">
-    </div>
-    <!-- Hero image (hides if CDN blocked) -->
-    <img class="absolute inset-0 w-full h-full object-cover opacity-90"
-         src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4AgyyWn710hs4efMVUhCRFv4K9GAjOyfuM8M8DKgMvyIlL47UzYuifI0d4Ebn9sN9eQ_ExhmVeZbz5aIHD7_004g8-pj-EhiSO8z3gRcKDUIPmudNXP0D0F6R22FMtMJZCXwc1zAYOPYIcLQrGxzTeCeriluB2zzXWICtObnSLaQaHNVBbB07uDjC0U6rekIa0Q8KN7kE7VpFmpyfI5EsY9LcZUyoAYziCo4ST4LHiMVHVugeyJe8RzJ_sQebryXYhGA4wxmFDNw"
-         onerror="this.style.display='none'"
-         alt="Vehicle fleet"/>
+  <section class="relative w-full md:w-1/2 lg:w-[55%] h-64 md:h-screen overflow-hidden"
+           style="background-image:url('/static/images/safari-hero.jpg');background-size:cover;background-position:center;background-color:#0f2a0d;">
+    <!-- Dark overlay for text readability -->
+    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(7,21,5,0.85) 0%, rgba(21,66,18,0.3) 50%, rgba(0,0,0,0.1) 100%);"></div>
 
     <!-- Branding -->
     <div class="absolute top-8 left-8 md:top-12 md:left-12 z-10">

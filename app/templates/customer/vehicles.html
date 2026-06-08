@@ -123,10 +123,10 @@
   Kari Vari Uganda
 </a>
 <div class="hidden md:flex gap-6">
-<a class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-1 transition-all duration-200 ease-in-out" href="#">Listings</a>
-<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors transition-all duration-200 ease-in-out" href="#">How it Works</a>
+<a class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-1 transition-all duration-200 ease-in-out" href="/vehicles">Listings</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors transition-all duration-200 ease-in-out" href="/how-it-works">How it Works</a>
 <a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors transition-all duration-200 ease-in-out" href="#">About</a>
-<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors transition-all duration-200 ease-in-out" href="#">Contact</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors transition-all duration-200 ease-in-out" href="/support">Contact</a>
 </div>
 </div>
 <div class="flex items-center gap-4" id="authButtons">
@@ -469,11 +469,47 @@ function renderGrid(list) {
 document.getElementById('sortSelect').addEventListener('change', () => renderGrid(_vehicles));
 
 (async () => {
+  // Read search params passed from index page
+  const urlParams   = new URLSearchParams(window.location.search);
+  const initLoc     = urlParams.get('location') || '';
+  const initType    = urlParams.get('vehicle_type') || '';
+  const initSeats   = urlParams.get('min_seats') || '';
+  const initStart   = urlParams.get('start_date') || '';
+  const initEnd     = urlParams.get('end_date') || '';
+
+  // Build API query string from URL params
+  const apiParams = new URLSearchParams({ page: 1, page_size: 100 });
+  if (initLoc)   apiParams.set('location', initLoc);
+  if (initType)  apiParams.set('vehicle_type', initType);
+  if (initSeats) apiParams.set('min_seats', initSeats);
+
+  // Show active search context banner if params present
+  if (initLoc || initType || initSeats || initStart || initEnd) {
+    const parts = [];
+    if (initLoc)   parts.push(`📍 ${initLoc}`);
+    if (initType)  parts.push(`🚙 ${initType.charAt(0).toUpperCase() + initType.slice(1)}`);
+    if (initSeats) parts.push(`👥 ${initSeats}+ seats`);
+    if (initStart) parts.push(`📅 ${initStart}${initEnd ? ' → ' + initEnd : ''}`);
+    const banner = document.createElement('div');
+    banner.className = 'mb-4 px-4 py-2 bg-primary/10 border border-primary/20 rounded-xl flex items-center justify-between gap-3 text-sm font-medium text-primary';
+    banner.innerHTML = `<span>Showing results for: ${parts.join(' · ')}</span>
+      <a href="/vehicles" class="text-xs underline hover:no-underline text-on-surface-variant">Clear filters</a>`;
+    document.getElementById('vehicleGrid')?.parentElement?.insertBefore(banner, document.getElementById('vehicleGrid'));
+  }
+
   try {
-    const res = await fetch('/api/vehicles/?page=1&page_size=50');
+    const res = await fetch(`/api/vehicles/?${apiParams.toString()}`);
     if (res.ok) {
       _vehicles = await res.json();
       buildTypeFilters(_vehicles);
+
+      // Pre-check type filter from URL
+      if (initType) {
+        document.querySelectorAll('.filter-type').forEach(cb => {
+          if (cb.value === initType) cb.checked = true;
+        });
+      }
+
       renderGrid(_vehicles);
     } else {
       document.getElementById('vehicleGrid').innerHTML =

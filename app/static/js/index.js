@@ -125,28 +125,34 @@ document.addEventListener('DOMContentLoaded', async () => {
 	}
 
 	function applySearch() {
-		const location = (document.getElementById('searchLocation')?.value || '').trim().toLowerCase();
-		const type     = (document.getElementById('searchType')?.value || '').trim().toLowerCase();
-		const resultEl = document.getElementById('searchResultCount');
-		const heading  = document.getElementById('featuredHeading');
+		const location  = (document.getElementById('searchLocation')?.value || '').trim();
+		const type      = (document.getElementById('searchType')?.value || '').trim();
+		const seats     = (document.getElementById('searchSeats')?.value || '').trim();
+		const startDate = (document.getElementById('searchStartDate')?.value || '').trim();
+		const endDate   = (document.getElementById('searchEndDate')?.value || '').trim();
 
-		_shown = _allVehicles.filter(v => {
-			if (location && !(v.service_area || '').toLowerCase().includes(location)) return false;
-			if (type     && v.vehicle_type.toLowerCase() !== type) return false;
-			return true;
-		});
+		const params = new URLSearchParams();
+		if (location)  params.set('location', location);
+		if (type)      params.set('vehicle_type', type);
+		if (seats)     params.set('min_seats', seats);
+		if (startDate) params.set('start_date', startDate);
+		if (endDate)   params.set('end_date', endDate);
 
-		const isFiltered = location || type;
-		if (heading) heading.textContent = isFiltered ? 'Search Results' : 'Featured Vehicles';
-		if (resultEl) {
-			resultEl.textContent = isFiltered
-				? `${_shown.length} vehicle${_shown.length !== 1 ? 's' : ''} found`
-				: '';
-		}
-
-		renderVehicleCards(_shown, getCurrentCurrency());
-		document.getElementById('vehicleCardsContainer')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		window.location.href = '/vehicles' + (params.toString() ? '?' + params.toString() : '');
 	}
+
+	// Set default dates: today → one week from now
+	(function setDefaultDates() {
+		const fmt = d => d.toISOString().split('T')[0];
+		const today = new Date();
+		const nextWeek = new Date(today); nextWeek.setDate(today.getDate() + 7);
+		const s = document.getElementById('searchStartDate');
+		const e = document.getElementById('searchEndDate');
+		if (s && !s.value) { s.value = fmt(today); s.min = fmt(today); }
+		if (e && !e.value) { e.value = fmt(nextWeek); e.min = fmt(today); }
+		// Keep end date >= start date
+		s?.addEventListener('change', () => { if (e && e.value < s.value) e.value = s.value; e.min = s.value; });
+	})();
 
 	// Currency toggle
 	document.querySelectorAll('input[name="currency"]').forEach(radio => {
@@ -168,19 +174,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 		if (res.ok) {
 			_allVehicles = await res.json();
 			_shown = _allVehicles.slice(0, 6);
-
-			// Populate type dropdown from real data
-			const typeSelect = document.getElementById('searchType');
-			if (typeSelect) {
-				const types = [...new Set(_allVehicles.map(v => v.vehicle_type).filter(Boolean))].sort();
-				types.forEach(t => {
-					const opt = document.createElement('option');
-					opt.value = t;
-					opt.textContent = t.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-					typeSelect.appendChild(opt);
-				});
-			}
-
 			renderVehicleCards(_shown, 'USD');
 		}
 	} catch (err) {

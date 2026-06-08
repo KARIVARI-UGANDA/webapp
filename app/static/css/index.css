@@ -30,7 +30,7 @@
 
 .hero-section {
   min-height: 870px;
-  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAoNvUOLWO8-7uyGYwUNScCjXZaQWTC8SiQtoLkAJcWgNHB0hb21WHdS2-pd1qcQoY-QfRGkRD_P2rWepG_OEdlA6KjjBQWW9C63uVyeEqab86KTf_jgl3SGM7LIcpNOoTyW1d3Jdkf3TC0hRmcK70f5yzRY05SOJfYxGT5xa-RZzF2e79js7U1b_ONv6z2-uUfvvF2IeLyucdAB1RvXZEkN70zfF5bNtedCENkklT5-Kp78KlJy0GMbCE7NY5MOerlhP2jzICEL4M');
+  background-image: url('/static/images/safari-sunset.jpg');
   background-size: cover;
   background-position: center 30%;
   position: relative;

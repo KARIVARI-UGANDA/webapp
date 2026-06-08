@@ -95,6 +95,10 @@ body {
   position: relative;
   display: none;
   overflow: hidden;
+  background-image: url('/static/images/safari-hero.jpg');
+  background-size: cover;
+  background-position: center;
+  background-color: #0f2a0d;
 }
 
 @media (min-width: 1024px) {
@@ -103,31 +107,10 @@ body {
   }
 }
 
-.hero-image {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 70%, rgba(249, 177, 21, 0.22) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 15%, rgba(45, 90, 39, 0.6) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(21, 66, 18, 0.3) 0%, transparent 70%),
-    linear-gradient(155deg, #071505 0%, #0f2a0d 20%, #1a4a14 45%, #2d7028 65%, #1a4a14 80%, #0d2408 100%);
-}
-
 .hero-gradient {
   position: absolute;
   inset: 0;
   background: linear-gradient(to top, rgba(7, 21, 5, 0.85) 0%, rgba(21, 66, 18, 0.3) 50%, rgba(0, 0, 0, 0.1) 100%);
-}
-
-.hero-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0);
-  background-size: 28px 28px;
-  z-index: 1;
-  pointer-events: none;
 }
 
 .hero-content {
