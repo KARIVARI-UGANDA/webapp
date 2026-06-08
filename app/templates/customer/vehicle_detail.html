@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-    <link rel="icon" type="image/png" href="/static/images/favicon.png">
-<meta charset="utf-8">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+<link rel="icon" type="image/png" href="/static/images/favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pageTitle">Vehicle Details | Kari Vari Uganda</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -234,7 +235,7 @@ tailwind.config = {
                 <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Trips Completed</p>
               </div>
               <div class="p-4 text-center">
-                <p class="font-headline-md text-headline-md text-safari-green" id="driverRating">5.0 ★</p>
+                <p class="font-headline-md text-headline-md text-safari-green" id="driverRating">5.0 <i class="bi bi-star-fill text-warning"></i></p>
                 <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Average Rating</p>
               </div>
               <div class="p-4 text-center">
@@ -393,7 +394,7 @@ tailwind.config = {
             </div>
             <div class="flex justify-between">
               <span>Kari Vari service fee</span>
-              <span id="serviceFee">$15</span>
+              <span id="serviceFee">€2.50</span>
             </div>
             <div class="pt-3 border-t border-outline-variant flex justify-between font-bold text-on-background font-headline-md text-headline-md">
               <span>Total</span>
@@ -463,7 +464,7 @@ tailwind.config = {
         </div>
         <div class="flex justify-between text-on-surface-variant">
           <span>Kari Vari service fee</span>
-          <span>$15.00</span>
+          <span>€2.50</span>
         </div>
         <div class="flex justify-between font-bold text-on-background pt-2 border-t border-outline-variant text-[18px]">
           <span>Total</span>
@@ -619,7 +620,9 @@ tailwind.config = {
 <script>
 const API = '/api';
 const RATES = { USD: 3700, EUR: 4050 };
-const SERVICE_FEE = 15;
+const SERVICE_FEE_USD = 2.70;        // €2.50 visible service fee
+const MAINTENANCE_FEE_USD = 18.36;  // €17.00 Karivari maintenance fee (not shown)
+const SERVICE_FEE = SERVICE_FEE_USD + MAINTENANCE_FEE_USD;
 
 const vehicleId = window.location.pathname.split('/').filter(Boolean).pop();
 let _vehicle = null;
@@ -881,7 +884,7 @@ async function loadPage() {
         if (owner.profile) {
           if (g('driverTrips'))      g('driverTrips').textContent      = owner.profile.trips_completed ?? '—';
           if (g('driverRating'))     g('driverRating').textContent     = owner.profile.rating_avg
-            ? `${parseFloat(owner.profile.rating_avg).toFixed(1)} ★` : '5.0 ★';
+            ? `${parseFloat(owner.profile.rating_avg).toFixed(1)} <i class="bi bi-star-fill text-warning"></i>` : '5.0 <i class="bi bi-star-fill text-warning"></i>';
           if (g('driverExperience')) g('driverExperience').textContent = owner.profile.years_experience
             ? `${owner.profile.years_experience} yrs` : '—';
           if (g('driverLanguages'))  g('driverLanguages').textContent  = owner.profile.languages_spoken || 'English';
@@ -1043,7 +1046,7 @@ function openPaymentModal() {
   const total    = subtotal + SERVICE;
 
   document.getElementById('pmDateRange').textContent =
-    `${pickupDt.toLocaleDateString()} â†’ ${dropoffDt.toLocaleDateString()} (${days} day${days > 1 ? 's' : ''})`;
+    `${pickupDt.toLocaleDateString()} → ${dropoffDt.toLocaleDateString()} (${days} day${days > 1 ? 's' : ''})`;
   document.getElementById('pmSubtotal').textContent = `$${subtotal.toFixed(2)}`;
   document.getElementById('pmTotal').textContent    = `$${total.toFixed(2)}`;
   document.getElementById('payBtnText').textContent = `Pay $${total.toFixed(2)}`;
@@ -1102,7 +1105,7 @@ async function _submitCard() {
     const pickup  = document.getElementById('pickupDate').value;
     const dropoff = document.getElementById('returnDate').value;
 
-    // 1. Create booking on backend â†’ get Stripe client_secret
+    // 1. Create booking on backend → get Stripe client_secret
     const bookRes = await fetch(`${API}/bookings/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -1136,7 +1139,7 @@ async function _submitCard() {
       return;
     }
 
-    // 3. Tell backend the Stripe payment succeeded â†’ marks booking confirmed
+    // 3. Tell backend the Stripe payment succeeded → marks booking confirmed
     const confirmRes = await fetch(`${API}/bookings/${bookData.booking_id}/confirm-payment`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` },

@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.deps import require_role
-from app.models import AuditLog, User, Vehicle
+from app.models import AuditLog, Booking, Commission, Payment, Payout, User, Vehicle
 from app.models.kyc import RefreshToken
 from app.schemas.vehicle import VerificationDecision, VehicleRead
 from app.security import create_access_token, create_refresh_token, hash_password
@@ -459,6 +459,27 @@ def override_booking_status(
     booking.status = payload.status
     booking.updated_at = _now()
     db.commit()
+
+    # On trip completion, release the remaining 70 % payout to the owner
+    if payload.status == "completed" and old_status != "completed":
+        commission = db.query(Commission).filter(Commission.booking_id == booking_id).first()
+        if commission:
+            deposit = db.query(Payout).filter(Payout.booking_ids == booking_id).first()
+            deposit_ugx = deposit.total_amount_ugx if deposit else 0
+            remainder_ugx = commission.owner_payout_ugx - deposit_ugx
+            if remainder_ugx > 0:
+                vehicle = db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
+                remainder_payout = Payout(
+                    id=str(uuid.uuid4()),
+                    owner_id=vehicle.owner_id,
+                    booking_ids=booking_id,
+                    total_amount_ugx=remainder_ugx,
+                    payout_method="pending",
+                    status="pending",
+                    requested_at=_now(),
+                )
+                db.add(remainder_payout)
+                db.commit()
 
     _write_audit(db, admin_id=current_user.id, action="override_booking_status",
                  entity_type="booking", entity_id=booking_id,

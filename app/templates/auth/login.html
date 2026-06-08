@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="/static/images/favicon.png">
-  <meta charset="UTF-8">
+      <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="/static/images/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In — Kari Vari Uganda</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
@@ -113,7 +113,7 @@
             <button onclick="devSignIn('customer','/')" id="qa-btn"
               style="width:100%;padding:10px 16px;border-radius:12px;background:#f3f3f6;color:#154212;font-size:13px;font-weight:700;border:1px dashed #c2c9bb;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s;"
               onmouseover="this.style.background='#e8e8ea'" onmouseout="this.style.background='#f3f3f6'">
-              <span style="font-size:16px;">âš¡</span> Quick Access — Sign in as Customer
+              <span style="font-size:16px;"><i class="bi bi-lightning-charge-fill"></i></span> Quick Access — Sign in as Customer
             </button>
           </div>
         </div>
@@ -149,11 +149,11 @@ async function devSignIn(role, redirect) {
       window.location.href = redirect;
     } else {
       alert(json.detail || 'Quick access failed');
-      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span style="font-size:16px;">âš¡</span> Quick Access — Sign in as Customer'; }
+      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span style="font-size:16px;"><i class="bi bi-lightning-charge-fill"></i></span> Quick Access — Sign in as Customer'; }
     }
   } catch {
     alert('Network error');
-    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span style="font-size:16px;">âš¡</span> Quick Access — Sign in as Customer'; }
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.innerHTML = '<span style="font-size:16px;"><i class="bi bi-lightning-charge-fill"></i></span> Quick Access — Sign in as Customer'; }
   }
 }
 </script>

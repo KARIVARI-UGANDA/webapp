@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-    <link rel="icon" type="image/png" href="/static/images/favicon.png">
-  <meta charset="utf-8"/>
+      <meta charset="utf-8"/>
+<link rel="icon" type="image/png" href="/static/images/favicon.png">
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>Admin Dashboard | Kari Vari Uganda</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -167,7 +167,7 @@
 <!-- Main Content -->
 <main class="ml-64 min-h-screen bg-surface">
 
-<!-- â•â•â•â•â•â•â• SECTION: Overview â•â•â•â•â•â•â• -->
+<!-- ═══════ SECTION: Overview ═══════ -->
 <div id="section-overview" class="p-[48px]">
 
   <!-- Header -->
@@ -307,7 +307,7 @@
       <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] p-6">
         <div class="flex justify-between items-center mb-6">
           <h3 class="font-headline-md text-headline-md text-on-surface">Recent Users</h3>
-          <button onclick="showAdminSection('users')" class="text-safari-green font-label-lg text-label-lg hover:underline">View All â†’</button>
+          <button onclick="showAdminSection('users')" class="text-safari-green font-label-lg text-label-lg hover:underline">View All →</button>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left">
@@ -386,7 +386,7 @@
 
 </div><!-- /section-overview -->
 
-<!-- â•â•â•â•â•â•â• SECTION: Users â•â•â•â•â•â•â• -->
+<!-- ═══════ SECTION: Users ═══════ -->
 <div id="section-users" style="display:none" class="p-[48px]">
 
   <div class="max-w-[1200px] mx-auto space-y-6">
@@ -426,7 +426,7 @@
   </div>
 </div><!-- /section-users -->
 
-<!-- â•â•â•â•â•â•â• SECTION: Bookings â•â•â•â•â•â•â• -->
+<!-- ═══════ SECTION: Bookings ═══════ -->
 <div id="section-bookings" style="display:none" class="p-[48px]">
   <div class="max-w-[1200px] mx-auto space-y-6">
 
@@ -478,7 +478,7 @@
   </div>
 </div><!-- /section-bookings -->
 
-<!-- â•â•â•â•â•â•â• SECTION: Analytics â•â•â•â•â•â•â• -->
+<!-- ═══════ SECTION: Analytics ═══════ -->
 <div id="section-analytics" style="display:none" class="p-[48px]">
   <div class="max-w-[1280px] mx-auto space-y-8">
 
@@ -605,7 +605,7 @@
     <div class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] p-6">
       <div class="flex items-center justify-between mb-5">
         <h3 class="font-headline-md text-headline-md">Booking Pipeline</h3>
-        <button onclick="showAdminSection('bookings')" class="text-safari-green font-label-lg text-label-lg hover:underline">View All â†’</button>
+        <button onclick="showAdminSection('bookings')" class="text-safari-green font-label-lg text-label-lg hover:underline">View All →</button>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-5 gap-4" id="an-pipeline"></div>
     </div>
@@ -1054,7 +1054,7 @@ async function bmLoadBookings(statusFilter) {
           <p class="font-label-sm text-label-sm text-on-surface-variant">${b.customer_email || ''}</p>
         </td>
         <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${vehicleName}</td>
-        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${bmFmtDate(b.start_datetime)} â†’ ${bmFmtDate(b.end_datetime)}</td>
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${bmFmtDate(b.start_datetime)} → ${bmFmtDate(b.end_datetime)}</td>
         <td class="px-5 py-4"><span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm ${badge}">${label}</span></td>
         <td class="px-5 py-4 font-label-lg text-label-lg">${b.amount_usd != null ? '$' + parseFloat(b.amount_usd).toFixed(2) : '—'}</td>
         <td class="px-5 py-4">

@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-    <link rel="icon" type="image/png" href="/static/images/favicon.png">
-  <meta charset="UTF-8">
+      <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="/static/images/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Owner Dashboard | Kari Vari Uganda</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -205,7 +205,7 @@
 <!-- ───────────────────────── Main Content ───────────────────────── -->
 <main class="md:ml-64 min-h-screen pb-24 md:pb-12">
 
-<!-- â•â•â•â•â•â•â•â•â•â•â• SECTION: Overview (Dashboard) â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════ SECTION: Overview (Dashboard) ═══════════ -->
 <div id="section-overview" class="p-4 md:p-12">
 
   <!-- Top Bar -->
@@ -457,7 +457,7 @@
   </div>
 </div><!-- /section-overview -->
 
-<!-- â•â•â•â•â•â•â•â•â•â•â• SECTION: My Fleet â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════ SECTION: My Fleet ═══════════ -->
 <div id="section-fleet" style="display:none">
 
   <!-- Fleet Header -->
@@ -568,7 +568,7 @@
   </div>
 </div><!-- /section-fleet -->
 
-<!-- â•â•â•â•â•â•â•â•â•â•â• SECTION: Bookings â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════ SECTION: Bookings ═══════════ -->
 <div id="section-bookings" style="display:none">
 
   <!-- Header -->
@@ -630,7 +630,7 @@
   </div>
 </div><!-- /section-bookings -->
 
-<!-- â•â•â•â•â•â•â•â•â•â•â• SECTION: Earnings â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════ SECTION: Earnings ═══════════ -->
 <div id="section-earnings" style="display:none" class="p-4 md:p-12">
 
   <!-- Header -->
@@ -741,7 +741,7 @@
 
 </div><!-- /section-earnings -->
 
-<!-- â•â•â•â•â•â•â•â•â•â•â• SECTION: Inspections / Compliance Docs â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════ SECTION: Inspections / Compliance Docs ═══════════ -->
 <div id="section-inspections" style="display:none">
 
   <header class="sticky top-0 z-30 bg-surface/80 backdrop-blur-md px-4 md:px-12 py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/30">
@@ -924,7 +924,7 @@
   </div>
 </div><!-- /section-inspections -->
 
-<!-- â•â•â•â•â•â•â•â•â•â•â• SECTION: Settings â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════ SECTION: Settings ═══════════ -->
 <div id="section-settings" style="display:none" class="p-4 md:p-12">
 
   <!-- Header -->
@@ -981,6 +981,7 @@
               <option value="sw">Swahili</option>
               <option value="lg">Luganda</option>
               <option value="fr">French</option>
+              <option value="de">German</option>
             </select>
           </div>
         </div>
@@ -1422,6 +1423,14 @@
               <div class="input-group">
                 <span class="input-group-text text-secondary">UGX</span>
                 <input type="number" name="base_daily_rate_ugx" class="form-control" placeholder="e.g. 200000" min="1" required>
+              </div>
+              <div class="form-text text-warning mt-1">
+                <i class="bi bi-info-circle me-1"></i>
+                Set your desired daily earnings here. Karivari adds platform fees on top of your rate that go
+                entirely to Karivari — <strong>not deducted from your earnings</strong>.
+                Karivari retains a <strong>17% commission</strong> from your daily subtotal only.
+                You receive <strong>30%</strong> of your net (after commission) as a deposit immediately after payment,
+                and the remaining <strong>70%</strong> once the trip is completed.
               </div>
             </div>
           </div>
@@ -2151,11 +2160,11 @@
     setC(4, step===4?DONE:IDLE, step===4?CHECK:'4');
 
     const msgs = {
-      pending_payment: 'â³ Awaiting payment from customer.',
-      confirmed:       'âœ… Booking confirmed — prepare for the upcoming trip.',
-      in_progress:     'ðŸš— Trip is currently in progress.',
-      completed:       'ðŸ Trip completed successfully.',
-      cancelled:       'âŒ Booking was cancelled.',
+      pending_payment: '<i class="bi bi-hourglass-split text-warning me-1"></i> Awaiting payment from customer.',
+      confirmed:       '<i class="bi bi-check-circle-fill text-success me-1"></i> Booking confirmed — prepare for the upcoming trip.',
+      in_progress:     '<i class="bi bi-car-front-fill text-primary me-1"></i> Trip is currently in progress.',
+      completed:       '<i class="bi bi-flag-fill text-success me-1"></i> Trip completed successfully.',
+      cancelled:       '<i class="bi bi-x-circle-fill text-danger me-1"></i> Booking was cancelled.',
     };
     const colors = {
       pending_payment:'bg-secondary-fixed/30 text-status-pending',
@@ -2450,9 +2459,9 @@
     });
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ═══════════════════════════════════════════════════════════════
   // PAYOUT METHODS
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ═══════════════════════════════════════════════════════════════
 
   let _payoutMethods   = [];
   let _editPayoutId    = null;   // null = adding new
@@ -2745,9 +2754,9 @@
     }
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ═══════════════════════════════════════════════════════════════
   // CHARTS  –  Earnings Line + Bookings Bar (Chart.js)
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ═══════════════════════════════════════════════════════════════
 
   let _earningsChart = null;
   let _bookingsChart = null;
@@ -2931,9 +2940,9 @@
   // Charts are triggered by watching _allOwnerBookings via a post-load hook below
   // (we attach in loadOwnerEarnings already; overview loads lazily via overview section)
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ═══════════════════════════════════════════════════════════════
   // COMPLIANCE DOCS  –  upload, preview, validate, submit
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ═══════════════════════════════════════════════════════════════
 
   const DOC_TYPES = ['permit', 'insurance', 'inspection', 'conduct'];
   const _docFiles = {};   // { permit: File|null, ... }

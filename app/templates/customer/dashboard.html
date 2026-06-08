@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-    <link rel="icon" type="image/png" href="/static/images/favicon.png">
-<meta charset="utf-8"/>
+    <meta charset="utf-8"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+<link rel="icon" type="image/png" href="/static/images/favicon.png">
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>My Dashboard - Kari Vari Uganda</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -723,7 +724,7 @@ async function loadDashboard() {
               <p class="font-label-lg text-label-lg text-on-surface truncate">${v ? v.make + ' ' + v.model : 'Vehicle'}</p>
               <span class="${statusBadge} font-label-sm text-label-sm px-2 py-0.5 rounded-full uppercase">${statusLabel}</span>
             </div>
-            <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">${b.booking_reference} · ${fmtDate(b.start_datetime)} â†’ ${fmtDate(b.end_datetime)}</p>
+            <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">${b.booking_reference} · ${fmtDate(b.start_datetime)} → ${fmtDate(b.end_datetime)}</p>
             <p class="font-label-sm text-label-sm text-outline mt-0.5">${b.pickup_location || ''}</p>
           </div>
           <div class="text-right flex-shrink-0">
@@ -793,7 +794,7 @@ function renderTripTracker(bookings, prefix) {
   const custEl = document.getElementById(`${prefix}TrackerCustomer`);
   if (custEl) custEl.textContent = active.customer_name ? `Customer: ${active.customer_name}` : '';
 
-  // Map status â†’ completed step count (1-4)
+  // Map status → completed step count (1-4)
   const stepMap = {
     pending_payment: 1,
     confirmed:       2,
@@ -848,12 +849,12 @@ function renderTripTracker(bookings, prefix) {
 
   // Status message
   const msgs = {
-    pending_payment: 'â³ Awaiting payment — complete your payment to confirm this booking.',
-    confirmed:       'âœ… Booking confirmed! Your driver will contact you before the trip starts.',
-    in_progress:     'ðŸš— Trip is currently in progress. Enjoy your journey across Uganda!',
-    completed:       'ðŸ Trip completed! We hope you had a great experience.',
-    cancelled:       'âŒ This booking was cancelled.',
-    disputed:        'âš ï¸ This booking is under dispute. Our team will be in touch.',
+    pending_payment: '<i class="bi bi-hourglass-split text-warning me-1"></i> Awaiting payment — complete your payment to confirm this booking.',
+    confirmed:       '<i class="bi bi-check-circle-fill text-success me-1"></i> Booking confirmed! Your driver will contact you before the trip starts.',
+    in_progress:     '<i class="bi bi-car-front-fill text-primary me-1"></i> Trip is currently in progress. Enjoy your journey across Uganda!',
+    completed:       '<i class="bi bi-flag-fill text-success me-1"></i> Trip completed! We hope you had a great experience.',
+    cancelled:       '<i class="bi bi-x-circle-fill text-danger me-1"></i> This booking was cancelled.',
+    disputed:        '<i class="bi bi-exclamation-triangle-fill text-warning me-1"></i> This booking is under dispute. Our team will be in touch.',
   };
   const msgEl = document.getElementById(`${prefix}TrackerMsg`);
   if (msgEl) {

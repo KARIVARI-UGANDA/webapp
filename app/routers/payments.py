@@ -22,7 +22,9 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.deps import get_current_user, DbSession
 from app.models.booking import Booking
-from app.models.payment import Payment
+from app.models.commission import Commission
+from app.models.payment import Payment, Payout
+from app.models.vehicle import Vehicle
 from app.services import paystack_service, flutterwave_service
 
 router = APIRouter(prefix="/payments", tags=["payments"])
@@ -71,7 +73,7 @@ def _get_booking_or_404(db: Session, booking_id: str, user_id: str) -> Booking:
         raise HTTPException(status_code=404, detail="Booking not found")
     if booking.customer_id != user_id:
         raise HTTPException(status_code=403, detail="Not your booking")
-    if booking.status not in ("pending", "confirmed"):
+    if booking.status not in ("pending", "pending_payment", "confirmed"):
         raise HTTPException(status_code=400, detail=f"Booking status '{booking.status}' cannot be paid")
     return booking
 
@@ -174,8 +176,6 @@ def initiate_payment(
     if flw_status != "success":
         raise HTTPException(status_code=502, detail=flw_resp.get("message", "Mobile money initiation failed"))
 
-    flw_ref = flw_resp.get("data", {}).get("flw_ref") or tx_ref
-
     payment = Payment(
         id=payment_id,
         booking_id=booking.id,
@@ -184,7 +184,7 @@ def initiate_payment(
         currency="UGX",
         payment_method="mobile_money",
         payment_channel=body.network,
-        gateway_reference=flw_ref,
+        gateway_reference=tx_ref,   # store our tx_ref for verify_by_reference lookup
         phone_number=body.phone_number,
         status="pending",
         created_at=now,
@@ -197,7 +197,7 @@ def initiate_payment(
         payment_id=payment_id,
         method="mobile_money",
         status="pending",
-        flw_ref=flw_ref,
+        flw_ref=tx_ref,
         message="Approve the payment prompt on your phone",
     )
 
@@ -312,21 +312,26 @@ async def paystack_webhook(
 async def flutterwave_webhook(
     request: Request,
     db: DbSession,
+    verif_hash: str = Header(None, alias="verif-hash"),
 ):
     payload = await request.body()
+
+    if settings.flutterwave_secret_key and verif_hash:
+        if not flutterwave_service.verify_webhook_signature(payload, verif_hash):
+            raise HTTPException(status_code=400, detail="Invalid webhook signature")
 
     data = json.loads(payload)
     event_type = data.get("event", "")
     tx_data = data.get("data", {})
 
     if event_type == "charge.completed" and tx_data.get("status") == "successful":
-        flw_ref = tx_data.get("flw_ref")
+        tx_ref = tx_data.get("tx_ref")
         amount = tx_data.get("amount")
-        _mark_payment_completed_by_ref(db, flw_ref, receipt_url=None, paid_amount_ugx=amount)
+        _mark_payment_completed_by_ref(db, tx_ref, receipt_url=None, paid_amount_ugx=amount)
 
     elif event_type == "charge.completed" and tx_data.get("status") == "failed":
-        flw_ref = tx_data.get("flw_ref")
-        _mark_payment_failed_by_ref(db, flw_ref)
+        tx_ref = tx_data.get("tx_ref")
+        _mark_payment_failed_by_ref(db, tx_ref)
 
     return {"received": True}
 
@@ -416,6 +421,10 @@ def _get_booking_amount_ugx(db: Session, booking: Booking) -> int:
 
 
 
+COMMISSION_RATE    = 0.17
+OWNER_DEPOSIT_RATE = 0.30
+
+
 def _mark_payment_completed_by_ref(
     db: Session,
     gateway_ref: str,
@@ -425,6 +434,8 @@ def _mark_payment_completed_by_ref(
     payment = db.query(Payment).filter(Payment.gateway_reference == gateway_ref).first()
     if not payment:
         return
+    if payment.status == "completed":
+        return
     now = _now()
     payment.status = "completed"
     payment.paid_at = now
@@ -432,7 +443,45 @@ def _mark_payment_completed_by_ref(
     if receipt_url:
         payment.receipt_url = receipt_url
     if paid_amount_ugx:
-        payment.amount_ugx = paid_amount_ugx
+        payment.amount_ugx = int(paid_amount_ugx)
+
+    # Confirm booking
+    booking = db.query(Booking).filter(Booking.id == payment.booking_id).first()
+    if booking and booking.status != "confirmed":
+        booking.status = "confirmed"
+        booking.updated_at = now
+
+    # Commission + 30 % deposit payout
+    if booking:
+        vehicle = db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
+        if vehicle:
+            vehicle_subtotal_ugx = (booking.total_days or 1) * int(vehicle.base_daily_rate_ugx)
+            commission_ugx = int(vehicle_subtotal_ugx * COMMISSION_RATE)
+            owner_net_ugx  = vehicle_subtotal_ugx - commission_ugx
+            deposit_ugx    = int(owner_net_ugx * OWNER_DEPOSIT_RATE)
+
+            existing = db.query(Commission).filter(Commission.booking_id == booking.id).first()
+            if not existing:
+                db.add(Commission(
+                    id=str(uuid.uuid4()),
+                    booking_id=booking.id,
+                    payment_id=payment.id,
+                    gross_amount_ugx=vehicle_subtotal_ugx,
+                    commission_rate=COMMISSION_RATE,
+                    commission_ugx=commission_ugx,
+                    owner_payout_ugx=owner_net_ugx,
+                    calculated_at=now,
+                ))
+                db.add(Payout(
+                    id=str(uuid.uuid4()),
+                    owner_id=vehicle.owner_id,
+                    booking_ids=booking.id,
+                    total_amount_ugx=deposit_ugx,
+                    payout_method="pending",
+                    status="pending",
+                    requested_at=now,
+                ))
+
     db.commit()
 
 

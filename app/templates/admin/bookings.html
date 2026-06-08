@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-    <link rel="icon" type="image/png" href="/static/images/favicon.png">
-  <meta charset="utf-8"/>
+      <meta charset="utf-8"/>
+<link rel="icon" type="image/png" href="/static/images/favicon.png">
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>Booking Management | Kari Vari Admin</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -232,7 +232,7 @@ async function loadBookings(statusFilter) {
       return `<tr class="border-b border-outline-variant/20 hover:bg-surface-container-low transition-colors">
         <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${b.booking_reference}</td>
         <td class="px-5 py-4 font-body-md text-body-md">${b.customer_name || '—'}<br><span class="text-on-surface-variant text-xs">${b.customer_email||''}</span></td>
-        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${fmtDate(b.start_datetime)} â†’ ${fmtDate(b.end_datetime)}</td>
+        <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${fmtDate(b.start_datetime)} → ${fmtDate(b.end_datetime)}</td>
         <td class="px-5 py-4"><span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm ${badge}">${label}</span></td>
         <td class="px-5 py-4 font-label-lg text-label-lg">${b.amount_usd != null ? '$'+parseFloat(b.amount_usd).toFixed(2) : '—'}</td>
         <td class="px-5 py-4">

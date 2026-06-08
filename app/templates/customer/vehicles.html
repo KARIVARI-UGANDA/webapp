@@ -1,6 +1,6 @@
-﻿<!DOCTYPE html><html class="light" lang="en"><head>
-    <link rel="icon" type="image/png" href="/static/images/favicon.png">
+<!DOCTYPE html><html class="light" lang="en"><head>
 <meta charset="utf-8">
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>Vehicle Listings | Kari Vari Uganda</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -217,7 +217,7 @@
   <!-- Currency toggle -->
   <div class="flex rounded-lg overflow-hidden border border-outline-variant text-label-sm font-label-sm">
     <button id="btn-usd" onclick="setCurrency('USD')" class="px-3 py-1.5 bg-primary text-white transition-colors">$ USD</button>
-    <button id="btn-eur" onclick="setCurrency('EUR')" class="px-3 py-1.5 text-on-surface-variant hover:bg-surface-container transition-colors">â‚¬ EUR</button>
+    <button id="btn-eur" onclick="setCurrency('EUR')" class="px-3 py-1.5 text-on-surface-variant hover:bg-surface-container transition-colors">€ EUR</button>
   </div>
   <div class="flex items-center gap-3 bg-surface-container p-1 rounded-lg">
     <span class="px-3 py-1 font-label-lg text-label-lg text-on-surface-variant">Sort by:</span>
@@ -297,7 +297,7 @@
 })();
 
 const RATES   = { USD: 3700, EUR: 4050 };
-const SYMBOLS = { USD: '$', EUR: 'â‚¬' };
+const SYMBOLS = { USD: '$', EUR: '€' };
 let _vehicles = [];
 let _currency = 'USD';
 

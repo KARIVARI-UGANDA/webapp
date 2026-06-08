@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.deps import get_current_user, require_role
 from app.models import Vehicle, VehiclePhoto
+from app.models.booking import Booking
 from app.schemas.vehicle import (
     VehicleRead,
     VehicleStatusUpdate,
@@ -53,8 +54,16 @@ def list_vehicles(
     page_size: int = Query(20, ge=1, le=100),
     db: Session = Depends(get_db),
 ):
-    """Public browse — pending and verified vehicles (excludes rejected/suspended)."""
-    q = db.query(Vehicle).filter(Vehicle.status.in_(["pending", "verified"]))
+    """Public browse — pending and verified vehicles (excludes rejected/suspended and actively booked)."""
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    booked_ids = db.query(Booking.vehicle_id).filter(
+        Booking.status == "confirmed",
+        Booking.end_datetime >= now,
+    ).subquery()
+    q = db.query(Vehicle).filter(
+        Vehicle.status.in_(["pending", "verified"]),
+        ~Vehicle.id.in_(booked_ids),
+    )
 
     if location:
         q = q.filter(Vehicle.service_area.ilike(f"%{location}%"))

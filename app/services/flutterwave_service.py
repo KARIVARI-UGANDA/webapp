@@ -65,14 +65,26 @@ def charge_mobile_money(
         return resp.json()
 
 
-def verify_transaction(flw_ref: str) -> dict:
-    """Verify a transaction by its FLW reference. Returns the raw API response."""
+def verify_transaction(tx_ref: str) -> dict:
+    """Verify a transaction by our tx_ref. Returns the raw API response."""
     with httpx.Client(timeout=30) as client:
         resp = client.get(
-            f"{settings.flutterwave_base_url}/transactions/{flw_ref}/verify",
+            f"{settings.flutterwave_base_url}/transactions/verify_by_reference",
             headers=_HEADERS,
+            params={"tx_ref": tx_ref},
         )
         resp.raise_for_status()
         return resp.json()
+
+
+def verify_webhook_signature(payload: bytes, signature: str) -> bool:
+    """Verify Flutterwave webhook signature using the secret key."""
+    import hmac, hashlib
+    expected = hmac.new(
+        settings.flutterwave_secret_key.encode("utf-8"),
+        payload,
+        hashlib.sha256,
+    ).hexdigest()
+    return hmac.compare_digest(expected, signature)
 
 

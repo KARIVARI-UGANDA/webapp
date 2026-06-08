@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.deps import get_current_user, require_role
-from app.models import Booking, Payment, Vehicle
+from app.models import Booking, Commission, Payment, Payout, Vehicle
 from app.models.vehicle import VehiclePhoto
 from app.schemas.booking import BookingListItem, BookingPaymentResponse, BookingRequest, VehicleSnapshot
 from app.services.stripe_service import create_payment_intent, get_payment_intent
@@ -18,8 +18,13 @@ router = APIRouter(prefix="/bookings", tags=["bookings"])
 _admin = require_role("admin")
 _any_auth = get_current_user
 
-RATES_UGX_PER_USD = 3700
-SERVICE_FEE_USD = 15.0
+RATES_UGX_PER_USD  = 3700
+EUR_TO_USD         = 1.08          # approximate fixed rate
+SERVICE_FEE_EUR    = 2.50          # Karivari flat service fee per booking
+MAINTENANCE_FEE_EUR = 17.00        # Karivari maintenance fee added on top of owner rate
+PLATFORM_FEE_USD   = round((SERVICE_FEE_EUR + MAINTENANCE_FEE_EUR) * EUR_TO_USD, 2)
+COMMISSION_RATE    = 0.17          # 17 % Karivari commission on vehicle subtotal
+OWNER_DEPOSIT_RATE = 0.30         # 30 % of owner payout released immediately on payment
 
 
 # POST /api/bookings — any authenticated user creates a booking + Stripe PaymentIntent
@@ -47,9 +52,10 @@ def create_booking(
     total_days = max(1, (end_dt - start_dt).days)
 
     # Server-side rate calculation
-    daily_ugx = vehicle.base_daily_rate_ugx
-    daily_usd = daily_ugx / RATES_UGX_PER_USD
-    amount_usd = round(daily_usd * total_days + SERVICE_FEE_USD, 2)
+    daily_ugx      = vehicle.base_daily_rate_ugx
+    daily_usd      = daily_ugx / RATES_UGX_PER_USD
+    vehicle_usd    = round(daily_usd * total_days, 2)      # owner subtotal
+    amount_usd     = round(vehicle_usd + PLATFORM_FEE_USD, 2)  # customer pays this (owner rate + €2.50 service + €17 maintenance)
 
     now = datetime.now(timezone.utc).replace(tzinfo=None)
     booking_id  = str(uuid.uuid4())
@@ -142,14 +148,67 @@ def confirm_payment(
         raise HTTPException(status_code=402, detail=f"Payment not completed (status: {intent.status})")
 
     now = datetime.now(timezone.utc).replace(tzinfo=None)
-    booking.status    = "confirmed"
+    booking.status     = "confirmed"
     booking.updated_at = now
-    payment.status    = "completed"
-    payment.paid_at   = now
+    payment.status     = "completed"
+    payment.paid_at    = now
     payment.updated_at = now
+
+    # --- Commission & owner deposit ---
+    # Commission is on the vehicle subtotal only — platform fees (€2.50 + €17) go entirely to Karivari
+    vehicle = db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
+    vehicle_subtotal_ugx = booking.total_days * vehicle.base_daily_rate_ugx
+    gross_ugx      = vehicle_subtotal_ugx
+    commission_ugx = int(gross_ugx * COMMISSION_RATE)
+    owner_net_ugx  = gross_ugx - commission_ugx
+    deposit_ugx    = int(owner_net_ugx * OWNER_DEPOSIT_RATE)
+
+    commission = Commission(
+        id=str(uuid.uuid4()),
+        booking_id=booking_id,
+        payment_id=payment.id,
+        gross_amount_ugx=gross_ugx,
+        commission_rate=COMMISSION_RATE,
+        commission_ugx=commission_ugx,
+        owner_payout_ugx=owner_net_ugx,
+        calculated_at=now,
+    )
+    db.add(commission)
+
+    deposit_payout = Payout(
+        id=str(uuid.uuid4()),
+        owner_id=vehicle.owner_id,
+        booking_ids=booking_id,
+        total_amount_ugx=deposit_ugx,
+        payout_method="pending",
+        status="pending",
+        requested_at=now,
+    )
+    db.add(deposit_payout)
     db.commit()
 
     return {"status": "confirmed", "booking_reference": booking.booking_reference}
+
+
+# GET /api/bookings/{booking_id} — fetch a single booking (customer)
+@router.get("/{booking_id}")
+def get_booking(
+    booking_id: str,
+    current_user=Depends(_any_auth),
+    db: Session = Depends(get_db),
+):
+    booking = db.query(Booking).filter(
+        Booking.id == booking_id,
+        Booking.customer_id == current_user.id,
+    ).first()
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    return {
+        "booking_id": booking.id,
+        "booking_reference": booking.booking_reference,
+        "status": booking.status,
+        "vehicle_id": booking.vehicle_id,
+    }
 
 
 # GET /api/bookings/owner — bookings on the current owner's vehicles
