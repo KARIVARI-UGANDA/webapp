@@ -78,6 +78,7 @@
   .star-btn:hover, .star-btn:hover ~ .star-btn { color:#F9B115 !important; }
   .star-row .star-btn.lit { color:#F9B115; }
 </style>
+<script src="/static/js/shared.js?v=2"></script>
 </head>
 <body class="selection:bg-ugandan-sun selection:text-slate-dark">
 
@@ -209,9 +210,8 @@
 </main>
 
 <script>
-const API = '/api';
 const token = localStorage.getItem('access_token');
-if (!token) { window.location.href = '/login'; }
+if (!token) { redirectToLogin(); }
 document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
 
 function initials(n) { return n ? n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?'; }
@@ -519,7 +519,7 @@ async function load() {
       fetch(`${API}/users/me`, auth()),
       fetch(`${API}/bookings/`, auth()),
     ]);
-    if (!uRes.ok) { localStorage.clear(); window.location.href='/login'; return; }
+    if (!uRes.ok) { localStorage.clear(); redirectToLogin(); return; }
     const user = await uRes.json();
     const name = user.full_name || user.email;
     document.getElementById('sidebarName').textContent  = name;

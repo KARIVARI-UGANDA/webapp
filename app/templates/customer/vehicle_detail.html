@@ -63,6 +63,7 @@ tailwind.config = {
   h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
   .thumb-active { ring: 2px; ring-color: #154212; opacity: 1; }
 </style>
+<script src="/static/js/shared.js?v=2"></script>
 </head>
 <body class="bg-background text-on-background">
 
@@ -618,7 +619,6 @@ tailwind.config = {
 </footer>
 
 <script>
-const API = '/api';
 const RATES = { USD: 3700, EUR: 4050 };
 const SERVICE_FEE_USD = 2.70;        // €2.50 visible service fee
 const MAINTENANCE_FEE_USD = 18.36;  // €17.00 Karivari maintenance fee (not shown)
@@ -1027,7 +1027,7 @@ function openPaymentModal() {
   const token = localStorage.getItem('access_token');
   if (!token) {
     alert('Please log in to make a booking.');
-    window.location.href = '/login';
+    redirectToLogin();
     return;
   }
 

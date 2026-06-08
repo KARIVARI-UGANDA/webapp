@@ -73,6 +73,7 @@
   @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
   .spin { animation: spin 1s linear infinite; }
 </style>
+<script src="/static/js/shared.js?v=2"></script>
 </head>
 <body class="selection:bg-ugandan-sun selection:text-slate-dark">
 
@@ -539,7 +540,6 @@
 
 <script src="/static/js/settings_panel.js"></script>
 <script>
-const API = '/api';
 const RATES_UGX_PER_USD = 3700;
 
 function initials(name) {
@@ -564,7 +564,7 @@ function usd(ugx) {
 
 // ── Auth guard ────────────────────────────────────────────────────────────────
 const token = localStorage.getItem('access_token');
-if (!token) { window.location.href = '/login'; }
+if (!token) { redirectToLogin(); }
 
 document.getElementById('logoutBtn').addEventListener('click', () => {
   localStorage.clear();
@@ -580,7 +580,7 @@ async function loadDashboard() {
   try {
     // 1. User profile
     const uRes = await fetch(`${API}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } });
-    if (!uRes.ok) { localStorage.clear(); window.location.href = '/login'; return; }
+    if (!uRes.ok) { localStorage.clear(); redirectToLogin(); return; }
     const user = await uRes.json();
 
     // Set names & avatars
@@ -877,7 +877,7 @@ function renderTripTracker(bookings, prefix) {
   };
   const msgEl = document.getElementById(`${prefix}TrackerMsg`);
   if (msgEl) {
-    msgEl.textContent = msgs[active.status] || '';
+    msgEl.innerHTML = msgs[active.status] || '';
     const msgColors = {
       pending_payment: 'bg-secondary-fixed/30 text-status-pending',
       confirmed:       'bg-primary-fixed/30 text-safari-green',

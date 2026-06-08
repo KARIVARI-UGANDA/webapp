@@ -11,7 +11,13 @@ function renderVehicleCards(vehicles, currency) {
 	if (!vehicleContainer) return;
 
 	if (vehicles.length === 0) {
-		vehicleContainer.innerHTML = '<p class="col-span-3 text-center py-8 text-on-surface-variant">No vehicles available yet.</p>';
+		vehicleContainer.innerHTML = `
+			<div class="col-span-3 text-center py-12">
+				<span class="material-symbols-outlined text-[48px] mb-3 d-block" style="color:#c2c9bb;">search_off</span>
+				<p class="fw-semibold mb-1" style="color:#42493e;">No vehicles match your search</p>
+				<p class="small text-secondary mb-3">Try adjusting your filters or clearing the search.</p>
+				<button onclick="clearSearch()" class="btn btn-sm" style="background:#2D5A27;color:white;">Clear filters</button>
+			</div>`;
 		return;
 	}
 
@@ -46,8 +52,6 @@ function renderVehicleCards(vehicles, currency) {
 			   </span>`
 			: '';
 
-		const actionBtn = `<a href="/vehicles/${v.id}" class="bg-safari-green text-white px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:brightness-110 transition-all" style="text-decoration:none;">View Details</a>`;
-
 		return `
 		<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
 			<div class="relative h-64 overflow-hidden">
@@ -69,13 +73,90 @@ function renderVehicleCards(vehicles, currency) {
 						<span class="font-headline-md text-headline-md text-safari-green">${sym}${price}</span>
 						<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
 					</div>
-					${actionBtn}
+					<a href="/vehicles/${v.id}" class="bg-safari-green text-white px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:brightness-110 transition-all" style="text-decoration:none;">View Details</a>
 				</div>
 			</div>
 		</div>`;
 	}).join('');
 }
 
+// ── Search state ─────────────────────────────────────────────────────────────
+let _allVehicles = [];
+let _currency    = 'USD';
+
+function getFilters() {
+	return {
+		location: (document.getElementById('searchLocation')?.value || '').trim().toLowerCase(),
+		type:     (document.getElementById('searchType')?.value || '').trim().toLowerCase(),
+		seats:    parseInt(document.getElementById('searchSeats')?.value || '0', 10) || 0,
+	};
+}
+
+function applySearch() {
+	const { location, type, seats } = getFilters();
+
+	const filtered = _allVehicles.filter(v => {
+		if (location) {
+			const area = (v.service_area || '').toLowerCase();
+			const city = (v.city || '').toLowerCase();
+			if (!area.includes(location) && !city.includes(location)) return false;
+		}
+		if (type && v.vehicle_type?.toLowerCase() !== type) return false;
+		if (seats && v.passenger_capacity < seats) return false;
+		return true;
+	});
+
+	// Update heading count
+	const heading = document.getElementById('featuredHeading');
+	const countEl = document.getElementById('searchResultCount');
+	const hasFilter = location || type || seats;
+
+	if (heading) heading.textContent = hasFilter ? 'Search Results' : 'Featured Vehicles';
+	if (countEl) countEl.textContent = hasFilter ? `${filtered.length} vehicle${filtered.length !== 1 ? 's' : ''} found` : '';
+
+	renderVehicleCards(filtered.slice(0, 9), _currency);
+	renderActiveTags(location, type, seats);
+
+	// Smooth scroll to results
+	if (hasFilter) {
+		document.getElementById('vehicleCardsContainer')
+			?.closest('section')
+			?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}
+}
+
+function renderActiveTags(location, type, seats) {
+	const el = document.getElementById('activeFilters');
+	if (!el) return;
+	const tags = [];
+	if (location) tags.push({ label: location, clear: () => { document.getElementById('searchLocation').value = ''; applySearch(); } });
+	if (type)     tags.push({ label: type, clear: () => { document.getElementById('searchType').value = ''; applySearch(); } });
+	if (seats)    tags.push({ label: `${seats}+ seats`, clear: () => { document.getElementById('searchSeats').value = ''; applySearch(); } });
+
+	if (tags.length === 0) {
+		el.style.display = 'none';
+		return;
+	}
+	el.style.display = 'flex';
+	el.innerHTML = tags.map((t, i) =>
+		`<span style="background:#f3f3f6;border:1px solid #c2c9bb;border-radius:2rem;font-size:12px;font-weight:600;padding:3px 10px;display:inline-flex;align-items:center;gap:6px;color:#42493e;">
+			${t.label}
+			<button onclick="(${t.clear.toString()})()" style="background:none;border:none;padding:0;line-height:1;cursor:pointer;color:#72796e;font-size:14px;">&times;</button>
+		</span>`
+	).join('') + `<button onclick="clearSearch()" style="background:none;border:none;padding:0;font-size:12px;font-weight:600;color:#154212;cursor:pointer;text-decoration:underline;">Clear all</button>`;
+}
+
+function clearSearch() {
+	const loc  = document.getElementById('searchLocation');
+	const type = document.getElementById('searchType');
+	const seats = document.getElementById('searchSeats');
+	if (loc)  loc.value  = '';
+	if (type) type.value = '';
+	if (seats) seats.value = '';
+	applySearch();
+}
+
+// ── Boot ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
 	const authButtons = document.getElementById('authButtons');
 	const userButtons = document.getElementById('userButtons');
@@ -115,72 +196,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 		});
 	}
 
-	let _allVehicles  = [];
-	let _shown        = [];
-	let _currency     = 'USD';
-
-	function getCurrentCurrency() {
-		const checked = document.querySelector('input[name="currency"]:checked');
-		return checked ? checked.value : 'USD';
-	}
-
-	function applySearch() {
-		const location  = (document.getElementById('searchLocation')?.value || '').trim();
-		const type      = (document.getElementById('searchType')?.value || '').trim();
-		const seats     = (document.getElementById('searchSeats')?.value || '').trim();
-		const startDate = (document.getElementById('searchStartDate')?.value || '').trim();
-		const endDate   = (document.getElementById('searchEndDate')?.value || '').trim();
-
-		const params = new URLSearchParams();
-		if (location)  params.set('location', location);
-		if (type)      params.set('vehicle_type', type);
-		if (seats)     params.set('min_seats', seats);
-		if (startDate) params.set('start_date', startDate);
-		if (endDate)   params.set('end_date', endDate);
-
-		window.location.href = '/vehicles' + (params.toString() ? '?' + params.toString() : '');
-	}
-
-	// Set default dates: today → one week from now
-	(function setDefaultDates() {
-		const fmt = d => d.toISOString().split('T')[0];
-		const today = new Date();
-		const nextWeek = new Date(today); nextWeek.setDate(today.getDate() + 7);
-		const s = document.getElementById('searchStartDate');
-		const e = document.getElementById('searchEndDate');
-		if (s && !s.value) { s.value = fmt(today); s.min = fmt(today); }
-		if (e && !e.value) { e.value = fmt(nextWeek); e.min = fmt(today); }
-		// Keep end date >= start date
-		s?.addEventListener('change', () => { if (e && e.value < s.value) e.value = s.value; e.min = s.value; });
-	})();
-
 	// Currency toggle
 	document.querySelectorAll('input[name="currency"]').forEach(radio => {
 		radio.addEventListener('change', () => {
 			_currency = radio.value;
-			renderVehicleCards(_shown, _currency);
+			applySearch();
 		});
 	});
 
-	// Search form
+	// Live search on input change (debounced)
+	let debounceTimer;
+	['searchLocation', 'searchType', 'searchSeats'].forEach(id => {
+		document.getElementById(id)?.addEventListener('input', () => {
+			clearTimeout(debounceTimer);
+			debounceTimer = setTimeout(applySearch, 280);
+		});
+		document.getElementById(id)?.addEventListener('change', applySearch);
+	});
+
+	// Form submit — filter in place, don't navigate
 	document.getElementById('searchForm')?.addEventListener('submit', e => {
 		e.preventDefault();
 		applySearch();
 	});
 
-	// Load featured vehicles
+	// Load vehicles
 	try {
 		const res = await fetch(`${API}/vehicles/?page=1&page_size=50`);
 		if (res.ok) {
 			_allVehicles = await res.json();
-			_shown = _allVehicles.slice(0, 6);
-			renderVehicleCards(_shown, 'USD');
+			applySearch(); // renders initial featured set
 		}
 	} catch (err) {
 		console.error('Failed to load vehicles:', err);
-		const vehicleContainer = document.getElementById('vehicleCardsContainer');
-		if (vehicleContainer) {
-			vehicleContainer.innerHTML = '<p class="text-center text-danger col-12">Failed to load vehicles.</p>';
-		}
+		const container = document.getElementById('vehicleCardsContainer');
+		if (container) container.innerHTML = '<p class="text-center text-danger col-12">Failed to load vehicles.</p>';
 	}
 });

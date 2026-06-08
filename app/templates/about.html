@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="/static/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Karivari — Karivari Uganda</title>
+  <meta name="description" content="Karivari Uganda was founded in 2026 by four Ugandans to connect German travellers with verified local owner-drivers. Based in Entebbe and Arnstorf, Germany.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/base.css">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      corePlugins: { preflight: false },
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#154212",
+            "safari-green": "#2D5A27",
+            "ugandan-sun": "#F9B115",
+            "slate-dark": "#1A1C1E",
+            "on-surface-variant": "#42493e",
+            "outline-variant": "#c2c9bb",
+            "surface": "#f9f9fc",
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --primary: #154212;
+      --safari-green: #2D5A27;
+      --ugandan-sun: #F9B115;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+
+    /* ── Hero ── */
+    .about-hero {
+      background-image: url('/static/images/safari-giraffe.jpg');
+      background-size: cover;
+      background-position: center 40%;
+      background-color: #0f2a0d;
+      min-height: 520px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .about-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(7,21,5,0.90) 0%, rgba(21,66,18,0.5) 50%, rgba(0,0,0,0.15) 100%);
+      z-index: 0;
+    }
+
+    /* ── Belief cards ── */
+    .belief-card {
+      background: white;
+      border-radius: 1.25rem;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border-top: 4px solid #F9B115;
+      height: 100%;
+    }
+
+    /* ── Founder cards ── */
+    .founder-card {
+      background: white;
+      border-radius: 1.25rem;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      text-align: center;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .founder-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.10);
+    }
+    .founder-avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 1rem;
+      display: block;
+      border: 3px solid #e2e2e5;
+    }
+
+    /* ── Location cards ── */
+    .location-card {
+      background: white;
+      border-radius: 1.25rem;
+      padding: 2rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      border-left: 4px solid #2D5A27;
+    }
+
+    /* ── Corridor list ── */
+    .corridor-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e2e2e5;
+    }
+    .corridor-item:last-child { border-bottom: none; }
+
+    /* ── Numbers strip ── */
+    .numbers-strip {
+      background: #154212;
+      color: white;
+    }
+  </style>
+</head>
+<body style="font-family:'Inter',sans-serif;background:#f9f9fc;color:#1a1c1e;">
+
+<!-- ── Navbar ── -->
+<nav class="sticky top-0 w-full z-50 flex justify-between items-center px-4 md:px-12 py-4 max-w-[1280px] mx-auto" style="background:rgba(249,249,252,0.85);backdrop-filter:blur(8px);box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+  <div class="flex items-center gap-8">
+    <a href="/" class="flex items-center gap-2 font-bold text-[20px] no-underline" style="color:#2D5A27;font-family:'Montserrat',sans-serif;">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+      Karivari Uganda
+    </a>
+    <div class="hidden md:flex gap-6">
+      <a href="/vehicles" class="text-[14px] font-semibold no-underline transition-colors hover:text-[#2D5A27]" style="color:#42493e;">Browse Vehicles</a>
+      <a href="/how-it-works" class="text-[14px] font-semibold no-underline transition-colors hover:text-[#2D5A27]" style="color:#42493e;">How It Works</a>
+      <a href="/about" class="text-[14px] font-semibold no-underline border-b-2 pb-1" style="color:#154212;border-color:#154212;">About</a>
+      <a href="/support" class="text-[14px] font-semibold no-underline transition-colors hover:text-[#2D5A27]" style="color:#42493e;">Contact</a>
+    </div>
+  </div>
+  <div class="flex items-center gap-4" id="authButtons">
+    <a href="/login" class="text-[14px] font-semibold no-underline transition-colors hover:text-[#2D5A27]" style="color:#42493e;">Sign In</a>
+    <a href="/register" class="px-6 py-2 rounded-lg text-[14px] font-bold no-underline transition-all hover:shadow-lg active:scale-95" style="background:#F9B115;color:#1A1C1E;">Register</a>
+  </div>
+  <div class="hidden items-center gap-4" id="userButtons">
+    <a href="#" id="dashboardLink" class="text-[14px] font-semibold no-underline flex items-center gap-1 transition-colors hover:text-[#154212]" style="color:#42493e;">
+      <span class="material-symbols-outlined text-[18px]">dashboard</span> Dashboard
+    </a>
+    <span class="text-[14px] font-semibold" id="userName"></span>
+    <button id="logoutBtn" class="px-6 py-2 rounded-lg text-[14px] font-bold border-0 cursor-pointer" style="background:#F9B115;color:#1A1C1E;">Logout</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ── Section 1: Hero ── -->
+  <section class="about-hero">
+    <div class="container position-relative py-5 pb-5 mb-2" style="z-index:2;">
+      <div class="row">
+        <div class="col-lg-8">
+          <span class="d-inline-block mb-3 px-3 py-1 rounded-pill fw-bold" style="background:rgba(249,177,21,0.2);color:#F9B115;border:1px solid rgba(249,177,21,0.35);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;">Founded 2026 · Entebbe &amp; Arnstorf</span>
+          <h1 class="text-white fw-bold mb-4" style="font-family:'Montserrat',sans-serif;font-size:clamp(2rem,5vw,3.25rem);line-height:1.15;letter-spacing:-0.02em;">
+            We want Germans to see Uganda.<br>And we want Ugandans to earn from showing it.
+          </h1>
+          <p style="color:rgba(255,255,255,0.8);font-size:1.1rem;max-width:600px;line-height:1.7;">
+            Karivari was founded in 2026 by four Ugandans. We are based in Entebbe and Arnstorf, Germany.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section 2: Why we started ── -->
+  <section class="container py-5 my-2" style="max-width:860px;">
+    <span class="badge-soft-success">WHY KARIVARI EXISTS</span>
+    <h2 class="fw-bold mt-3 mb-4" style="font-family:'Montserrat',sans-serif;font-size:1.9rem;">Why we started</h2>
+    <div style="font-size:1.05rem;line-height:1.85;color:#42493e;" class="d-flex flex-column gap-4">
+      <p class="mb-0">Uganda has some of the best safari country in Africa: mountain gorillas, the source of the Nile, ten national parks, more than a thousand bird species. The country is ready for visitors.</p>
+      <p class="mb-0">What is not ready is the transport layer in between. International tourists book through agencies abroad. Those agencies subcontract to operators in Uganda. Those operators subcontract to car owners. By the time a traveller is in a vehicle on the road, three or four parties have taken a share — and the person who actually owns the car and drives the trip has the smallest one.</p>
+      <p class="mb-0">We started Karivari to change that.</p>
+      <p class="mb-0">We want Germans to visit Uganda because the country deserves to be seen. And we want the people who own the vehicles and drive the trips — local Ugandans — to keep the largest share of what the traveller pays. Not the smallest. The largest.</p>
+      <p class="mb-0 fw-semibold" style="color:#154212;">That is the whole point.</p>
+    </div>
+  </section>
+
+  <!-- ── Section 3: What we believe ── -->
+  <section class="py-5" style="background:#f3f3f6;">
+    <div class="container py-2" style="max-width:1100px;">
+      <div class="text-center mb-5">
+        <span class="badge-soft-success">WHAT WE STAND FOR</span>
+        <h2 class="fw-bold mt-3" style="font-family:'Montserrat',sans-serif;font-size:1.9rem;">Three things we will not compromise on</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="belief-card">
+            <div class="mb-3">
+              <span class="material-symbols-outlined text-[32px]" style="color:#2D5A27;font-variation-settings:'FILL' 1;">person_pin</span>
+            </div>
+            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">One person, one trip.</h5>
+            <p class="text-secondary mb-0">The driver who picks you up is the same person who owns the vehicle. No hand-offs, no subcontracting chains, no surprises about who is actually responsible for your safari.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="belief-card">
+            <div class="mb-3">
+              <span class="material-symbols-outlined text-[32px]" style="color:#2D5A27;font-variation-settings:'FILL' 1;">verified</span>
+            </div>
+            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Verified, not assumed.</h5>
+            <p class="text-secondary mb-0">Every vehicle is inspected and every owner-driver is checked before they take their first Karivari trip. We would rather list ten verified owner-drivers than a hundred unknown ones.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="belief-card">
+            <div class="mb-3">
+              <span class="material-symbols-outlined text-[32px]" style="color:#2D5A27;font-variation-settings:'FILL' 1;">payments</span>
+            </div>
+            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">The local share goes to local people.</h5>
+            <p class="text-secondary mb-0">Owner-drivers on Karivari keep more than half of every daily rate the tourist pays. Our commission is 18% — below the rideshare apps, and structured so the person doing the work keeps the most.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section 4: The team ── -->
+  <section class="container py-5 my-2" style="max-width:1100px;">
+    <div class="text-center mb-5">
+      <span class="badge-soft-success">THE TEAM</span>
+      <h2 class="fw-bold mt-3" style="font-family:'Montserrat',sans-serif;font-size:1.9rem;">Who we are</h2>
+      <p class="text-secondary mt-3 mx-auto" style="max-width:660px;">
+        Karivari was founded in 2026 by four Ugandans who saw the same problem from different angles and decided to fix it together. We are a small team, and that is intentional. Every owner-driver in our network has been approved by us personally. Every partner relationship is handled by one of us by name. If something goes wrong on a trip, the person you reach is one of the four people who built the company.
+      </p>
+    </div>
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="founder-card">
+          <img class="founder-avatar" src="https://placehold.co/100x100/2D5A27/ffffff?text=OK" alt="Oscar Kyamuwendo">
+          <h6 class="fw-bold mb-1" style="font-family:'Montserrat',sans-serif;">Oscar Kyamuwendo</h6>
+          <p class="text-secondary small mb-0">Co-founder</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="founder-card">
+          <img class="founder-avatar" src="https://placehold.co/100x100/F9B115/1A1C1E?text=GM" alt="George Mutale">
+          <h6 class="fw-bold mb-1" style="font-family:'Montserrat',sans-serif;">George Mutale</h6>
+          <p class="text-secondary small mb-0">Co-founder</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="founder-card">
+          <img class="founder-avatar" src="https://placehold.co/100x100/154212/ffffff?text=RL" alt="Rhyan Lubega">
+          <h6 class="fw-bold mb-1" style="font-family:'Montserrat',sans-serif;">Rhyan Lubega</h6>
+          <p class="text-secondary small mb-0">Co-founder</p>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="founder-card">
+          <img class="founder-avatar" src="https://placehold.co/100x100/1a4a14/ffffff?text=BO" alt="Boaz Onyango">
+          <h6 class="fw-bold mb-1" style="font-family:'Montserrat',sans-serif;">Boaz Onyango</h6>
+          <p class="text-secondary small mb-0">Co-founder</p>
+        </div>
+      </div>
+
+    </div>
+    <p class="text-center text-secondary small mt-4">Interested in joining the team? <a href="/support" style="color:#154212;font-weight:600;">Get in touch.</a></p>
+  </section>
+
+  <!-- ── Section 5: Two countries, one team ── -->
+  <section class="py-5" style="background:#f3f3f6;">
+    <div class="container py-2" style="max-width:1100px;">
+      <div class="text-center mb-5">
+        <span class="badge-soft-success">WHERE WE OPERATE</span>
+        <h2 class="fw-bold mt-3" style="font-family:'Montserrat',sans-serif;font-size:1.9rem;">Two countries, one team</h2>
+      </div>
+
+      <div class="row g-4 mb-5">
+        <div class="col-md-6">
+          <div class="location-card h-100">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <span class="material-symbols-outlined text-[28px]" style="color:#2D5A27;font-variation-settings:'FILL' 1;">location_on</span>
+              <div>
+                <h5 class="fw-bold mb-0" style="font-family:'Montserrat',sans-serif;">Entebbe, Uganda</h5>
+                <small class="text-secondary">Base of operations</small>
+              </div>
+            </div>
+            <p class="text-secondary mb-0">This is where we verify vehicles, train owner-drivers, run dispatch, and handle the practical side of every trip. It is also where most of our travellers land — most of our airport pickups start a few minutes from our office.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="location-card h-100" style="border-left-color:#F9B115;">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <span class="material-symbols-outlined text-[28px]" style="color:#7e5700;font-variation-settings:'FILL' 1;">location_on</span>
+              <div>
+                <h5 class="fw-bold mb-0" style="font-family:'Montserrat',sans-serif;">Arnstorf, Germany</h5>
+                <small class="text-secondary">German market presence</small>
+              </div>
+            </div>
+            <p class="text-secondary mb-0">This is where we speak with travellers and partner agencies in their own language and time zone — before, during, and after their trip. When a German tourist calls Karivari, they are not calling an international number into the unknown.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Corridors -->
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h6 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;color:#42493e;letter-spacing:0.05em;text-transform:uppercase;font-size:12px;">Owner-driver network covers</h6>
+          <div class="bg-white rounded-3 p-4" style="box-shadow:0 2px 12px rgba(0,0,0,0.05);">
+            <div class="corridor-item">
+              <span class="material-symbols-outlined mt-1 flex-shrink-0" style="color:#2D5A27;font-size:18px;font-variation-settings:'FILL' 1;">flight_land</span>
+              <div>
+                <span class="fw-semibold">Kampala &amp; Entebbe</span>
+                <span class="text-secondary ms-2 small">Arrival and departure transfers</span>
+              </div>
+            </div>
+            <div class="corridor-item">
+              <span class="material-symbols-outlined mt-1 flex-shrink-0" style="color:#2D5A27;font-size:18px;font-variation-settings:'FILL' 1;">forest</span>
+              <div>
+                <span class="fw-semibold">Southwestern parks</span>
+                <span class="text-secondary ms-2 small">Bwindi, Queen Elizabeth, Lake Bunyonyi</span>
+              </div>
+            </div>
+            <div class="corridor-item">
+              <span class="material-symbols-outlined mt-1 flex-shrink-0" style="color:#2D5A27;font-size:18px;font-variation-settings:'FILL' 1;">landscape</span>
+              <div>
+                <span class="fw-semibold">Northern circuit</span>
+                <span class="text-secondary ms-2 small">Murchison Falls, Kidepo</span>
+              </div>
+            </div>
+            <div class="corridor-item">
+              <span class="material-symbols-outlined mt-1 flex-shrink-0" style="color:#2D5A27;font-size:18px;font-variation-settings:'FILL' 1;">terrain</span>
+              <div>
+                <span class="fw-semibold">Eastern Uganda</span>
+                <span class="text-secondary ms-2 small">Mount Elgon, Sipi Falls</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section 6: Where this goes ── -->
+  <section class="container py-5 my-2" style="max-width:860px;">
+    <span class="badge-soft-success">WHERE THIS GOES</span>
+    <h2 class="fw-bold mt-3 mb-4" style="font-family:'Montserrat',sans-serif;font-size:1.9rem;">What we are building toward</h2>
+    <div style="font-size:1.05rem;line-height:1.85;color:#42493e;" class="d-flex flex-column gap-4">
+      <p class="mb-0">In our first year, we want to be the default 4x4 transport partner for a small number of serious German agencies and lodges. Not the biggest. The most trusted.</p>
+      <p class="mb-0">After that, we want to grow the network of verified owner-drivers steadily — and make sure the economics keep working in their favour as we scale. A larger Karivari is only worth building if the local share stays large.</p>
+      <p class="mb-0 fw-semibold" style="color:#154212;">We will be slow about which partners we work with. We will be careful about which owner-drivers we list. The selectivity is the point.</p>
+    </div>
+  </section>
+
+  <!-- ── Section 7: CTA ── -->
+  <section class="py-5" style="background:#154212;">
+    <div class="container text-center py-3">
+      <h2 class="fw-bold text-white mb-3" style="font-family:'Montserrat',sans-serif;font-size:1.9rem;">Get in touch</h2>
+      <p class="mb-4 mx-auto" style="color:rgba(255,255,255,0.8);max-width:560px;font-size:1.05rem;">
+        Whether you are planning a trip from Germany, applying as an owner-driver in Uganda, or representing a partner agency, write to us. One of the four of us will reply.
+      </p>
+      <div class="d-flex flex-wrap gap-3 justify-content-center">
+        <a href="/support" class="btn btn-lg px-5 fw-bold" style="background:#F9B115;color:#1A1C1E;">Contact Us</a>
+        <a href="/vehicles" class="btn btn-lg px-5 fw-bold" style="background:rgba(255,255,255,0.12);color:white;border:1.5px solid rgba(255,255,255,0.4);">Browse Vehicles</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer class="pt-5 pb-4" style="background-color:#111314;color:#e2e2e5;">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h4 class="mb-2" style="color:#F9B115;font-family:'Montserrat',sans-serif;">Karivari Uganda</h4>
+        <p class="small opacity-75 mb-1">Premium 4x4 safari transport.</p>
+        <p class="small opacity-75">Kampala &nbsp;·&nbsp; Entebbe</p>
+      </div>
+      <div class="col-md-4">
+        <h6 class="text-uppercase small fw-bold mb-3" style="color:#F9B115;letter-spacing:0.08em;">For travellers</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a href="/vehicles" class="text-light text-decoration-none opacity-75">Browse Vehicles</a></li>
+          <li class="mb-2"><a href="/how-it-works" class="text-light text-decoration-none opacity-75">How It Works</a></li>
+          <li><a href="/support" class="text-light text-decoration-none opacity-75">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6 class="text-uppercase small fw-bold mb-3" style="color:#F9B115;letter-spacing:0.08em;">For owner-drivers and partners</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a href="/owner/register" class="text-light text-decoration-none opacity-75">Apply as an Owner-Driver</a></li>
+          <li><a href="/support" class="text-light text-decoration-none opacity-75">Partner with Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="opacity-25 mt-4">
+    <div class="text-center small opacity-50">
+      © 2026 Karivari Uganda &nbsp;·&nbsp;
+      <a href="#" class="text-light text-decoration-none opacity-75">Privacy Policy</a>
+      &nbsp;·&nbsp;
+      <a href="#" class="text-light text-decoration-none opacity-75">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/shared.js?v=2"></script>
+<script>
+(function () {
+  const token = localStorage.getItem('access_token');
+  const name  = localStorage.getItem('full_name');
+  const role  = localStorage.getItem('role');
+  if (token && name) {
+    document.getElementById('authButtons').classList.add('d-none');
+    const ub = document.getElementById('userButtons');
+    ub.classList.remove('hidden');
+    ub.style.display = 'flex';
+    document.getElementById('userName').textContent = name;
+    const dash = document.getElementById('dashboardLink');
+    if (role === 'owner') dash.href = '/owner/dashboard';
+    else if (role === 'admin') dash.href = '/admin/dashboard';
+    else dash.href = '/dashboard';
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.clear(); window.location.href = '/';
+    });
+  }
+})();
+</script>
+<script src="//code.tidio.co/z2re40p08rwgmv2hiwlvw8ymzkzacmxb.js" async></script>
+</body>
+</html>

@@ -70,6 +70,7 @@
   @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
   .spin { animation: spin 1s linear infinite; }
 </style>
+<script src="/static/js/shared.js?v=2"></script>
 </head>
 <body class="selection:bg-ugandan-sun selection:text-slate-dark">
 
@@ -305,7 +306,7 @@
 
 <script>
 const token = localStorage.getItem('access_token');
-if (!token) { window.location.href = '/login'; }
+if (!token) { redirectToLogin(); }
 document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.clear(); window.location.href = '/'; });
 
 function initials(n) { return n ? n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?'; }
@@ -314,7 +315,7 @@ function initials(n) { return n ? n.split(' ').map(w=>w[0]).join('').slice(0,2).
 (async () => {
   try {
     const r = await fetch('/api/users/me', { headers: { Authorization: `Bearer ${token}` } });
-    if (!r.ok) { localStorage.clear(); window.location.href = '/login'; return; }
+    if (!r.ok) { localStorage.clear(); redirectToLogin(); return; }
     const u = await r.json();
     const name = u.full_name || u.email;
     document.getElementById('sidebarName').textContent = name;

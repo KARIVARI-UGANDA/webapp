@@ -2,17 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/static/images/favicon.png">
+  <link rel="icon" type="image/png" href="/static/images/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kari Vari Uganda | Premium Vehicle Rentals</title>
-  <!-- Bootstrap 5 CSS (no external fonts, no Tailwind) -->
+  <title>Karivari Uganda — Premium 4x4 Safaris with Verified Owner-Drivers</title>
+  <meta name="description" content="Book a verified 4x4 with a German-speaking owner-driver for your Uganda safari. All-in daily rate. Fuel and CDW insurance included.">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="/static/css/base.css">
   <link rel="stylesheet" href="/static/css/index.css">
-  <!-- Material Symbols -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-  <!-- Tailwind (preflight disabled to avoid Bootstrap conflicts) -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script>
     tailwind.config = {
@@ -32,30 +30,12 @@
             "surface": "#f9f9fc",
             "surface-container": "#eeeef0",
             "surface-container-lowest": "#ffffff",
-            "status-pending": "#B45309",
-            "status-success": "#15803D",
           },
-          spacing: {
-            "margin-desktop": "48px",
-            "margin-mobile": "16px",
-            "container-max": "1280px",
-            "gutter": "24px",
-          },
-          maxWidth: {
-            "container-max": "1280px",
-          },
+          maxWidth: { "container-max": "1280px" },
           fontFamily: {
             "headline-md": ["Montserrat", "sans-serif"],
             "body-md": ["Inter", "sans-serif"],
-            "label-sm": ["Inter", "sans-serif"],
-            "label-lg": ["Inter", "sans-serif"],
           },
-          fontSize: {
-            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-            "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
-            "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
-          }
         }
       }
     }
@@ -65,131 +45,298 @@
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
       vertical-align: middle;
     }
+    /* ── Trust strip ── */
+    .trust-strip {
+      background: #f3f3f6;
+      border-top: 1px solid #e2e2e5;
+      border-bottom: 1px solid #e2e2e5;
+    }
+    /* ── Who we serve cards ── */
+    .serve-card {
+      background: white;
+      border-radius: 1.25rem;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      border-top: 4px solid #2D5A27;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .serve-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.10);
+    }
+    /* ── Included grid ── */
+    .included-card {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .included-icon {
+      width: 48px; height: 48px;
+      border-radius: 0.75rem;
+      background: rgba(45,90,39,0.10);
+      color: #2D5A27;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    /* ── How it works steps ── */
+    .hiw-step {
+      background: white;
+      border-radius: 1.25rem;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .hiw-step:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+    }
+    .hiw-step::before {
+      content: attr(data-num);
+      position: absolute;
+      top: -10px; right: 16px;
+      font-size: 5rem;
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(45,90,39,0.06);
+      font-family: 'Montserrat', sans-serif;
+      pointer-events: none;
+    }
+    .step-num {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: #2D5A27;
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 1.25rem;
+    }
+    /* ── Why Karivari blocks ── */
+    .why-card {
+      padding: 2rem;
+      background: white;
+      border-radius: 1.25rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      border-left: 4px solid #F9B115;
+    }
   </style>
 </head>
 <body>
 
-<!-- Top Navigation Bar -->
-<nav class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/80 backdrop-blur-md shadow-sm">
+<!-- ── Navbar ── -->
+<nav class="sticky top-0 w-full z-50 flex justify-between items-center px-4 md:px-12 py-4 max-w-[1280px] mx-auto" style="background:rgba(249,249,252,0.85);backdrop-filter:blur(8px);box-shadow:0 1px 3px rgba(0,0,0,0.05);">
   <div class="flex items-center gap-8">
-    <a href="/" class="font-headline-md text-headline-md font-bold flex items-center gap-2" style="color:#2D5A27;text-decoration:none;">
+    <a href="/" class="flex items-center gap-2 font-bold text-[20px] no-underline" style="color:#2D5A27;font-family:'Montserrat',sans-serif;">
       <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
-      Kari Vari Uganda
+      Karivari Uganda
     </a>
     <div class="hidden md:flex gap-6">
-      <a class="font-label-lg text-label-lg border-b-2 border-primary pb-1 transition-all duration-200" href="/vehicles" style="color:#154212;text-decoration:none;">Listings</a>
-      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors duration-200" href="/how-it-works" style="color:#42493e;text-decoration:none;">How it Works</a>
-      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors duration-200" href="#" style="color:#42493e;text-decoration:none;">About</a>
-      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors duration-200" href="/support" style="color:#42493e;text-decoration:none;">Contact</a>
+      <a class="text-[14px] font-semibold no-underline border-b-2 border-[#154212] pb-1" href="/vehicles" style="color:#154212;">Browse Vehicles</a>
+      <a class="text-[14px] font-semibold no-underline transition-colors hover:text-[#154212]" href="/how-it-works" style="color:#42493e;">How It Works</a>
+      <a class="text-[14px] font-semibold no-underline transition-colors hover:text-[#154212]" href="/about" style="color:#42493e;">About</a>
+      <a class="text-[14px] font-semibold no-underline transition-colors hover:text-[#154212]" href="/support" style="color:#42493e;">Contact</a>
     </div>
   </div>
   <div class="flex items-center gap-4" id="authButtons">
-    <a href="/login" class="font-label-lg text-label-lg hover:text-secondary transition-colors" style="color:#42493e;text-decoration:none;">Sign In</a>
-    <a href="/register" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95" style="text-decoration:none;">Register</a>
+    <a href="/login" class="text-[14px] font-semibold no-underline transition-colors hover:text-[#154212]" style="color:#42493e;">Sign In</a>
+    <a href="/register" class="px-6 py-2 rounded-lg text-[14px] font-bold no-underline transition-all hover:shadow-lg active:scale-95" style="background:#F9B115;color:#1A1C1E;">Register</a>
   </div>
   <div class="hidden items-center gap-4" id="userButtons">
-    <a href="/dashboard" id="dashboardLink" class="font-label-lg text-label-lg font-semibold hover:text-primary transition-colors flex items-center gap-1" style="color:#42493e;text-decoration:none;">
+    <a href="/dashboard" id="dashboardLink" class="text-[14px] font-semibold no-underline flex items-center gap-1 transition-colors hover:text-[#154212]" style="color:#42493e;">
       <span class="material-symbols-outlined text-[18px]">dashboard</span>
       Dashboard
     </a>
-    <span class="font-label-lg text-label-lg font-semibold" style="color:#1a1c1e;" id="userName"></span>
-    <button id="logoutBtn" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Logout</button>
+    <span class="text-[14px] font-semibold" style="color:#1a1c1e;" id="userName"></span>
+    <button id="logoutBtn" class="px-6 py-2 rounded-lg text-[14px] font-bold border-0 cursor-pointer" style="background:#F9B115;color:#1A1C1E;">Logout</button>
   </div>
 </nav>
 
 <main>
-  <!-- Hero Section -->
+
+  <!-- ── Section 1: Hero ── -->
   <section class="hero-section position-relative d-flex align-items-center">
     <div class="hero-overlay"></div>
     <div class="container position-relative z-2 py-5">
-      <div class="row">
-        <div class="col-lg-8 mb-5">
-          <h1 class="hero-title text-white mb-4">Explore the Pearl of Africa at Your Own Pace</h1>
-          <p class="hero-subtitle text-white-50">Premium vehicle rentals for safaris, business trips, and local adventures across Uganda.</p>
+      <div class="text-center">
+        <h1 class="hero-title text-white mb-4" style="font-family:'Montserrat',sans-serif;">Uganda 4 by 4. With someone who knows the road.</h1>
+        <p class="hero-subtitle mb-5" style="color:rgba(255,255,255,0.85);font-size:1.2rem;max-width:600px;margin-inline:auto;">Verified vehicles. German-speaking owner-drivers. One daily rate that covers everything from fuel to insurance.</p>
+        <div class="d-flex flex-wrap gap-3 mb-5 justify-content-center">
+          <a href="/vehicles" class="btn btn-accent btn-lg px-5 fw-bold" style="font-size:1rem;">Browse Vehicles</a>
+          <a href="/how-it-works" class="btn btn-lg px-5 fw-bold" style="background:rgba(255,255,255,0.12);color:white;border:1.5px solid rgba(255,255,255,0.4);font-size:1rem;">How It Works</a>
         </div>
-      </div>
-      <!-- Search Bar Card -->
-      <div class="search-card bg-white p-4 p-lg-5 rounded-4 shadow-lg">
-        <form id="searchForm" class="row g-3 align-items-end">
-          <!-- Location -->
-          <div class="col-md-3">
-            <label class="form-label small fw-semibold text-secondary">
-              <i class="bi bi-geo-alt-fill me-1" style="color:#2d5a27;"></i> LOCATION
-            </label>
-            <input id="searchLocation" type="text" list="cityList"
-              class="form-control form-control-lg" placeholder="e.g. Kampala, Entebbe" autocomplete="off">
-            <datalist id="cityList">
-              <option value="Kampala">
-              <option value="Entebbe">
-              <option value="Jinja">
-              <option value="Fort Portal">
-              <option value="Mbarara">
-              <option value="Gulu">
-              <option value="Bwindi">
-              <option value="Queen Elizabeth">
-              <option value="Kidepo">
-            </datalist>
-          </div>
-          <!-- Pick-up Date -->
-          <div class="col-md-2">
-            <label class="form-label small fw-semibold text-secondary">
-              <i class="bi bi-calendar-event me-1" style="color:#2d5a27;"></i> PICK-UP DATE
-            </label>
-            <input id="searchStartDate" type="date" class="form-control form-control-lg">
-          </div>
-          <!-- Return Date -->
-          <div class="col-md-2">
-            <label class="form-label small fw-semibold text-secondary">
-              <i class="bi bi-calendar-check me-1" style="color:#2d5a27;"></i> RETURN DATE
-            </label>
-            <input id="searchEndDate" type="date" class="form-control form-control-lg">
-          </div>
-          <!-- Vehicle Type -->
-          <div class="col-md-2">
-            <label class="form-label small fw-semibold text-secondary">
-              <i class="bi bi-car-front-fill me-1" style="color:#2d5a27;"></i> VEHICLE TYPE
-            </label>
-            <select id="searchType" class="form-select form-select-lg">
-              <option value="">All Types</option>
-              <option value="safari">Safari 4×4</option>
-              <option value="suv">SUV</option>
-              <option value="luxury">Luxury</option>
-              <option value="minibus">Minibus</option>
-              <option value="sedan">Sedan</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <!-- Passengers -->
-          <div class="col-md-1">
-            <label class="form-label small fw-semibold text-secondary">
-              <i class="bi bi-people-fill me-1" style="color:#2d5a27;"></i> SEATS
-            </label>
-            <select id="searchSeats" class="form-select form-select-lg">
-              <option value="">Any</option>
-              <option value="2">2+</option>
-              <option value="4">4+</option>
-              <option value="7">7+</option>
-              <option value="10">10+</option>
-              <option value="14">14+</option>
-            </select>
-          </div>
-          <!-- Submit -->
-          <div class="col-md-2">
-            <button type="submit" id="searchBtn" class="btn btn-accent w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
-              <i class="bi bi-search"></i> FIND A VEHICLE
-            </button>
-          </div>
-        </form>
+
+        <!-- Dynamic search card -->
+        <div id="searchCard" style="background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-radius:1.25rem;padding:1.5rem 1.75rem 1.25rem;box-shadow:0 24px 48px rgba(0,0,0,0.22);max-width:860px;margin-inline:auto;">
+
+          <form id="searchForm">
+            <!-- Row 1: primary filters -->
+            <div class="d-flex flex-wrap gap-3 align-items-end mb-3">
+
+              <!-- Location -->
+              <div style="flex:2 1 180px;">
+                <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
+                  <i class="bi bi-geo-alt-fill me-1" style="color:#2D5A27;"></i>Location
+                </label>
+                <input id="searchLocation" type="text" list="cityList" class="form-control"
+                  placeholder="Kampala, Entebbe…" autocomplete="off"
+                  style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.95rem;">
+                <datalist id="cityList">
+                  <option value="Kampala"><option value="Entebbe"><option value="Jinja">
+                  <option value="Fort Portal"><option value="Mbarara"><option value="Gulu">
+                  <option value="Bwindi"><option value="Queen Elizabeth"><option value="Kidepo">
+                  <option value="Sipi Falls"><option value="Murchison Falls">
+                </datalist>
+              </div>
+
+              <!-- Pick-up date -->
+              <div style="flex:1 1 130px;">
+                <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
+                  <i class="bi bi-calendar-event me-1" style="color:#2D5A27;"></i>Pick-up
+                </label>
+                <input id="searchStartDate" type="date" class="form-control"
+                  style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.95rem;">
+              </div>
+
+              <!-- Return date -->
+              <div style="flex:1 1 130px;">
+                <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
+                  <i class="bi bi-calendar-check me-1" style="color:#2D5A27;"></i>Return
+                </label>
+                <input id="searchEndDate" type="date" class="form-control"
+                  style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.95rem;">
+              </div>
+
+              <!-- Search button -->
+              <div style="flex:0 0 auto;">
+                <button type="submit" class="btn fw-bold d-flex align-items-center gap-2"
+                  style="background:#2D5A27;color:white;border-radius:0.5rem;padding:0.56rem 1.4rem;font-size:0.95rem;white-space:nowrap;height:38px;">
+                  <i class="bi bi-search"></i> Search
+                </button>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div style="border-top:1px solid #e8e8ea;margin:0 -0.25rem 0.85rem;"></div>
+
+            <!-- Row 2: secondary filters -->
+            <div class="d-flex flex-wrap gap-3 align-items-end">
+
+              <!-- Vehicle type -->
+              <div style="flex:1 1 140px;">
+                <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
+                  <i class="bi bi-car-front-fill me-1" style="color:#2D5A27;"></i>Type
+                </label>
+                <select id="searchType" class="form-select" style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.9rem;">
+                  <option value="">All Types</option>
+                  <option value="safari">Safari 4×4</option>
+                  <option value="suv">SUV</option>
+                  <option value="luxury">Luxury</option>
+                  <option value="minibus">Minibus</option>
+                  <option value="sedan">Sedan</option>
+                </select>
+              </div>
+
+              <!-- Seats -->
+              <div style="flex:0 1 110px;">
+                <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
+                  <i class="bi bi-people-fill me-1" style="color:#2D5A27;"></i>Seats
+                </label>
+                <select id="searchSeats" class="form-select" style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.9rem;">
+                  <option value="">Any</option>
+                  <option value="2">2+</option>
+                  <option value="4">4+</option>
+                  <option value="7">7+</option>
+                  <option value="10">10+</option>
+                </select>
+              </div>
+
+              <!-- Max price / day -->
+              <div style="flex:1 1 150px;">
+                <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
+                  <i class="bi bi-tag-fill me-1" style="color:#2D5A27;"></i>Max price/day
+                </label>
+                <div style="position:relative;">
+                  <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:#72796e;pointer-events:none;">$</span>
+                  <input id="searchMaxPrice" type="number" min="0" step="10" placeholder="Any"
+                    class="form-control" style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.9rem;padding-left:22px;">
+                </div>
+              </div>
+
+              <!-- Transmission -->
+              <div style="flex:0 1 130px;">
+                <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
+                  <i class="bi bi-gear-fill me-1" style="color:#2D5A27;"></i>Transmission
+                </label>
+                <select id="searchTransmission" class="form-select" style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.9rem;">
+                  <option value="">Any</option>
+                  <option value="automatic">Automatic</option>
+                  <option value="manual">Manual</option>
+                </select>
+              </div>
+
+              <!-- Feature toggles -->
+              <div style="flex:0 0 auto;" class="d-flex gap-2 align-items-center pb-1">
+                <button type="button" id="toggle4wd" onclick="toggleFeature('4wd', this)"
+                  class="btn btn-sm fw-semibold d-flex align-items-center gap-1"
+                  style="border:1px solid #c2c9bb;border-radius:2rem;font-size:12px;padding:5px 12px;color:#42493e;background:white;white-space:nowrap;">
+                  <i class="bi bi-tsunami"></i> 4WD
+                </button>
+                <button type="button" id="toggleAc" onclick="toggleFeature('ac', this)"
+                  class="btn btn-sm fw-semibold d-flex align-items-center gap-1"
+                  style="border:1px solid #c2c9bb;border-radius:2rem;font-size:12px;padding:5px 12px;color:#42493e;background:white;white-space:nowrap;">
+                  <i class="bi bi-wind"></i> A/C
+                </button>
+                <button type="button" id="toggleRoof" onclick="toggleFeature('roof', this)"
+                  class="btn btn-sm fw-semibold d-flex align-items-center gap-1"
+                  style="border:1px solid #c2c9bb;border-radius:2rem;font-size:12px;padding:5px 12px;color:#42493e;background:white;white-space:nowrap;">
+                  <i class="bi bi-camera"></i> Open Roof
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Active filters -->
+          <div id="activeFilters" class="d-flex flex-wrap gap-2 mt-3 justify-content-center" style="display:none!important;"></div>
+        </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Featured Vehicles -->
-  <section class="container py-5 my-4">
+  <!-- ── Section 2: Trust strip ── -->
+  <section class="trust-strip py-4">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-center align-items-center gap-4 text-center" style="color:#42493e;font-size:0.95rem;font-weight:600;letter-spacing:0.03em;">
+        <span class="d-flex align-items-center gap-2">
+          <i class="bi bi-check-circle-fill" style="color:#2D5A27;"></i>
+          Verified 4x4 vehicles
+        </span>
+        <span class="d-none d-md-inline" style="color:#c2c9bb;">·</span>
+        <span class="d-flex align-items-center gap-2">
+          <i class="bi bi-check-circle-fill" style="color:#2D5A27;"></i>
+          German-speaking driver-guides
+        </span>
+        <span class="d-none d-md-inline" style="color:#c2c9bb;">·</span>
+        <span class="d-flex align-items-center gap-2">
+          <i class="bi bi-check-circle-fill" style="color:#2D5A27;"></i>
+          Complimentary CDW insurance
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Featured Vehicles ── -->
+  <section class="container py-5 my-2">
     <div class="d-flex flex-wrap justify-content-between align-items-end mb-5">
       <div>
         <span class="badge-soft-success">OUR FLEET</span>
-        <h2 class="display-6 fw-bold mt-2" id="featuredHeading">Featured Vehicles</h2>
+        <h2 class="display-6 fw-bold mt-2" style="font-family:'Montserrat',sans-serif;" id="featuredHeading">Featured Vehicles</h2>
         <p class="text-secondary small mt-1 mb-0" id="searchResultCount"></p>
       </div>
       <div class="d-flex align-items-center gap-3">
@@ -199,166 +346,258 @@
           <input type="radio" class="btn-check" name="currency" id="cur-eur" value="EUR">
           <label class="btn btn-outline-secondary" for="cur-eur">€ EUR</label>
         </div>
-        <a href="/vehicles" class="btn btn-link text-decoration-none p-0 d-flex align-items-center gap-1">
-          View All Listings <i class="bi bi-arrow-right"></i>
+        <a href="/vehicles" class="btn btn-link text-decoration-none p-0 d-flex align-items-center gap-1" style="color:#154212;">
+          View All <i class="bi bi-arrow-right"></i>
         </a>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="vehicleCardsContainer">
-      <!-- Vehicle cards will be loaded here by JavaScript -->
-    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="vehicleCardsContainer"></div>
   </section>
 
-  <!-- Popular Destinations (Bento Grid) -->
-  <section class="bg-light py-5">
-    <div class="container py-4">
+  <!-- ── Section 3: Who we serve ── -->
+  <section class="py-5" style="background:#f3f3f6;">
+    <div class="container py-3" style="max-width:1100px;">
       <div class="text-center mb-5">
-        <span class="badge-soft-success">DISCOVER UGANDA</span>
-        <h2 class="display-6 fw-bold mt-2">Popular Destinations</h2>
-      </div>
-      <div class="destinations-grid">
-        <div class="grid-item grid-item-main">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMw5tbUi-Y6wOXCUayytfzreDMu4lxAA1s3cDdFD80OamJPGWCCFAqsGtXUQi0zV6nACslT06JHYCQ4noHOCxGCQRiHoBz07-SWzRXe7jM_CLobh_vvL2GFR4PP05q_OdD5MvqkfKO0OCA2mzWIM0tBxJGchrgJXbQi-YeEzj1ZdHopVjTf8L2m9Wq-lA4Ym9PcCE2xZ1RSfSHy7jsjE6PdBGnlufZhAKGxv99k4CAJ1gQPOJ5LO19AGilPwbI5qH20M8FKHo3tmA" alt="Bwindi Impenetrable Forest">
-          <div class="grid-overlay">
-            <h3>Bwindi Impenetrable Forest</h3>
-            <p>Home of the Mountain Gorillas</p>
-          </div>
-        </div>
-        <div class="grid-item">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAC8ygWs6kF80v5E_AwB9hl4kzaJ5v4c4wgwugXurPt6PMTgHYYmWIH0DmqDJ-fWtq9dUFKTdrUNaAoNPBxje-fKNhVL64DqLS84Go2WiBc1_ElWezufiym5dVHdOMEh0R4HKA5dR_NWQxX8xtOJn4thNYst7lSQi_kDXsMiqCGwKczFD9dzH7qJ_IStzcpszHeX9m_IHe6OrUBBtRBmJ8mh_m1PonbkcPrejb3WhHRD5k_KKyRoDTH25XwTxoT9KlHbN0ZyMqVok" alt="Murchison Falls">
-          <div class="grid-overlay">
-            <h4>Murchison Falls</h4>
-            <p>Uganda's Largest Park</p>
-          </div>
-        </div>
-        <div class="grid-item">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDawMm3YVRNCPzt6Qjne_3AOWYDardEjH65DX0Md83_B24zjtcm5g_o7wYqSFgjVBdJHGm-UcrvBOwo2hRLxHBWWgsUc6EMLr31dRplX0k186SZ8icq1X_N3cu0FKv3ICFyI7pD1ai9w-6f7OUcR6bJFbKfpIkKbfGEsiee6gb0BjbHdqS_n61gTZ0pRBEBnb-7aRQGloAF57Svi0NPO5UTx2cQwZHELPgHg_9WTCJWq6olxUKQRgoWqY3bODceERHycYifTABoCk0" alt="Lake Bunyonyi">
-          <div class="grid-overlay"><h4>Lake Bunyonyi</h4></div>
-        </div>
-        <div class="grid-item">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvAIOPM_eUQWM_ljnwShDWi8ex6JkyReweVzhSzWMGzRtu-LIaWRiH8OAF8KxwYFoYggK9TC50u36T67uhzq_uv5iKl0OHbsTFP-k6J0iHs70mkRm9qRxEP2EetLtTkkbEmy_MUsOgUFKWc78EHwBvaJv-RstmmxUnNXDwru1DdhlWGtA0o74-gS57X1O6_xkc281PWtox-ahbXnrQHtbc8VTrtV5GU4YvMN_ru5VGzFJiHUNErT1k0ASqONCtmNbn4mxYL0xLgxg" alt="Kidepo Valley">
-          <div class="grid-overlay"><h4>Kidepo Valley</h4></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How it Works + App mockup -->
-  <section class="container py-5 my-4">
-    <div class="row align-items-center g-5">
-      <div class="col-lg-6">
-        <span class="badge-soft-success">TRANSPARENT PROCESS</span>
-        <h2 class="display-6 fw-bold mt-2 mb-4">How Kari Vari Works</h2>
-        <div class="d-flex gap-4 mb-4">
-          <div class="icon-circle"><i class="bi bi-search fs-4"></i></div>
-          <div><h5 class="fw-bold">1. Browse & Compare</h5><p class="text-secondary">Filter through hundreds of verified vehicles from professional owners across Uganda.</p></div>
-        </div>
-        <div class="d-flex gap-4 mb-4">
-          <div class="icon-circle"><i class="bi bi-calendar-check fs-4"></i></div>
-          <div><h5 class="fw-bold">2. Secure Booking</h5><p class="text-secondary">Book with confidence using our secure payment gateway. Funds held until pickup.</p></div>
-        </div>
-        <div class="d-flex gap-4">
-          <div class="icon-circle"><i class="bi bi-key fs-4"></i></div>
-          <div><h5 class="fw-bold">3. Pick Up & Drive</h5><p class="text-secondary">Meet your host or get delivery to Entebbe Airport or your hotel.</p></div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="position-relative text-center">
-          <div class="app-glow"></div>
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwUp_plWVqFzO-l1nQSBRoIpelvYsL2YY2cZXqSjt0MOayT2GtgwgDUyrALyYDmK8gaXYbqLb6LQDSNYND7tsBzJ2cjzPAki5mdwJopGKNjnAn9n0QWp4coPhxu5tk7nQuYG-DEAGTAs9hQoxlxGcyDmv9-jzVy1lS9BR39fLSvZzb5bP89VcDW8uLFOwSj3AbFKrBUSSBo0ktf_cqWJsbJhgRo3AlLHIHJvKxs6hQrjiYCXbZ50ASGq_-dge9HHMeOWkPjJGI3F0" alt="Mobile app interface" class="img-fluid rounded-4 shadow-lg">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonials Section -->
-  <section class="testimonial-section py-5">
-    <div class="container py-4">
-      <div class="text-center mb-5">
-        <span class="badge-gold">TESTIMONIALS</span>
-        <h2 class="display-6 fw-bold mt-2 text-white">What Our Clients Say</h2>
+        <span class="badge-soft-success">WHO WE SERVE</span>
+        <h2 class="fw-bold mt-2" style="font-family:'Montserrat',sans-serif;font-size:2rem;">Built for three kinds of traveller</h2>
+        <p class="text-secondary mt-3 mx-auto" style="max-width:680px;">We don't try to be everything to everyone. Karivari is built for travellers who want their transport handled by people who understand exactly what their trip needs.</p>
       </div>
       <div class="row g-4">
-        <div class="col-md-6">
-          <div class="testimonial-card">
-            <div class="text-warning mb-3"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
-            <p class="fst-italic">"Kari Vari made our family safari seamless. The Land Cruiser was in perfect condition, and having airport pickup was a lifesaver."</p>
-            <div class="d-flex align-items-center gap-3 mt-3">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGIZZP7yOXL862TRNWgIIos_lemO4LlT25Ejubd7F8uCOF7C6Fm9wQOGyOWUeDR1bYBoS0obQlvXi7WSc2pwIRjr_7eI9RiJkl1_yqS0StRqY1lUkMUJ-QT_1_3cxlhCp8aXhMS_-ksmjzJL3nDBz8-EJTCDsu7kket2Rkw7YLrr_N52tugCMOS97Xey7lm7-uFrrxRajUfqsBzHJ9_zk2GzAKvZThA4_fGV8vBw1kw86b4VXMho2EnG1S0dLCLxKuVDtMbTZZe14" alt="Client" class="rounded-circle" width="48" height="48">
-              <div><strong>Mark Henderson</strong><br><small class="opacity-75">Travel Blogger, UK</small></div>
+        <div class="col-md-4">
+          <div class="serve-card h-100">
+            <div class="mb-3">
+              <span class="material-symbols-outlined text-[32px]" style="color:#2D5A27;font-variation-settings:'FILL' 1;">camera</span>
             </div>
+            <h4 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Photography</h4>
+            <p class="text-secondary mb-0">For travellers carrying serious gear. Open-roof vehicles, early starts, owner-drivers who understand light and patience. Trips usually run ten to fourteen days.</p>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="testimonial-card">
-            <div class="text-warning mb-3"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
-            <p class="fst-italic">"As an NGO coordinator, reliability is everything. We've used Kari Vari for field missions for a year and have never been let down."</p>
-            <div class="d-flex align-items-center gap-3 mt-3">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUzDVoBDnlfIpZnLHYPYf-i38M84d9PMSQARIsrvMvEjgt4ABH0oL_VIhq7WCD79iqCZfDG_B5e_9kIYBTt2DYrLsSQjQTpn8GLQ-csO3ebDUhqIapfomlAPHXHrjRRnUXT1_gcc1GGeeg_iEUE1V2R3MNs6gsESXMGSUu3TysjtoSpg1DSKV0VQGC5aHML3nmI3OFwgMYra5QHYU6XzWdXJ78OTaKO3UCNAxBDPieTkkzlOXjPAjg6WubsgorLCQaw-8rvv6NEnk" alt="Client" class="rounded-circle" width="48" height="48">
-              <div><strong>Aisha Namukasa</strong><br><small class="opacity-75">Regional Director, Health First</small></div>
+        <div class="col-md-4">
+          <div class="serve-card h-100" style="border-top-color:#F9B115;">
+            <div class="mb-3">
+              <span class="material-symbols-outlined text-[32px]" style="color:#7e5700;font-variation-settings:'FILL' 1;">forest</span>
             </div>
+            <h4 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Wildlife &amp; Safari</h4>
+            <p class="text-secondary mb-0">For gorilla tracking, big game in the savannah parks, and birding along the Albertine Rift. Long park transfers, reliable vehicles, drivers who double as guides. Seven to fourteen day trips.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="serve-card h-100" style="border-top-color:#c2c9bb;">
+            <div class="mb-3">
+              <span class="material-symbols-outlined text-[32px]" style="color:#42493e;font-variation-settings:'FILL' 1;">hotel_class</span>
+            </div>
+            <h4 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Luxury</h4>
+            <p class="text-secondary mb-0">For travellers booking premium lodges who expect their transport to match. Quiet vehicles, polished service, end-to-end coordination with your itinerary.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA Banner -->
+  <!-- ── Section 4: What's included ── -->
+  <section class="container py-5 my-2" style="max-width:1100px;">
+    <div class="text-center mb-5">
+      <span class="badge-soft-success">WHAT'S INCLUDED</span>
+      <h2 class="fw-bold mt-2" style="font-family:'Montserrat',sans-serif;font-size:2rem;">One daily rate. Everything that matters.</h2>
+      <p class="text-secondary mt-3 mx-auto" style="max-width:640px;">When you book on Karivari, your daily rate already covers what other operators charge separately. No surprise costs in the bush.</p>
+    </div>
+    <div class="row g-4">
+
+      <div class="col-md-6 col-lg-4">
+        <div class="included-card h-100">
+          <div class="included-icon">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">directions_car</span>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-1">Verified 4x4 + spare tires</h6>
+            <p class="text-secondary small mb-0">We inspect every vehicle before listing it. Spare tires are standard on every trip.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="included-card h-100">
+          <div class="included-icon">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">person</span>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-1">German-speaking owner-driver</h6>
+            <p class="text-secondary small mb-0">Your driver speaks conversational German plus English. They own the vehicle and know the route.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="included-card h-100">
+          <div class="included-icon">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">local_gas_station</span>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-1">Fuel included</h6>
+            <p class="text-secondary small mb-0">Shown as a transparent line item in your daily rate. No top-ups at remote pumps.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="included-card h-100">
+          <div class="included-icon">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">shield</span>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-1">Complimentary CDW insurance</h6>
+            <p class="text-secondary small mb-0">European-grade documentation. Motor insurance is verified on every vehicle in our network.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="included-card h-100">
+          <div class="included-icon">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">flight_land</span>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-1">Free airport pickup</h6>
+            <p class="text-secondary small mb-0">Complimentary on safaris of two weeks or more.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="included-card h-100">
+          <div class="included-icon">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">support_agent</span>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-1">24/7 support and onsite offices</h6>
+            <p class="text-secondary small mb-0">Phone, WhatsApp, and email — plus physical offices in Kampala and Entebbe.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Section 5: How it works ── -->
+  <section class="py-5" style="background:#f3f3f6;">
+    <div class="container py-3" style="max-width:1100px;">
+      <div class="text-center mb-5">
+        <span class="badge-soft-success">HOW IT WORKS</span>
+        <h2 class="fw-bold mt-2" style="font-family:'Montserrat',sans-serif;font-size:2rem;">From booking to dropoff</h2>
+        <p class="text-secondary mt-2">Three steps. No middlemen.</p>
+      </div>
+      <div class="row g-4 mb-4">
+        <div class="col-md-4">
+          <div class="hiw-step h-100" data-num="01">
+            <div class="step-num">1</div>
+            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Choose your vehicle</h5>
+            <p class="text-secondary mb-0">Browse our verified fleet. Filter by trip type, dates, and pickup location. Every listed vehicle has been inspected.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="hiw-step h-100" data-num="02">
+            <div class="step-num" style="background:#F9B115;color:#1A1C1E;">2</div>
+            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Book and confirm</h5>
+            <p class="text-secondary mb-0">Pay one daily rate plus a €2 service fee. You receive written confirmation with insurance details and your owner-driver's contact.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="hiw-step h-100" data-num="03">
+            <div class="step-num">3</div>
+            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Travel</h5>
+            <p class="text-secondary mb-0">Your owner-driver meets you at the airport or your hotel. They drive, they guide, they handle the road. You travel.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <a href="/how-it-works" class="text-decoration-none fw-semibold d-inline-flex align-items-center gap-1" style="color:#154212;">
+          Read the full walkthrough <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section 6: Why Karivari ── -->
+  <section class="container py-5 my-2" style="max-width:1100px;">
+    <div class="text-center mb-5">
+      <span class="badge-soft-success">WHY KARIVARI</span>
+      <h2 class="fw-bold mt-2" style="font-family:'Montserrat',sans-serif;font-size:2rem;">Why travellers choose Karivari</h2>
+      <p class="text-secondary mt-3 mx-auto" style="max-width:580px;">Three things that no other option in Uganda combines.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="why-card h-100">
+          <h5 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Verified, not random</h5>
+          <p class="text-secondary mb-0">The driver who meets you at the airport is the same person who owns the vehicle. We have inspected the car, checked the insurance, and trained the driver. You are not getting a stranger from an app.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="why-card h-100">
+          <h5 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Built for safaris, not city rides</h5>
+          <p class="text-secondary mb-0">Uber and Bolt are designed for short, urban trips. They were not built for ten-day journeys across national parks with photography gear in the back. Karivari was.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="why-card h-100">
+          <h5 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">A real person if something goes wrong</h5>
+          <p class="text-secondary mb-0">Onsite offices in Kampala and Entebbe. 24/7 phone, WhatsApp, and email. You always have someone to call who is actually in Uganda.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section 7: Closing CTA ── -->
   <section class="container py-5 my-4">
     <div class="cta-banner p-5 p-lg-6 rounded-4 text-center">
-      <h2 class="display-5 fw-bold mb-3">Ready to Start Your Journey?</h2>
-      <p class="lead text-secondary mb-4 mx-auto" style="max-width: 600px;">Whether you need the perfect safari rig or want to earn by listing your own vehicle, we're here to help.</p>
+      <h2 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;font-size:2rem;">Ready to plan your trip?</h2>
+      <p class="text-secondary mb-4 mx-auto" style="max-width:600px;">Browse verified 4x4 vehicles for your dates, or message us with your itinerary and we will suggest options.</p>
       <div class="d-flex flex-wrap gap-3 justify-content-center">
-        <a href="#vehicleCardsContainer" class="btn btn-primary btn-lg px-5">Rent a Vehicle</a>
-        <a href="/owner/register" class="btn btn-accent btn-lg px-5">List Your Vehicle</a>
+        <a href="/vehicles" class="btn btn-primary btn-lg px-5">Browse Vehicles</a>
+        <a href="/support" class="btn btn-accent btn-lg px-5">Contact Us</a>
       </div>
     </div>
   </section>
+
 </main>
 
-<!-- Footer -->
-<footer class="footer-dark pt-5 pb-4 mt-5" style="background-color:#111314!important;color:#e2e2e5!important;">
+<!-- ── Section 8: Footer ── -->
+<footer class="pt-5 pb-4 mt-4" style="background-color:#111314;color:#e2e2e5;">
   <div class="container">
     <div class="row g-4">
-      <div class="col-md-3">
-        <h4 class="text-accent mb-3">Kari Vari</h4>
-        <p class="small opacity-75">Your trusted partner for exploring the beauty of Uganda with safety and reliability.</p>
+      <div class="col-md-4">
+        <h4 class="mb-2" style="color:#F9B115;font-family:'Montserrat',sans-serif;">Karivari Uganda</h4>
+        <p class="small opacity-75 mb-1">Premium 4x4 safari transport.</p>
+        <p class="small opacity-75">Kampala &nbsp;·&nbsp; Entebbe</p>
       </div>
-      <div class="col-md-3">
-        <h6 class="text-uppercase small fw-bold text-accent mb-3">Links</h6>
+      <div class="col-md-4">
+        <h6 class="text-uppercase small fw-bold mb-3" style="color:#F9B115;letter-spacing:0.08em;">For travellers</h6>
         <ul class="list-unstyled small">
-          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Privacy Policy</a></li>
-          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Terms of Service</a></li>
-          <li class="mb-2"><a href="#" class="text-light text-decoration-none opacity-75">Partner Program</a></li>
-          <li><a href="#" class="text-light text-decoration-none opacity-75">Careers</a></li>
+          <li class="mb-2"><a href="/vehicles" class="text-light text-decoration-none opacity-75">Browse Vehicles</a></li>
+          <li class="mb-2"><a href="/how-it-works" class="text-light text-decoration-none opacity-75">How It Works</a></li>
+          <li><a href="/support" class="text-light text-decoration-none opacity-75">Contact</a></li>
         </ul>
       </div>
-      <div class="col-md-3">
-        <h6 class="text-uppercase small fw-bold text-accent mb-3">Destinations</h6>
+      <div class="col-md-4">
+        <h6 class="text-uppercase small fw-bold mb-3" style="color:#F9B115;letter-spacing:0.08em;">For owner-drivers and partners</h6>
         <ul class="list-unstyled small">
-          <li class="mb-2"><a href="/vehicles?city=Kampala" class="text-light text-decoration-none opacity-75">Kampala</a></li>
-          <li class="mb-2"><a href="/vehicles?city=Entebbe" class="text-light text-decoration-none opacity-75">Entebbe</a></li>
-          <li class="mb-2"><a href="/vehicles?city=Jinja" class="text-light text-decoration-none opacity-75">Jinja</a></li>
-          <li><a href="/vehicles?city=Fort Portal" class="text-light text-decoration-none opacity-75">Fort Portal</a></li>
+          <li class="mb-2"><a href="/owner/register" class="text-light text-decoration-none opacity-75">Apply as an Owner-Driver</a></li>
+          <li><a href="/support" class="text-light text-decoration-none opacity-75">Partner with Us</a></li>
         </ul>
-      </div>
-      <div class="col-md-3">
-        <h6 class="text-uppercase small fw-bold text-accent mb-3">Connect</h6>
-        <div class="d-flex gap-3 fs-5">
-          <i class="bi bi-journal-bookmark-fill text-light opacity-75"></i>
-          <i class="bi bi-share-fill text-light opacity-75"></i>
-          <i class="bi bi-envelope-fill text-light opacity-75"></i>
-        </div>
       </div>
     </div>
     <hr class="opacity-25 mt-4">
-    <div class="text-center small opacity-50">© 2026 Kari Vari Uganda. Exploring the Pearl of Africa.</div>
+    <div class="text-center small opacity-50">
+      © 2026 Karivari Uganda &nbsp;·&nbsp;
+      <a href="#" class="text-light text-decoration-none opacity-75">Privacy Policy</a>
+      &nbsp;·&nbsp;
+      <a href="#" class="text-light text-decoration-none opacity-75">Terms of Service</a>
+    </div>
   </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/shared.js?v=2"></script>
 <script src="/static/js/index.js?v=10"></script>
-    <script src="//code.tidio.co/z2re40p08rwgmv2hiwlvw8ymzkzacmxb.js" async></script>
+<script src="//code.tidio.co/z2re40p08rwgmv2hiwlvw8ymzkzacmxb.js" async></script>
 </body>
 </html>

@@ -60,6 +60,7 @@
   #stripeCard.StripeElement--focus { border-color: #154212; box-shadow: 0 0 0 1px #154212; }
   #stripeCard.StripeElement--invalid { border-color: #ba1a1a; }
 </style>
+<script src="/static/js/shared.js?v=2"></script>
 </head>
 <body class="bg-background text-on-surface">
 
@@ -701,7 +702,6 @@
 </footer>
 
 <script>
-const API = '/api';
 const params   = new URLSearchParams(location.search);
 const vehicleId      = params.get('vehicle_id');
 const pickupDate     = params.get('pickup_date');
@@ -831,7 +831,7 @@ async function confirmPayment() {
 
 async function payWithCard() {
   const token = localStorage.getItem('access_token');
-  if (!token) { alert('Please log in first.'); window.location.href = '/login'; return; }
+  if (!token) { alert('Please log in first.'); redirectToLogin(); return; }
 
   if (!_stripe || !_cardEl) {
     showFlex('cardError');
@@ -900,7 +900,7 @@ async function payWithCard() {
 
 async function payWithMomo() {
   const token = localStorage.getItem('access_token');
-  if (!token) { alert('Please log in first.'); window.location.href = '/login'; return; }
+  if (!token) { alert('Please log in first.'); redirectToLogin(); return; }
 
   const network = _activeMethod === 'mtn' ? 'MTN_UGANDA' : 'AIRTEL_UGANDA';
   const phoneInput = document.getElementById(_activeMethod === 'mtn' ? 'mtnPhone' : 'airtelPhone');

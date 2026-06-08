@@ -97,13 +97,15 @@
         localStorage.setItem('user_role', data.role);
         localStorage.setItem('user_name', data.full_name);
         showAlert('Login successful! Redirecting...', 'success');
-        const roleRedirects = {
+        const roleDefaults = {
           customer: '/',
           owner:    '/owner/dashboard',
           admin:    '/admin/dashboard',
         };
+        const returnTo = sessionStorage.getItem('returnTo');
+        sessionStorage.removeItem('returnTo');
         setTimeout(() => {
-          window.location.href = roleRedirects[data.role] || '/';
+          window.location.href = returnTo || roleDefaults[data.role] || '/';
         }, 1500);
       } else {
         const errorMsg = data.message || data.error || 'Invalid email or password.';

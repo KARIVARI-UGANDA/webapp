@@ -149,6 +149,11 @@ def how_it_works_page(request: Request):
     return templates.TemplateResponse(request, "how-it-works.html")
 
 
+@app.get("/about")
+def about_page(request: Request):
+    return templates.TemplateResponse(request, "about.html")
+
+
 @app.get("/admin/bookings")
 def admin_bookings_redirect(request: Request):
     from fastapi.responses import RedirectResponse

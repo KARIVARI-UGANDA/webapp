@@ -1,5 +1,10 @@
 const API = '/api';
 
+function redirectToLogin() {
+  sessionStorage.setItem('returnTo', window.location.pathname + window.location.search);
+  window.location.href = '/login';
+}
+
 function showAlert(id, message, type = 'danger') {
 	const el = document.getElementById(id);
 	if (!el) return;
@@ -66,7 +71,9 @@ async function login(email, password, alertId, expectedRole) {
 				owner:    '/owner/dashboard',
 				admin:    '/admin/dashboard',
 			};
-			window.location.href = ROLE_HOME[json.role] || '/';
+			const returnTo = sessionStorage.getItem('returnTo');
+			sessionStorage.removeItem('returnTo');
+			window.location.href = (json.role === 'customer' && returnTo) ? returnTo : (ROLE_HOME[json.role] || '/');
 		} else {
 			showAlert(alertId, 'Login failed: ' + (json.detail || 'Unknown error'));
 		}

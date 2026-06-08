@@ -29,7 +29,7 @@
 /* ── Hero ─────────────────────────────────────────────────── */
 
 .hero-section {
-  min-height: 870px;
+  min-height: 760px;
   background-image: url('/static/images/safari-sunset.jpg');
   background-size: cover;
   background-position: center 30%;
