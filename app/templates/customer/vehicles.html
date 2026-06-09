@@ -142,70 +142,101 @@
   <button id="logoutBtn" class="bg-ugandan-sun text-slate-dark px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Logout</button>
 </div>
 </nav>
-<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8">
-<div class="flex flex-col md:flex-row gap-gutter">
-<!-- Left Sidebar Filters -->
-<aside class="w-full md:w-80 flex-shrink-0">
-<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/30 sticky top-24">
-<div class="flex items-center justify-between mb-6">
-<h2 class="font-headline-md text-headline-md text-primary">Filters</h2>
-<button onclick="clearFilters()" class="text-label-sm text-secondary font-bold hover:text-primary transition-colors">Clear All</button>
-</div>
-<!-- Price Range -->
-<div class="mb-8">
-<h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Price Range (USD/Day)</h3>
-<div class="space-y-4">
-<input id="priceSlider" class="w-full accent-safari-green" max="500" min="0" step="10" type="range" value="500" oninput="updatePriceLabel(this.value); applyFilters()">
-<div class="flex justify-between text-label-sm font-label-sm text-on-surface-variant">
-<span>$0</span>
-<span id="priceLabel" class="font-bold text-primary">No limit</span>
-</div>
-</div>
-</div>
-<!-- Vehicle Type (populated from data) -->
-<div class="mb-8">
-<h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Vehicle Type</h3>
-<div class="space-y-3" id="typeFilterContainer"></div>
-</div>
-<!-- Features -->
-<div class="mb-8">
-<h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Key Features</h3>
-<div class="space-y-3">
-<label class="flex items-center gap-3 cursor-pointer group">
-<input id="filter-ac" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
-<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Air Conditioning</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input id="filter-wifi" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
-<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">WiFi</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input id="filter-4wd" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
-<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">4WD / All-terrain</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input id="filter-roof" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
-<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Roof Rack</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input id="filter-child" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
-<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Child Seat</span>
-</label>
-</div>
-</div>
-<!-- Fuel Type -->
-<div class="mb-6">
-<h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Fuel Type</h3>
-<div class="flex flex-wrap gap-2">
-<button data-fuel="diesel" onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Diesel</button>
-<button data-fuel="petrol" onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Petrol</button>
-<button data-fuel="hybrid" onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Hybrid</button>
-<button data-fuel="electric" onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Electric</button>
-</div>
-</div>
-</div>
+<!-- ── Filter Drawer Overlay ──────────────────────────────────────────────── -->
+<div id="filterOverlay" onclick="closeFilterDrawer()"
+     class="hidden fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity"></div>
+
+<!-- ── Filter Drawer ──────────────────────────────────────────────────────── -->
+<aside id="filterDrawer"
+       class="fixed top-0 left-0 h-full w-80 z-50 bg-surface-container-lowest shadow-2xl
+              transform -translate-x-full transition-transform duration-300 ease-in-out
+              flex flex-col overflow-hidden">
+
+  <!-- Drawer header -->
+  <div class="flex items-center justify-between px-6 py-5 border-b border-outline-variant/30 flex-shrink-0">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary text-[22px]">tune</span>
+      <h2 class="font-headline-md text-headline-md text-primary">Filters</h2>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="clearFilters()" class="text-label-sm font-label-sm text-secondary font-bold hover:text-primary transition-colors">Clear All</button>
+      <button onclick="closeFilterDrawer()" class="p-1.5 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Scrollable filter body -->
+  <div class="flex-1 overflow-y-auto px-6 py-6 space-y-8">
+
+    <!-- Price Range -->
+    <div>
+      <h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Price Range (USD/Day)</h3>
+      <input id="priceSlider" class="w-full accent-safari-green" max="500" min="0" step="10" type="range" value="500"
+             oninput="updatePriceLabel(this.value); applyFilters()">
+      <div class="flex justify-between text-label-sm font-label-sm text-on-surface-variant mt-2">
+        <span>$0</span>
+        <span id="priceLabel" class="font-bold text-primary">No limit</span>
+      </div>
+    </div>
+
+    <!-- Vehicle Type -->
+    <div>
+      <h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Vehicle Type</h3>
+      <div class="space-y-3" id="typeFilterContainer"></div>
+    </div>
+
+    <!-- Key Features -->
+    <div>
+      <h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Key Features</h3>
+      <div class="space-y-3">
+        <label class="flex items-center gap-3 cursor-pointer group">
+          <input id="filter-ac" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+          <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Air Conditioning</span>
+        </label>
+        <label class="flex items-center gap-3 cursor-pointer group">
+          <input id="filter-wifi" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+          <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">WiFi</span>
+        </label>
+        <label class="flex items-center gap-3 cursor-pointer group">
+          <input id="filter-4wd" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+          <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">4WD / All-terrain</span>
+        </label>
+        <label class="flex items-center gap-3 cursor-pointer group">
+          <input id="filter-roof" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+          <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Roof Rack</span>
+        </label>
+        <label class="flex items-center gap-3 cursor-pointer group">
+          <input id="filter-child" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+          <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Child Seat</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Fuel Type -->
+    <div>
+      <h3 class="font-label-lg text-label-lg mb-4 text-on-surface">Fuel Type</h3>
+      <div class="flex flex-wrap gap-2">
+        <button data-fuel="diesel"   onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Diesel</button>
+        <button data-fuel="petrol"   onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Petrol</button>
+        <button data-fuel="hybrid"   onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Hybrid</button>
+        <button data-fuel="electric" onclick="toggleFuel(this)" class="fuel-btn px-4 py-2 rounded-full border border-outline-variant text-label-sm font-label-sm hover:border-primary transition-colors">Electric</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Drawer footer — Apply button -->
+  <div class="px-6 py-4 border-t border-outline-variant/30 flex-shrink-0">
+    <button onclick="closeFilterDrawer()"
+            class="w-full py-3 bg-primary text-white font-label-lg text-label-lg font-bold rounded-xl hover:bg-safari-green transition-all active:scale-95">
+      Show Results
+    </button>
+  </div>
 </aside>
-<!-- Main Results Area -->
+
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8">
+<!-- Main Results Area — full width now that sidebar is a drawer -->
 <section class="flex-grow">
 <!-- Sorting and Meta -->
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
