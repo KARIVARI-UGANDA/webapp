@@ -49,3 +49,25 @@ try:
     Base.metadata.create_all(bind=engine)
 except Exception:
     pass
+
+
+def run_migrations():
+    """Add columns that may be missing on an existing database (safe to re-run)."""
+    # Only applies to PostgreSQL — SQLite uses a different syntax and these
+    # columns are created automatically via create_all on a fresh DB.
+    if not DATABASE_URL.startswith("postgresql"):
+        return
+    migrations = [
+        "ALTER TABLE vehicle_photos ADD COLUMN IF NOT EXISTS photo_data BYTEA",
+        "ALTER TABLE vehicle_photos ADD COLUMN IF NOT EXISTS content_type VARCHAR(50)",
+    ]
+    with engine.connect() as conn:
+        for sql in migrations:
+            try:
+                conn.execute(__import__("sqlalchemy").text(sql))
+            except Exception:
+                pass
+        conn.commit()
+
+
+run_migrations()
