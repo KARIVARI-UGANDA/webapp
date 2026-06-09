@@ -4,8 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PORT=8000 \
-    HOST=0.0.0.0 \
-    DATABASE_URL=sqlite:////app/karivari.db
+    HOST=0.0.0.0
 
 WORKDIR /app
 

@@ -39,12 +39,18 @@ def create_booking(
         raise HTTPException(status_code=404, detail="Vehicle not found")
     if vehicle.status != "verified":
         raise HTTPException(status_code=400, detail="Vehicle is not available for booking")
+    if vehicle.owner_id == current_user.id:
+        raise HTTPException(status_code=403, detail="Vehicle owners cannot book their own vehicle")
 
     try:
         start_dt = datetime.strptime(payload.pickup_date, "%Y-%m-%d")
         end_dt   = datetime.strptime(payload.return_date,  "%Y-%m-%d")
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format — use YYYY-MM-DD")
+
+    today = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=None)
+    if start_dt < today:
+        raise HTTPException(status_code=400, detail="Pickup date cannot be in the past")
 
     if end_dt <= start_dt:
         raise HTTPException(status_code=400, detail="Return date must be after pickup date")
@@ -190,35 +196,16 @@ def confirm_payment(
     return {"status": "confirmed", "booking_reference": booking.booking_reference}
 
 
-# GET /api/bookings/{booking_id} — fetch a single booking (customer)
-@router.get("/{booking_id}")
-def get_booking(
-    booking_id: str,
-    current_user=Depends(_any_auth),
-    db: Session = Depends(get_db),
-):
-    booking = db.query(Booking).filter(
-        Booking.id == booking_id,
-        Booking.customer_id == current_user.id,
-    ).first()
-    if not booking:
-        raise HTTPException(status_code=404, detail="Booking not found")
-    return {
-        "booking_id": booking.id,
-        "booking_reference": booking.booking_reference,
-        "status": booking.status,
-        "vehicle_id": booking.vehicle_id,
-    }
+# GET /api/bookings/owner — bookings on the current owner's vehicles (must come before /{booking_id})
+_owner = require_role("owner")
 
 
-# GET /api/bookings/owner — bookings on the current owner's vehicles
 @router.get("/owner", response_model=List[BookingListItem])
 def list_owner_bookings(
     status: str = None,
     db: Session = Depends(get_db),
-    current_user=Depends(_any_auth),
+    current_user=Depends(_owner),
 ):
-    # Get all vehicle IDs owned by this user
     owned_ids = [v.id for v in db.query(Vehicle.id).filter(Vehicle.owner_id == current_user.id).all()]
     if not owned_ids:
         return []

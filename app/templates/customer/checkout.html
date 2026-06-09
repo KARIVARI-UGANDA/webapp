@@ -2,6 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
+<script>
+  function redirectToLogin() {
+    sessionStorage.setItem('returnTo', window.location.href);
+    window.location.replace('/login');
+  }
+  if (!localStorage.getItem('access_token')) { redirectToLogin(); }
+</script>
     <link rel="icon" type="image/png" href="/static/images/favicon.png">
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Checkout | Kari Vari Uganda</title>
@@ -75,7 +82,7 @@
       Kari Vari Uganda
     </a>
     <div class="hidden md:flex gap-6">
-      <a class="text-sm font-semibold hover:text-primary transition-colors" href="/vehicles" style="color:#42493e;text-decoration:none;">Listings</a>
+      <a class="text-sm font-semibold hover:text-primary transition-colors" href="/vehicles" style="color:#42493e;text-decoration:none;">Vehicles</a>
       <a class="text-sm font-semibold hover:text-primary transition-colors" href="/how-it-works" style="color:#42493e;text-decoration:none;">How it Works</a>
       <a class="text-sm font-semibold hover:text-primary transition-colors" href="#" style="color:#42493e;text-decoration:none;">About</a>
       <a class="text-sm font-semibold hover:text-primary transition-colors" href="/support" style="color:#42493e;text-decoration:none;">Contact</a>

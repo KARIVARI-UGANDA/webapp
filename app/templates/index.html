@@ -137,7 +137,7 @@
       Karivari Uganda
     </a>
     <div class="hidden md:flex gap-6">
-      <a class="text-[14px] font-semibold no-underline border-b-2 border-[#154212] pb-1" href="/vehicles" style="color:#154212;">Browse Vehicles</a>
+      <a class="text-[14px] font-semibold no-underline border-b-2 border-[#154212] pb-1" href="/vehicles" style="color:#154212;">Vehicles</a>
       <a class="text-[14px] font-semibold no-underline transition-colors hover:text-[#154212]" href="/how-it-works" style="color:#42493e;">How It Works</a>
       <a class="text-[14px] font-semibold no-underline transition-colors hover:text-[#154212]" href="/about" style="color:#42493e;">About</a>
       <a class="text-[14px] font-semibold no-underline transition-colors hover:text-[#154212]" href="/support" style="color:#42493e;">Contact</a>
@@ -172,11 +172,9 @@
         </div>
 
         <!-- Dynamic search card -->
-        <div id="searchCard" style="background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-radius:1.25rem;padding:1.5rem 1.75rem 1.25rem;box-shadow:0 24px 48px rgba(0,0,0,0.22);max-width:860px;margin-inline:auto;">
-
+        <div id="searchCard" style="background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-radius:1.25rem;padding:1.25rem 1.5rem;box-shadow:0 24px 48px rgba(0,0,0,0.22);max-width:820px;margin-inline:auto;">
           <form id="searchForm">
-            <!-- Row 1: primary filters -->
-            <div class="d-flex flex-wrap gap-3 align-items-end mb-3">
+            <div class="d-flex flex-wrap gap-3 align-items-end">
 
               <!-- Location -->
               <div style="flex:2 1 180px;">
@@ -193,39 +191,6 @@
                   <option value="Sipi Falls"><option value="Murchison Falls">
                 </datalist>
               </div>
-
-              <!-- Pick-up date -->
-              <div style="flex:1 1 130px;">
-                <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
-                  <i class="bi bi-calendar-event me-1" style="color:#2D5A27;"></i>Pick-up
-                </label>
-                <input id="searchStartDate" type="date" class="form-control"
-                  style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.95rem;">
-              </div>
-
-              <!-- Return date -->
-              <div style="flex:1 1 130px;">
-                <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
-                  <i class="bi bi-calendar-check me-1" style="color:#2D5A27;"></i>Return
-                </label>
-                <input id="searchEndDate" type="date" class="form-control"
-                  style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.95rem;">
-              </div>
-
-              <!-- Search button -->
-              <div style="flex:0 0 auto;">
-                <button type="submit" class="btn fw-bold d-flex align-items-center gap-2"
-                  style="background:#2D5A27;color:white;border-radius:0.5rem;padding:0.56rem 1.4rem;font-size:0.95rem;white-space:nowrap;height:38px;">
-                  <i class="bi bi-search"></i> Search
-                </button>
-              </div>
-            </div>
-
-            <!-- Divider -->
-            <div style="border-top:1px solid #e8e8ea;margin:0 -0.25rem 0.85rem;"></div>
-
-            <!-- Row 2: secondary filters -->
-            <div class="d-flex flex-wrap gap-3 align-items-end">
 
               <!-- Vehicle type -->
               <div style="flex:1 1 140px;">
@@ -256,46 +221,11 @@
                 </select>
               </div>
 
-              <!-- Max price / day -->
-              <div style="flex:1 1 150px;">
-                <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
-                  <i class="bi bi-tag-fill me-1" style="color:#2D5A27;"></i>Max price/day
-                </label>
-                <div style="position:relative;">
-                  <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:#72796e;pointer-events:none;">$</span>
-                  <input id="searchMaxPrice" type="number" min="0" step="10" placeholder="Any"
-                    class="form-control" style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.9rem;padding-left:22px;">
-                </div>
-              </div>
-
-              <!-- Transmission -->
-              <div style="flex:0 1 130px;">
-                <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
-                  <i class="bi bi-gear-fill me-1" style="color:#2D5A27;"></i>Transmission
-                </label>
-                <select id="searchTransmission" class="form-select" style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.9rem;">
-                  <option value="">Any</option>
-                  <option value="automatic">Automatic</option>
-                  <option value="manual">Manual</option>
-                </select>
-              </div>
-
-              <!-- Feature toggles -->
-              <div style="flex:0 0 auto;" class="d-flex gap-2 align-items-center pb-1">
-                <button type="button" id="toggle4wd" onclick="toggleFeature('4wd', this)"
-                  class="btn btn-sm fw-semibold d-flex align-items-center gap-1"
-                  style="border:1px solid #c2c9bb;border-radius:2rem;font-size:12px;padding:5px 12px;color:#42493e;background:white;white-space:nowrap;">
-                  <i class="bi bi-tsunami"></i> 4WD
-                </button>
-                <button type="button" id="toggleAc" onclick="toggleFeature('ac', this)"
-                  class="btn btn-sm fw-semibold d-flex align-items-center gap-1"
-                  style="border:1px solid #c2c9bb;border-radius:2rem;font-size:12px;padding:5px 12px;color:#42493e;background:white;white-space:nowrap;">
-                  <i class="bi bi-wind"></i> A/C
-                </button>
-                <button type="button" id="toggleRoof" onclick="toggleFeature('roof', this)"
-                  class="btn btn-sm fw-semibold d-flex align-items-center gap-1"
-                  style="border:1px solid #c2c9bb;border-radius:2rem;font-size:12px;padding:5px 12px;color:#42493e;background:white;white-space:nowrap;">
-                  <i class="bi bi-camera"></i> Open Roof
+              <!-- Search button -->
+              <div style="flex:0 0 auto;">
+                <button type="submit" class="btn fw-bold d-flex align-items-center gap-2"
+                  style="background:#2D5A27;color:white;border-radius:0.5rem;padding:0.56rem 1.4rem;font-size:0.95rem;white-space:nowrap;height:38px;">
+                  <i class="bi bi-search"></i> Search
                 </button>
               </div>
             </div>

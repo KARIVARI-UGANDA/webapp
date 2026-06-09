@@ -2,6 +2,13 @@
 <html class="light" lang="en">
 <head>
     <meta charset="utf-8"/>
+<script>
+  function redirectToLogin() {
+    sessionStorage.setItem('returnTo', window.location.href);
+    window.location.replace('/login');
+  }
+  if (!localStorage.getItem('access_token')) { redirectToLogin(); }
+</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
 <link rel="icon" type="image/png" href="/static/images/favicon.png">
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -85,7 +92,7 @@
       Kari Vari Uganda
     </a>
     <div class="hidden md:flex gap-6">
-      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors" href="/vehicles" style="color:#42493e;text-decoration:none;">Listings</a>
+      <a class="font-label-lg text-label-lg hover:text-secondary transition-colors" href="/vehicles" style="color:#42493e;text-decoration:none;">Vehicles</a>
       <a class="font-label-lg text-label-lg hover:text-secondary transition-colors" href="/how-it-works" style="color:#42493e;text-decoration:none;">How it Works</a>
       <a class="font-label-lg text-label-lg hover:text-secondary transition-colors" href="#" style="color:#42493e;text-decoration:none;">About</a>
       <a class="font-label-lg text-label-lg hover:text-secondary transition-colors" href="/support" style="color:#42493e;text-decoration:none;">Contact</a>

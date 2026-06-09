@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Literal, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
@@ -19,7 +19,7 @@ def _now():
 
 
 class KYCSubmit(BaseModel):
-    document_type: str          # passport | national_id | driving_licence
+    document_type: Literal["passport", "national_id", "driving_licence"]
     document_number: str
     document_front_url: str
     document_back_url: Optional[str] = None
