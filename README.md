@@ -119,7 +119,8 @@ Codespaces gives you a zero-setup Python 3.11 environment with automatic port fo
 ### Option 3 — Docker
 
 ```bash
-docker build -t karivari-webapp . && docker run --rm -p 8000:8000 karivari-webapp
+docker build -t karivari-webapp .
+docker run --env-file .env --rm -p 8000:8000 karivari-webapp
 ```
 
 ---

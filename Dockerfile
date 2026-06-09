@@ -21,3 +21,5 @@ COPY . .
 EXPOSE 8000
 
 CMD ["python", "run.py"]
+
+# Run with: docker run --env-file .env --rm -p 8000:8000 karivari-webapp
