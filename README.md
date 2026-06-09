@@ -348,7 +348,7 @@ docker build -t karivari-webapp .
 
 ---
 
-## 📞 Support
+## 📞 Support.
 
 - **API reference** — `/api/docs` (running locally) or the live demo URL
 - **Bug reports** — Open a GitHub issue
