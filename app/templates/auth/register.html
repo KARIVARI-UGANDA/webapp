@@ -52,11 +52,20 @@
         <div id="registerAlert" class="alert-message" style="display: none;"></div>
 
         <form id="registerTravelerForm" method="post" novalidate>
-          <div class="input-group">
-            <label class="input-label" for="full_name">Full Name</label>
-            <div class="input-icon-wrap">
-              <span class="material-symbols-outlined field-icon">person</span>
-              <input type="text" id="full_name" name="full_name" class="form-input has-icon" placeholder="John Doe" required>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="input-group">
+              <label class="input-label" for="first_name">First Name</label>
+              <div class="input-icon-wrap">
+                <span class="material-symbols-outlined field-icon">person</span>
+                <input type="text" id="first_name" name="first_name" class="form-input has-icon" placeholder="John" required autocomplete="given-name">
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="last_name">Last Name</label>
+              <div class="input-icon-wrap">
+                <span class="material-symbols-outlined field-icon">person</span>
+                <input type="text" id="last_name" name="last_name" class="form-input has-icon" placeholder="Doe" required autocomplete="family-name">
+              </div>
             </div>
           </div>
           <div class="input-group">

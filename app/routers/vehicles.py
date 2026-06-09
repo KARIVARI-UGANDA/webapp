@@ -1,9 +1,9 @@
-import os
 import uuid
 from datetime import datetime, timezone
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
+from fastapi.responses import Response
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -24,7 +24,6 @@ router = APIRouter(prefix="/vehicles", tags=["vehicles"])
 _owner_or_admin = require_role("owner", "admin")
 _any_auth = get_current_user
 
-UPLOAD_DIR = "uploads/vehicles"
 MAX_PHOTO_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB
 MAX_PHOTOS_PER_VEHICLE = 8
 ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/png", "image/webp"}
@@ -237,7 +236,7 @@ async def upload_photos(
     current_user=Depends(_owner_or_admin),
     db: Session = Depends(get_db),
 ):
-    v = _get_own_vehicle(vehicle_id, current_user, db)
+    _get_own_vehicle(vehicle_id, current_user, db)
 
     existing_count = db.query(VehiclePhoto).filter(VehiclePhoto.vehicle_id == vehicle_id).count()
     if existing_count + len(files) > MAX_PHOTOS_PER_VEHICLE:
@@ -246,14 +245,10 @@ async def upload_photos(
             detail=f"Max {MAX_PHOTOS_PER_VEHICLE} photos allowed. Vehicle already has {existing_count}.",
         )
 
-    dest_dir = os.path.join(UPLOAD_DIR, vehicle_id)
-    os.makedirs(dest_dir, exist_ok=True)
-
     saved: list[VehiclePhoto] = []
     now = datetime.now(timezone.utc).replace(tzinfo=None)
 
     for f in files:
-        # Content-type check
         content_type = f.content_type or ""
         if content_type not in ALLOWED_CONTENT_TYPES:
             raise HTTPException(
@@ -265,18 +260,14 @@ async def upload_photos(
         if len(data) > MAX_PHOTO_SIZE_BYTES:
             raise HTTPException(status_code=400, detail=f"File '{f.filename}' exceeds 10 MB limit")
 
-        ext = content_type.split("/")[-1].replace("jpeg", "jpg")
-        safe_name = f"{uuid.uuid4()}.{ext}"
-        dest_path = os.path.join(dest_dir, safe_name)
-
-        with open(dest_path, "wb") as fh:
-            fh.write(data)
-
+        photo_id = str(uuid.uuid4())
         is_primary = existing_count == 0 and len(saved) == 0
         photo = VehiclePhoto(
-            id=str(uuid.uuid4()),
+            id=photo_id,
             vehicle_id=vehicle_id,
-            photo_url=f"/uploads/vehicles/{vehicle_id}/{safe_name}",
+            photo_url=f"/api/vehicles/{vehicle_id}/photos/{photo_id}/image",
+            photo_data=data,
+            content_type=content_type,
             photo_type="exterior",
             is_primary=is_primary,
             sort_order=existing_count + len(saved),
@@ -295,6 +286,26 @@ async def upload_photos(
 # Photo management
 # ---------------------------------------------------------------------------
 
+@router.get("/{vehicle_id}/photos/{photo_id}/image")
+def serve_photo(
+    vehicle_id: str,
+    photo_id: str,
+    db: Session = Depends(get_db),
+):
+    """Serve a vehicle photo directly from the database."""
+    photo = db.query(VehiclePhoto).filter(
+        VehiclePhoto.id == photo_id,
+        VehiclePhoto.vehicle_id == vehicle_id,
+    ).first()
+    if not photo or not photo.photo_data:
+        raise HTTPException(status_code=404, detail="Photo not found")
+    return Response(
+        content=photo.photo_data,
+        media_type=photo.content_type or "image/jpeg",
+        headers={"Cache-Control": "public, max-age=31536000, immutable"},
+    )
+
+
 @router.delete("/{vehicle_id}/photos/{photo_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_photo(
     vehicle_id: str,
@@ -309,10 +320,6 @@ def delete_photo(
     ).first()
     if not photo:
         raise HTTPException(status_code=404, detail="Photo not found")
-
-    disk_path = photo.photo_url.lstrip("/")
-    if os.path.exists(disk_path):
-        os.remove(disk_path)
 
     db.delete(photo)
     db.commit()

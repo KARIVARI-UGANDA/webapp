@@ -117,28 +117,28 @@
   </div>
 
   <!-- Nav -->
-  <nav class="flex-1 space-y-1">
-    <a class="flex items-center space-x-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all" href="/dashboard">
+  <nav class="flex-1 space-y-1 sidebar-nav" id="customerSidebarNav">
+    <a class="sidebar-link flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/dashboard">
       <span class="material-symbols-outlined">dashboard</span>
       <span class="font-label-lg text-label-lg">Dashboard</span>
     </a>
-    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/vehicles">
+    <a class="sidebar-link flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/vehicles">
       <span class="material-symbols-outlined">directions_car</span>
       <span class="font-label-lg text-label-lg">Browse Cars</span>
     </a>
-    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/my-bookings">
+    <a class="sidebar-link flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/my-bookings">
       <span class="material-symbols-outlined">calendar_month</span>
       <span class="font-label-lg text-label-lg">My Bookings</span>
     </a>
-    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/my-payments">
+    <a class="sidebar-link flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/my-payments">
       <span class="material-symbols-outlined">payments</span>
       <span class="font-label-lg text-label-lg">Payments</span>
     </a>
-    <a class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/support">
+    <a class="sidebar-link flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg" href="/support">
       <span class="material-symbols-outlined">contact_support</span>
       <span class="font-label-lg text-label-lg">Support</span>
     </a>
-    <a id="navSettings" class="flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg cursor-pointer"
+    <a id="navSettings" class="sidebar-link flex items-center space-x-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all rounded-lg cursor-pointer"
        onclick="showCustSection('settings')">
       <span class="material-symbols-outlined">settings</span>
       <span class="font-label-lg text-label-lg">Settings</span>
@@ -939,6 +939,7 @@ function showCustSection(name) {
 // Run dashboard load and settings pre-fetch in parallel
 Promise.allSettled([loadDashboard(), spLoadSettings()]);
 </script>
+<script src="/static/js/nav-active.js"></script>
     <script src="//code.tidio.co/z2re40p08rwgmv2hiwlvw8ymzkzacmxb.js" async></script>
 </body>
 </html>

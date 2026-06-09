@@ -87,6 +87,26 @@
   </style>
 </head>
 <body class="bg-background text-on-surface selection:bg-ugandan-sun selection:text-slate-dark">
+
+<!-- Navbar -->
+<header class="sticky top-0 w-full z-50 bg-surface/90 backdrop-blur-md shadow-sm">
+  <nav class="flex justify-between items-center px-4 md:px-12 py-4 max-w-[1280px] mx-auto">
+    <a href="/" class="flex items-center gap-2 font-headline-md text-headline-md font-bold no-underline" style="color:#2D5A27;text-decoration:none;">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+      Kari Vari Uganda
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/owner/how-it-works" class="nav-link font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors no-underline">How It Works</a>
+      <a href="/about"              class="nav-link font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors no-underline">About</a>
+      <a href="/support"            class="nav-link font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors no-underline">Contact</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="/owner/login"     class="nav-link px-5 py-2 rounded-lg font-label-lg text-label-lg font-bold bg-ugandan-sun text-slate-dark hover:shadow-md transition-all no-underline">Sign In</a>
+      <a href="/owner/register"  class="nav-link px-5 py-2 rounded-lg font-label-lg text-label-lg font-bold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all no-underline">Register</a>
+    </div>
+  </nav>
+</header>
+
 <main class="min-h-screen flex flex-col md:flex-row">
 
   <!-- ── Left Hero Panel ── -->
@@ -170,9 +190,9 @@
         </div>
 
         <button type="submit"
-                class="w-full py-4 bg-ugandan-sun text-slate-dark font-headline-md text-headline-md rounded-xl shadow-lg hover:shadow-xl hover:bg-secondary-fixed-dim transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                class="w-full py-2.5 bg-ugandan-sun text-slate-dark font-label-lg text-label-lg rounded-xl shadow-md hover:shadow-lg hover:bg-secondary-fixed-dim transition-all active:scale-[0.98] flex items-center justify-center gap-2">
           Sign In to Dashboard
-          <span class="material-symbols-outlined">arrow_forward</span>
+          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
         </button>
 
       </form>
@@ -205,6 +225,7 @@
 
 <script src="/static/js/shared.js"></script>
 <script src="/static/js/owner/login.js"></script>
+<script src="/static/js/nav-active.js"></script>
 <script>
   // Dev Quick Access
   async function devSignIn(role, redirect) {

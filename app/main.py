@@ -82,6 +82,11 @@ def owner_login_page(request: Request):
     return templates.TemplateResponse(request, "owner/login.html")
 
 
+@app.get("/owner/how-it-works")
+def owner_how_it_works(request: Request):
+    return templates.TemplateResponse(request, "owner/how-it-works.html")
+
+
 @app.get("/owner/register")
 def owner_register_page(request: Request):
     return templates.TemplateResponse(request, "owner/register.html")

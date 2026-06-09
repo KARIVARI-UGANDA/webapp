@@ -1,4 +1,4 @@
-from sqlalchemy import BOOLEAN, BIGINT, Column, Date, DateTime, ForeignKey, Numeric, SmallInteger, String, Text
+from sqlalchemy import BOOLEAN, BIGINT, Column, Date, DateTime, ForeignKey, LargeBinary, Numeric, SmallInteger, String, Text
 from .base import Base
 
 
@@ -61,6 +61,8 @@ class VehiclePhoto(Base):
     id = Column(String(36), primary_key=True, nullable=False)
     vehicle_id = Column(String(36), ForeignKey("vehicles.id"), nullable=False)
     photo_url = Column(Text, nullable=False)
+    photo_data = Column(LargeBinary, nullable=True)
+    content_type = Column(String(50), nullable=True)
     photo_type = Column(String, nullable=False)
     is_primary = Column(BOOLEAN, nullable=False, default=False)
     sort_order = Column(SmallInteger)

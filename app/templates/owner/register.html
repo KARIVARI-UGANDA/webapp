@@ -54,22 +54,22 @@
 <body class="bg-background font-body-md text-on-background antialiased overflow-x-hidden">
 
 <!-- Header -->
-<header class="sticky top-0 w-full z-50 flex justify-between items-center px-4 md:px-12 py-4 max-w-[1280px] mx-auto bg-surface/80 backdrop-blur-md shadow-sm transition-all duration-200">
-    <link rel="icon" type="image/png" href="/static/images/favicon.png">
-  <a href="/" class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2" style="text-decoration:none;color:inherit;">
-    <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
-    Kari Vari Uganda
-  </a>
-  <nav class="hidden md:flex gap-8">
-    <a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" href="/">Home</a>
-    <a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" href="#">How it Works</a>
-    <a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" href="#">About</a>
-    <a class="font-label-lg text-label-lg text-on-surface-variant hover:text-secondary transition-colors" href="#">Contact</a>
+<header class="sticky top-0 w-full z-50 bg-surface/90 backdrop-blur-md shadow-sm">
+  <nav class="flex justify-between items-center px-4 md:px-12 py-4 max-w-[1280px] mx-auto">
+    <a href="/" class="flex items-center gap-2 font-headline-md text-headline-md font-bold no-underline" style="color:#2D5A27;text-decoration:none;">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1;">directions_car</span>
+      Kari Vari Uganda
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/owner/how-it-works" class="nav-link font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors no-underline">How It Works</a>
+      <a href="/about"              class="nav-link font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors no-underline">About</a>
+      <a href="/support"            class="nav-link font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors no-underline">Contact</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="/owner/login"    class="nav-link px-5 py-2 rounded-lg font-label-lg text-label-lg font-bold bg-ugandan-sun text-slate-dark hover:shadow-md hover:bg-[#ffba35] transition-all no-underline">Sign In</a>
+      <a href="/owner/register" class="nav-link px-5 py-2 rounded-lg font-label-lg text-label-lg font-bold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all no-underline">Register</a>
+    </div>
   </nav>
-  <div class="flex gap-4">
-    <a href="/owner/login" class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-1">Sign In</a>
-    <a href="/register" class="px-6 py-2 bg-ugandan-sun text-slate-dark font-bold rounded-lg hover:scale-105 transition-transform">Customer Portal</a>
-  </div>
 </header>
 
 <main class="relative">
@@ -464,6 +464,7 @@
   });
 </script>
 <script src="/static/js/owner/register.js"></script>
+<script src="/static/js/nav-active.js"></script>
     <script src="//code.tidio.co/z2re40p08rwgmv2hiwlvw8ymzkzacmxb.js" async></script>
 </body>
 </html>

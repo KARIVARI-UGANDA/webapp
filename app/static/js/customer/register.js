@@ -5,7 +5,8 @@
   const alertBox = document.getElementById('registerAlert');
   const togglePasswordBtn = document.getElementById('togglePassword');
   const passwordInput = document.getElementById('password');
-  const fullNameInput = document.getElementById('full_name');
+  const firstNameInput = document.getElementById('first_name');
+  const lastNameInput  = document.getElementById('last_name');
   const emailInput = document.getElementById('email');
   const phoneInput = document.getElementById('phone_number');
   const countryCodeSelect = document.getElementById('country_code');
@@ -33,16 +34,24 @@
   async function handleRegister(event) {
     event.preventDefault();
 
-    const fullName = fullNameInput.value.trim();
+    const firstName = firstNameInput ? firstNameInput.value.trim() : '';
+    const lastName  = lastNameInput  ? lastNameInput.value.trim()  : '';
+    const fullName  = [firstName, lastName].filter(Boolean).join(' ');
     const email = emailInput.value.trim();
     const countryCode = countryCodeSelect ? countryCodeSelect.value : '+256';
     let phone = countryCode + phoneInput.value.trim();
     const password = passwordInput.value;
     const termsAccepted = termsCheckbox.checked;
 
-    if (!fullName) {
-      showAlert('Please enter your full name.', 'error');
-      fullNameInput.focus();
+    if (!firstName) {
+      showAlert('Please enter your first name.', 'error');
+      firstNameInput.focus();
+      return;
+    }
+
+    if (!lastName) {
+      showAlert('Please enter your last name.', 'error');
+      lastNameInput.focus();
       return;
     }
 
@@ -94,7 +103,7 @@
     submitBtn.disabled = true;
 
     try {
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -117,7 +126,7 @@
           window.location.href = '/login';
         }, 2000);
       } else {
-        const errorMsg = data.message || data.error || 'Registration failed. Please try again.';
+        const errorMsg = data.detail || data.message || data.error || 'Registration failed. Please try again.';
         showAlert(errorMsg, 'error');
       }
     } catch (error) {
