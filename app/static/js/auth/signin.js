@@ -102,7 +102,8 @@
           owner:    '/owner/dashboard',
           admin:    '/admin/dashboard',
         };
-        const returnTo = sessionStorage.getItem('returnTo');
+        const nextParam = new URLSearchParams(window.location.search).get('next');
+        const returnTo  = nextParam || sessionStorage.getItem('returnTo');
         sessionStorage.removeItem('returnTo');
         setTimeout(() => {
           window.location.href = returnTo || roleDefaults[data.role] || '/';

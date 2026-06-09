@@ -702,6 +702,104 @@ def analytics_funnel(current_user=Depends(_admin), db: Session = Depends(get_db)
     }
 
 
+# ---------------------------------------------------------------------------
+# Payments & Commissions
+# ---------------------------------------------------------------------------
+
+@router.get("/payments")
+def list_payments(
+    status_filter: Optional[str] = Query(None, alias="status"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    q = db.query(Payment)
+    if status_filter:
+        q = q.filter(Payment.status == status_filter)
+    total = q.count()
+    payments = q.order_by(Payment.created_at.desc()).offset((page - 1) * page_size).limit(page_size).all()
+
+    result = []
+    for p in payments:
+        booking = db.query(Booking).filter(Booking.id == p.booking_id).first()
+        customer = db.query(User).filter(User.id == booking.customer_id).first() if booking else None
+        commission = db.query(Commission).filter(Commission.booking_id == p.booking_id).first() if booking else None
+        result.append({
+            "id": p.id,
+            "booking_id": p.booking_id,
+            "booking_reference": booking.booking_reference if booking else None,
+            "customer_name": customer.full_name if customer else None,
+            "amount_usd": float(p.amount_usd) if p.amount_usd else None,
+            "amount_ugx": float(p.amount_ugx) if p.amount_ugx else None,
+            "currency": p.currency,
+            "method": p.payment_method,
+            "status": p.status,
+            "platform_fee_usd": float(commission.platform_fee_usd) if commission and commission.platform_fee_usd else None,
+            "owner_payout_ugx": float(commission.owner_payout_ugx) if commission and commission.owner_payout_ugx else None,
+            "created_at": p.created_at,
+        })
+    return {"total": total, "page": page, "page_size": page_size, "payments": result}
+
+
+@router.get("/payments/summary")
+def payments_summary(current_user=Depends(_admin), db: Session = Depends(get_db)):
+    from sqlalchemy import func
+    total_collected = db.query(func.sum(Payment.amount_usd)).filter(Payment.status == "completed").scalar() or 0
+    total_pending   = db.query(func.count(Payment.id)).filter(Payment.status == "pending").scalar() or 0
+    total_failed    = db.query(func.count(Payment.id)).filter(Payment.status == "failed").scalar() or 0
+    total_completed = db.query(func.count(Payment.id)).filter(Payment.status == "completed").scalar() or 0
+    platform_fees   = db.query(func.sum(Commission.platform_fee_usd)).scalar() or 0
+    owner_payouts   = db.query(func.sum(Commission.owner_payout_ugx)).scalar() or 0
+    return {
+        "total_collected_usd": float(total_collected),
+        "total_pending": int(total_pending),
+        "total_failed": int(total_failed),
+        "total_completed": int(total_completed),
+        "platform_fees_usd": float(platform_fees),
+        "owner_payouts_ugx": float(owner_payouts),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Vehicle Inspections (all statuses, for inspection queue)
+# ---------------------------------------------------------------------------
+
+@router.get("/inspections")
+def list_inspections(
+    status_filter: Optional[str] = Query(None, alias="status"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    current_user=Depends(_admin),
+    db: Session = Depends(get_db),
+):
+    q = db.query(Vehicle)
+    if status_filter:
+        q = q.filter(Vehicle.status == status_filter)
+    else:
+        q = q.filter(Vehicle.status.in_(["pending", "pending_review"]))
+    total    = q.count()
+    vehicles = q.order_by(Vehicle.created_at.desc()).offset((page - 1) * page_size).limit(page_size).all()
+
+    result = []
+    for v in vehicles:
+        owner = db.query(User).filter(User.id == v.owner_id).first()
+        result.append({
+            "id": v.id,
+            "make": v.make,
+            "model": v.model,
+            "year": v.year,
+            "registration_plate": v.registration_plate,
+            "vehicle_type": v.vehicle_type,
+            "status": v.status,
+            "owner_name": owner.full_name if owner else None,
+            "owner_email": owner.email if owner else None,
+            "rejection_reason": v.rejection_reason,
+            "created_at": v.created_at,
+        })
+    return {"total": total, "page": page, "page_size": page_size, "vehicles": result}
+
+
 @router.get("/analytics/customer-segments")
 def analytics_customer_segments(current_user=Depends(_admin), db: Session = Depends(get_db)):
     from sqlalchemy import func

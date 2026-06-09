@@ -6,77 +6,102 @@ function convertPrice(ugx, currency) {
 	return (ugx / rate).toFixed(2);
 }
 
+function toTitle(str) {
+	if (!str) return '';
+	return str.replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function buildVehicleCardHTML(v, sym, price) {
+	const primaryPhoto = v.photos && v.photos.length > 0
+		? (v.photos.find(p => p.is_primary) || v.photos[0])
+		: null;
+	const imgSrc = primaryPhoto
+		? primaryPhoto.photo_url
+		: 'https://via.placeholder.com/600x300?text=' + encodeURIComponent(v.make + ' ' + v.model);
+
+	const chip = (icon, label) =>
+		`<span class="inline-flex items-center gap-1 text-[13px] font-medium text-on-surface-variant">
+			<span class="material-symbols-outlined text-[15px] text-safari-green" style="font-variation-settings:'FILL' 0;">` + icon + `</span>` + label + `</span>`;
+
+	const features = [
+		chip('person',           `<strong>${v.passenger_capacity}</strong> Seats`),
+		chip('settings',         `<strong>${toTitle(v.transmission)}</strong>`),
+		chip('local_gas_station',`<strong>${toTitle(v.fuel_type)}</strong>`),
+		v.has_ac   ? chip('ac_unit', 'A/C')  : '',
+		v.has_wifi ? chip('wifi',    'WiFi') : '',
+		v.is_4wd   ? chip('terrain', '4WD')  : '',
+	].filter(Boolean).join('');
+
+	const statusBadge = v.status === 'verified'
+		? `<span class="bg-safari-green text-white text-[10px] font-bold px-3 py-1 rounded-full inline-flex items-center gap-1 uppercase tracking-wider shadow-sm">
+		     <span class="material-symbols-outlined text-[12px]" style="font-variation-settings:'FILL' 1;">verified</span>Verified
+		   </span>`
+		: `<span class="bg-status-pending text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">Under Review</span>`;
+
+	const availBadge = v.status === 'verified'
+		? `<span class="bg-white/95 text-safari-green text-[10px] font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5 uppercase tracking-wider shadow-sm">
+		     <span class="relative flex h-2 w-2 flex-shrink-0">
+		       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success opacity-75"></span>
+		       <span class="relative inline-flex rounded-full h-2 w-2 bg-status-success"></span>
+		     </span>Available
+		   </span>`
+		: '';
+
+	const type    = toTitle(v.vehicle_type  || '');
+	const area    = toTitle(v.service_area  || 'Uganda');
+	const year    = v.year || '';
+
+	return `
+	<div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.06)] overflow-hidden group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+		<div class="relative h-56 overflow-hidden flex-shrink-0">
+			<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+			     src="${imgSrc}" alt="${v.make} ${v.model}" loading="lazy">
+			<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+			<div class="absolute top-3 left-3">${statusBadge}</div>
+			${availBadge ? `<div class="absolute bottom-3 right-3">${availBadge}</div>` : ''}
+		</div>
+		<div class="p-5 flex flex-col flex-1">
+			<div class="mb-3">
+				<h3 class="font-headline-md text-headline-md text-on-surface font-bold leading-tight">${v.make} ${v.model}</h3>
+				<p class="text-on-surface-variant text-[13px] mt-1">
+					<span class="font-semibold">${year}</span>
+					<span class="mx-1 text-outline-variant">·</span>${type}
+					<span class="mx-1 text-outline-variant">·</span>${area}
+				</p>
+			</div>
+			<div class="flex flex-wrap gap-x-4 gap-y-2 mb-4">${features}</div>
+			<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30 mt-auto">
+				<div class="leading-none">
+					<span class="text-[22px] font-bold text-primary">${sym}${price}</span>
+					<span class="text-[13px] text-on-surface-variant font-medium"> / day</span>
+				</div>
+				<a href="/vehicles/${v.id}"
+				   class="border-2 border-primary text-primary px-5 py-2 rounded-xl text-[13px] font-bold hover:bg-primary hover:text-white transition-all"
+				   style="text-decoration:none;">View Details</a>
+			</div>
+		</div>
+	</div>`;
+}
+
 function renderVehicleCards(vehicles, currency) {
 	const vehicleContainer = document.getElementById('vehicleCardsContainer');
 	if (!vehicleContainer) return;
 
 	if (vehicles.length === 0) {
 		vehicleContainer.innerHTML = `
-			<div class="col-span-3 text-center py-12">
-				<span class="material-symbols-outlined text-[48px] mb-3 d-block" style="color:#c2c9bb;">search_off</span>
-				<p class="fw-semibold mb-1" style="color:#42493e;">No vehicles match your search</p>
-				<p class="small text-secondary mb-3">Try adjusting your filters or clearing the search.</p>
-				<button onclick="clearSearch()" class="btn btn-sm" style="background:#2D5A27;color:white;">Clear filters</button>
+			<div class="col-span-3 text-center py-16 text-on-surface-variant">
+				<span class="material-symbols-outlined text-[48px] mb-3 block" style="color:#c2c9bb;">search_off</span>
+				<p class="font-semibold mb-1" style="color:#42493e;">No vehicles match your search</p>
+				<p class="text-sm mb-3">Try adjusting your filters or clearing the search.</p>
+				<button onclick="clearSearch()" class="px-5 py-2 rounded-xl text-white text-sm font-bold" style="background:#2D5A27;">Clear filters</button>
 			</div>`;
 		return;
 	}
 
 	const sym = SYMBOLS[currency] || '$';
-
 	vehicleContainer.innerHTML = vehicles.map(v => {
-		const primaryPhoto = v.photos && v.photos.length > 0
-			? (v.photos.find(p => p.is_primary) || v.photos[0])
-			: null;
-		const imgSrc = primaryPhoto
-			? primaryPhoto.photo_url
-			: 'https://via.placeholder.com/600x300?text=' + encodeURIComponent(v.make + ' ' + v.model);
 		const price = convertPrice(v.base_daily_rate_ugx, currency);
-
-		const features = [
-			`<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> ${v.passenger_capacity} Seats</span>`,
-			`<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">settings</span> ${v.transmission}</span>`,
-			`<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">local_gas_station</span> ${v.fuel_type}</span>`,
-			v.has_ac   ? `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">ac_unit</span> A/C</span>` : '',
-			v.has_wifi ? `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">wifi</span> WiFi</span>` : '',
-			v.is_4wd   ? `<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">terrain</span> 4WD</span>` : '',
-		].filter(Boolean).join('');
-
-		const statusBadge = v.status === 'verified'
-			? `<span class="bg-safari-green text-white text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1 uppercase tracking-wider backdrop-blur-sm">
-			     <span class="material-symbols-outlined text-[12px]" style="font-variation-settings:'FILL' 1;">verified</span>Verified
-			   </span>`
-			: `<span class="bg-status-pending text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Under Review</span>`;
-		const availBadge = v.status === 'verified'
-			? `<span class="bg-white/90 text-safari-green text-[10px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 uppercase tracking-wider">
-			     <span class="relative flex h-2 w-2 flex-shrink-0"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-status-success"></span></span>Available
-			   </span>`
-			: '';
-
-		return `
-		<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] overflow-hidden group hover:shadow-xl transition-all duration-300">
-			<div class="relative h-64 overflow-hidden">
-				<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-				     src="${imgSrc}" alt="${v.make} ${v.model}">
-				<div class="absolute top-4 left-4">${statusBadge}</div>
-				${availBadge ? `<div class="absolute bottom-4 right-4">${availBadge}</div>` : ''}
-			</div>
-			<div class="p-6">
-				<div class="flex justify-between items-start mb-2">
-					<div>
-						<h3 class="font-headline-md text-headline-md text-on-surface">${v.make} ${v.model}</h3>
-						<p class="text-on-surface-variant font-label-sm text-label-sm mt-0.5">${v.year} · ${v.vehicle_type} · ${v.service_area || 'Uganda'}</p>
-					</div>
-				</div>
-				<div class="flex flex-wrap gap-4 mb-6 text-on-surface-variant font-label-sm text-label-sm">${features}</div>
-				<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
-					<div>
-						<span class="font-headline-md text-headline-md text-safari-green">${sym}${price}</span>
-						<span class="font-body-md text-body-md text-on-surface-variant">/ day</span>
-					</div>
-					<a href="/vehicles/${v.id}" class="bg-safari-green text-white px-6 py-2 rounded-lg font-label-lg text-label-lg font-bold hover:brightness-110 transition-all" style="text-decoration:none;">View Details</a>
-				</div>
-			</div>
-		</div>`;
+		return buildVehicleCardHTML(v, sym, price);
 	}).join('');
 }
 

@@ -752,6 +752,145 @@
   </div>
 </div><!-- /section-support -->
 
+<!-- ═══════ SECTION: Payments & Commissions ═══════ -->
+<div id="section-payments" style="display:none" class="p-[48px]">
+  <div class="max-w-[1200px] mx-auto space-y-6">
+
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="font-headline-lg text-headline-lg text-primary">Payments &amp; Commissions</h2>
+        <p class="text-on-surface-variant font-label-sm text-label-sm mt-1">All platform payments, fees collected, and owner payouts</p>
+      </div>
+    </div>
+
+    <!-- KPI cards -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div class="col-span-2 bg-surface-container-lowest rounded-2xl p-5 border-l-4 border-safari-green border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Total Collected</p>
+        <p class="font-headline-md text-headline-md text-safari-green" id="pm-statCollected">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Completed</p>
+        <p class="font-headline-md text-headline-md text-safari-green" id="pm-statCompleted">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Pending</p>
+        <p class="font-headline-md text-headline-md text-ugandan-sun" id="pm-statPending">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Platform Fees</p>
+        <p class="font-headline-md text-headline-md text-primary" id="pm-statFees">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Failed</p>
+        <p class="font-headline-md text-headline-md text-error" id="pm-statFailed">—</p>
+      </div>
+    </div>
+
+    <!-- Status filter tabs -->
+    <div class="flex gap-2 flex-wrap">
+      <button onclick="pmSetFilter(null)"          id="pm-filter-all"       class="pm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white">All</button>
+      <button onclick="pmSetFilter('completed')"   id="pm-filter-completed" class="pm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Completed</button>
+      <button onclick="pmSetFilter('pending')"     id="pm-filter-pending"   class="pm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Pending</button>
+      <button onclick="pmSetFilter('failed')"      id="pm-filter-failed"    class="pm-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Failed</button>
+    </div>
+
+    <!-- Payments table -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+            <tr>
+              <th class="px-5 py-3 rounded-l-lg">Booking Ref</th>
+              <th class="px-5 py-3">Customer</th>
+              <th class="px-5 py-3">Amount</th>
+              <th class="px-5 py-3">Method</th>
+              <th class="px-5 py-3">Platform Fee</th>
+              <th class="px-5 py-3">Owner Payout</th>
+              <th class="px-5 py-3">Status</th>
+              <th class="px-5 py-3 rounded-r-lg">Date</th>
+            </tr>
+          </thead>
+          <tbody id="pm-tableBody" class="divide-y divide-surface-variant/10">
+            <tr><td colspan="8" class="px-4 py-16 text-center text-on-surface-variant">
+              <span class="material-symbols-outlined animate-spin text-[32px] text-outline">progress_activity</span>
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="pm-pagination" class="px-5 py-4 border-t border-outline-variant/20 flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"></div>
+    </div>
+
+  </div>
+</div><!-- /section-payments -->
+
+<!-- ═══════ SECTION: Vehicle Inspections ═══════ -->
+<div id="section-verifications" style="display:none" class="p-[48px]">
+  <div class="max-w-[1200px] mx-auto space-y-6">
+
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="font-headline-lg text-headline-lg text-primary">Vehicle Inspections</h2>
+        <p class="text-on-surface-variant font-label-sm text-label-sm mt-1">Review and approve vehicle submissions from owner-drivers</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border-l-4 border-ugandan-sun border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Awaiting Review</p>
+        <p class="font-headline-md text-headline-md text-ugandan-sun" id="vi-statPending">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Approved Today</p>
+        <p class="font-headline-md text-headline-md text-safari-green" id="vi-statApproved">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Rejected</p>
+        <p class="font-headline-md text-headline-md text-error" id="vi-statRejected">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Total Verified</p>
+        <p class="font-headline-md text-headline-md text-primary" id="vi-statVerified">—</p>
+      </div>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="flex gap-2 flex-wrap">
+      <button onclick="viSetFilter(null)"        id="vi-filter-all"      class="vi-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white">Pending</button>
+      <button onclick="viSetFilter('verified')"  id="vi-filter-verified" class="vi-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Approved</button>
+      <button onclick="viSetFilter('rejected')"  id="vi-filter-rejected" class="vi-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Rejected</button>
+    </div>
+
+    <!-- Inspections table -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+            <tr>
+              <th class="px-5 py-3 rounded-l-lg">Vehicle</th>
+              <th class="px-5 py-3">Registration</th>
+              <th class="px-5 py-3">Owner</th>
+              <th class="px-5 py-3">Type</th>
+              <th class="px-5 py-3">Year</th>
+              <th class="px-5 py-3">Status</th>
+              <th class="px-5 py-3">Submitted</th>
+              <th class="px-5 py-3 rounded-r-lg">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="vi-tableBody" class="divide-y divide-surface-variant/10">
+            <tr><td colspan="8" class="px-4 py-16 text-center text-on-surface-variant">
+              <span class="material-symbols-outlined animate-spin text-[32px] text-outline">progress_activity</span>
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="vi-pagination" class="px-5 py-4 border-t border-outline-variant/20 flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"></div>
+    </div>
+
+  </div>
+</div><!-- /section-verifications -->
+
 <!-- Override Status Modal -->
 <div id="bm-overrideModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" style="background:rgba(0,0,0,.5);">
   <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-5">
@@ -817,6 +956,8 @@ let _bmLoaded = false;
 let _anLoaded = false;
 let _vmLoaded = false;
 let _spLoaded = false;
+let _pmLoaded = false;
+let _viLoaded = false;
 
 const ALL_SECTIONS = ['overview','users','bookings','analytics','vehicles','payments','verifications','support'];
 
@@ -834,13 +975,13 @@ function showAdminSection(name) {
     el.classList.toggle('text-on-surface-variant',    !active);
   });
 
-  if (name === 'users'         && !_umLoaded) { _umLoaded = true; umLoadUsers(); }
-  if (name === 'bookings'      && !_bmLoaded) { _bmLoaded = true; bmLoadStats(); bmLoadBookings(null); }
-  if (name === 'analytics'     && !_anLoaded) { _anLoaded = true; anLoad(); }
-  if (name === 'vehicles'      && !_vmLoaded) { _vmLoaded = true; vmLoad(); }
-  if (name === 'support'       && !_spLoaded) { _spLoaded = true; spLoad(); }
-  if (name === 'payments')      { showAdminSection('analytics'); return; }
-  if (name === 'verifications') { showAdminSection('bookings');  return; }
+  if (name === 'users'          && !_umLoaded) { _umLoaded = true; umLoadUsers(); }
+  if (name === 'bookings'       && !_bmLoaded) { _bmLoaded = true; bmLoadStats(); bmLoadBookings(null); }
+  if (name === 'analytics'      && !_anLoaded) { _anLoaded = true; anLoad(); }
+  if (name === 'vehicles'       && !_vmLoaded) { _vmLoaded = true; vmLoad(); }
+  if (name === 'support'        && !_spLoaded) { _spLoaded = true; spLoad(); }
+  if (name === 'payments'       && !_pmLoaded) { _pmLoaded = true; pmLoad(); }
+  if (name === 'verifications'  && !_viLoaded) { _viLoaded = true; viLoad(); }
 }
 
 // ── Vehicle Management ────────────────────────────────────────────────────────
@@ -995,6 +1136,231 @@ function spSetFilter(f) {
     b.classList.add(...(active ? ['bg-primary','text-white'] : ['bg-surface-container','text-on-surface-variant']));
   });
   spRenderPlaceholder();
+}
+
+// ── Payments & Commissions ────────────────────────────────────────────────────
+let _pmFilter = null;
+let _pmPage   = 1;
+const PM_PAGE_SIZE = 20;
+
+const pmStatusBadge = {
+  completed: 'bg-safari-green/10 text-safari-green',
+  pending:   'bg-ugandan-sun/10 text-ugandan-sun',
+  failed:    'bg-error/10 text-error',
+  refunded:  'bg-outline/10 text-outline',
+};
+
+async function pmLoad() {
+  const auth = { headers: { Authorization: `Bearer ${token}` } };
+  try {
+    const res = await fetch(`${API}/admin/payments/summary`, auth);
+    if (res.ok) {
+      const s = await res.json();
+      const fmt = v => v != null ? `$${parseFloat(v).toFixed(2)}` : '—';
+      document.getElementById('pm-statCollected').textContent = fmt(s.total_collected_usd);
+      document.getElementById('pm-statCompleted').textContent = s.total_completed ?? '—';
+      document.getElementById('pm-statPending').textContent   = s.total_pending   ?? '—';
+      document.getElementById('pm-statFailed').textContent    = s.total_failed    ?? '—';
+      document.getElementById('pm-statFees').textContent      = fmt(s.platform_fees_usd);
+    }
+  } catch {}
+  pmFetchPayments();
+}
+
+async function pmFetchPayments() {
+  const auth  = { headers: { Authorization: `Bearer ${token}` } };
+  const tbody = document.getElementById('pm-tableBody');
+  tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-16 text-center text-on-surface-variant">
+    <span class="material-symbols-outlined animate-spin text-[32px] text-outline">progress_activity</span></td></tr>`;
+
+  let url = `${API}/admin/payments?page=${_pmPage}&page_size=${PM_PAGE_SIZE}`;
+  if (_pmFilter) url += `&status=${_pmFilter}`;
+
+  try {
+    const res  = await fetch(url, auth);
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const rows = data.payments || [];
+    const total = data.total || rows.length;
+
+    if (!rows.length) {
+      tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-16 text-center text-on-surface-variant font-label-lg">No payments found</td></tr>`;
+    } else {
+      tbody.innerHTML = rows.map(p => {
+        const badge = pmStatusBadge[p.status] || 'bg-surface-container text-on-surface-variant';
+        const date  = p.created_at ? new Date(p.created_at).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : '—';
+        const method = (p.method || '').replace(/_/g,' ');
+        return `
+          <tr class="hover:bg-surface-container-low transition-colors">
+            <td class="px-5 py-4 font-label-lg text-label-lg text-on-surface">${p.booking_reference ?? '—'}</td>
+            <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${p.customer_name ?? '—'}</td>
+            <td class="px-5 py-4 font-label-lg text-label-lg text-on-surface">${p.amount_usd != null ? '$'+parseFloat(p.amount_usd).toFixed(2) : '—'}</td>
+            <td class="px-5 py-4 font-label-sm text-label-sm capitalize text-on-surface-variant">${method || '—'}</td>
+            <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${p.platform_fee_usd != null ? '$'+parseFloat(p.platform_fee_usd).toFixed(2) : '—'}</td>
+            <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${p.owner_payout_ugx != null ? 'UGX '+Math.round(p.owner_payout_ugx).toLocaleString() : '—'}</td>
+            <td class="px-5 py-4"><span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm capitalize ${badge}">${p.status ?? '—'}</span></td>
+            <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${date}</td>
+          </tr>`;
+      }).join('');
+    }
+
+    const pages = Math.ceil(total / PM_PAGE_SIZE) || 1;
+    document.getElementById('pm-pagination').innerHTML = `
+      <span>${total} payment${total !== 1 ? 's' : ''}</span>
+      <div class="flex gap-2">
+        <button onclick="pmGoPage(${_pmPage-1})" ${_pmPage<=1?'disabled':''} class="px-3 py-1 rounded-lg border border-outline-variant disabled:opacity-40 hover:bg-surface-container-high">←</button>
+        <span class="px-3 py-1">Page ${_pmPage} / ${pages}</span>
+        <button onclick="pmGoPage(${_pmPage+1})" ${_pmPage>=pages?'disabled':''} class="px-3 py-1 rounded-lg border border-outline-variant disabled:opacity-40 hover:bg-surface-container-high">→</button>
+      </div>`;
+  } catch {
+    tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-12 text-center text-error font-label-lg">Failed to load payments</td></tr>`;
+  }
+}
+
+function pmSetFilter(f) {
+  _pmFilter = f; _pmPage = 1;
+  document.querySelectorAll('.pm-filter-btn').forEach(b => {
+    const active = (f === null && b.id === 'pm-filter-all') || b.id === `pm-filter-${f}`;
+    b.className = b.className.replace(/bg-primary text-white|bg-surface-container text-on-surface-variant/g,'');
+    b.classList.add(...(active ? ['bg-primary','text-white'] : ['bg-surface-container','text-on-surface-variant']));
+  });
+  pmFetchPayments();
+}
+
+function pmGoPage(p) { _pmPage = p; pmFetchPayments(); }
+
+// ── Vehicle Inspections ───────────────────────────────────────────────────────
+let _viFilter = null;
+let _viPage   = 1;
+const VI_PAGE_SIZE = 20;
+
+async function viLoad() {
+  const auth = { headers: { Authorization: `Bearer ${token}` } };
+  try {
+    const res = await fetch(`${API}/admin/stats`, auth);
+    if (res.ok) {
+      const s = await res.json();
+      document.getElementById('vi-statPending').textContent  = s.pending_verifications ?? '—';
+      document.getElementById('vi-statVerified').textContent = s.active_vehicles       ?? '—';
+    }
+  } catch {}
+  // Approved/rejected today — derive from inspections list
+  document.getElementById('vi-statApproved').textContent = '—';
+  document.getElementById('vi-statRejected').textContent = '—';
+  viFetchInspections();
+}
+
+async function viFetchInspections() {
+  const auth  = { headers: { Authorization: `Bearer ${token}` } };
+  const tbody = document.getElementById('vi-tableBody');
+  tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-16 text-center text-on-surface-variant">
+    <span class="material-symbols-outlined animate-spin text-[32px] text-outline">progress_activity</span></td></tr>`;
+
+  let url = `${API}/admin/inspections?page=${_viPage}&page_size=${VI_PAGE_SIZE}`;
+  if (_viFilter) url += `&status=${_viFilter}`;
+
+  try {
+    const res  = await fetch(url, auth);
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const rows  = data.vehicles || [];
+    const total = data.total || rows.length;
+
+    const viBadge = {
+      pending:        'bg-ugandan-sun/10 text-ugandan-sun',
+      pending_review: 'bg-ugandan-sun/10 text-ugandan-sun',
+      verified:       'bg-safari-green/10 text-safari-green',
+      rejected:       'bg-error/10 text-error',
+      suspended:      'bg-error/10 text-error',
+    };
+
+    if (!rows.length) {
+      tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-16 text-center text-on-surface-variant font-label-lg">No vehicles found for this filter</td></tr>`;
+    } else {
+      tbody.innerHTML = rows.map(v => {
+        const badge = viBadge[v.status] || 'bg-surface-container text-on-surface-variant';
+        const date  = v.created_at ? new Date(v.created_at).toLocaleDateString('en-UG',{day:'numeric',month:'short',year:'numeric'}) : '—';
+        const isPending = v.status === 'pending' || v.status === 'pending_review';
+        return `
+          <tr class="hover:bg-surface-container-low transition-colors">
+            <td class="px-5 py-4">
+              <p class="font-label-lg text-label-lg text-on-surface">${v.make ?? ''} ${v.model ?? ''}</p>
+              ${v.rejection_reason ? `<p class="font-label-sm text-label-sm text-error mt-0.5">Reason: ${v.rejection_reason}</p>` : ''}
+            </td>
+            <td class="px-5 py-4 font-label-lg text-label-lg text-on-surface">${v.registration_plate ?? '—'}</td>
+            <td class="px-5 py-4">
+              <p class="font-label-lg text-label-lg text-on-surface">${v.owner_name ?? '—'}</p>
+              <p class="font-label-sm text-label-sm text-on-surface-variant">${v.owner_email ?? ''}</p>
+            </td>
+            <td class="px-5 py-4 font-label-sm text-label-sm capitalize text-on-surface-variant">${v.vehicle_type ?? '—'}</td>
+            <td class="px-5 py-4 font-label-lg text-label-lg text-on-surface">${v.year ?? '—'}</td>
+            <td class="px-5 py-4"><span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm capitalize ${badge}">${(v.status ?? '—').replace('_',' ')}</span></td>
+            <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${date}</td>
+            <td class="px-5 py-4">
+              <div class="flex gap-2">
+                ${isPending ? `
+                  <button onclick="viApprove('${v.id}')" class="p-1.5 rounded-lg bg-safari-green/10 text-safari-green hover:bg-safari-green hover:text-white transition-all" title="Approve">
+                    <span class="material-symbols-outlined text-[18px]">check</span>
+                  </button>
+                  <button onclick="viReject('${v.id}')" class="p-1.5 rounded-lg bg-error/10 text-error hover:bg-error hover:text-white transition-all" title="Reject">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                  </button>` : ''}
+                ${v.status === 'verified' ? `
+                  <button onclick="viSuspend('${v.id}')" class="p-1.5 rounded-lg bg-error/10 text-error hover:bg-error hover:text-white transition-all" title="Suspend">
+                    <span class="material-symbols-outlined text-[18px]">block</span>
+                  </button>` : ''}
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    const pages = Math.ceil(total / VI_PAGE_SIZE) || 1;
+    document.getElementById('vi-pagination').innerHTML = `
+      <span>${total} vehicle${total !== 1 ? 's' : ''}</span>
+      <div class="flex gap-2">
+        <button onclick="viGoPage(${_viPage-1})" ${_viPage<=1?'disabled':''} class="px-3 py-1 rounded-lg border border-outline-variant disabled:opacity-40 hover:bg-surface-container-high">←</button>
+        <span class="px-3 py-1">Page ${_viPage} / ${pages}</span>
+        <button onclick="viGoPage(${_viPage+1})" ${_viPage>=pages?'disabled':''} class="px-3 py-1 rounded-lg border border-outline-variant disabled:opacity-40 hover:bg-surface-container-high">→</button>
+      </div>`;
+  } catch {
+    tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-12 text-center text-error font-label-lg">Failed to load vehicle inspections</td></tr>`;
+  }
+}
+
+function viSetFilter(f) {
+  _viFilter = f; _viPage = 1;
+  document.querySelectorAll('.vi-filter-btn').forEach(b => {
+    const active = (f === null && b.id === 'vi-filter-all') || b.id === `vi-filter-${f}`;
+    b.className = b.className.replace(/bg-primary text-white|bg-surface-container text-on-surface-variant/g,'');
+    b.classList.add(...(active ? ['bg-primary','text-white'] : ['bg-surface-container','text-on-surface-variant']));
+  });
+  viFetchInspections();
+}
+
+function viGoPage(p) { _viPage = p; viFetchInspections(); }
+
+async function viApprove(id) {
+  if (!confirm('Approve this vehicle?')) return;
+  const res = await fetch(`${API}/admin/verifications/${id}/approve`, { method:'PATCH', headers:{ Authorization:`Bearer ${token}` } });
+  if (res.ok) { _viLoaded = false; viLoad(); } else alert('Failed to approve.');
+}
+async function viReject(id) {
+  const reason = prompt('Rejection reason (required):');
+  if (!reason) return;
+  const res = await fetch(`${API}/admin/verifications/${id}/reject`, {
+    method:'PATCH', headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
+    body: JSON.stringify({ reason })
+  });
+  if (res.ok) { _viLoaded = false; viLoad(); } else alert('Failed to reject.');
+}
+async function viSuspend(id) {
+  if (!confirm('Suspend this vehicle?')) return;
+  const res = await fetch(`${API}/vehicles/${id}`, {
+    method:'PATCH', headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
+    body: JSON.stringify({ status:'suspended' })
+  });
+  if (res.ok) { _viLoaded = false; viLoad(); } else alert('Failed to suspend.');
 }
 
 function spRenderPlaceholder() {
