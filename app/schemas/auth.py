@@ -10,6 +10,21 @@ class SignupRequest(BaseModel):
     role: str  # customer | owner
     preferred_language: Optional[str] = "en"
 
+    @field_validator("email", mode="before")
+    @classmethod
+    def normalise_email(cls, v: str) -> str:
+        return v.strip().lower()
+
+    @field_validator("full_name", mode="before")
+    @classmethod
+    def normalise_full_name(cls, v: str) -> str:
+        return " ".join(w.capitalize() for w in v.strip().split())
+
+    @field_validator("phone_number", mode="before")
+    @classmethod
+    def normalise_phone(cls, v: str) -> str:
+        return v.strip()
+
     @field_validator("role")
     @classmethod
     def role_must_be_valid(cls, v: str) -> str:
@@ -29,6 +44,11 @@ class SignupRequest(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+    @field_validator("email", mode="before")
+    @classmethod
+    def normalise_email(cls, v: str) -> str:
+        return v.strip().lower()
 
 
 class TokenResponse(BaseModel):

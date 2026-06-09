@@ -27,15 +27,42 @@ class VehicleSubmit(BaseModel):
     has_roof_rack: bool = False
     is_4wd: bool = False
     description: Optional[str] = None
-    base_daily_rate_ugx: int          # primary rate in UGX
-    service_area: Optional[str] = None  # e.g. "Kampala, Entebbe"
+    base_daily_rate_ugx: int
+    service_area: Optional[str] = None
 
-    @field_validator("vehicle_type")
+    @field_validator("make", "model", "color", mode="before")
+    @classmethod
+    def title_case(cls, v: str) -> str:
+        return v.strip().title()
+
+    @field_validator("registration_plate", mode="before")
+    @classmethod
+    def upper_plate(cls, v: str) -> str:
+        return v.strip().upper()
+
+    @field_validator("vehicle_type", mode="before")
     @classmethod
     def valid_type(cls, v: str) -> str:
-        if v.lower() not in ALLOWED_VEHICLE_TYPES:
+        v = v.strip().lower()
+        if v not in ALLOWED_VEHICLE_TYPES:
             raise ValueError(f"vehicle_type must be one of {ALLOWED_VEHICLE_TYPES}")
-        return v.lower()
+        return v
+
+    @field_validator("transmission", mode="before")
+    @classmethod
+    def valid_transmission(cls, v: str) -> str:
+        v = v.strip().lower()
+        if v not in ALLOWED_TRANSMISSIONS:
+            raise ValueError(f"transmission must be one of {ALLOWED_TRANSMISSIONS}")
+        return v
+
+    @field_validator("fuel_type", mode="before")
+    @classmethod
+    def valid_fuel(cls, v: str) -> str:
+        v = v.strip().lower()
+        if v not in ALLOWED_FUEL_TYPES:
+            raise ValueError(f"fuel_type must be one of {ALLOWED_FUEL_TYPES}")
+        return v
 
     @field_validator("year")
     @classmethod
@@ -77,6 +104,26 @@ class VehicleUpdate(BaseModel):
     description: Optional[str] = None
     base_daily_rate_ugx: Optional[int] = None
     service_area: Optional[str] = None
+
+    @field_validator("make", "model", "color", mode="before")
+    @classmethod
+    def title_case(cls, v: Optional[str]) -> Optional[str]:
+        return v.strip().title() if v else v
+
+    @field_validator("vehicle_type", mode="before")
+    @classmethod
+    def lower_type(cls, v: Optional[str]) -> Optional[str]:
+        return v.strip().lower() if v else v
+
+    @field_validator("transmission", mode="before")
+    @classmethod
+    def lower_transmission(cls, v: Optional[str]) -> Optional[str]:
+        return v.strip().lower() if v else v
+
+    @field_validator("fuel_type", mode="before")
+    @classmethod
+    def lower_fuel(cls, v: Optional[str]) -> Optional[str]:
+        return v.strip().lower() if v else v
 
 
 class VehiclePhotoRead(BaseModel):

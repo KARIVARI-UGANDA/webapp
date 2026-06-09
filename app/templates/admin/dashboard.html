@@ -121,7 +121,7 @@
       <span class="material-symbols-outlined text-[20px]">group</span>
       <span class="font-body-md text-body-md">User Management</span>
     </a>
-    <a id="navVehicles" onclick="showAdminSection('users')" class="admin-nav-link flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg cursor-pointer">
+    <a id="navVehicles" onclick="showAdminSection('vehicles')" class="admin-nav-link flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg cursor-pointer">
       <span class="material-symbols-outlined text-[20px]">directions_car</span>
       <span class="font-body-md text-body-md">Vehicle Management</span>
     </a>
@@ -133,16 +133,16 @@
       <span class="material-symbols-outlined text-[20px]">analytics</span>
       <span class="font-body-md text-body-md">Analytics</span>
     </a>
-    <a id="navPayments" onclick="showAdminSection('analytics')" class="admin-nav-link flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg cursor-pointer">
+    <a id="navPayments" onclick="showAdminSection('payments')" class="admin-nav-link flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg cursor-pointer">
       <span class="material-symbols-outlined text-[20px]">payments</span>
       <span class="font-body-md text-body-md">Payments &amp; Commissions</span>
     </a>
-    <a id="navVerifications" onclick="showAdminSection('bookings')" class="admin-nav-link flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg cursor-pointer">
+    <a id="navVerifications" onclick="showAdminSection('verifications')" class="admin-nav-link flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg cursor-pointer">
       <span class="material-symbols-outlined text-[20px]">fact_check</span>
       <span class="font-body-md text-body-md">Vehicle Inspections</span>
       <span id="pendingDot" class="hidden ml-auto w-2 h-2 rounded-full bg-error"></span>
     </a>
-    <a href="/support" class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg">
+    <a id="navSupport" onclick="showAdminSection('support')" class="admin-nav-link flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 transition-all duration-200 rounded-lg cursor-pointer">
       <span class="material-symbols-outlined text-[20px]">confirmation_number</span>
       <span class="font-body-md text-body-md">Support Tickets</span>
     </a>
@@ -609,6 +609,149 @@
   </div>
 </div><!-- /section-analytics -->
 
+<!-- ═══════ SECTION: Vehicles ═══════ -->
+<div id="section-vehicles" style="display:none" class="p-[48px]">
+  <div class="max-w-[1200px] mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="font-headline-lg text-headline-lg text-primary">Vehicle Management</h2>
+        <p class="text-on-surface-variant font-label-sm text-label-sm mt-1">View, verify and manage all vehicles on the platform</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Total</p>
+        <p class="font-headline-md text-headline-md" id="vm-statTotal">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Verified</p>
+        <p class="font-headline-md text-headline-md text-safari-green" id="vm-statVerified">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Pending</p>
+        <p class="font-headline-md text-headline-md text-ugandan-sun" id="vm-statPending">—</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30">
+        <p class="text-on-surface-variant font-label-sm text-label-sm uppercase mb-1">Suspended</p>
+        <p class="font-headline-md text-headline-md text-error" id="vm-statSuspended">—</p>
+      </div>
+    </div>
+
+    <!-- Search + Status Filters -->
+    <div class="flex flex-wrap gap-3">
+      <div class="flex-1 min-w-[220px] relative">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+        <input id="vm-search" type="text" placeholder="Search by make, model or registration…" oninput="vmDebouncedSearch()"
+          class="w-full pl-10 pr-4 py-2.5 border border-outline-variant rounded-xl font-body-md text-body-md bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-safari-green">
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        <button onclick="vmSetStatus(null)"          id="vm-status-all"       class="vm-status-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white">All</button>
+        <button onclick="vmSetStatus('verified')"    id="vm-status-verified"  class="vm-status-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Verified</button>
+        <button onclick="vmSetStatus('pending')"     id="vm-status-pending"   class="vm-status-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Pending</button>
+        <button onclick="vmSetStatus('suspended')"   id="vm-status-suspended" class="vm-status-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Suspended</button>
+        <button onclick="vmSetStatus('rejected')"    id="vm-status-rejected"  class="vm-status-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Rejected</button>
+      </div>
+    </div>
+
+    <!-- Vehicles Table -->
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+            <tr>
+              <th class="px-5 py-3 rounded-l-lg">Vehicle</th>
+              <th class="px-5 py-3">Registration</th>
+              <th class="px-5 py-3">Owner</th>
+              <th class="px-5 py-3">Year</th>
+              <th class="px-5 py-3">Daily Rate</th>
+              <th class="px-5 py-3">Status</th>
+              <th class="px-5 py-3 rounded-r-lg">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="vm-tableBody" class="divide-y divide-surface-variant/10">
+            <tr>
+              <td colspan="7" class="px-4 py-16 text-center text-on-surface-variant">
+                <span class="material-symbols-outlined animate-spin text-[32px] text-outline">progress_activity</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="vm-pagination" class="px-5 py-4 border-t border-outline-variant/20 flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"></div>
+    </div>
+
+  </div>
+</div><!-- /section-vehicles -->
+
+<!-- ═══════ SECTION: Support ═══════ -->
+<div id="section-support" style="display:none" class="p-[48px]">
+  <div class="max-w-[1200px] mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="font-headline-lg text-headline-lg text-primary">Support Tickets</h2>
+        <p class="text-on-surface-variant font-label-sm text-label-sm mt-1">Manage incoming support requests from travellers and owner-drivers</p>
+      </div>
+    </div>
+
+    <!-- Priority queue cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border-l-4 border-error border border-outline-variant/30">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="material-symbols-outlined text-error text-[18px]">priority_high</span>
+          <p class="font-label-sm text-label-sm uppercase text-error">Critical</p>
+        </div>
+        <p class="font-headline-md text-headline-md" id="sp-statCritical">—</p>
+        <p class="text-on-surface-variant font-label-sm text-label-sm mt-1">open tickets</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border-l-4 border-ugandan-sun border border-outline-variant/30">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="material-symbols-outlined text-ugandan-sun text-[18px]">schedule</span>
+          <p class="font-label-sm text-label-sm uppercase text-ugandan-sun">Pending</p>
+        </div>
+        <p class="font-headline-md text-headline-md" id="sp-statPending">—</p>
+        <p class="text-on-surface-variant font-label-sm text-label-sm mt-1">awaiting response</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 border-l-4 border-safari-green border border-outline-variant/30">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="material-symbols-outlined text-safari-green text-[18px]">check_circle</span>
+          <p class="font-label-sm text-label-sm uppercase text-safari-green">Resolved</p>
+        </div>
+        <p class="font-headline-md text-headline-md" id="sp-statResolved">—</p>
+        <p class="text-on-surface-variant font-label-sm text-label-sm mt-1">this month</p>
+      </div>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="flex gap-2 flex-wrap">
+      <button onclick="spSetFilter(null)"          id="sp-filter-all"        class="sp-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-primary text-white">All</button>
+      <button onclick="spSetFilter('open')"        id="sp-filter-open"       class="sp-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Open</button>
+      <button onclick="spSetFilter('in_progress')" id="sp-filter-in_progress" class="sp-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">In Progress</button>
+      <button onclick="spSetFilter('resolved')"    id="sp-filter-resolved"   class="sp-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Resolved</button>
+      <button onclick="spSetFilter('closed')"      id="sp-filter-closed"     class="sp-filter-btn px-4 py-2 rounded-xl font-label-lg text-label-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Closed</button>
+    </div>
+
+    <!-- Tickets list -->
+    <div id="sp-ticketList" class="space-y-3">
+      <div class="text-center py-16 text-on-surface-variant">
+        <span class="material-symbols-outlined text-[48px] animate-spin">refresh</span>
+      </div>
+    </div>
+
+    <!-- Coming soon notice -->
+    <div class="bg-surface-container-low rounded-2xl p-6 border border-outline-variant/30 text-center">
+      <span class="material-symbols-outlined text-[32px] text-outline mb-2">construction</span>
+      <p class="font-label-lg text-label-lg text-on-surface-variant">Full ticket management coming soon. In the meantime, support requests are handled via <a href="mailto:support@karivari.com" class="text-safari-green hover:underline">support@karivari.com</a>.</p>
+    </div>
+
+  </div>
+</div><!-- /section-support -->
+
 <!-- Override Status Modal -->
 <div id="bm-overrideModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" style="background:rgba(0,0,0,.5);">
   <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-5">
@@ -672,23 +815,194 @@
 let _umLoaded = false;
 let _bmLoaded = false;
 let _anLoaded = false;
+let _vmLoaded = false;
+let _spLoaded = false;
+
+const ALL_SECTIONS = ['overview','users','bookings','analytics','vehicles','payments','verifications','support'];
 
 function showAdminSection(name) {
-  ['overview','users','bookings','analytics'].forEach(s => {
-    document.getElementById(`section-${s}`).style.display = s === name ? 'block' : 'none';
+  ALL_SECTIONS.forEach(s => {
+    const el = document.getElementById(`section-${s}`);
+    if (el) el.style.display = s === name ? 'block' : 'none';
   });
 
   document.querySelectorAll('.admin-nav-link').forEach(el => {
     const navId  = `nav${name.charAt(0).toUpperCase() + name.slice(1)}`;
     const active = el.id === navId;
-    el.classList.toggle('bg-secondary-container',     active);
+    el.classList.toggle('bg-secondary-container',      active);
     el.classList.toggle('text-on-secondary-container', active);
     el.classList.toggle('text-on-surface-variant',    !active);
   });
 
-  if (name === 'users'     && !_umLoaded) { _umLoaded  = true; umLoadUsers(); }
-  if (name === 'bookings'  && !_bmLoaded) { _bmLoaded  = true; bmLoadStats(); bmLoadBookings(null); }
-  if (name === 'analytics' && !_anLoaded) { _anLoaded  = true; anLoad(); }
+  if (name === 'users'         && !_umLoaded) { _umLoaded = true; umLoadUsers(); }
+  if (name === 'bookings'      && !_bmLoaded) { _bmLoaded = true; bmLoadStats(); bmLoadBookings(null); }
+  if (name === 'analytics'     && !_anLoaded) { _anLoaded = true; anLoad(); }
+  if (name === 'vehicles'      && !_vmLoaded) { _vmLoaded = true; vmLoad(); }
+  if (name === 'support'       && !_spLoaded) { _spLoaded = true; spLoad(); }
+  if (name === 'payments')      { showAdminSection('analytics'); return; }
+  if (name === 'verifications') { showAdminSection('bookings');  return; }
+}
+
+// ── Vehicle Management ────────────────────────────────────────────────────────
+let _vmStatus = null;
+let _vmQuery  = '';
+let _vmPage   = 1;
+const VM_PAGE_SIZE = 20;
+
+const vmStatusBadge = {
+  verified:  'bg-safari-green/10 text-safari-green',
+  pending:   'bg-ugandan-sun/10 text-ugandan-sun',
+  suspended: 'bg-error/10 text-error',
+  rejected:  'bg-error/10 text-error',
+};
+
+async function vmLoad() {
+  const auth = { headers: { Authorization: `Bearer ${token}` } };
+  try {
+    const statsRes = await fetch(`${API}/admin/stats`, auth);
+    if (statsRes.ok) {
+      const s = await statsRes.json();
+      document.getElementById('vm-statVerified').textContent  = s.active_vehicles       ?? '—';
+      document.getElementById('vm-statPending').textContent   = s.pending_verifications ?? '—';
+      document.getElementById('vm-statTotal').textContent     = (s.active_vehicles ?? 0) + (s.pending_verifications ?? 0);
+      document.getElementById('vm-statSuspended').textContent = s.suspended_vehicles    ?? '—';
+    }
+  } catch(e) {}
+  vmFetchVehicles();
+}
+
+async function vmFetchVehicles() {
+  const auth = { headers: { Authorization: `Bearer ${token}` } };
+  const tbody = document.getElementById('vm-tableBody');
+  tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-16 text-center text-on-surface-variant">
+    <span class="material-symbols-outlined animate-spin text-[32px] text-outline">progress_activity</span></td></tr>`;
+
+  let url = `${API}/vehicles?page=${_vmPage}&page_size=${VM_PAGE_SIZE}`;
+  if (_vmStatus) url += `&status=${_vmStatus}`;
+  if (_vmQuery)  url += `&search=${encodeURIComponent(_vmQuery)}`;
+
+  try {
+    const res  = await fetch(url, auth);
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const vehicles = data.vehicles || data.items || data || [];
+    const total    = data.total    || vehicles.length;
+
+    if (!vehicles.length) {
+      tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-16 text-center text-on-surface-variant font-label-lg">No vehicles found</td></tr>`;
+    } else {
+      tbody.innerHTML = vehicles.map(v => `
+        <tr class="hover:bg-surface-container-low transition-colors">
+          <td class="px-5 py-4">
+            <p class="font-label-lg text-label-lg text-on-surface">${v.make ?? ''} ${v.model ?? ''}</p>
+            <p class="font-label-sm text-label-sm text-on-surface-variant">${v.vehicle_type ?? ''}</p>
+          </td>
+          <td class="px-5 py-4 font-label-lg text-label-lg text-on-surface">${v.registration_number ?? '—'}</td>
+          <td class="px-5 py-4 font-label-sm text-label-sm text-on-surface-variant">${v.owner_name ?? v.owner_id ?? '—'}</td>
+          <td class="px-5 py-4 font-label-lg text-label-lg text-on-surface">${v.year ?? '—'}</td>
+          <td class="px-5 py-4 font-label-lg text-label-lg text-on-surface">$${v.daily_rate ?? '—'}</td>
+          <td class="px-5 py-4">
+            <span class="px-2.5 py-1 rounded-full font-label-sm text-label-sm capitalize ${vmStatusBadge[v.status] ?? 'bg-surface-container text-on-surface-variant'}">
+              ${v.status ?? '—'}
+            </span>
+          </td>
+          <td class="px-5 py-4">
+            <div class="flex gap-2">
+              ${v.status === 'pending' ? `
+                <button onclick="vmApprove('${v.id}')" class="p-1.5 rounded-lg bg-safari-green/10 text-safari-green hover:bg-safari-green hover:text-white transition-all" title="Approve">
+                  <span class="material-symbols-outlined text-[18px]">check</span>
+                </button>
+                <button onclick="vmReject('${v.id}')" class="p-1.5 rounded-lg bg-error/10 text-error hover:bg-error hover:text-white transition-all" title="Reject">
+                  <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>` : ''}
+              ${v.status === 'verified' ? `
+                <button onclick="vmSuspend('${v.id}')" class="p-1.5 rounded-lg bg-error/10 text-error hover:bg-error hover:text-white transition-all" title="Suspend">
+                  <span class="material-symbols-outlined text-[18px]">block</span>
+                </button>` : ''}
+            </div>
+          </td>
+        </tr>`).join('');
+    }
+
+    const pages = Math.ceil(total / VM_PAGE_SIZE) || 1;
+    document.getElementById('vm-pagination').innerHTML = `
+      <span>${total} vehicle${total !== 1 ? 's' : ''}</span>
+      <div class="flex gap-2">
+        <button onclick="vmGoPage(${_vmPage - 1})" ${_vmPage <= 1 ? 'disabled' : ''} class="px-3 py-1 rounded-lg border border-outline-variant disabled:opacity-40 hover:bg-surface-container-high transition-all">←</button>
+        <span class="px-3 py-1">Page ${_vmPage} / ${pages}</span>
+        <button onclick="vmGoPage(${_vmPage + 1})" ${_vmPage >= pages ? 'disabled' : ''} class="px-3 py-1 rounded-lg border border-outline-variant disabled:opacity-40 hover:bg-surface-container-high transition-all">→</button>
+      </div>`;
+  } catch(e) {
+    tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-12 text-center text-error font-label-lg">Failed to load vehicles</td></tr>`;
+  }
+}
+
+function vmSetStatus(s) {
+  _vmStatus = s; _vmPage = 1;
+  document.querySelectorAll('.vm-status-btn').forEach(b => {
+    const active = (s === null && b.id === 'vm-status-all') || b.id === `vm-status-${s}`;
+    b.className = b.className.replace(/bg-primary text-white|bg-surface-container text-on-surface-variant/g, '');
+    b.classList.add(...(active ? ['bg-primary','text-white'] : ['bg-surface-container','text-on-surface-variant']));
+  });
+  vmFetchVehicles();
+}
+
+let _vmSearchTimer;
+function vmDebouncedSearch() {
+  clearTimeout(_vmSearchTimer);
+  _vmSearchTimer = setTimeout(() => { _vmQuery = document.getElementById('vm-search').value; _vmPage = 1; vmFetchVehicles(); }, 350);
+}
+
+function vmGoPage(p) { _vmPage = p; vmFetchVehicles(); }
+
+async function vmApprove(id) {
+  if (!confirm('Approve this vehicle?')) return;
+  const res = await fetch(`${API}/admin/verifications/${id}/approve`, { method:'PATCH', headers:{ Authorization:`Bearer ${token}` } });
+  if (res.ok) { _vmLoaded = false; vmLoad(); } else alert('Failed to approve vehicle.');
+}
+async function vmReject(id) {
+  const reason = prompt('Rejection reason:'); if (reason === null) return;
+  const res = await fetch(`${API}/admin/verifications/${id}/reject`, {
+    method:'PATCH', headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
+    body: JSON.stringify({ reason })
+  });
+  if (res.ok) { _vmLoaded = false; vmLoad(); } else alert('Failed to reject vehicle.');
+}
+async function vmSuspend(id) {
+  if (!confirm('Suspend this vehicle?')) return;
+  const res = await fetch(`${API}/vehicles/${id}`, {
+    method:'PATCH', headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
+    body: JSON.stringify({ status:'suspended' })
+  });
+  if (res.ok) { _vmLoaded = false; vmLoad(); } else alert('Failed to suspend vehicle.');
+}
+
+// ── Support Tickets ───────────────────────────────────────────────────────────
+let _spFilter = null;
+
+async function spLoad() {
+  document.getElementById('sp-statCritical').textContent = '—';
+  document.getElementById('sp-statPending').textContent  = '—';
+  document.getElementById('sp-statResolved').textContent = '—';
+  spRenderPlaceholder();
+}
+
+function spSetFilter(f) {
+  _spFilter = f;
+  document.querySelectorAll('.sp-filter-btn').forEach(b => {
+    const active = (f === null && b.id === 'sp-filter-all') || b.id === `sp-filter-${f}`;
+    b.className = b.className.replace(/bg-primary text-white|bg-surface-container text-on-surface-variant/g, '');
+    b.classList.add(...(active ? ['bg-primary','text-white'] : ['bg-surface-container','text-on-surface-variant']));
+  });
+  spRenderPlaceholder();
+}
+
+function spRenderPlaceholder() {
+  document.getElementById('sp-ticketList').innerHTML = `
+    <div class="text-center py-12 text-on-surface-variant">
+      <span class="material-symbols-outlined text-[48px] text-outline mb-2">confirmation_number</span>
+      <p class="font-label-lg">Ticket management system coming soon</p>
+    </div>`;
 }
 
 // ── Analytics ────────────────────────────────────────────────────────────────
