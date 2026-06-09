@@ -10,21 +10,23 @@ Experience the platform instantly: **[https://webapp-01os.onrender.com/](https:/
 
 ## 🎯 About Karivari Uganda
 
-Karivari Uganda is a trusted marketplace revolutionizing how customers and vehicle owners connect in Uganda. Whether you're looking to **rent a reliable 4×4 for your next adventure** or **list your vehicle to earn extra income**, we've got you covered.
+Karivari Uganda is a trusted marketplace revolutionizing how customers and vehicle owners connect in Uganda. Whether you're looking to rent a reliable 4×4 for your next adventure or list your vehicle to earn extra income, we've got you covered.
 
 ### Why Choose Karivari?
-✅ **Verified Owners** — All vehicle owners undergo KYC verification  
-✅ **Secure Transactions** — Multiple payment options (Stripe, Paystack, Flutterwave)  
-✅ **Flexible Booking** — Reserve vehicles with 7-day free cancellation  
-✅ **24/7 Support** — Message owners directly, track your trip in real-time  
-✅ **Insurance Included** — Every booking includes comprehensive coverage  
-✅ **Transparent Pricing** — No hidden fees, fixed insurance of $15 per booking  
+✅ Verified Owners — All vehicle owners undergo KYC verification
+✅ Secure Transactions — Multiple payment options (Stripe, Paystack, Flutterwave)
+✅ Flexible Booking — Reserve vehicles with 7-day free cancellation
+✅ 24/7 Support — Message owners directly, track your trip in real-time
+✅ Insurance Included — Every booking includes comprehensive coverage
+✅ Transparent Pricing — No hidden fees, fixed insurance of $15 per booking
 
 ### Who It's For
-- 🏃 **Adventure Seekers** — Exploring Uganda's rugged terrain? Find the perfect 4×4
-- 💼 **Business Travelers** — Need reliable transport for off-road missions
-- 👨‍🌾 **Vehicle Owners** — Monetize your idle 4×4 and earn extra income
-- 🏢 **Fleet Managers** — Manage multiple vehicle listings and bookings
+📷 **Photography Travellers** — Open-roof vehicles, early starts, owner-drivers who understand light and patience. Trips typically run 10–14 days.
+🌿 **Wildlife & Safari Travellers** — Gorilla tracking, big game in the savannah parks, and birding along the Albertine Rift. Drivers who double as guides.
+🏨 **Luxury Travellers** — Booking premium lodges and expect transport to match. Quiet vehicles, polished service, end-to-end coordination with your itinerary.
+🚗 **Owner-Drivers** — Verified local drivers who own their vehicle. List your 4×4, set your availability, and keep the majority of every daily rate.
+🏢 **Travel Agencies & Partners** — German-speaking agencies and lodge partners who want a reliable, pre-vetted transport layer for their Uganda itineraries.
+🛡️ **Karivari Admins** — Verify vehicles and owner-drivers, manage bookings, handle KYC, and monitor the platform.
 
 ---
 
