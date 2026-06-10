@@ -31,16 +31,23 @@ psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'karivari'" \
 echo "  Database ready."
 
 echo ""
+# ── 4. Seed demo accounts ─────────────────────────────────────────────────────
+echo ""
+echo "→ Seeding demo accounts..."
+python seed.py
+
 echo "=========================================="
 echo "  ✅ Setup complete!"
 echo ""
 echo "  Start the app:"
 echo "    python run.py"
 echo ""
+echo "  Demo accounts (seeded and ready):"
+echo "    Super Admin : george.mutale345@stud.th-deg.de / Administer01@#"
+echo "    Admin       : mutalegeorge367@gmail.com       / Operator02@#"
+echo "    Customer    : george.mutale@stud.th-deg.de    / Tourist01@#"
+echo ""
 echo "  Run tests:"
 echo "    pytest tests/ -v"
-echo ""
-echo "  App URL (after starting):"
-echo "    http://localhost:8000"
 echo "=========================================="
 echo ""

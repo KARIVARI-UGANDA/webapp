@@ -8,98 +8,121 @@ Premium 4×4 vehicle rental marketplace connecting customers with verified Ugand
 
 ---
 
-## ▶ Running the app
+## 🚀 Running the App
 
-### Option 1 — GitHub Codespaces ✅ Easiest (nothing to install)
+### ✅ Option 1 — GitHub Codespaces (nothing to install)
 
-Click the button above, or go to the repo on GitHub → **Code → Codespaces → Create codespace on main**.
-
-Codespaces will automatically:
-- Start a Python 3.11 environment
-- Install PostgreSQL 16 and create the database
-- Install all Python dependencies
-
-Once the setup finishes (about 2 minutes), run **one command** in the terminal:
+1. Click the **Open in GitHub Codespaces** badge above
+2. Wait ~2 minutes for setup to complete
+3. In the terminal that opens, run:
 
 ```bash
 python run.py
 ```
 
-A browser preview opens automatically at your Codespace URL. Done.
+A browser preview opens automatically. Then seed the demo accounts:
 
-**To run the tests:**
 ```bash
-pytest tests/ -v
+python seed.py
 ```
 
 ---
 
-### Option 2 — Docker (local machine)
+### ✅ Option 2 — Uvicorn (Local Python)
 
-**Requires:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) — free, works on Windows, Mac, and Linux.
+Start the app:
 
 ```bash
-git clone https://github.com/KARIVARI-UGANDA/webapp.git
-cd webapp
+python -m venv venv && source venv/bin/activate && pip install -r requirements.txt
+```
+
+```bash
+DATABASE_URL=sqlite:///./karivari.db SECRET_KEY=local-dev-secret-32-chars-xxxx python run.py
+```
+
+Seed the demo accounts (in a second terminal with the same env vars set):
+
+```bash
+DATABASE_URL=sqlite:///./karivari.db SECRET_KEY=local-dev-secret-32-chars-xxxx python seed.py
+```
+
+**Super Admin Sign-In:**
+
+| Field | Value |
+|-------|-------|
+| Email | `george.mutale345@stud.th-deg.de` |
+| Password | `Administer01@#` |
+
+**Admin Sign-In:**
+
+| Field | Value |
+|-------|-------|
+| Email | `mutalegeorge367@gmail.com` |
+| Password | `Operator02@#` |
+
+**Customer Sign-In:**
+
+| Field | Value |
+|-------|-------|
+| Email | `george.mutale@stud.th-deg.de` |
+| Password | `Tourist01@#` |
+
+---
+
+### 🐳 Option 3 — Docker
+
+Docker creates a separate database. Run `seed.py` after startup to create demo accounts.
+
+Build and run the services:
+
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+Or on Windows:
+
+```bash
 docker compose up --build
 ```
 
-Open **http://localhost:8000** in your browser. Everything — app and database — starts automatically.
+Once running, open a new terminal and seed the demo accounts:
 
-**To stop:**
 ```bash
-Ctrl+C
-docker compose down
+docker compose exec web python seed.py
 ```
 
-**To reset the database and start fresh:**
+**Customer Sign-Up / Login:**
+Use the app interface to register and log in, or use the seeded accounts above.
+
+Stop the services:
+
 ```bash
-docker compose down -v
-docker compose up --build
+Ctrl + C
+```
+
+```bash
+# Or stop the container manually
+docker ps
+docker stop <container_id>
 ```
 
 ---
 
-### Option 3 — Python locally (no Docker)
-
-**Requires:** Python 3.11 or 3.12
-
-```bash
-git clone https://github.com/KARIVARI-UGANDA/webapp.git
-cd webapp
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Copy environment template
-cp .env.example .env          # Mac / Linux
-copy .env.example .env        # Windows
-
-# Run
-python run.py
-```
-
-Uses a local SQLite file (`karivari.db`) — no database installation needed.
-
-Open **http://127.0.0.1:8000**
-
----
-
-## Pages & URLs
+## 📄 Pages & URLs
 
 | URL | Description |
 |-----|-------------|
-| `/` | Home page |
-| `/vehicles` | Browse vehicles |
-| `/login` | Customer login |
-| `/owner/login` | Owner / admin login |
-| `/api/docs` | Interactive API docs (Swagger UI) |
-| `/api/redoc` | API reference (ReDoc) |
-| `/api/health` | Health check |
+| `http://localhost:8000` | Home page |
+| `http://localhost:8000/vehicles` | Browse vehicles |
+| `http://localhost:8000/login` | Customer login |
+| `http://localhost:8000/owner/login` | Owner / Admin login |
+| `http://localhost:8000/api/docs` | Interactive API docs (Swagger UI) |
+| `http://localhost:8000/api/health` | Health check |
 
 ---
 
-## Running the tests
+## 🧪 Running the Tests
 
 ```bash
 pip install -r requirements.txt pytest-cov
@@ -115,7 +138,7 @@ Expected: **121 passed**
 
 ---
 
-## Project structure
+## 📁 Project Structure
 
 ```
 webapp/
@@ -124,7 +147,7 @@ webapp/
 │   ├── config.py        # Settings loaded from environment variables
 │   ├── database.py      # SQLAlchemy engine and session
 │   ├── deps.py          # Auth / role dependencies
-│   ├── security.py      # JWT token helpers
+│   ├── security.py      # JWT helpers + password hashing
 │   ├── models/          # Database table definitions (SQLAlchemy ORM)
 │   ├── schemas/         # Request / response shapes (Pydantic)
 │   ├── routers/         # API endpoints (auth, bookings, vehicles, …)
@@ -134,6 +157,8 @@ webapp/
 ├── templates/           # HTML pages (Jinja2 + Tailwind CSS)
 ├── .devcontainer/       # GitHub Codespaces configuration
 ├── run.py               # Entry point — python run.py
+├── seed.py              # Creates demo accounts in the database
+├── start.sh             # Docker shortcut — ./start.sh
 ├── Dockerfile           # App container image
 ├── docker-compose.yml   # App + Postgres (one command)
 ├── requirements.txt     # Python dependencies
@@ -142,10 +167,10 @@ webapp/
 
 ---
 
-## Environment variables
+## ⚙️ Environment Variables
 
 Copy `.env.example` to `.env` to configure the app.
-Payment and email are **optional** — they silently skip when not configured so the app runs fine for a demo.
+Payment and email are **optional** — the app runs fine for a demo without any API keys.
 
 | Variable | Required | Description |
 |---|---|---|
@@ -157,9 +182,9 @@ Payment and email are **optional** — they silently skip when not configured so
 
 ---
 
-## CI/CD Pipeline
+## 🔄 CI/CD Pipeline
 
-Every push to `main` runs automatically on GitHub Actions:
+Every push to `main` runs automatically:
 
 | Job | What it does |
 |---|---|
@@ -168,7 +193,7 @@ Every push to `main` runs automatically on GitHub Actions:
 | **Tests** | 121 tests on Python 3.11 and 3.12 |
 | **Deploy** | Triggers Render deploy — only after all tests pass |
 
-**To publish a release** (auto-generates changelog):
+**To publish a release:**
 ```bash
 git tag v1.0.0
 git push origin v1.0.0
@@ -176,23 +201,23 @@ git push origin v1.0.0
 
 ---
 
-## Tech stack
+## 🛠 Tech Stack
 
 | Layer | Technology |
 |---|---|
 | Backend | FastAPI (Python 3.11) |
 | Database | PostgreSQL 16 (Codespaces / Docker / production) · SQLite (local) |
 | ORM | SQLAlchemy 2.0 |
-| Auth | JWT (python-jose) · bcrypt passwords |
+| Auth | JWT (python-jose) · bcrypt |
 | Payments | Stripe · Flutterwave · Paystack |
-| Email | Resend API · SMTP fallback |
-| Frontend | Jinja2 templates · Tailwind CSS |
+| Email | Resend API · SMTP |
+| Frontend | Jinja2 · Tailwind CSS |
 | Hosting | Render.com |
 | CI/CD | GitHub Actions |
 
 ---
 
-## Team
+## 👥 Team
 
 | Name | Role |
 |---|---|
