@@ -1,0 +1,16 @@
+name: Dependency Review
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  dependency-review:
+    name: Review new dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+          deny-licenses: AGPL-3.0, GPL-3.0

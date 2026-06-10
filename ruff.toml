@@ -1,0 +1,7 @@
+[lint]
+select = ["E", "F", "W", "I"]
+ignore = [
+  "E501",   # line too long — handled by formatter
+  "F401",   # unused import — some are re-exports
+]
+exclude = ["venv", ".venv", "migrations"]
