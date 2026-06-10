@@ -11,80 +11,82 @@ function toTitle(str) {
 	return str.replace(/\b\w/g, c => c.toUpperCase());
 }
 
-function buildVehicleCardHTML(v, sym, price) {
-	const primaryPhoto = v.photos && v.photos.length > 0
-		? (v.photos.find(p => p.is_primary) || v.photos[0])
-		: null;
-	const imgSrc = primaryPhoto
-		? primaryPhoto.photo_url
-		: 'https://via.placeholder.com/600x300?text=' + encodeURIComponent(v.make + ' ' + v.model);
+function vehicleCardHTML(v) {
+  const sym   = SYMBOLS[_currency] || '$';
+  const price = convertPrice(v.base_daily_rate_ugx, _currency);
 
-	const chip = (icon, label) =>
-		`<span class="inline-flex items-center gap-1 text-[13px] font-medium text-on-surface-variant">
-			<span class="material-symbols-outlined text-[15px] text-safari-green" style="font-variation-settings:'FILL' 0;">` + icon + `</span>` + label + `</span>`;
+  const primaryPhoto = v.photos && v.photos.length > 0
+    ? (v.photos.find(p => p.is_primary) || v.photos[0])
+    : null;
+  const imgSrc = primaryPhoto
+    ? primaryPhoto.photo_url
+    : 'https://via.placeholder.com/600x300?text=' + encodeURIComponent(v.make + ' ' + v.model);
 
-	const features = [
-		chip('person',           `<strong>${v.passenger_capacity}</strong> Seats`),
-		chip('settings',         `<strong>${toTitle(v.transmission)}</strong>`),
-		chip('local_gas_station',`<strong>${toTitle(v.fuel_type)}</strong>`),
-		v.has_ac          ? chip('ac_unit',     'A/C')       : '',
-		v.has_wifi        ? chip('wifi',        'WiFi')      : '',
-		v.is_4wd          ? chip('terrain',     '4WD')       : '',
-		v.has_gps         ? chip('location_on', 'GPS')       : '',
-		v.has_bluetooth   ? chip('bluetooth',   'Bluetooth') : '',
-		v.has_usb_charger ? chip('usb',         'USB')       : '',
-		v.is_pet_friendly ? chip('pets',        'Pet OK')    : '',
-	].filter(Boolean).join('');
+  const chip = (icon, label) =>
+    `<span class="inline-flex items-center gap-1 text-[13px] font-medium text-on-surface-variant">
+      <span class="material-symbols-outlined text-[15px] text-safari-green" style="font-variation-settings:'FILL' 0;">${icon}</span>${label}</span>`;
 
-	const statusBadge = v.status === 'verified'
-		? `<span class="bg-safari-green text-white text-[10px] font-bold px-3 py-1 rounded-full inline-flex items-center gap-1 uppercase tracking-wider shadow-sm">
-		     <span class="material-symbols-outlined text-[12px]" style="font-variation-settings:'FILL' 1;">verified</span>Verified
-		   </span>`
-		: `<span class="bg-status-pending text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">Under Review</span>`;
+  const features = [
+    chip('person',            `<strong>${v.passenger_capacity}</strong> Seats`),
+    chip('settings',          `<strong>${toTitle(v.transmission)}</strong>`),
+    chip('local_gas_station', `<strong>${toTitle(v.fuel_type)}</strong>`),
+    v.has_ac          ? chip('ac_unit',        'A/C')       : '',
+    v.has_wifi        ? chip('wifi',           'WiFi')      : '',
+    v.is_4wd          ? chip('terrain',        '4WD')       : '',
+    v.has_gps         ? chip('location_on',    'GPS')       : '',
+    v.has_bluetooth   ? chip('bluetooth',      'Bluetooth') : '',
+    v.has_usb_charger ? chip('usb',            'USB')       : '',
+    v.is_pet_friendly ? chip('pets',           'Pet OK')    : '',
+  ].filter(Boolean).join('');
 
-	const availBadge = v.status === 'verified'
-		? `<span class="bg-white/95 text-safari-green text-[10px] font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5 uppercase tracking-wider shadow-sm">
-		     <span class="relative flex h-2 w-2 flex-shrink-0">
-		       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success opacity-75"></span>
-		       <span class="relative inline-flex rounded-full h-2 w-2 bg-status-success"></span>
-		     </span>Available
-		   </span>`
-		: '';
+  const statusBadge = v.status === 'verified'
+    ? `<span class="bg-safari-green text-white text-[10px] font-bold px-3 py-1 rounded-full inline-flex items-center gap-1 uppercase tracking-wider shadow-sm">
+         <span class="material-symbols-outlined text-[12px]" style="font-variation-settings:'FILL' 1;">verified</span>Verified
+       </span>`
+    : `<span class="bg-status-pending text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">Under Review</span>`;
 
-	const type    = toTitle(v.vehicle_type  || '');
-	const area    = toTitle(v.service_area  || 'Uganda');
-	const year    = v.year || '';
+  const availBadge = v.status === 'verified'
+    ? `<span class="bg-white/95 text-safari-green text-[10px] font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5 uppercase tracking-wider shadow-sm">
+         <span class="relative flex h-2 w-2 flex-shrink-0">
+           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success opacity-75"></span>
+           <span class="relative inline-flex rounded-full h-2 w-2 bg-status-success"></span>
+         </span>Available
+       </span>`
+    : '';
 
-	return `
-	<div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.06)] overflow-hidden group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
-		<div class="relative h-56 overflow-hidden flex-shrink-0">
-			<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-			     src="${imgSrc}" alt="${v.make} ${v.model}" loading="lazy">
-			<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
-			<div class="absolute top-3 left-3">${statusBadge}</div>
-			${availBadge ? `<div class="absolute bottom-3 right-3">${availBadge}</div>` : ''}
-		</div>
-		<div class="p-5 flex flex-col flex-1">
-			<div class="mb-3">
-				<h3 class="font-headline-md text-headline-md text-on-surface font-bold leading-tight">${v.make} ${v.model}</h3>
-				<p class="text-on-surface-variant text-[13px] mt-1">
-					<span class="font-semibold">${year}</span>
-					<span class="mx-1 text-outline-variant">·</span>${type}
-					<span class="mx-1 text-outline-variant">·</span>${area}
-				</p>
-			</div>
-			<div class="flex flex-wrap gap-x-4 gap-y-2 mb-4">${features}</div>
-			<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30 mt-auto">
-				<div class="leading-none">
-					<span class="text-[22px] font-bold text-primary">${sym}${price}</span>
-					<span class="text-[13px] text-on-surface-variant font-medium"> / day</span>
-				</div>
-				<a href="/vehicles/${v.id}"
-				   class="border-2 border-primary text-primary px-5 py-2 rounded-xl text-[13px] font-bold hover:bg-primary hover:text-white transition-all"
-				   style="text-decoration:none;">View Details</a>
-			</div>
-		</div>
-	</div>`;
+  const type = toTitle(v.vehicle_type || '');
+  const area = toTitle(v.service_area || 'Uganda');
+
+  return `
+  <div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.06)] overflow-hidden group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+    <div class="relative h-56 overflow-hidden flex-shrink-0">
+      <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+           src="${imgSrc}" alt="${v.make} ${v.model}" loading="lazy">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+      <div class="absolute top-3 left-3">${statusBadge}</div>
+      ${availBadge ? `<div class="absolute bottom-3 right-3">${availBadge}</div>` : ''}
+    </div>
+    <div class="p-5 flex flex-col flex-1">
+      <div class="mb-3">
+        <h3 class="font-headline-md text-headline-md text-on-surface font-bold leading-tight">${v.make} ${v.model}</h3>
+        <p class="text-on-surface-variant text-[13px] mt-1">
+          <span class="font-semibold">${v.year || ''}</span>
+          <span class="mx-1 text-outline-variant">·</span>${type}
+          <span class="mx-1 text-outline-variant">·</span>${area}
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-x-4 gap-y-2 mb-4">${features}</div>
+      <div class="flex items-center justify-between pt-4 border-t border-outline-variant/30 mt-auto">
+        <div class="leading-none">
+          <span class="text-[22px] font-bold text-primary">${sym}${price}</span>
+          <span class="text-[13px] text-on-surface-variant font-medium"> / day</span>
+        </div>
+        <a href="/vehicles/${v.id}"
+           class="border-2 border-primary text-primary px-5 py-2 rounded-xl text-[13px] font-bold hover:bg-primary hover:text-white transition-all"
+           style="text-decoration:none;">View Details</a>
+      </div>
+    </div>
+  </div>`;
 }
 
 function renderVehicleCards(vehicles, currency) {
@@ -102,11 +104,7 @@ function renderVehicleCards(vehicles, currency) {
 		return;
 	}
 
-	const sym = SYMBOLS[currency] || '$';
-	vehicleContainer.innerHTML = vehicles.map(v => {
-		const price = convertPrice(v.base_daily_rate_ugx, currency);
-		return buildVehicleCardHTML(v, sym, price);
-	}).join('');
+	vehicleContainer.innerHTML = vehicles.map(v => vehicleCardHTML(v)).join('');
 }
 
 // ── Search state ─────────────────────────────────────────────────────────────
