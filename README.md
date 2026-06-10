@@ -4,40 +4,55 @@ Premium 4×4 vehicle rental marketplace connecting customers with verified Ugand
 
 [![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-webapp--01os.onrender.com-blue?style=for-the-badge)](https://webapp-01os.onrender.com/)
 [![CI](https://github.com/KARIVARI-UGANDA/webapp/actions/workflows/ci.yml/badge.svg)](https://github.com/KARIVARI-UGANDA/webapp/actions/workflows/ci.yml)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/KARIVARI-UGANDA/webapp)
 
 ---
 
-## Running the app (one command)
+## ▶ Running the app
 
-### Option 1 — Docker ✅ Recommended
+### Option 1 — GitHub Codespaces ✅ Easiest (nothing to install)
+
+Click the button above, or go to the repo on GitHub → **Code → Codespaces → Create codespace on main**.
+
+Codespaces will automatically:
+- Start a Python 3.11 environment
+- Install PostgreSQL 16 and create the database
+- Install all Python dependencies
+
+Once the setup finishes (about 2 minutes), run **one command** in the terminal:
+
+```bash
+python run.py
+```
+
+A browser preview opens automatically at your Codespace URL. Done.
+
+**To run the tests:**
+```bash
+pytest tests/ -v
+```
+
+---
+
+### Option 2 — Docker (local machine)
 
 **Requires:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) — free, works on Windows, Mac, and Linux.
 
 ```bash
+git clone https://github.com/KARIVARI-UGANDA/webapp.git
+cd webapp
 docker compose up --build
 ```
 
-That's it. Docker will automatically:
-- Start a **PostgreSQL 16** database
-- Install all Python dependencies
-- Start the web server
+Open **http://localhost:8000** in your browser. Everything — app and database — starts automatically.
 
-Then open: **http://localhost:8000**
-
-| URL | What it is |
-|-----|------------|
-| http://localhost:8000 | Main website |
-| http://localhost:8000/api/docs | Interactive API documentation (Swagger UI) |
-| http://localhost:8000/api/redoc | API reference (ReDoc) |
-| http://localhost:8000/api/health | Health check |
-
-**To stop the app:**
+**To stop:**
 ```bash
 Ctrl+C
 docker compose down
 ```
 
-**To reset the database and start completely fresh:**
+**To reset the database and start fresh:**
 ```bash
 docker compose down -v
 docker compose up --build
@@ -45,25 +60,42 @@ docker compose up --build
 
 ---
 
-### Option 2 — Python locally (no Docker)
+### Option 3 — Python locally (no Docker)
 
 **Requires:** Python 3.11 or 3.12
 
 ```bash
-# 1. Install dependencies
+git clone https://github.com/KARIVARI-UGANDA/webapp.git
+cd webapp
+
+# Install dependencies
 pip install -r requirements.txt
 
-# 2. Copy the environment template
+# Copy environment template
 cp .env.example .env          # Mac / Linux
 copy .env.example .env        # Windows
 
-# 3. Start the app
+# Run
 python run.py
 ```
 
-This uses a local **SQLite** file (`karivari.db`) — no database installation needed.
+Uses a local SQLite file (`karivari.db`) — no database installation needed.
 
-Then open: **http://127.0.0.1:8000**
+Open **http://127.0.0.1:8000**
+
+---
+
+## Pages & URLs
+
+| URL | Description |
+|-----|-------------|
+| `/` | Home page |
+| `/vehicles` | Browse vehicles |
+| `/login` | Customer login |
+| `/owner/login` | Owner / admin login |
+| `/api/docs` | Interactive API docs (Swagger UI) |
+| `/api/redoc` | API reference (ReDoc) |
+| `/api/health` | Health check |
 
 ---
 
@@ -72,14 +104,14 @@ Then open: **http://127.0.0.1:8000**
 ```bash
 pip install -r requirements.txt pytest-cov
 
-# Windows
-set DATABASE_URL=sqlite:///:memory: && set SECRET_KEY=test-secret-key-32-chars-longxx && pytest tests/ -v
+# Mac / Linux / Codespaces
+DATABASE_URL=sqlite:///:memory: SECRET_KEY=test-secret-32-chars-longxxxxxx pytest tests/ -v
 
-# Mac / Linux
-DATABASE_URL=sqlite:///:memory: SECRET_KEY=test-secret-key-32-chars-longxx pytest tests/ -v
+# Windows
+set DATABASE_URL=sqlite:///:memory: && set SECRET_KEY=test-secret-32-chars-longxxxxxx && pytest tests/ -v
 ```
 
-Expected output: **121 passed**
+Expected: **121 passed**
 
 ---
 
@@ -88,21 +120,22 @@ Expected output: **121 passed**
 ```
 webapp/
 ├── app/
-│   ├── main.py          # FastAPI application + router registration
-│   ├── config.py        # All settings loaded from environment variables
+│   ├── main.py          # FastAPI app + router registration
+│   ├── config.py        # Settings loaded from environment variables
 │   ├── database.py      # SQLAlchemy engine and session
 │   ├── deps.py          # Auth / role dependencies
 │   ├── security.py      # JWT token helpers
 │   ├── models/          # Database table definitions (SQLAlchemy ORM)
-│   ├── schemas/         # Request / response data shapes (Pydantic)
+│   ├── schemas/         # Request / response shapes (Pydantic)
 │   ├── routers/         # API endpoints (auth, bookings, vehicles, …)
-│   └── services/        # Email, Stripe, Flutterwave, Paystack integrations
+│   └── services/        # Email, Stripe, Flutterwave, Paystack
 ├── tests/               # 121 automated tests (pytest)
 ├── static/              # CSS, JS, images
 ├── templates/           # HTML pages (Jinja2 + Tailwind CSS)
-├── run.py               # ← start here:  python run.py
+├── .devcontainer/       # GitHub Codespaces configuration
+├── run.py               # Entry point — python run.py
 ├── Dockerfile           # App container image
-├── docker-compose.yml   # App + Postgres (one command setup)
+├── docker-compose.yml   # App + Postgres (one command)
 ├── requirements.txt     # Python dependencies
 └── .env.example         # Environment variable template
 ```
@@ -112,13 +145,13 @@ webapp/
 ## Environment variables
 
 Copy `.env.example` to `.env` to configure the app.
-Payment and email features are **optional** — they silently skip when keys are not set, so the app runs normally for a demo without any API keys.
+Payment and email are **optional** — they silently skip when not configured so the app runs fine for a demo.
 
 | Variable | Required | Description |
 |---|---|---|
-| `DATABASE_URL` | Yes | Set automatically by Docker; use `sqlite:///./karivari.db` locally |
+| `DATABASE_URL` | Yes | Auto-set in Codespaces and Docker. Use `sqlite:///./karivari.db` locally. |
 | `SECRET_KEY` | Yes | Any random string of 32+ characters |
-| `STRIPE_SECRET_KEY` | Optional | Card payments (Stripe test key works) |
+| `STRIPE_SECRET_KEY` | Optional | Card payments |
 | `FLUTTERWAVE_SECRET_KEY` | Optional | MTN / Airtel mobile money |
 | `SMTP_HOST` + `SMTP_PASSWORD` | Optional | Transactional emails |
 
@@ -126,16 +159,16 @@ Payment and email features are **optional** — they silently skip when keys are
 
 ## CI/CD Pipeline
 
-Every push to `main` runs the full pipeline automatically:
+Every push to `main` runs automatically on GitHub Actions:
 
 | Job | What it does |
 |---|---|
-| **Lint & format** | Code style (`ruff check`) + formatting (`ruff format`) |
-| **Security scan** | Static analysis (`bandit`) + known CVEs (`safety`) |
-| **Tests** | 121 pytest tests on Python 3.11 and 3.12 |
-| **Deploy** | Triggers Render deploy — only runs after all tests pass |
+| **Lint & format** | `ruff check` + `ruff format --check` |
+| **Security scan** | `bandit` static analysis + `safety` CVE check |
+| **Tests** | 121 tests on Python 3.11 and 3.12 |
+| **Deploy** | Triggers Render deploy — only after all tests pass |
 
-**To publish a numbered release** (creates a GitHub Release with changelog):
+**To publish a release** (auto-generates changelog):
 ```bash
 git tag v1.0.0
 git push origin v1.0.0
@@ -148,9 +181,9 @@ git push origin v1.0.0
 | Layer | Technology |
 |---|---|
 | Backend | FastAPI (Python 3.11) |
-| Database | PostgreSQL 16 (Docker / production) · SQLite (local) |
+| Database | PostgreSQL 16 (Codespaces / Docker / production) · SQLite (local) |
 | ORM | SQLAlchemy 2.0 |
-| Auth | JWT via python-jose · passwords via bcrypt |
+| Auth | JWT (python-jose) · bcrypt passwords |
 | Payments | Stripe · Flutterwave · Paystack |
 | Email | Resend API · SMTP fallback |
 | Frontend | Jinja2 templates · Tailwind CSS |
