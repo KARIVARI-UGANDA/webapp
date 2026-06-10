@@ -1,0 +1,61 @@
+import uuid
+from datetime import datetime, timezone
+
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel, EmailStr
+from sqlalchemy.orm import Session
+
+from app.database import get_db
+from app.models.newsletter import NewsletterSubscriber
+from app.services import email_service
+
+router = APIRouter(prefix="/newsletter", tags=["newsletter"])
+
+
+class SubscribeRequest(BaseModel):
+    email: EmailStr
+
+
+@router.post("/subscribe", status_code=201)
+def subscribe(payload: SubscribeRequest, db: Session = Depends(get_db)):
+    existing = db.query(NewsletterSubscriber).filter(
+        NewsletterSubscriber.email == payload.email
+    ).first()
+
+    if existing:
+        if existing.is_active:
+            return {"message": "You're already subscribed!"}
+        existing.is_active = True
+        db.commit()
+        try:
+            email_service.send_newsletter_welcome(existing.email)
+        except Exception:
+            pass
+        return {"message": "Welcome back — you've been resubscribed!"}
+
+    subscriber = NewsletterSubscriber(
+        id=str(uuid.uuid4()),
+        email=payload.email,
+        is_active=True,
+        subscribed_at=datetime.now(timezone.utc).replace(tzinfo=None),
+    )
+    db.add(subscriber)
+    db.commit()
+
+    try:
+        email_service.send_newsletter_welcome(payload.email)
+    except Exception:
+        pass
+
+    return {"message": "Thank you for subscribing! Check your inbox for a welcome email."}
+
+
+@router.post("/unsubscribe")
+def unsubscribe(payload: SubscribeRequest, db: Session = Depends(get_db)):
+    sub = db.query(NewsletterSubscriber).filter(
+        NewsletterSubscriber.email == payload.email
+    ).first()
+    if sub:
+        sub.is_active = False
+        db.commit()
+    return {"message": "You have been unsubscribed."}

@@ -11,6 +11,7 @@ from app.routers import (
     bookings,
     kyc,
     messages,
+    newsletter,
     notifications,
     payments,
     reviews,
@@ -54,6 +55,7 @@ app.include_router(messages.router, prefix=API)
 app.include_router(notifications.router, prefix=API)
 app.include_router(kyc.router, prefix=API)
 app.include_router(admin.router, prefix=API)
+app.include_router(newsletter.router, prefix=API)
 
 
 @app.get("/api/health", tags=["health"])
@@ -69,6 +71,16 @@ def read_root(request: Request):
 @app.get("/login")
 def login_page(request: Request):
     return templates.TemplateResponse(request, "auth/login.html")
+
+
+@app.get("/forgot-password")
+def forgot_password_page(request: Request):
+    return templates.TemplateResponse(request, "auth/forgot_password.html")
+
+
+@app.get("/reset-password")
+def reset_password_page(request: Request):
+    return templates.TemplateResponse(request, "auth/reset_password.html")
 
 
 @app.get("/register")

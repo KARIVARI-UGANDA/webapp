@@ -39,5 +39,17 @@ class Settings:
     stripe_currency: str = os.getenv("STRIPE_CURRENCY", "usd")
     stripe_webhook_secret: str = os.getenv("STRIPE_WEBHOOK_SECRET", "")
 
+    # Email / SMTP
+    smtp_host: str = os.getenv("SMTP_HOST", "")
+    smtp_port: int = int(os.getenv("SMTP_PORT", "587"))
+    smtp_username: str = os.getenv("SMTP_USERNAME", "")
+    smtp_password: str = os.getenv("SMTP_PASSWORD", "")
+    smtp_from_email: str = os.getenv("SMTP_FROM_EMAIL", "noreply@karivari.ug")
+    smtp_from_name: str = os.getenv("SMTP_FROM_NAME", "Kari Vari Uganda")
+    smtp_use_tls: bool = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
+
+    # App
+    app_base_url: str = os.getenv("APP_BASE_URL", "http://localhost:8080")
+
 
 settings = Settings()

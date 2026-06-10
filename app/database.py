@@ -64,6 +64,12 @@ def run_migrations():
         "ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS has_bluetooth BOOLEAN NOT NULL DEFAULT FALSE",
         "ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS has_usb_charger BOOLEAN NOT NULL DEFAULT FALSE",
         "ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS is_pet_friendly BOOLEAN NOT NULL DEFAULT FALSE",
+        """CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+            id VARCHAR PRIMARY KEY,
+            email VARCHAR UNIQUE NOT NULL,
+            is_active BOOLEAN NOT NULL DEFAULT TRUE,
+            subscribed_at TIMESTAMP NOT NULL DEFAULT NOW()
+        )""",
     ]
     with engine.connect() as conn:
         for sql in migrations:

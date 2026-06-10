@@ -10,6 +10,7 @@ Endpoints:
   GET  /api/payments/callback              — redirect after hosted checkout
 """
 import json
+import logging
 import uuid
 from datetime import datetime, timezone
 from decimal import Decimal
@@ -24,8 +25,9 @@ from app.deps import get_current_user, DbSession
 from app.models.booking import Booking
 from app.models.commission import Commission
 from app.models.payment import Payment, Payout
+from app.models.user import User
 from app.models.vehicle import Vehicle
-from app.services import paystack_service, flutterwave_service
+from app.services import email_service, paystack_service, flutterwave_service
 
 router = APIRouter(prefix="/payments", tags=["payments"])
 
@@ -483,6 +485,44 @@ def _mark_payment_completed_by_ref(
                 ))
 
     db.commit()
+
+    # Send booking confirmation + invoice emails
+    try:
+        if booking and booking.customer_id:
+            _customer = db.query(User).filter(User.id == booking.customer_id).first()
+            _vehicle  = db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
+            if _customer and _vehicle:
+                _vehicle_name = f"{_vehicle.make} {_vehicle.model}"
+                _pickup = booking.pickup_date.strftime("%d %b %Y") if booking.pickup_date else "—"
+                _ret    = booking.return_date.strftime("%d %b %Y") if booking.return_date else "—"
+                _amt    = int(payment.amount_ugx or 0)
+                _days   = booking.total_days or 1
+                _ref    = payment.gateway_reference or payment.id
+
+                email_service.send_booking_confirmation(
+                    to_email=_customer.email,
+                    full_name=_customer.full_name,
+                    booking_ref=booking.id,
+                    vehicle_name=_vehicle_name,
+                    pickup_date=_pickup,
+                    return_date=_ret,
+                    total_days=_days,
+                    amount_ugx=_amt,
+                )
+                email_service.send_invoice(
+                    to_email=_customer.email,
+                    full_name=_customer.full_name,
+                    booking_ref=booking.id,
+                    vehicle_name=_vehicle_name,
+                    pickup_date=_pickup,
+                    return_date=_ret,
+                    total_days=_days,
+                    amount_ugx=_amt,
+                    payment_method=payment.payment_method or "card",
+                    gateway_ref=_ref,
+                )
+    except Exception as exc:
+        logging.getLogger(__name__).error("Failed to send booking emails: %s", exc)
 
 
 def _mark_payment_failed_by_ref(db: Session, gateway_ref: str):

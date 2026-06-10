@@ -1,4 +1,5 @@
 from .analytics import AnalyticsDailySnapshot
+from .newsletter import NewsletterSubscriber
 from .audit import AuditLog
 from .base import Base
 from .booking import Booking, BookingPromotion, BookingStop
@@ -32,6 +33,7 @@ __all__ = [
     "Dispute",
     "EmergencyAlert",
     "Message",
+    "NewsletterSubscriber",
     "Notification",
     "PasswordResetToken",
     "Payment",

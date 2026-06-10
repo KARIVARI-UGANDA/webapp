@@ -21,6 +21,8 @@ from app.schemas.auth import (
     TokenResponse,
 )
 from app.schemas.user import UserRead
+import logging
+from app.services import email_service
 from app.security import (
     create_access_token,
     create_refresh_token,
@@ -30,6 +32,7 @@ from app.security import (
 )
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+logger = logging.getLogger(__name__)
 
 
 def _issue_token_pair(user: User, db: Session) -> dict:
@@ -178,21 +181,25 @@ def me(current_user: User = Depends(get_current_user)):
 @router.post("/forgot-password")
 def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == payload.email).first()
-    # Always return 200 to avoid email enumeration
-    if user:
-        raw_token = secrets.token_urlsafe(32)
-        now = datetime.now(timezone.utc).replace(tzinfo=None)
-        prt = PasswordResetToken(
-            id=str(uuid.uuid4()),
-            user_id=user.id,
-            token_hash=hash_password(raw_token),
-            expires_at=now + timedelta(hours=1),
-            created_at=now,
-        )
-        db.add(prt)
-        db.commit()
-        # TODO Phase 12: send reset email with raw_token
-    return {"message": "If that email exists, a reset link has been sent"}
+    if not user:
+        raise HTTPException(status_code=404, detail="No account found with that email address.")
+
+    raw_token = secrets.token_urlsafe(32)
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    prt = PasswordResetToken(
+        id=str(uuid.uuid4()),
+        user_id=user.id,
+        token_hash=hash_password(raw_token),
+        expires_at=now + timedelta(hours=1),
+        created_at=now,
+    )
+    db.add(prt)
+    db.commit()
+    try:
+        email_service.send_password_reset(user.email, user.full_name, raw_token)
+    except Exception as exc:
+        logger.error("Failed to send password reset email to %s: %s", user.email, exc)
+    return {"message": "Reset link sent! Check your inbox."}
 
 
 @router.post("/reset-password")

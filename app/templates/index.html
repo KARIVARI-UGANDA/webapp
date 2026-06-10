@@ -677,6 +677,25 @@
     </div>
   </section>
 
+  <!-- ── Newsletter ── -->
+  <section style="background:linear-gradient(105deg,#1f2f1c 0%,#0a2f1a 100%);padding:64px 16px;">
+    <div style="max-width:620px;margin:0 auto;text-align:center;">
+      <span style="display:inline-block;background:rgba(249,177,21,.15);color:#F9B115;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:16px;">NEWSLETTER</span>
+      <h2 style="color:#fff;font-family:'Montserrat',sans-serif;font-size:1.9rem;font-weight:700;margin-bottom:12px;">Safari updates, straight to your inbox.</h2>
+      <p style="color:rgba(255,255,255,.7);font-size:1rem;margin-bottom:32px;line-height:1.6;">New vehicles, seasonal deals, and destination highlights — no spam, unsubscribe any time.</p>
+      <div id="nlAlert" style="display:none;padding:14px 20px;border-radius:10px;margin-bottom:20px;font-size:14px;font-weight:600;"></div>
+      <form id="newsletterForm" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+        <input type="email" id="nlEmail" placeholder="your@email.com" required
+          style="flex:1 1 260px;padding:14px 18px;border-radius:10px;border:none;font-size:15px;outline:none;min-width:200px;">
+        <button type="submit" id="nlBtn"
+          style="padding:14px 28px;background:#F9B115;color:#1A1C1E;border:none;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;white-space:nowrap;">
+          Subscribe
+        </button>
+      </form>
+      <p style="color:rgba(255,255,255,.4);font-size:12px;margin-top:16px;">🌿 Join safari enthusiasts already on the list.</p>
+    </div>
+  </section>
+
 </main>
 
 <!-- ── Footer (ORIGINAL) ── -->
@@ -900,6 +919,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     localStorage.clear();
     window.location.href = '/';
   });
+});
+</script>
+<script>
+document.getElementById('newsletterForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('nlEmail').value.trim();
+  const btn = document.getElementById('nlBtn');
+  const alert = document.getElementById('nlAlert');
+  btn.disabled = true;
+  btn.textContent = 'Subscribing…';
+  alert.style.display = 'none';
+  try {
+    const res = await fetch('/api/newsletter/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (res.ok || res.status === 201) {
+      alert.style.cssText = 'display:block;padding:14px 20px;border-radius:10px;margin-bottom:20px;font-size:14px;font-weight:600;background:rgba(45,106,39,.25);color:#a8e6a0;border:1px solid rgba(45,106,39,.4);';
+      alert.textContent = data.message || 'Thank you for subscribing!';
+      document.getElementById('newsletterForm').style.display = 'none';
+    } else {
+      alert.style.cssText = 'display:block;padding:14px 20px;border-radius:10px;margin-bottom:20px;font-size:14px;font-weight:600;background:rgba(180,30,30,.2);color:#fca5a5;border:1px solid rgba(180,30,30,.3);';
+      alert.textContent = data.detail || 'Something went wrong. Please try again.';
+      btn.disabled = false;
+      btn.textContent = 'Subscribe';
+    }
+  } catch {
+    alert.style.cssText = 'display:block;padding:14px 20px;border-radius:10px;margin-bottom:20px;font-size:14px;font-weight:600;background:rgba(180,30,30,.2);color:#fca5a5;border:1px solid rgba(180,30,30,.3);';
+    alert.textContent = 'Network error. Please try again.';
+    btn.disabled = false;
+    btn.textContent = 'Subscribe';
+  }
 });
 </script>
 </body>
