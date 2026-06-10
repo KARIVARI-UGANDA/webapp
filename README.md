@@ -15,15 +15,10 @@ Premium 4×4 vehicle rental marketplace connecting customers with verified Ugand
 Click the **Open in GitHub Codespaces** badge above, wait ~2 minutes for setup to finish, then run:
 
 ```bash
-python run.py
+pip3 install -r requirements.txt && python run.py
 ```
 
 That's it. The app creates the database, seeds demo accounts, and starts the server automatically.
-
-> **If you see a "No module named" error**, run this once first:
-> ```bash
-> pip3 install -r requirements.txt && python run.py
-> ```
 
 ---
 
