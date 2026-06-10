@@ -19,7 +19,7 @@ import uuid
 from datetime import datetime, timezone
 
 
-# ── Step 1: install dependencies (skip if already installed) ──────────────────
+# ── Step 1: install dependencies ──────────────────────────────────────────────
 def _install():
     try:
         import uvicorn  # already installed — skip
@@ -28,22 +28,29 @@ def _install():
         pass
 
     req = os.path.join(os.path.dirname(__file__), "requirements.txt")
-    if not os.path.exists(req):
-        return
-
     print("[startup] Installing dependencies...")
-    # Try pip3, then pip, then python -m pip
-    for cmd in (["pip3", "install", "-r", req, "-q"],
-                ["pip",  "install", "-r", req, "-q"],
-                [sys.executable, "-m", "pip", "install", "-r", req, "-q"]):
+
+    # Try every available pip variant
+    for cmd in (
+        ["pip3", "install", "-r", req, "-q"],
+        ["pip",  "install", "-r", req, "-q"],
+        [sys.executable, "-m", "pip", "install", "-r", req, "-q"],
+        ["python3", "-m", "pip", "install", "-r", req, "-q"],
+    ):
         try:
-            subprocess.check_call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.check_call(cmd)
             return
         except (subprocess.CalledProcessError, FileNotFoundError):
             continue
 
-    print("[startup] WARNING: could not auto-install dependencies.")
-    print(f"  Run manually:  pip install -r {req}")
+    # Nothing worked — print a clear fix and exit
+    print()
+    print("ERROR: Could not install dependencies automatically.")
+    print("Run this first, then try again:")
+    print()
+    print("  pip3 install -r requirements.txt")
+    print()
+    sys.exit(1)
 
 
 _install()
