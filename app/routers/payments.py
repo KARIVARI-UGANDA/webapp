@@ -9,6 +9,7 @@ Endpoints:
   GET  /api/payments/{booking_id}/status   — poll payment status
   GET  /api/payments/callback              — redirect after hosted checkout
 """
+
 import json
 import logging
 import threading
@@ -22,18 +23,19 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.deps import get_current_user, DbSession
+from app.deps import DbSession, get_current_user
 from app.models.booking import Booking
 from app.models.commission import Commission
 from app.models.payment import Payment, Payout
 from app.models.user import User
 from app.models.vehicle import Vehicle
-from app.services import email_service, paystack_service, flutterwave_service
+from app.services import email_service, flutterwave_service, paystack_service
 
 router = APIRouter(prefix="/payments", tags=["payments"])
 
 
 # ── Stripe public config (no auth required) ────────────────────────────────────
+
 
 @router.get("/stripe-config")
 def stripe_config():
@@ -41,6 +43,7 @@ def stripe_config():
 
 
 # ── Schemas ────────────────────────────────────────────────────────────────────
+
 
 class PaymentInitiateRequest(BaseModel):
     booking_id: str
@@ -66,6 +69,7 @@ class PaymentInitiateResponse(BaseModel):
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
 
+
 def _now() -> datetime:
     return datetime.now(timezone.utc)
 
@@ -77,18 +81,26 @@ def _get_booking_or_404(db: Session, booking_id: str, user_id: str) -> Booking:
     if booking.customer_id != user_id:
         raise HTTPException(status_code=403, detail="Not your booking")
     if booking.status not in ("pending", "pending_payment", "confirmed"):
-        raise HTTPException(status_code=400, detail=f"Booking status '{booking.status}' cannot be paid")
+        raise HTTPException(
+            status_code=400, detail=f"Booking status '{booking.status}' cannot be paid"
+        )
     return booking
 
 
 def _existing_completed_payment(db: Session, booking_id: str) -> bool:
-    return db.query(Payment).filter(
-        Payment.booking_id == booking_id,
-        Payment.status == "completed",
-    ).first() is not None
+    return (
+        db.query(Payment)
+        .filter(
+            Payment.booking_id == booking_id,
+            Payment.status == "completed",
+        )
+        .first()
+        is not None
+    )
 
 
 # ── POST /api/payments/initiate ────────────────────────────────────────────────
+
 
 @router.post("/initiate", response_model=PaymentInitiateResponse)
 def initiate_payment(
@@ -106,7 +118,9 @@ def initiate_payment(
     tx_ref = f"KRV-{payment_id[:8].upper()}"
 
     if body.method == "card":
-        if not settings.paystack_secret_key or settings.paystack_secret_key.startswith("sk_test_REPLACE"):
+        if not settings.paystack_secret_key or settings.paystack_secret_key.startswith(
+            "sk_test_REPLACE"
+        ):
             raise HTTPException(status_code=503, detail="Paystack is not configured")
 
         amount_ugx = _get_booking_amount_ugx(db, booking)
@@ -123,7 +137,10 @@ def initiate_payment(
             raise HTTPException(status_code=502, detail=f"Paystack error: {exc}")
 
         if not ps_resp.get("status"):
-            raise HTTPException(status_code=502, detail=ps_resp.get("message", "Paystack initiation failed"))
+            raise HTTPException(
+                status_code=502,
+                detail=ps_resp.get("message", "Paystack initiation failed"),
+            )
 
         ps_data = ps_resp.get("data", {})
 
@@ -155,9 +172,15 @@ def initiate_payment(
 
     # Mobile money (Flutterwave)
     if not body.phone_number or not body.network:
-        raise HTTPException(status_code=422, detail="phone_number and network are required for mobile_money")
+        raise HTTPException(
+            status_code=422,
+            detail="phone_number and network are required for mobile_money",
+        )
 
-    if not settings.flutterwave_secret_key or settings.flutterwave_secret_key.startswith("FLWSECK_TEST-REPLACE"):
+    if (
+        not settings.flutterwave_secret_key
+        or settings.flutterwave_secret_key.startswith("FLWSECK_TEST-REPLACE")
+    ):
         raise HTTPException(status_code=503, detail="Flutterwave is not configured")
 
     amount_ugx = _get_booking_amount_ugx(db, booking)
@@ -177,7 +200,10 @@ def initiate_payment(
 
     flw_status = flw_resp.get("status", "error")
     if flw_status != "success":
-        raise HTTPException(status_code=502, detail=flw_resp.get("message", "Mobile money initiation failed"))
+        raise HTTPException(
+            status_code=502,
+            detail=flw_resp.get("message", "Mobile money initiation failed"),
+        )
 
     payment = Payment(
         id=payment_id,
@@ -187,7 +213,7 @@ def initiate_payment(
         currency="UGX",
         payment_method="mobile_money",
         payment_channel=body.network,
-        gateway_reference=tx_ref,   # store our tx_ref for verify_by_reference lookup
+        gateway_reference=tx_ref,  # store our tx_ref for verify_by_reference lookup
         phone_number=body.phone_number,
         status="pending",
         created_at=now,
@@ -206,6 +232,7 @@ def initiate_payment(
 
 
 # ── POST /api/payments/{payment_id}/verify ────────────────────────────────────
+
 
 @router.post("/{payment_id}/verify")
 def verify_payment(
@@ -227,7 +254,11 @@ def verify_payment(
         raise HTTPException(status_code=403, detail="Not your payment")
 
     if payment.status == "completed":
-        return {"payment_id": payment_id, "status": "completed", "message": "Already completed"}
+        return {
+            "payment_id": payment_id,
+            "status": "completed",
+            "message": "Already completed",
+        }
 
     gateway_ref = payment.gateway_reference
 
@@ -239,20 +270,36 @@ def verify_payment(
             raise HTTPException(status_code=502, detail=f"Paystack error: {exc}")
 
         ps_data = resp.get("data", {})
-        ps_status = ps_data.get("status", "pending")  # success | failed | abandoned | pending
+        ps_status = ps_data.get(
+            "status", "pending"
+        )  # success | failed | abandoned | pending
 
         if ps_status == "success":
             _mark_payment_completed_by_ref(
-                db, gateway_ref, receipt_url=None,
+                db,
+                gateway_ref,
+                receipt_url=None,
                 paid_amount_ugx=ps_data.get("amount"),
             )
-            return {"payment_id": payment_id, "status": "completed", "gateway_status": ps_status}
+            return {
+                "payment_id": payment_id,
+                "status": "completed",
+                "gateway_status": ps_status,
+            }
 
         if ps_status in ("failed", "abandoned"):
             _mark_payment_failed_by_ref(db, gateway_ref)
-            return {"payment_id": payment_id, "status": "failed", "gateway_status": ps_status}
+            return {
+                "payment_id": payment_id,
+                "status": "failed",
+                "gateway_status": ps_status,
+            }
 
-        return {"payment_id": payment_id, "status": "pending", "gateway_status": ps_status}
+        return {
+            "payment_id": payment_id,
+            "status": "pending",
+            "gateway_status": ps_status,
+        }
 
     # ── Flutterwave mobile money ───────────────────────────────────────────────
     if payment.payment_channel in ("MTN_UGANDA", "AIRTEL_UGANDA"):
@@ -266,21 +313,38 @@ def verify_payment(
 
         if flw_status == "successful":
             _mark_payment_completed_by_ref(
-                db, gateway_ref, receipt_url=None,
+                db,
+                gateway_ref,
+                receipt_url=None,
                 paid_amount_ugx=tx_data.get("amount"),
             )
-            return {"payment_id": payment_id, "status": "completed", "gateway_status": flw_status}
+            return {
+                "payment_id": payment_id,
+                "status": "completed",
+                "gateway_status": flw_status,
+            }
 
         if flw_status == "failed":
             _mark_payment_failed_by_ref(db, gateway_ref)
-            return {"payment_id": payment_id, "status": "failed", "gateway_status": flw_status}
+            return {
+                "payment_id": payment_id,
+                "status": "failed",
+                "gateway_status": flw_status,
+            }
 
-        return {"payment_id": payment_id, "status": "pending", "gateway_status": flw_status}
+        return {
+            "payment_id": payment_id,
+            "status": "pending",
+            "gateway_status": flw_status,
+        }
 
-    raise HTTPException(status_code=400, detail=f"Unknown payment channel: {payment.payment_channel}")
+    raise HTTPException(
+        status_code=400, detail=f"Unknown payment channel: {payment.payment_channel}"
+    )
 
 
 # ── POST /api/payments/webhook/paystack ───────────────────────────────────────
+
 
 @router.post("/webhook/paystack", include_in_schema=False)
 async def paystack_webhook(
@@ -294,7 +358,9 @@ async def paystack_webhook(
     """
     payload = await request.body()
 
-    if not x_paystack_signature or not paystack_service.verify_webhook_signature(payload, x_paystack_signature):
+    if not x_paystack_signature or not paystack_service.verify_webhook_signature(
+        payload, x_paystack_signature
+    ):
         raise HTTPException(status_code=400, detail="Invalid webhook signature")
 
     data = json.loads(payload)
@@ -304,12 +370,15 @@ async def paystack_webhook(
     if event == "charge.success":
         reference = tx_data.get("reference")
         amount = tx_data.get("amount")
-        _mark_payment_completed_by_ref(db, reference, receipt_url=None, paid_amount_ugx=amount)
+        _mark_payment_completed_by_ref(
+            db, reference, receipt_url=None, paid_amount_ugx=amount
+        )
 
     return {"received": True}
 
 
 # ── POST /api/payments/webhook/flutterwave ─────────────────────────────────────
+
 
 @router.post("/webhook/flutterwave", include_in_schema=False)
 async def flutterwave_webhook(
@@ -330,7 +399,9 @@ async def flutterwave_webhook(
     if event_type == "charge.completed" and tx_data.get("status") == "successful":
         tx_ref = tx_data.get("tx_ref")
         amount = tx_data.get("amount")
-        _mark_payment_completed_by_ref(db, tx_ref, receipt_url=None, paid_amount_ugx=amount)
+        _mark_payment_completed_by_ref(
+            db, tx_ref, receipt_url=None, paid_amount_ugx=amount
+        )
 
     elif event_type == "charge.completed" and tx_data.get("status") == "failed":
         tx_ref = tx_data.get("tx_ref")
@@ -340,6 +411,7 @@ async def flutterwave_webhook(
 
 
 # ── GET /api/payments/{booking_id}/status ─────────────────────────────────────
+
 
 @router.get("/{booking_id}/status")
 def payment_status(
@@ -377,9 +449,10 @@ def payment_status(
 
 # ── GET /api/payments/callback (Flutterwave redirect) ─────────────────────────
 
+
 @router.get("/callback")
 def payment_callback(
-    status: str = "unknown",
+    payment_status: str = "unknown",
     tx_ref: str = "",
     transaction_id: str = "",
     db: DbSession = None,
@@ -388,7 +461,7 @@ def payment_callback(
     Flutterwave redirects here after hosted checkout.
     Re-verify the transaction and update DB if needed.
     """
-    if status == "successful" and transaction_id:
+    if payment_status == "successful" and transaction_id:
         try:
             verify_resp = flutterwave_service.verify_transaction(transaction_id)
             tx_data = verify_resp.get("data", {})
@@ -402,6 +475,7 @@ def payment_callback(
 
 
 # ── Internal helpers ───────────────────────────────────────────────────────────
+
 
 def _get_booking_amount_ugx(db: Session, booking: Booking) -> int:
     """
@@ -423,8 +497,7 @@ def _get_booking_amount_ugx(db: Session, booking: Booking) -> int:
     return int(vehicle.base_daily_rate_ugx) * total_days
 
 
-
-COMMISSION_RATE    = 0.17
+COMMISSION_RATE = 0.17
 OWNER_DEPOSIT_RATE = 0.30
 
 
@@ -458,32 +531,40 @@ def _mark_payment_completed_by_ref(
     if booking:
         vehicle = db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
         if vehicle:
-            vehicle_subtotal_ugx = (booking.total_days or 1) * int(vehicle.base_daily_rate_ugx)
+            vehicle_subtotal_ugx = (booking.total_days or 1) * int(
+                vehicle.base_daily_rate_ugx
+            )
             commission_ugx = int(vehicle_subtotal_ugx * COMMISSION_RATE)
-            owner_net_ugx  = vehicle_subtotal_ugx - commission_ugx
-            deposit_ugx    = int(owner_net_ugx * OWNER_DEPOSIT_RATE)
+            owner_net_ugx = vehicle_subtotal_ugx - commission_ugx
+            deposit_ugx = int(owner_net_ugx * OWNER_DEPOSIT_RATE)
 
-            existing = db.query(Commission).filter(Commission.booking_id == booking.id).first()
+            existing = (
+                db.query(Commission).filter(Commission.booking_id == booking.id).first()
+            )
             if not existing:
-                db.add(Commission(
-                    id=str(uuid.uuid4()),
-                    booking_id=booking.id,
-                    payment_id=payment.id,
-                    gross_amount_ugx=vehicle_subtotal_ugx,
-                    commission_rate=COMMISSION_RATE,
-                    commission_ugx=commission_ugx,
-                    owner_payout_ugx=owner_net_ugx,
-                    calculated_at=now,
-                ))
-                db.add(Payout(
-                    id=str(uuid.uuid4()),
-                    owner_id=vehicle.owner_id,
-                    booking_ids=booking.id,
-                    total_amount_ugx=deposit_ugx,
-                    payout_method="pending",
-                    status="pending",
-                    requested_at=now,
-                ))
+                db.add(
+                    Commission(
+                        id=str(uuid.uuid4()),
+                        booking_id=booking.id,
+                        payment_id=payment.id,
+                        gross_amount_ugx=vehicle_subtotal_ugx,
+                        commission_rate=COMMISSION_RATE,
+                        commission_ugx=commission_ugx,
+                        owner_payout_ugx=owner_net_ugx,
+                        calculated_at=now,
+                    )
+                )
+                db.add(
+                    Payout(
+                        id=str(uuid.uuid4()),
+                        owner_id=vehicle.owner_id,
+                        booking_ids=booking.id,
+                        total_amount_ugx=deposit_ugx,
+                        payout_method="pending",
+                        status="pending",
+                        requested_at=now,
+                    )
+                )
 
     db.commit()
 
@@ -491,15 +572,21 @@ def _mark_payment_completed_by_ref(
     if booking and booking.customer_id:
         try:
             _customer = db.query(User).filter(User.id == booking.customer_id).first()
-            _vehicle  = db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
+            _vehicle = (
+                db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
+            )
             if _customer and _vehicle:
                 _kwargs = dict(
                     to_email=_customer.email,
                     full_name=_customer.full_name,
                     booking_ref=booking.id,
                     vehicle_name=f"{_vehicle.make} {_vehicle.model}",
-                    pickup_date=booking.pickup_date.strftime("%d %b %Y") if booking.pickup_date else "—",
-                    return_date=booking.return_date.strftime("%d %b %Y") if booking.return_date else "—",
+                    pickup_date=booking.pickup_date.strftime("%d %b %Y")
+                    if booking.pickup_date
+                    else "—",
+                    return_date=booking.return_date.strftime("%d %b %Y")
+                    if booking.return_date
+                    else "—",
                     total_days=booking.total_days or 1,
                     amount_ugx=int(payment.amount_ugx or 0),
                 )
@@ -514,11 +601,17 @@ def _mark_payment_completed_by_ref(
                         email_service.send_booking_confirmation(**kw)
                         email_service.send_invoice(**inv_kw)
                     except Exception as exc:
-                        logging.getLogger(__name__).error("Failed to send booking emails: %s", exc)
+                        logging.getLogger(__name__).error(
+                            "Failed to send booking emails: %s", exc
+                        )
 
-                threading.Thread(target=_send_emails, args=(_kwargs, _inv_kwargs), daemon=True).start()
+                threading.Thread(
+                    target=_send_emails, args=(_kwargs, _inv_kwargs), daemon=True
+                ).start()
         except Exception as exc:
-            logging.getLogger(__name__).error("Failed to prepare booking emails: %s", exc)
+            logging.getLogger(__name__).error(
+                "Failed to prepare booking emails: %s", exc
+            )
 
 
 def _mark_payment_failed_by_ref(db: Session, gateway_ref: str):

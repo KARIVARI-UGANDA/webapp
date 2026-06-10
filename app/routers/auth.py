@@ -1,3 +1,4 @@
+import logging
 import secrets
 import uuid
 from datetime import datetime, timedelta, timezone
@@ -21,8 +22,6 @@ from app.schemas.auth import (
     TokenResponse,
 )
 from app.schemas.user import UserRead
-import logging
-from app.services import email_service
 from app.security import (
     create_access_token,
     create_refresh_token,
@@ -30,6 +29,7 @@ from app.security import (
     hash_password,
     verify_password,
 )
+from app.services import email_service
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 logger = logging.getLogger(__name__)
@@ -63,12 +63,17 @@ def _issue_token_pair(user: User, db: Session) -> dict:
     }
 
 
-@router.post("/signup", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/signup", response_model=TokenResponse, status_code=status.HTTP_201_CREATED
+)
 def signup(payload: SignupRequest, db: Session = Depends(get_db)):
     if db.query(User).filter(User.email == payload.email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    if payload.phone_number and db.query(User).filter(User.phone_number == payload.phone_number).first():
+    if (
+        payload.phone_number
+        and db.query(User).filter(User.phone_number == payload.phone_number).first()
+    ):
         raise HTTPException(status_code=400, detail="Phone number already registered")
 
     now = datetime.now(timezone.utc).replace(tzinfo=None)
@@ -92,7 +97,9 @@ def signup(payload: SignupRequest, db: Session = Depends(get_db)):
         db.flush()
     except IntegrityError as e:
         db.rollback()
-        raise HTTPException(status_code=400, detail="An account with these details already exists") from e
+        raise HTTPException(
+            status_code=400, detail="An account with these details already exists"
+        ) from e
 
     return _issue_token_pair(user, db)
 
@@ -133,7 +140,12 @@ def refresh_token(payload: RefreshRequest, db: Session = Depends(get_db)):
     )
 
     matched = next(
-        (t for t in stored_tokens if verify_password(payload.refresh_token, t.token_hash)), None
+        (
+            t
+            for t in stored_tokens
+            if verify_password(payload.refresh_token, t.token_hash)
+        ),
+        None,
     )
     if not matched:
         raise HTTPException(status_code=401, detail="Invalid or revoked refresh token")
@@ -186,7 +198,8 @@ def forgot_password(
 ):
     user = db.query(User).filter(User.email == payload.email).first()
     if not user:
-        raise HTTPException(status_code=404, detail="No account found with that email address.")
+        # Return 200 to avoid leaking whether an email is registered
+        return {"message": "If that email is registered, a reset link has been sent."}
 
     raw_token = secrets.token_urlsafe(32)
     now = datetime.now(timezone.utc).replace(tzinfo=None)
@@ -248,23 +261,23 @@ def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db))
 
 _DEV_ACCOUNTS = {
     "customer": {
-        "email":      "demo.customer@karivari.ug",
-        "password":   "demo_customer_2024",
-        "full_name":  "Demo Customer",
+        "email": "demo.customer@karivari.ug",
+        "password": "demo_customer_2024",
+        "full_name": "Demo Customer",
         "phone_number": "+256700000001",
         "account_type": "individual",
     },
     "owner": {
-        "email":      "demo.owner@karivari.ug",
-        "password":   "demo_owner_2024",
-        "full_name":  "Demo Car Owner",
+        "email": "demo.owner@karivari.ug",
+        "password": "demo_owner_2024",
+        "full_name": "Demo Car Owner",
         "phone_number": "+256700000002",
         "account_type": "individual",
     },
     "admin": {
-        "email":      "demo.admin@karivari.ug",
-        "password":   "demo_admin_2024",
-        "full_name":  "Demo Admin",
+        "email": "demo.admin@karivari.ug",
+        "password": "demo_admin_2024",
+        "full_name": "Demo Admin",
         "phone_number": "+256700000003",
         "account_type": "individual",
     },
