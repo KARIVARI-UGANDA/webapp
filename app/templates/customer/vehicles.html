@@ -452,15 +452,32 @@ function toggleFuel(btn) {
 }
 
 function buildTypeFilters(vehicles) {
-  const types = [...new Set(vehicles.map(v => v.vehicle_type).filter(Boolean))].sort();
+  const dynamicTypes = [...new Set(vehicles.map(v => v.vehicle_type).filter(Boolean))];
   const container = document.getElementById('typeFilterContainer');
   if (!container) return;
-  container.innerHTML = types.length === 0
-    ? '<p class="text-label-sm text-on-surface-variant italic">No types in data</p>'
-    : types.map(t => `
+
+  // Preferred types to show first (user-requested)
+  const preferred = ['Safari 4x4', 'SUV', 'Luxury', 'Minibus', 'Sedan'];
+
+  // Normalize helper for values
+  const norm = s => String(s || '').toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+
+  // Build list: preferred (normalized) then remaining dynamic types
+  const preferredValues = preferred.map(p => ({ value: norm(p), label: p }));
+  const remaining = dynamicTypes.filter(dt => !preferredValues.some(pv => pv.value === norm(dt)));
+  const remainingItems = remaining.map(t => ({ value: t, label: t.replace(/_/g, ' ') }));
+
+  const items = [...preferredValues, ...remainingItems];
+
+  if (items.length === 0) {
+    container.innerHTML = '<p class="text-label-sm text-on-surface-variant italic">No types in data</p>';
+    return;
+  }
+
+  container.innerHTML = items.map(it => `
       <label class="flex items-center gap-3 cursor-pointer group">
-        <input type="checkbox" value="${t}" class="filter-type rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
-        <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary capitalize">${t.replace(/_/g, ' ')}</span>
+        <input type="checkbox" value="${it.value}" class="filter-type rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+        <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">${it.label}</span>
       </label>`).join('');
 }
 
@@ -480,7 +497,13 @@ function applyFilters() {
 
   const filtered = _vehicles.filter(v => {
     if (maxPriceUSD < 500 && v.base_daily_rate_ugx / RATES.USD > maxPriceUSD) return false;
-    if (typeChecks.length > 0 && !typeChecks.includes(v.vehicle_type)) return false;
+    if (typeChecks.length > 0) {
+      const norm = s => String(s || '').toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+      const vType = v.vehicle_type || '';
+      const vNorm = norm(vType);
+      const checksNorm = typeChecks.map(t => norm(t));
+      if (!(typeChecks.includes(vType) || checksNorm.includes(vNorm))) return false;
+    }
     if (wantAC        && !v.has_ac)          return false;
     if (wantWifi      && !v.has_wifi)        return false;
     if (want4wd       && !v.is_4wd)          return false;
@@ -579,8 +602,8 @@ function vehicleCardHTML(v) {
   return `
   <div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.06)] overflow-hidden group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
     <div class="relative h-56 overflow-hidden flex-shrink-0">
-      <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-           src="${imgSrc}" alt="${v.make} ${v.model}" loading="lazy">
+       <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+         src="${imgSrc}" alt="${v.make} ${v.model}" loading="eager">
       <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
       <div class="absolute top-3 left-3">${statusBadge}</div>
       ${availBadge ? `<div class="absolute bottom-3 right-3">${availBadge}</div>` : ''}

@@ -12,6 +12,210 @@
   <link rel="stylesheet" href="/static/css/index.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <!-- Custom CSS for vehicles.html style cards (replacing Tailwind grid classes) -->
+  <style>
+    /* Vehicle Card Styles - exact match to vehicles.html */
+    .vehicle-card {
+      background: #ffffff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      max-width: 360px;
+      margin: 0;
+      width: 100%;
+      justify-self: start;
+    }
+    .vehicle-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    .vehicle-card-image {
+      position: relative;
+      height: 224px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .vehicle-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .vehicle-card:hover .vehicle-card-image img {
+      transform: scale(1.05);
+    }
+    .image-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
+      pointer-events: none;
+    }
+    .badge-verified {
+      background: #2D5A27;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .badge-pending {
+      background: #B45309;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-available {
+      background: rgba(255,255,255,0.95);
+      color: #2D5A27;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .status-dot {
+      position: relative;
+      display: inline-flex;
+      height: 8px;
+      width: 8px;
+      flex-shrink: 0;
+    }
+    .status-dot-pulse {
+      position: absolute;
+      display: inline-flex;
+      height: 100%;
+      width: 100%;
+      border-radius: 9999px;
+      background-color: #15803D;
+      opacity: 0.75;
+      animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+    .status-dot-core {
+      position: relative;
+      display: inline-flex;
+      border-radius: 9999px;
+      height: 8px;
+      width: 8px;
+      background-color: #15803D;
+    }
+    @keyframes ping {
+      75%, 100% { transform: scale(2); opacity: 0; }
+    }
+    .vehicle-card-content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .vehicle-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #1a1c1e;
+      margin: 0 0 4px 0;
+    }
+    .vehicle-meta {
+      color: #42493e;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    .vehicle-meta strong {
+      font-weight: 600;
+    }
+    .meta-sep {
+      margin: 0 4px;
+      color: #c2c9bb;
+    }
+    .vehicle-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin: 16px 0;
+    }
+    .feature-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #42493e;
+    }
+    .feature-chip .material-symbols-outlined {
+      font-size: 15px;
+      color: #2D5A27;
+    }
+    .feature-chip strong {
+      font-weight: 600;
+      color: #1a1c1e;
+    }
+    .vehicle-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid rgba(194, 201, 187, 0.3);
+      margin-top: auto;
+    }
+    .vehicle-price {
+      line-height: 1;
+    }
+    .vehicle-price-amount {
+      font-size: 22px;
+      font-weight: 700;
+      color: #154212;
+    }
+    .vehicle-price-unit {
+      font-size: 13px;
+      font-weight: 500;
+      color: #42493e;
+    }
+    .btn-view-details {
+      border: 2px solid #154212;
+      color: #154212;
+      padding: 8px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+    .btn-view-details:hover {
+      background: #154212;
+      color: white;
+      text-decoration: none;
+    }
+    .position-relative { position: relative; }
+    .position-absolute { position: absolute; }
+    .top-3 { top: 12px; }
+    .left-3 { left: 12px; }
+    .bottom-3 { bottom: 12px; }
+    .right-3 { right: 12px; }
+  </style>
+  
   <script>
     tailwind.config = {
       darkMode: "class",
@@ -186,11 +390,73 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.05);
       border-left: 4px solid #F9B115;
     }
+    /* Hero section (original) */
+    .hero-section {
+      background: linear-gradient(105deg, #1f2f1c 0%, #0a2f1a 100%);
+      min-height: 85vh;
+      position: relative;
+      isolation: isolate;
+    }
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('/static/images/safari-sunset.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 1;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.25);
+      z-index: 1;
+    }
+
+    /* Center featured heading */
+    .featured-heading-wrap {
+      text-align: center;
+      flex: 1 1 auto;
+    }
+    .btn-accent {
+      background-color: #F9B115;
+      color: #1A1C1E;
+      border: none;
+    }
+    .btn-accent:hover {
+      background-color: #e0a00b;
+      color: #111;
+    }
+    .badge-soft-success {
+      background: rgba(45,90,39,0.12);
+      color: #2D5A27;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 0.35rem 0.9rem;
+      border-radius: 40px;
+      display: inline-block;
+    }
+    .cta-banner {
+      background: #f9f9fc;
+      border: 1px solid #e2e2e5;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+      border-radius: 1.5rem;
+    }
+    /* Grid override for vehicle cards */
+    .vehicle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+      justify-items: start;
+    }
   </style>
 </head>
 <body>
 
-<!-- ── Navbar ── -->
+<!-- ── Navbar (ORIGINAL) ── -->
 <nav class="sticky top-0 w-full z-50 flex justify-between items-center px-4 md:px-12 py-4 max-w-[1280px] mx-auto" style="background:rgba(249,249,252,0.85);backdrop-filter:blur(8px);box-shadow:0 1px 3px rgba(0,0,0,0.05);">
   <div class="flex items-center gap-8">
     <a href="/" class="flex items-center gap-2 font-bold text-[20px] no-underline" style="color:#2D5A27;font-family:'Montserrat',sans-serif;">
@@ -220,7 +486,7 @@
 
 <main>
 
-  <!-- ── Section 1: Hero ── -->
+  <!-- ── Section 1: Hero (ORIGINAL) ── -->
   <section class="hero-section position-relative d-flex align-items-center">
     <div class="hero-overlay"></div>
     <div class="container position-relative z-2 py-5">
@@ -236,24 +502,15 @@
         <div id="searchCard" style="background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-radius:1.25rem;padding:1.25rem 1.5rem;box-shadow:0 24px 48px rgba(0,0,0,0.22);max-width:820px;margin-inline:auto;">
           <form id="searchForm">
             <div class="d-flex flex-wrap gap-3 align-items-end">
-
-              <!-- Location -->
               <div style="flex:2 1 180px;">
                 <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
                   <i class="bi bi-geo-alt-fill me-1" style="color:#2D5A27;"></i>Location
                 </label>
-                <input id="searchLocation" type="text" list="cityList" class="form-control"
-                  placeholder="Kampala, Entebbe…" autocomplete="off"
-                  style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.95rem;">
+                <input id="searchLocation" type="text" list="cityList" class="form-control" placeholder="Kampala, Entebbe…" autocomplete="off" style="border:1px solid #c2c9bb;border-radius:0.5rem;font-size:0.95rem;">
                 <datalist id="cityList">
-                  <option value="Kampala"><option value="Entebbe"><option value="Jinja">
-                  <option value="Fort Portal"><option value="Mbarara"><option value="Gulu">
-                  <option value="Bwindi"><option value="Queen Elizabeth"><option value="Kidepo">
-                  <option value="Sipi Falls"><option value="Murchison Falls">
+                  <option value="Kampala"><option value="Entebbe"><option value="Jinja"><option value="Fort Portal"><option value="Mbarara"><option value="Gulu"><option value="Bwindi"><option value="Queen Elizabeth"><option value="Kidepo"><option value="Sipi Falls"><option value="Murchison Falls">
                 </datalist>
               </div>
-
-              <!-- Vehicle type -->
               <div style="flex:1 1 140px;">
                 <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
                   <i class="bi bi-car-front-fill me-1" style="color:#2D5A27;"></i>Type
@@ -267,8 +524,6 @@
                   <option value="sedan">Sedan</option>
                 </select>
               </div>
-
-              <!-- Seats -->
               <div style="flex:0 1 110px;">
                 <label class="d-block mb-1" style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#42493e;text-transform:uppercase;">
                   <i class="bi bi-people-fill me-1" style="color:#2D5A27;"></i>Seats
@@ -281,51 +536,36 @@
                   <option value="10">10+</option>
                 </select>
               </div>
-
-              <!-- Search button -->
               <div style="flex:0 0 auto;">
-                <button type="submit" class="btn fw-bold d-flex align-items-center gap-2"
-                  style="background:#2D5A27;color:white;border-radius:0.5rem;padding:0.56rem 1.4rem;font-size:0.95rem;white-space:nowrap;height:38px;">
+                <button type="submit" class="btn fw-bold d-flex align-items-center gap-2" style="background:#2D5A27;color:white;border-radius:0.5rem;padding:0.56rem 1.4rem;font-size:0.95rem;white-space:nowrap;height:38px;">
                   <i class="bi bi-search"></i> Search
                 </button>
               </div>
             </div>
           </form>
-
-          <!-- Active filters -->
           <div id="activeFilters" class="d-flex flex-wrap gap-2 mt-3 justify-content-center" style="display:none!important;"></div>
-        </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Section 2: Trust strip ── -->
+  <!-- ── Section 2: Trust strip (ORIGINAL) ── -->
   <section class="trust-strip py-4">
     <div class="container">
       <div class="d-flex flex-wrap justify-content-center align-items-center gap-4 text-center" style="color:#42493e;font-size:0.95rem;font-weight:600;letter-spacing:0.03em;">
-        <span class="d-flex align-items-center gap-2">
-          <i class="bi bi-check-circle-fill" style="color:#2D5A27;"></i>
-          Verified 4x4 vehicles
-        </span>
+        <span class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill" style="color:#2D5A27;"></i>Verified 4x4 vehicles</span>
         <span class="d-none d-md-inline" style="color:#c2c9bb;">·</span>
-        <span class="d-flex align-items-center gap-2">
-          <i class="bi bi-check-circle-fill" style="color:#2D5A27;"></i>
-          German-speaking driver-guides
-        </span>
+        <span class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill" style="color:#2D5A27;"></i>German-speaking driver-guides</span>
         <span class="d-none d-md-inline" style="color:#c2c9bb;">·</span>
-        <span class="d-flex align-items-center gap-2">
-          <i class="bi bi-check-circle-fill" style="color:#2D5A27;"></i>
-          Complimentary CDW insurance
-        </span>
+        <span class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill" style="color:#2D5A27;"></i>Complimentary CDW insurance</span>
       </div>
     </div>
   </section>
 
-  <!-- ── Featured Vehicles ── -->
+  <!-- ── Featured Vehicles (REPLACED with vehicles.html style cards) ── -->
   <section class="container py-5 my-2">
     <div class="d-flex flex-wrap justify-content-between align-items-end mb-5">
-      <div>
+      <div class="featured-heading-wrap">
         <span class="badge-soft-success">OUR FLEET</span>
         <h2 class="display-6 fw-bold mt-2" style="font-family:'Montserrat',sans-serif;" id="featuredHeading">Featured Vehicles</h2>
         <p class="text-secondary small mt-1 mb-0" id="searchResultCount"></p>
@@ -337,15 +577,13 @@
           <input type="radio" class="btn-check" name="currency" id="cur-eur" value="EUR">
           <label class="btn btn-outline-secondary" for="cur-eur">€ EUR</label>
         </div>
-        <a href="/vehicles" class="btn btn-link text-decoration-none p-0 d-flex align-items-center gap-1" style="color:#154212;">
-          View All <i class="bi bi-arrow-right"></i>
-        </a>
+        <a href="/vehicles" class="btn btn-link text-decoration-none p-0 d-flex align-items-center gap-1" style="color:#154212;">View All <i class="bi bi-arrow-right"></i></a>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="vehicleCardsContainer"></div>
+    <div class="vehicle-grid" id="vehicleCardsContainer"></div>
   </section>
 
-  <!-- ── Section 3: Who we serve ── -->
+  <!-- ── Section 3: Who we serve (ORIGINAL) ── -->
   <section class="py-5" style="background:#f3f3f6;">
     <div class="container py-3" style="max-width:1100px;">
       <div class="text-center mb-5">
@@ -356,27 +594,21 @@
       <div class="row g-4">
         <div class="col-md-4">
           <div class="serve-card h-100">
-            <div class="mb-3">
-              <span class="material-symbols-outlined text-[32px]" style="color:#2D5A27;font-variation-settings:'FILL' 1;">camera</span>
-            </div>
+            <div class="mb-3"><span class="material-symbols-outlined text-[32px]" style="color:#2D5A27;font-variation-settings:'FILL' 1;">camera</span></div>
             <h4 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Photography</h4>
             <p class="text-secondary mb-0">For travellers carrying serious gear. Open-roof vehicles, early starts, owner-drivers who understand light and patience. Trips usually run ten to fourteen days.</p>
           </div>
         </div>
         <div class="col-md-4">
           <div class="serve-card h-100" style="border-top-color:#F9B115;">
-            <div class="mb-3">
-              <span class="material-symbols-outlined text-[32px]" style="color:#7e5700;font-variation-settings:'FILL' 1;">forest</span>
-            </div>
+            <div class="mb-3"><span class="material-symbols-outlined text-[32px]" style="color:#7e5700;font-variation-settings:'FILL' 1;">forest</span></div>
             <h4 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Wildlife &amp; Safari</h4>
             <p class="text-secondary mb-0">For gorilla tracking, big game in the savannah parks, and birding along the Albertine Rift. Long park transfers, reliable vehicles, drivers who double as guides. Seven to fourteen day trips.</p>
           </div>
         </div>
         <div class="col-md-4">
           <div class="serve-card h-100" style="border-top-color:#c2c9bb;">
-            <div class="mb-3">
-              <span class="material-symbols-outlined text-[32px]" style="color:#42493e;font-variation-settings:'FILL' 1;">hotel_class</span>
-            </div>
+            <div class="mb-3"><span class="material-symbols-outlined text-[32px]" style="color:#42493e;font-variation-settings:'FILL' 1;">hotel_class</span></div>
             <h4 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Luxury</h4>
             <p class="text-secondary mb-0">For travellers booking premium lodges who expect their transport to match. Quiet vehicles, polished service, end-to-end coordination with your itinerary.</p>
           </div>
@@ -385,7 +617,7 @@
     </div>
   </section>
 
-  <!-- ── Section 4: What's included ── -->
+  <!-- ── Section 4: What's included (ORIGINAL) ── -->
   <section class="container py-5 my-2" style="max-width:1100px;">
     <div class="text-center mb-5">
       <span class="badge-soft-success">WHAT'S INCLUDED</span>
@@ -393,83 +625,16 @@
       <p class="text-secondary mt-3 mx-auto" style="max-width:640px;">When you book on Karivari, your daily rate already covers what other operators charge separately. No surprise costs in the bush.</p>
     </div>
     <div class="row g-4">
-
-      <div class="col-md-6 col-lg-4">
-        <div class="included-card h-100">
-          <div class="included-icon">
-            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">directions_car</span>
-          </div>
-          <div>
-            <h6 class="fw-bold mb-1">Verified 4x4 + spare tires</h6>
-            <p class="text-secondary small mb-0">We inspect every vehicle before listing it. Spare tires are standard on every trip.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="included-card h-100">
-          <div class="included-icon">
-            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">person</span>
-          </div>
-          <div>
-            <h6 class="fw-bold mb-1">German-speaking owner-driver</h6>
-            <p class="text-secondary small mb-0">Your driver speaks conversational German plus English. They own the vehicle and know the route.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="included-card h-100">
-          <div class="included-icon">
-            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">local_gas_station</span>
-          </div>
-          <div>
-            <h6 class="fw-bold mb-1">Fuel included</h6>
-            <p class="text-secondary small mb-0">Shown as a transparent line item in your daily rate. No top-ups at remote pumps.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="included-card h-100">
-          <div class="included-icon">
-            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">shield</span>
-          </div>
-          <div>
-            <h6 class="fw-bold mb-1">Complimentary CDW insurance</h6>
-            <p class="text-secondary small mb-0">European-grade documentation. Motor insurance is verified on every vehicle in our network.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="included-card h-100">
-          <div class="included-icon">
-            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">flight_land</span>
-          </div>
-          <div>
-            <h6 class="fw-bold mb-1">Free airport pickup</h6>
-            <p class="text-secondary small mb-0">Complimentary on safaris of two weeks or more.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="included-card h-100">
-          <div class="included-icon">
-            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">support_agent</span>
-          </div>
-          <div>
-            <h6 class="fw-bold mb-1">24/7 support and onsite offices</h6>
-            <p class="text-secondary small mb-0">Phone, WhatsApp, and email — plus physical offices in Kampala and Entebbe.</p>
-          </div>
-        </div>
-      </div>
-
+      <div class="col-md-6 col-lg-4"><div class="included-card h-100"><div class="included-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">directions_car</span></div><div><h6 class="fw-bold mb-1">Verified 4x4 + spare tires</h6><p class="text-secondary small mb-0">We inspect every vehicle before listing it. Spare tires are standard on every trip.</p></div></div></div>
+      <div class="col-md-6 col-lg-4"><div class="included-card h-100"><div class="included-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">person</span></div><div><h6 class="fw-bold mb-1">German-speaking owner-driver</h6><p class="text-secondary small mb-0">Your driver speaks conversational German plus English. They own the vehicle and know the route.</p></div></div></div>
+      <div class="col-md-6 col-lg-4"><div class="included-card h-100"><div class="included-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">local_gas_station</span></div><div><h6 class="fw-bold mb-1">Fuel included</h6><p class="text-secondary small mb-0">Shown as a transparent line item in your daily rate. No top-ups at remote pumps.</p></div></div></div>
+      <div class="col-md-6 col-lg-4"><div class="included-card h-100"><div class="included-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">shield</span></div><div><h6 class="fw-bold mb-1">Complimentary CDW insurance</h6><p class="text-secondary small mb-0">European-grade documentation. Motor insurance is verified on every vehicle in our network.</p></div></div></div>
+      <div class="col-md-6 col-lg-4"><div class="included-card h-100"><div class="included-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">flight_land</span></div><div><h6 class="fw-bold mb-1">Free airport pickup</h6><p class="text-secondary small mb-0">Complimentary on safaris of two weeks or more.</p></div></div></div>
+      <div class="col-md-6 col-lg-4"><div class="included-card h-100"><div class="included-icon"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">support_agent</span></div><div><h6 class="fw-bold mb-1">24/7 support and onsite offices</h6><p class="text-secondary small mb-0">Phone, WhatsApp, and email — plus physical offices in Kampala and Entebbe.</p></div></div></div>
     </div>
   </section>
 
-  <!-- ── Section 5: How it works ── -->
+  <!-- ── Section 5: How it works (ORIGINAL) ── -->
   <section class="py-5" style="background:#f3f3f6;">
     <div class="container py-3" style="max-width:1100px;">
       <div class="text-center mb-5">
@@ -478,37 +643,15 @@
         <p class="text-secondary mt-2">Three steps. No middlemen.</p>
       </div>
       <div class="row g-4 mb-4">
-        <div class="col-md-4">
-          <div class="hiw-step h-100" data-num="01">
-            <div class="step-num">1</div>
-            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Choose your vehicle</h5>
-            <p class="text-secondary mb-0">Browse our verified fleet. Filter by trip type, dates, and pickup location. Every listed vehicle has been inspected.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="hiw-step h-100" data-num="02">
-            <div class="step-num" style="background:#F9B115;color:#1A1C1E;">2</div>
-            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Book and confirm</h5>
-            <p class="text-secondary mb-0">Pay one daily rate plus a €2 service fee. You receive written confirmation with insurance details and your owner-driver's contact.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="hiw-step h-100" data-num="03">
-            <div class="step-num">3</div>
-            <h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Travel</h5>
-            <p class="text-secondary mb-0">Your owner-driver meets you at the airport or your hotel. They drive, they guide, they handle the road. You travel.</p>
-          </div>
-        </div>
+        <div class="col-md-4"><div class="hiw-step h-100" data-num="01"><div class="step-num">1</div><h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Choose your vehicle</h5><p class="text-secondary mb-0">Browse our verified fleet. Filter by trip type, dates, and pickup location. Every listed vehicle has been inspected.</p></div></div>
+        <div class="col-md-4"><div class="hiw-step h-100" data-num="02"><div class="step-num" style="background:#F9B115;color:#1A1C1E;">2</div><h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Book and confirm</h5><p class="text-secondary mb-0">Pay one daily rate plus a €2 service fee. You receive written confirmation with insurance details and your owner-driver's contact.</p></div></div>
+        <div class="col-md-4"><div class="hiw-step h-100" data-num="03"><div class="step-num">3</div><h5 class="fw-bold mb-2" style="font-family:'Montserrat',sans-serif;">Travel</h5><p class="text-secondary mb-0">Your owner-driver meets you at the airport or your hotel. They drive, they guide, they handle the road. You travel.</p></div></div>
       </div>
-      <div class="text-center">
-        <a href="/how-it-works" class="text-decoration-none fw-semibold d-inline-flex align-items-center gap-1" style="color:#154212;">
-          Read the full walkthrough <i class="bi bi-arrow-right"></i>
-        </a>
-      </div>
+      <div class="text-center"><a href="/how-it-works" class="text-decoration-none fw-semibold d-inline-flex align-items-center gap-1" style="color:#154212;">Read the full walkthrough <i class="bi bi-arrow-right"></i></a></div>
     </div>
   </section>
 
-  <!-- ── Section 6: Why Karivari ── -->
+  <!-- ── Section 6: Why Karivari (ORIGINAL) ── -->
   <section class="container py-5 my-2" style="max-width:1100px;">
     <div class="text-center mb-5">
       <span class="badge-soft-success">WHY KARIVARI</span>
@@ -516,28 +659,13 @@
       <p class="text-secondary mt-3 mx-auto" style="max-width:580px;">Three things that no other option in Uganda combines.</p>
     </div>
     <div class="row g-4">
-      <div class="col-md-4">
-        <div class="why-card h-100">
-          <h5 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Verified, not random</h5>
-          <p class="text-secondary mb-0">The driver who meets you at the airport is the same person who owns the vehicle. We have inspected the car, checked the insurance, and trained the driver. You are not getting a stranger from an app.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="why-card h-100">
-          <h5 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Built for safaris, not city rides</h5>
-          <p class="text-secondary mb-0">Uber and Bolt are designed for short, urban trips. They were not built for ten-day journeys across national parks with photography gear in the back. Karivari was.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="why-card h-100">
-          <h5 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">A real person if something goes wrong</h5>
-          <p class="text-secondary mb-0">Onsite offices in Kampala and Entebbe. 24/7 phone, WhatsApp, and email. You always have someone to call who is actually in Uganda.</p>
-        </div>
-      </div>
+      <div class="col-md-4"><div class="why-card h-100"><h5 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Verified, not random</h5><p class="text-secondary mb-0">The driver who meets you at the airport is the same person who owns the vehicle. We have inspected the car, checked the insurance, and trained the driver. You are not getting a stranger from an app.</p></div></div>
+      <div class="col-md-4"><div class="why-card h-100"><h5 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">Built for safaris, not city rides</h5><p class="text-secondary mb-0">Uber and Bolt are designed for short, urban trips. They were not built for ten-day journeys across national parks with photography gear in the back. Karivari was.</p></div></div>
+      <div class="col-md-4"><div class="why-card h-100"><h5 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;">A real person if something goes wrong</h5><p class="text-secondary mb-0">Onsite offices in Kampala and Entebbe. 24/7 phone, WhatsApp, and email. You always have someone to call who is actually in Uganda.</p></div></div>
     </div>
   </section>
 
-  <!-- ── Section 7: Closing CTA ── -->
+  <!-- ── Section 7: Closing CTA (ORIGINAL) ── -->
   <section class="container py-5 my-4">
     <div class="cta-banner p-5 p-lg-6 rounded-4 text-center">
       <h2 class="fw-bold mb-3" style="font-family:'Montserrat',sans-serif;font-size:2rem;">Ready to plan your trip?</h2>
@@ -551,7 +679,7 @@
 
 </main>
 
-<!-- ── Section 8: Footer ── -->
+<!-- ── Footer (ORIGINAL) ── -->
 <footer class="pt-5 pb-4 mt-4" style="background-color:#111314;color:#e2e2e5;">
   <div class="container">
     <div class="row g-4">
@@ -588,8 +716,191 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/shared.js?v=2"></script>
-<script src="/static/js/index.js?v=12"></script>
 <script src="/static/js/nav-active.js"></script>
 <script src="//code.tidio.co/z2re40p08rwgmv2hiwlvw8ymzkzacmxb.js" async></script>
+
+<!-- Vehicle Card Script - Replaces index.js for vehicle rendering with vehicles.html style -->
+<script>
+(function() {
+  const RATES = { USD: 3700, EUR: 4050 };
+  const SYMBOLS = { USD: '$', EUR: '€' };
+  let currentCurrency = 'USD';
+  let allVehicles = [];
+
+  function convertPrice(ugx, cur) {
+    return (ugx / (RATES[cur] || RATES.USD)).toFixed(2);
+  }
+
+  function toTitle(str) {
+    if (!str) return '';
+    return str.replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function vehicleCardHTML(v) {
+    const sym = SYMBOLS[currentCurrency];
+    const price = convertPrice(v.base_daily_rate_ugx, currentCurrency);
+    const primaryPhoto = v.photos && v.photos.length > 0 ? (v.photos.find(p => p.is_primary) || v.photos[0]) : null;
+    const imgSrc = primaryPhoto ? primaryPhoto.photo_url : `https://via.placeholder.com/600x300?text=${encodeURIComponent(v.make + ' ' + v.model)}`;
+
+    const chip = (icon, label) => `<span class="feature-chip"><span class="material-symbols-outlined">${icon}</span>${label}</span>`;
+    const features = [
+      chip('person', `<strong>${v.passenger_capacity || 4}</strong> Seats`),
+      chip('settings', `<strong>${toTitle(v.transmission)}</strong>`),
+      chip('local_gas_station', `<strong>${toTitle(v.fuel_type)}</strong>`),
+      v.has_ac ? chip('ac_unit', 'A/C') : '',
+      v.has_wifi ? chip('wifi', 'WiFi') : '',
+      v.is_4wd ? chip('terrain', '4WD') : '',
+      v.has_gps ? chip('location_on', 'GPS') : '',
+      v.has_bluetooth ? chip('bluetooth', 'Bluetooth') : '',
+      v.has_usb_charger ? chip('usb', 'USB') : '',
+      v.is_pet_friendly ? chip('pets', 'Pet OK') : '',
+    ].filter(Boolean).join('');
+
+    const statusBadge = v.status === 'verified'
+      ? `<span class="badge-verified"><span class="material-symbols-outlined" style="font-size:12px;font-variation-settings:'FILL' 1;">verified</span>Verified</span>`
+      : `<span class="badge-pending">Under Review</span>`;
+
+    const availBadge = v.status === 'verified'
+      ? `<span class="badge-available"><span class="status-dot"><span class="status-dot-pulse"></span><span class="status-dot-core"></span></span>Available</span>`
+      : '';
+
+    return `
+      <div class="vehicle-card">
+        <div class="vehicle-card-image">
+          <img src="${imgSrc}" alt="${v.make} ${v.model}" loading="eager">
+          <div class="image-gradient"></div>
+          <div class="position-absolute top-3 left-3">${statusBadge}</div>
+          ${availBadge ? `<div class="position-absolute bottom-3 right-3">${availBadge}</div>` : ''}
+        </div>
+        <div class="vehicle-card-content">
+          <div class="mb-2">
+            <h3 class="vehicle-title">${v.make} ${v.model}</h3>
+            <div class="vehicle-meta"><strong>${v.year || ''}</strong><span class="meta-sep">·</span>${toTitle(v.vehicle_type || '')}<span class="meta-sep">·</span>${toTitle(v.service_area || 'Uganda')}</div>
+          </div>
+          <div class="vehicle-features">${features}</div>
+          <div class="vehicle-footer">
+            <div class="vehicle-price"><span class="vehicle-price-amount">${sym}${price}</span><span class="vehicle-price-unit"> / day</span></div>
+            <a href="/vehicles/${v.id}" class="btn-view-details">View Details</a>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderVehicles(vehicles) {
+    const container = document.getElementById('vehicleCardsContainer');
+    const countSpan = document.getElementById('searchResultCount');
+    if (!container) return;
+    if (!vehicles || vehicles.length === 0) {
+      container.innerHTML = '<div class="text-center py-5">No vehicles available.</div>';
+      if (countSpan) countSpan.textContent = '0 vehicles available';
+      return;
+    }
+    container.innerHTML = vehicles.map(v => vehicleCardHTML(v)).join('');
+    if (countSpan) countSpan.textContent = `${vehicles.length} vehicle${vehicles.length !== 1 ? 's' : ''} available for your journey`;
+  }
+
+  function updateCurrencyAndRender() {
+    renderVehicles(allVehicles);
+    const usdRadio = document.getElementById('cur-usd');
+    const eurRadio = document.getElementById('cur-eur');
+    if (usdRadio && eurRadio) {
+      usdRadio.checked = (currentCurrency === 'USD');
+      eurRadio.checked = (currentCurrency === 'EUR');
+    }
+  }
+
+  async function loadVehicles() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const apiParams = new URLSearchParams({ page: 1, page_size: 100 });
+    const initLoc = urlParams.get('location') || '';
+    const initType = urlParams.get('vehicle_type') || '';
+    const initSeats = urlParams.get('min_seats') || '';
+    if (initLoc) apiParams.set('location', initLoc);
+    if (initType) apiParams.set('vehicle_type', initType);
+    if (initSeats) apiParams.set('min_seats', initSeats);
+
+    try {
+      const res = await fetch(`/api/vehicles/?${apiParams.toString()}`);
+      if (res.ok) {
+        allVehicles = await res.json();
+        renderVehicles(allVehicles);
+      } else {
+        document.getElementById('vehicleCardsContainer').innerHTML = '<div class="text-center py-5">Failed to load vehicles.</div>';
+      }
+    } catch (e) {
+      document.getElementById('vehicleCardsContainer').innerHTML = '<div class="text-center py-5">Network error — please refresh.</div>';
+    }
+  }
+
+  const usdRadio = document.getElementById('cur-usd');
+  const eurRadio = document.getElementById('cur-eur');
+  if (usdRadio) usdRadio.addEventListener('change', (e) => { if (e.target.checked) { currentCurrency = 'USD'; updateCurrencyAndRender(); } });
+  if (eurRadio) eurRadio.addEventListener('change', (e) => { if (e.target.checked) { currentCurrency = 'EUR'; updateCurrencyAndRender(); } });
+
+  const searchForm = document.getElementById('searchForm');
+  if (searchForm) {
+    searchForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const location = document.getElementById('searchLocation')?.value || '';
+      const type = document.getElementById('searchType')?.value || '';
+      const seats = document.getElementById('searchSeats')?.value || '';
+      const params = new URLSearchParams({ page: 1, page_size: 100 });
+      if (location) params.set('location', location);
+      if (type) params.set('vehicle_type', type);
+      if (seats) params.set('min_seats', seats);
+      try {
+        const res = await fetch(`/api/vehicles/?${params.toString()}`);
+        if (res.ok) {
+          allVehicles = await res.json();
+          renderVehicles(allVehicles);
+          const newUrl = `/vehicles?${params.toString()}`;
+          window.history.pushState({}, '', newUrl);
+        } else { renderVehicles([]); }
+      } catch (err) { renderVehicles([]); }
+    });
+  }
+
+  loadVehicles();
+})();
+</script>
+<script>
+// Navbar auth toggle for index page
+document.addEventListener('DOMContentLoaded', async () => {
+  const authButtons = document.getElementById('authButtons');
+  const userButtons = document.getElementById('userButtons');
+  const logoutBtn   = document.getElementById('logoutBtn');
+  const userNameEl  = document.getElementById('userName');
+
+  const token = localStorage.getItem('access_token');
+  if (!token) return;
+
+  try {
+    const res = await fetch(`${API}/auth/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+    if (res.ok) {
+      const user = await res.json();
+      authButtons?.classList.add('d-none');
+      authButtons?.classList.add('hidden');
+      userButtons?.classList.remove('hidden');
+      userButtons?.classList.remove('d-none');
+      userButtons?.classList.add('flex');
+      userNameEl && (userNameEl.textContent = user.full_name || user.name || '');
+      const dash = document.getElementById('dashboardLink');
+      if (dash && user.role) {
+        if (user.role === 'owner') dash.href = '/owner/dashboard';
+        if (user.role === 'admin') dash.href = '/admin/dashboard';
+      }
+    } else {
+      localStorage.removeItem('access_token');
+    }
+  } catch (err) {
+    console.error('Auth check failed:', err);
+  }
+
+  logoutBtn?.addEventListener('click', async () => {
+    localStorage.clear();
+    window.location.href = '/';
+  });
+});
+</script>
 </body>
 </html>

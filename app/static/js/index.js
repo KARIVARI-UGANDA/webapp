@@ -60,8 +60,8 @@ function vehicleCardHTML(v) {
   return `
   <div class="bg-surface-container-lowest rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.06)] overflow-hidden group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
     <div class="relative h-56 overflow-hidden flex-shrink-0">
-      <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-           src="${imgSrc}" alt="${v.make} ${v.model}" loading="lazy">
+	 <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+		 src="${imgSrc}" alt="${v.make} ${v.model}" loading="eager">
       <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
       <div class="absolute top-3 left-3">${statusBadge}</div>
       ${availBadge ? `<div class="absolute bottom-3 right-3">${availBadge}</div>` : ''}

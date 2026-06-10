@@ -250,3 +250,120 @@
   background-color: #1a1c1e;
   color: white;
 }
+
+/* Vehicle card styles (shared across index and dashboard) */
+.vehicle-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  max-width: 360px;
+  margin: 0;
+  width: 100%;
+  justify-self: start;
+}
+.vehicle-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+.vehicle-card-image {
+  position: relative;
+  height: 224px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.vehicle-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.vehicle-card:hover .vehicle-card-image img {
+  transform: scale(1.05);
+}
+.image-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
+  pointer-events: none;
+}
+.badge-verified {
+  background: #2D5A27;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.badge-pending {
+  background: #B45309;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-available {
+  background: rgba(255,255,255,0.95);
+  color: #2D5A27;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.status-dot { position: relative; display: inline-flex; height: 8px; width: 8px; flex-shrink: 0; }
+.status-dot-pulse { position: absolute; display: inline-flex; height: 100%; width: 100%; border-radius: 9999px; background-color: #15803D; opacity: 0.75; animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite; }
+.status-dot-core { position: relative; display: inline-flex; border-radius: 9999px; height: 8px; width: 8px; background-color: #15803D; }
+@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+.vehicle-card-content { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+.vehicle-title { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; line-height: 1.2; color: #1a1c1e; margin: 0 0 4px 0; }
+.vehicle-meta { color: #42493e; font-size: 13px; margin-top: 4px; }
+.vehicle-meta strong { font-weight: 600; }
+.meta-sep { margin: 0 4px; color: #c2c9bb; }
+.vehicle-features { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 16px 0; }
+.feature-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 500; color: #42493e; }
+.feature-chip .material-symbols-outlined { font-size: 15px; color: #2D5A27; }
+.feature-chip strong { font-weight: 600; color: #1a1c1e; }
+.vehicle-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid rgba(194, 201, 187, 0.3); margin-top: auto; }
+.vehicle-price { line-height: 1; }
+.vehicle-price-amount { font-size: 22px; font-weight: 700; color: #154212; }
+.vehicle-price-unit { font-size: 13px; font-weight: 500; color: #42493e; }
+.btn-view-details { border: 2px solid #154212; color: #154212; padding: 8px 20px; border-radius: 12px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s ease; display: inline-block; }
+.btn-view-details:hover { background: #154212; color: white; text-decoration: none; }
+.position-relative { position: relative; }
+.position-absolute { position: absolute; }
+.top-3 { top: 12px; }
+.left-3 { left: 12px; }
+.bottom-3 { bottom: 12px; }
+.right-3 { right: 12px; }
+
+/* Ensure vehicle grids left-align cards (dashboard/vehicles) */
+#vehicleGrid { justify-items: start; }
+
+/* Grid used on index for consistent card widths and left alignment */
+.vehicle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 24px;
+  justify-items: start;
+}
