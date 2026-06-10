@@ -1,4 +1,5 @@
 from sqlalchemy import BOOLEAN, Column, Date, DateTime, ForeignKey, String, Text
+
 from .base import Base
 
 
@@ -17,7 +18,9 @@ class User(Base):
     is_verified = Column(BOOLEAN, nullable=False, default=False)
     is_active = Column(BOOLEAN, nullable=False, default=True)
     account_type = Column(String, nullable=False)
-    corporate_id = Column(String(36), ForeignKey("corporate_accounts.id"), nullable=True)
+    corporate_id = Column(
+        String(36), ForeignKey("corporate_accounts.id"), nullable=True
+    )
     two_fa_enabled = Column(BOOLEAN, nullable=False, default=False)
     two_fa_secret = Column(String)
     last_login_at = Column(DateTime)

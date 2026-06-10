@@ -1,6 +1,8 @@
 """Tests for /api/auth/* endpoints."""
+
 import pytest
-from tests.conftest import _register, _login, _auth_headers
+
+from tests.conftest import _auth_headers, _login, _register
 
 
 class TestSignup:
@@ -13,7 +15,14 @@ class TestSignup:
         assert "refresh_token" in data
 
     def test_owner_signup_success(self, client):
-        r = _register(client, "owner2@test.com", "password123", "Owner User", role="owner", phone="+256703000001")
+        r = _register(
+            client,
+            "owner2@test.com",
+            "password123",
+            "Owner User",
+            role="owner",
+            phone="+256703000001",
+        )
         assert r.status_code == 201
         assert r.json()["role"] == "owner"
 
@@ -31,13 +40,16 @@ class TestSignup:
         assert r.status_code == 422
 
     def test_invalid_role_rejected(self, client):
-        r = client.post("/api/auth/signup", json={
-            "email": "role@test.com",
-            "password": "password123",
-            "full_name": "Role Test",
-            "phone_number": "+256700111222",
-            "role": "superuser",
-        })
+        r = client.post(
+            "/api/auth/signup",
+            json={
+                "email": "role@test.com",
+                "password": "password123",
+                "full_name": "Role Test",
+                "phone_number": "+256700111222",
+                "role": "superuser",
+            },
+        )
         assert r.status_code == 422
 
     def test_missing_required_fields(self, client):
@@ -79,7 +91,9 @@ class TestMe:
         assert r.status_code in (401, 403)
 
     def test_get_me_invalid_token(self, client):
-        r = client.get("/api/auth/me", headers={"Authorization": "Bearer bogus.token.here"})
+        r = client.get(
+            "/api/auth/me", headers={"Authorization": "Bearer bogus.token.here"}
+        )
         assert r.status_code == 401
 
 
@@ -87,7 +101,9 @@ class TestRefreshToken:
     def test_refresh_issues_new_access_token(self, client):
         _register(client, "refresh@test.com", "password123", "Refresh User")
         login = _login(client, "refresh@test.com", "password123").json()
-        r = client.post("/api/auth/refresh", json={"refresh_token": login["refresh_token"]})
+        r = client.post(
+            "/api/auth/refresh", json={"refresh_token": login["refresh_token"]}
+        )
         assert r.status_code == 200
         assert "access_token" in r.json()
 
@@ -100,12 +116,16 @@ class TestLogout:
     def test_logout_success(self, client):
         _register(client, "logout@test.com", "password123", "Logout User")
         login = _login(client, "logout@test.com", "password123").json()
-        r = client.post("/api/auth/logout", json={"refresh_token": login["refresh_token"]})
+        r = client.post(
+            "/api/auth/logout", json={"refresh_token": login["refresh_token"]}
+        )
         assert r.status_code == 200
 
     def test_refresh_after_logout_fails(self, client):
         # Use the signup token directly — only one refresh token exists so logout revokes it cleanly
-        signup = _register(client, "loggedout@test.com", "password123", "Logged Out").json()
+        signup = _register(
+            client, "loggedout@test.com", "password123", "Logged Out"
+        ).json()
         rt = signup["refresh_token"]
         client.post("/api/auth/logout", json={"refresh_token": rt})
         r = client.post("/api/auth/refresh", json={"refresh_token": rt})

@@ -1,4 +1,5 @@
 """Tests for /api/admin/* endpoints."""
+
 import pytest
 
 VEHICLE_PAYLOAD = {
@@ -20,9 +21,11 @@ VEHICLE_PAYLOAD = {
 
 class TestVehicleVerification:
     def _pending_vehicle(self, client, owner_headers, plate="UAB 010A"):
-        r = client.post("/api/vehicles/", headers=owner_headers, json={
-            **VEHICLE_PAYLOAD, "registration_plate": plate
-        })
+        r = client.post(
+            "/api/vehicles/",
+            headers=owner_headers,
+            json={**VEHICLE_PAYLOAD, "registration_plate": plate},
+        )
         assert r.status_code == 201
         return r.json()["id"]
 
@@ -38,7 +41,9 @@ class TestVehicleVerification:
         admin_headers, _ = admin
         owner_headers, _ = owner
         vid = self._pending_vehicle(client, owner_headers, "UAB 012A")
-        r = client.patch(f"/api/admin/verifications/{vid}/approve", headers=admin_headers)
+        r = client.patch(
+            f"/api/admin/verifications/{vid}/approve", headers=admin_headers
+        )
         assert r.status_code == 200
         assert r.json()["status"] == "verified"
 
@@ -46,9 +51,11 @@ class TestVehicleVerification:
         admin_headers, _ = admin
         owner_headers, _ = owner
         vid = self._pending_vehicle(client, owner_headers, "UAB 013A")
-        r = client.patch(f"/api/admin/verifications/{vid}/reject", headers=admin_headers, json={
-            "reason": "Poor vehicle condition"
-        })
+        r = client.patch(
+            f"/api/admin/verifications/{vid}/reject",
+            headers=admin_headers,
+            json={"reason": "Poor vehicle condition"},
+        )
         assert r.status_code == 200
         assert r.json()["status"] == "rejected"
 

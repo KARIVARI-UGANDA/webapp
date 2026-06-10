@@ -1,5 +1,6 @@
-import bcrypt as _bcrypt_mod
 import types
+
+import bcrypt as _bcrypt_mod
 
 # passlib compat: bcrypt 4.x removed __about__
 if not hasattr(_bcrypt_mod, "__about__"):
@@ -46,7 +47,9 @@ def create_refresh_token(user_id: str) -> str:
 
 def decode_token(token: str) -> dict:
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        payload = jwt.decode(
+            token, settings.secret_key, algorithms=[settings.algorithm]
+        )
         return payload
     except JWTError:
         raise HTTPException(

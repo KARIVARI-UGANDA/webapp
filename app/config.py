@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -7,7 +8,9 @@ load_dotenv()
 class Settings:
     secret_key: str = os.getenv("SECRET_KEY", "dev-secret-change-in-prod-use-32-chars")
     algorithm: str = os.getenv("ALGORITHM", "HS256")
-    access_token_expire_minutes: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+    access_token_expire_minutes: int = int(
+        os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30")
+    )
     refresh_token_expire_days: int = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", "14"))
     database_url: str = os.getenv("DATABASE_URL", "sqlite:///./karivari.db")
     cors_origins: list[str] = os.getenv(
@@ -16,7 +19,9 @@ class Settings:
     insurance_flat_fee_usd: float = float(os.getenv("INSURANCE_FLAT_FEE_USD", "15.0"))
     booking_hold_minutes: int = int(os.getenv("BOOKING_HOLD_MINUTES", "30"))
     cancellation_free_days: int = int(os.getenv("CANCELLATION_FREE_DAYS", "7"))
-    cancellation_half_refund_days: int = int(os.getenv("CANCELLATION_HALF_REFUND_DAYS", "2"))
+    cancellation_half_refund_days: int = int(
+        os.getenv("CANCELLATION_HALF_REFUND_DAYS", "2")
+    )
     payment_provider: str = os.getenv("PAYMENT_PROVIDER", "paystack")
     kyc_provider: str = os.getenv("KYC_PROVIDER", "manual")
     manual_kyc_enabled: bool = os.getenv("MANUAL_KYC_ENABLED", "true").lower() == "true"
@@ -28,10 +33,14 @@ class Settings:
     # Flutterwave (MTN Uganda MoMo / Airtel Money)
     flutterwave_secret_key: str = os.getenv("FLUTTERWAVE_SECRET_KEY", "")
     flutterwave_public_key: str = os.getenv("FLUTTERWAVE_PUBLIC_KEY", "")
-    flutterwave_base_url: str = os.getenv("FLUTTERWAVE_BASE_URL", "https://api.flutterwave.com/v3")
+    flutterwave_base_url: str = os.getenv(
+        "FLUTTERWAVE_BASE_URL", "https://api.flutterwave.com/v3"
+    )
 
     # Redirect URLs for Flutterwave hosted checkout
-    payment_redirect_url: str = os.getenv("PAYMENT_REDIRECT_URL", "http://localhost:8080/payments/callback")
+    payment_redirect_url: str = os.getenv(
+        "PAYMENT_REDIRECT_URL", "http://localhost:8080/payments/callback"
+    )
 
     # Stripe (card / international payments)
     stripe_secret_key: str = os.getenv("STRIPE_SECRET_KEY", "")

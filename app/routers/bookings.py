@@ -10,7 +10,12 @@ from app.database import get_db
 from app.deps import get_current_user, require_role
 from app.models import Booking, Commission, Payment, Payout, Vehicle
 from app.models.vehicle import VehiclePhoto
-from app.schemas.booking import BookingListItem, BookingPaymentResponse, BookingRequest, VehicleSnapshot
+from app.schemas.booking import (
+    BookingListItem,
+    BookingPaymentResponse,
+    BookingRequest,
+    VehicleSnapshot,
+)
 from app.services.stripe_service import create_payment_intent, get_payment_intent
 
 router = APIRouter(prefix="/bookings", tags=["bookings"])
@@ -18,13 +23,13 @@ router = APIRouter(prefix="/bookings", tags=["bookings"])
 _admin = require_role("admin")
 _any_auth = get_current_user
 
-RATES_UGX_PER_USD  = 3700
-EUR_TO_USD         = 1.08          # approximate fixed rate
-SERVICE_FEE_EUR    = 2.50          # Karivari flat service fee per booking
-MAINTENANCE_FEE_EUR = 17.00        # Karivari maintenance fee added on top of owner rate
-PLATFORM_FEE_USD   = round((SERVICE_FEE_EUR + MAINTENANCE_FEE_EUR) * EUR_TO_USD, 2)
-COMMISSION_RATE    = 0.17          # 17 % Karivari commission on vehicle subtotal
-OWNER_DEPOSIT_RATE = 0.30         # 30 % of owner payout released immediately on payment
+RATES_UGX_PER_USD = 3700
+EUR_TO_USD = 1.08  # approximate fixed rate
+SERVICE_FEE_EUR = 2.50  # Karivari flat service fee per booking
+MAINTENANCE_FEE_EUR = 17.00  # Karivari maintenance fee added on top of owner rate
+PLATFORM_FEE_USD = round((SERVICE_FEE_EUR + MAINTENANCE_FEE_EUR) * EUR_TO_USD, 2)
+COMMISSION_RATE = 0.17  # 17 % Karivari commission on vehicle subtotal
+OWNER_DEPOSIT_RATE = 0.30  # 30 % of owner payout released immediately on payment
 
 
 # POST /api/bookings — any authenticated user creates a booking + Stripe PaymentIntent
@@ -38,33 +43,45 @@ def create_booking(
     if not vehicle:
         raise HTTPException(status_code=404, detail="Vehicle not found")
     if vehicle.status != "verified":
-        raise HTTPException(status_code=400, detail="Vehicle is not available for booking")
+        raise HTTPException(
+            status_code=400, detail="Vehicle is not available for booking"
+        )
     if vehicle.owner_id == current_user.id:
-        raise HTTPException(status_code=403, detail="Vehicle owners cannot book their own vehicle")
+        raise HTTPException(
+            status_code=403, detail="Vehicle owners cannot book their own vehicle"
+        )
 
     try:
         start_dt = datetime.strptime(payload.pickup_date, "%Y-%m-%d")
-        end_dt   = datetime.strptime(payload.return_date,  "%Y-%m-%d")
+        end_dt = datetime.strptime(payload.return_date, "%Y-%m-%d")
     except ValueError:
-        raise HTTPException(status_code=400, detail="Invalid date format — use YYYY-MM-DD")
+        raise HTTPException(
+            status_code=400, detail="Invalid date format — use YYYY-MM-DD"
+        )
 
-    today = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=None)
+    today = datetime.now(timezone.utc).replace(
+        hour=0, minute=0, second=0, microsecond=0, tzinfo=None
+    )
     if start_dt < today:
         raise HTTPException(status_code=400, detail="Pickup date cannot be in the past")
 
     if end_dt <= start_dt:
-        raise HTTPException(status_code=400, detail="Return date must be after pickup date")
+        raise HTTPException(
+            status_code=400, detail="Return date must be after pickup date"
+        )
 
     total_days = max(1, (end_dt - start_dt).days)
 
     # Server-side rate calculation
-    daily_ugx      = vehicle.base_daily_rate_ugx
-    daily_usd      = daily_ugx / RATES_UGX_PER_USD
-    vehicle_usd    = round(daily_usd * total_days, 2)      # owner subtotal
-    amount_usd     = round(vehicle_usd + PLATFORM_FEE_USD, 2)  # customer pays this (owner rate + €2.50 service + €17 maintenance)
+    daily_ugx = vehicle.base_daily_rate_ugx
+    daily_usd = daily_ugx / RATES_UGX_PER_USD
+    vehicle_usd = round(daily_usd * total_days, 2)  # owner subtotal
+    amount_usd = round(
+        vehicle_usd + PLATFORM_FEE_USD, 2
+    )  # customer pays this (owner rate + €2.50 service + €17 maintenance)
 
     now = datetime.now(timezone.utc).replace(tzinfo=None)
-    booking_id  = str(uuid.uuid4())
+    booking_id = str(uuid.uuid4())
     booking_ref = f"KV-{booking_id[:8].upper()}"
 
     booking = Booking(
@@ -132,14 +149,21 @@ def confirm_payment(
     current_user=Depends(_any_auth),
     db: Session = Depends(get_db),
 ):
-    booking = db.query(Booking).filter(
-        Booking.id == booking_id,
-        Booking.customer_id == current_user.id,
-    ).first()
+    booking = (
+        db.query(Booking)
+        .filter(
+            Booking.id == booking_id,
+            Booking.customer_id == current_user.id,
+        )
+        .first()
+    )
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
     if booking.status != "pending_payment":
-        return {"status": booking.status, "booking_reference": booking.booking_reference}
+        return {
+            "status": booking.status,
+            "booking_reference": booking.booking_reference,
+        }
 
     payment = db.query(Payment).filter(Payment.booking_id == booking_id).first()
     if not payment:
@@ -151,23 +175,25 @@ def confirm_payment(
         raise HTTPException(status_code=502, detail=f"Could not verify payment: {exc}")
 
     if intent.status != "succeeded":
-        raise HTTPException(status_code=402, detail=f"Payment not completed (status: {intent.status})")
+        raise HTTPException(
+            status_code=402, detail=f"Payment not completed (status: {intent.status})"
+        )
 
     now = datetime.now(timezone.utc).replace(tzinfo=None)
-    booking.status     = "confirmed"
+    booking.status = "confirmed"
     booking.updated_at = now
-    payment.status     = "completed"
-    payment.paid_at    = now
+    payment.status = "completed"
+    payment.paid_at = now
     payment.updated_at = now
 
     # --- Commission & owner deposit ---
     # Commission is on the vehicle subtotal only — platform fees (€2.50 + €17) go entirely to Karivari
     vehicle = db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
     vehicle_subtotal_ugx = booking.total_days * vehicle.base_daily_rate_ugx
-    gross_ugx      = vehicle_subtotal_ugx
+    gross_ugx = vehicle_subtotal_ugx
     commission_ugx = int(gross_ugx * COMMISSION_RATE)
-    owner_net_ugx  = gross_ugx - commission_ugx
-    deposit_ugx    = int(owner_net_ugx * OWNER_DEPOSIT_RATE)
+    owner_net_ugx = gross_ugx - commission_ugx
+    deposit_ugx = int(owner_net_ugx * OWNER_DEPOSIT_RATE)
 
     commission = Commission(
         id=str(uuid.uuid4()),
@@ -206,7 +232,10 @@ def list_owner_bookings(
     db: Session = Depends(get_db),
     current_user=Depends(_owner),
 ):
-    owned_ids = [v.id for v in db.query(Vehicle.id).filter(Vehicle.owner_id == current_user.id).all()]
+    owned_ids = [
+        v.id
+        for v in db.query(Vehicle.id).filter(Vehicle.owner_id == current_user.id).all()
+    ]
     if not owned_ids:
         return []
 
@@ -232,9 +261,14 @@ def list_owner_bookings(
         if vehicle:
             photo = (
                 db.query(VehiclePhoto)
-                .filter(VehiclePhoto.vehicle_id == vehicle.id, VehiclePhoto.is_primary.is_(True))
+                .filter(
+                    VehiclePhoto.vehicle_id == vehicle.id,
+                    VehiclePhoto.is_primary.is_(True),
+                )
                 .first()
-                or db.query(VehiclePhoto).filter(VehiclePhoto.vehicle_id == vehicle.id).first()
+                or db.query(VehiclePhoto)
+                .filter(VehiclePhoto.vehicle_id == vehicle.id)
+                .first()
             )
             vehicle_snapshot = VehicleSnapshot(
                 id=vehicle.id,
@@ -260,11 +294,13 @@ def list_owner_bookings(
             status=b.status,
             created_at=b.created_at,
             amount_ugx=int(payment.amount_ugx) if payment else None,
-            amount_usd=float(payment.amount_usd) if payment and payment.amount_usd else None,
+            amount_usd=float(payment.amount_usd)
+            if payment and payment.amount_usd
+            else None,
             vehicle=vehicle_snapshot,
         )
         # attach customer name as extra field via __dict__
-        item.__dict__['customer_name'] = customer.full_name if customer else '—'
+        item.__dict__["customer_name"] = customer.full_name if customer else "—"
         result.append(item)
 
     return result
@@ -294,9 +330,14 @@ def list_bookings(current_user=Depends(_any_auth), db: Session = Depends(get_db)
         if vehicle:
             photo = (
                 db.query(VehiclePhoto)
-                .filter(VehiclePhoto.vehicle_id == vehicle.id, VehiclePhoto.is_primary.is_(True))
+                .filter(
+                    VehiclePhoto.vehicle_id == vehicle.id,
+                    VehiclePhoto.is_primary.is_(True),
+                )
                 .first()
-                or db.query(VehiclePhoto).filter(VehiclePhoto.vehicle_id == vehicle.id).first()
+                or db.query(VehiclePhoto)
+                .filter(VehiclePhoto.vehicle_id == vehicle.id)
+                .first()
             )
             vehicle_snapshot = VehicleSnapshot(
                 id=vehicle.id,
@@ -308,34 +349,44 @@ def list_bookings(current_user=Depends(_any_auth), db: Session = Depends(get_db)
                 primary_photo_url=photo.photo_url if photo else None,
             )
 
-        result.append(BookingListItem(
-            id=b.id,
-            booking_reference=b.booking_reference,
-            vehicle_id=b.vehicle_id,
-            booking_type=b.booking_type,
-            pickup_location=b.pickup_location,
-            dropoff_location=b.dropoff_location,
-            start_datetime=b.start_datetime,
-            end_datetime=b.end_datetime,
-            total_days=b.total_days,
-            passenger_count=b.passenger_count,
-            status=b.status,
-            created_at=b.created_at,
-            amount_ugx=int(payment.amount_ugx) if payment else None,
-            amount_usd=float(payment.amount_usd) if payment and payment.amount_usd else None,
-            vehicle=vehicle_snapshot,
-        ))
+        result.append(
+            BookingListItem(
+                id=b.id,
+                booking_reference=b.booking_reference,
+                vehicle_id=b.vehicle_id,
+                booking_type=b.booking_type,
+                pickup_location=b.pickup_location,
+                dropoff_location=b.dropoff_location,
+                start_datetime=b.start_datetime,
+                end_datetime=b.end_datetime,
+                total_days=b.total_days,
+                passenger_count=b.passenger_count,
+                status=b.status,
+                created_at=b.created_at,
+                amount_ugx=int(payment.amount_ugx) if payment else None,
+                amount_usd=float(payment.amount_usd)
+                if payment and payment.amount_usd
+                else None,
+                vehicle=vehicle_snapshot,
+            )
+        )
 
     return result
 
 
 # GET /api/bookings/{id}
 @router.get("/{booking_id}", response_model=BookingListItem)
-def get_booking(booking_id: str, current_user=Depends(_any_auth), db: Session = Depends(get_db)):
-    b = db.query(Booking).filter(
-        Booking.id == booking_id,
-        Booking.customer_id == current_user.id,
-    ).first()
+def get_booking(
+    booking_id: str, current_user=Depends(_any_auth), db: Session = Depends(get_db)
+):
+    b = (
+        db.query(Booking)
+        .filter(
+            Booking.id == booking_id,
+            Booking.customer_id == current_user.id,
+        )
+        .first()
+    )
     if not b:
         raise HTTPException(status_code=404, detail="Booking not found")
 
@@ -351,9 +402,13 @@ def get_booking(booking_id: str, current_user=Depends(_any_auth), db: Session = 
     if vehicle:
         photo = (
             db.query(VehiclePhoto)
-            .filter(VehiclePhoto.vehicle_id == vehicle.id, VehiclePhoto.is_primary.is_(True))
+            .filter(
+                VehiclePhoto.vehicle_id == vehicle.id, VehiclePhoto.is_primary.is_(True)
+            )
             .first()
-            or db.query(VehiclePhoto).filter(VehiclePhoto.vehicle_id == vehicle.id).first()
+            or db.query(VehiclePhoto)
+            .filter(VehiclePhoto.vehicle_id == vehicle.id)
+            .first()
         )
         vehicle_snapshot = VehicleSnapshot(
             id=vehicle.id,
@@ -379,7 +434,9 @@ def get_booking(booking_id: str, current_user=Depends(_any_auth), db: Session = 
         status=b.status,
         created_at=b.created_at,
         amount_ugx=int(payment.amount_ugx) if payment else None,
-        amount_usd=float(payment.amount_usd) if payment and payment.amount_usd else None,
+        amount_usd=float(payment.amount_usd)
+        if payment and payment.amount_usd
+        else None,
         vehicle=vehicle_snapshot,
     )
 
@@ -396,10 +453,14 @@ def cancel_booking(
     current_user=Depends(_any_auth),
     db: Session = Depends(get_db),
 ):
-    booking = db.query(Booking).filter(
-        Booking.id == booking_id,
-        Booking.customer_id == current_user.id,
-    ).first()
+    booking = (
+        db.query(Booking)
+        .filter(
+            Booking.id == booking_id,
+            Booking.customer_id == current_user.id,
+        )
+        .first()
+    )
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
 

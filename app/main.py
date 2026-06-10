@@ -1,4 +1,5 @@
 import os
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -174,10 +175,12 @@ def about_page(request: Request):
 @app.get("/admin/bookings")
 def admin_bookings_redirect(request: Request):
     from fastapi.responses import RedirectResponse
+
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 
 @app.get("/admin/users")
 def admin_users_redirect(request: Request):
     from fastapi.responses import RedirectResponse
+
     return RedirectResponse(url="/admin/dashboard", status_code=302)

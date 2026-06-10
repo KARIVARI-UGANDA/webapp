@@ -29,9 +29,12 @@ class KYCSubmit(BaseModel):
 
 @router.get("/me")
 def get_kyc_status(current_user=Depends(_any_auth), db: Session = Depends(get_db)):
-    record = db.query(UserIdentityVerification).filter(
-        UserIdentityVerification.user_id == current_user.id
-    ).order_by(UserIdentityVerification.submitted_at.desc()).first()
+    record = (
+        db.query(UserIdentityVerification)
+        .filter(UserIdentityVerification.user_id == current_user.id)
+        .order_by(UserIdentityVerification.submitted_at.desc())
+        .first()
+    )
     if not record:
         return {"status": "not_submitted", "document_type": None}
     return {
@@ -55,9 +58,12 @@ def submit_kyc_manual(
     db: Session = Depends(get_db),
 ):
     import uuid
-    existing = db.query(UserIdentityVerification).filter(
-        UserIdentityVerification.user_id == current_user.id
-    ).first()
+
+    existing = (
+        db.query(UserIdentityVerification)
+        .filter(UserIdentityVerification.user_id == current_user.id)
+        .first()
+    )
 
     now = _now()
     if existing:
@@ -70,7 +76,10 @@ def submit_kyc_manual(
         existing.verification_status = "pending"
         existing.submitted_at = now
         db.commit()
-        return {"message": "Identity document updated and submitted for review", "status": "pending"}
+        return {
+            "message": "Identity document updated and submitted for review",
+            "status": "pending",
+        }
 
     record = UserIdentityVerification(
         id=str(uuid.uuid4()),

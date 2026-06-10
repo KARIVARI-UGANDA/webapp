@@ -8,12 +8,13 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
-from sqlalchemy import event
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker
+
 from app.models import Base
 
 DATABASE_URL = os.environ.get("DATABASE_URL")

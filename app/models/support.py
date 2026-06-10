@@ -1,4 +1,5 @@
 from sqlalchemy import BOOLEAN, Column, DateTime, ForeignKey, String, Text
+
 from .base import Base
 
 

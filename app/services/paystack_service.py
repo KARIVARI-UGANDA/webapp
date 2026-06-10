@@ -13,6 +13,7 @@ Flow:
 
 Docs: https://paystack.com/docs/payments/accept-payments
 """
+
 import hashlib
 import hmac
 
@@ -52,7 +53,9 @@ def initialize_transaction(
         "metadata": {"booking_id": booking_id},
     }
     with httpx.Client(timeout=30) as client:
-        resp = client.post(f"{_BASE}/transaction/initialize", headers=_headers(), json=payload)
+        resp = client.post(
+            f"{_BASE}/transaction/initialize", headers=_headers(), json=payload
+        )
         resp.raise_for_status()
         return resp.json()
 

@@ -7,9 +7,10 @@ from pydantic import BaseModel
 
 class BookingRequest(BaseModel):
     """Simplified payload sent by the booking widget. All trips are with the car owner as driver."""
+
     vehicle_id: str
-    pickup_date: str           # YYYY-MM-DD
-    return_date: str           # YYYY-MM-DD
+    pickup_date: str  # YYYY-MM-DD
+    return_date: str  # YYYY-MM-DD
     pickup_location: str
     dropoff_location: str
     passenger_count: int = 1
@@ -19,7 +20,7 @@ class BookingRequest(BaseModel):
 class BookingPaymentResponse(BaseModel):
     booking_id: str
     booking_reference: str
-    client_secret: str         # Stripe PaymentIntent client_secret
+    client_secret: str  # Stripe PaymentIntent client_secret
     amount_usd: float
 
 

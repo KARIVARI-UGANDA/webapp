@@ -24,16 +24,22 @@ def _now():
 
 class ReviewRequest(BaseModel):
     booking_id: str
-    review_target: str          # "owner" | "vehicle" | "trip"
-    overall_rating: int         # 1–5
+    review_target: str  # "owner" | "vehicle" | "trip"
+    overall_rating: int  # 1–5
     punctuality_rating: Optional[int] = None
     cleanliness_rating: Optional[int] = None
     communication_rating: Optional[int] = None
     value_rating: Optional[int] = None
     review_text: Optional[str] = None
 
-    @field_validator("overall_rating", "punctuality_rating", "cleanliness_rating",
-                     "communication_rating", "value_rating", mode="before")
+    @field_validator(
+        "overall_rating",
+        "punctuality_rating",
+        "cleanliness_rating",
+        "communication_rating",
+        "value_rating",
+        mode="before",
+    )
     @classmethod
     def rating_range(cls, v):
         if v is not None and not (1 <= v <= 5):
@@ -74,23 +80,37 @@ def create_review(
     current_user=Depends(_any_auth),
     db: Session = Depends(get_db),
 ):
-    booking = db.query(Booking).filter(
-        Booking.id == payload.booking_id,
-        Booking.customer_id == current_user.id,
-    ).first()
+    booking = (
+        db.query(Booking)
+        .filter(
+            Booking.id == payload.booking_id,
+            Booking.customer_id == current_user.id,
+        )
+        .first()
+    )
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
     if booking.status not in REVIEWABLE_STATUSES:
-        raise HTTPException(status_code=400, detail="You can only review confirmed or completed bookings")
+        raise HTTPException(
+            status_code=400,
+            detail="You can only review confirmed or completed bookings",
+        )
 
     # Prevent duplicate reviews for the same booking + target
-    existing = db.query(Review).filter(
-        Review.booking_id == payload.booking_id,
-        Review.reviewer_id == current_user.id,
-        Review.review_target == payload.review_target,
-    ).first()
+    existing = (
+        db.query(Review)
+        .filter(
+            Review.booking_id == payload.booking_id,
+            Review.reviewer_id == current_user.id,
+            Review.review_target == payload.review_target,
+        )
+        .first()
+    )
     if existing:
-        raise HTTPException(status_code=400, detail=f"You have already reviewed the {payload.review_target} for this booking")
+        raise HTTPException(
+            status_code=400,
+            detail=f"You have already reviewed the {payload.review_target} for this booking",
+        )
 
     # Determine who is being reviewed
     vehicle = db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
@@ -126,9 +146,14 @@ def my_reviews(
     current_user=Depends(_any_auth),
     db: Session = Depends(get_db),
 ):
-    return db.query(Review).filter(
-        Review.reviewer_id == current_user.id,
-    ).order_by(Review.created_at.desc()).all()
+    return (
+        db.query(Review)
+        .filter(
+            Review.reviewer_id == current_user.id,
+        )
+        .order_by(Review.created_at.desc())
+        .all()
+    )
 
 
 # ── GET /api/reviews/booking/{booking_id} ─────────────────────────────────────
@@ -139,10 +164,14 @@ def reviews_for_booking(
     db: Session = Depends(get_db),
 ):
     """Returns all reviews the current user wrote for a specific booking."""
-    return db.query(Review).filter(
-        Review.booking_id == booking_id,
-        Review.reviewer_id == current_user.id,
-    ).all()
+    return (
+        db.query(Review)
+        .filter(
+            Review.booking_id == booking_id,
+            Review.reviewer_id == current_user.id,
+        )
+        .all()
+    )
 
 
 # ── GET /api/reviews/ ─────────────────────────────────────────────────────────

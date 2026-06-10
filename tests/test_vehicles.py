@@ -1,4 +1,5 @@
 """Tests for /api/vehicles/* endpoints."""
+
 import pytest
 
 VEHICLE_PAYLOAD = {
@@ -50,13 +51,21 @@ class TestCreateVehicle:
 
     def test_zero_rate_rejected(self, client, owner):
         headers, _ = owner
-        bad = {**VEHICLE_PAYLOAD, "base_daily_rate_ugx": 0, "registration_plate": "UAA 201A"}
+        bad = {
+            **VEHICLE_PAYLOAD,
+            "base_daily_rate_ugx": 0,
+            "registration_plate": "UAA 201A",
+        }
         r = client.post("/api/vehicles/", headers=headers, json=bad)
         assert r.status_code == 422
 
     def test_negative_capacity_rejected(self, client, owner):
         headers, _ = owner
-        bad = {**VEHICLE_PAYLOAD, "passenger_capacity": -1, "registration_plate": "UAA 202A"}
+        bad = {
+            **VEHICLE_PAYLOAD,
+            "passenger_capacity": -1,
+            "registration_plate": "UAA 202A",
+        }
         r = client.post("/api/vehicles/", headers=headers, json=bad)
         assert r.status_code == 422
 
@@ -110,34 +119,53 @@ class TestGetVehicle:
 class TestUpdateVehicle:
     def test_owner_can_update_pending_vehicle(self, client, owner):
         headers, _ = owner
-        create = client.post("/api/vehicles/", headers=headers, json={
-            **VEHICLE_PAYLOAD, "registration_plate": "UAA 300A"
-        })
+        create = client.post(
+            "/api/vehicles/",
+            headers=headers,
+            json={**VEHICLE_PAYLOAD, "registration_plate": "UAA 300A"},
+        )
         vid = create.json()["id"]
-        r = client.patch(f"/api/vehicles/{vid}", headers=headers, json={"color": "Black"})
+        r = client.patch(
+            f"/api/vehicles/{vid}", headers=headers, json={"color": "Black"}
+        )
         assert r.status_code == 200
         assert r.json()["color"] == "Black"
 
-    def test_owner_cannot_update_verified_vehicle(self, client, owner, verified_vehicle):
+    def test_owner_cannot_update_verified_vehicle(
+        self, client, owner, verified_vehicle
+    ):
         headers, _ = owner
-        r = client.patch(f"/api/vehicles/{verified_vehicle}", headers=headers, json={"color": "Red"})
+        r = client.patch(
+            f"/api/vehicles/{verified_vehicle}", headers=headers, json={"color": "Red"}
+        )
         assert r.status_code in (403, 400)
 
     def test_other_owner_cannot_update(self, client, verified_vehicle):
-        from tests.conftest import _register, _auth_headers
-        _register(client, "owner3@test.com", "password123", "Other Owner",
-                  role="owner", phone="+256704000001")
+        from tests.conftest import _auth_headers, _register
+
+        _register(
+            client,
+            "owner3@test.com",
+            "password123",
+            "Other Owner",
+            role="owner",
+            phone="+256704000001",
+        )
         headers = _auth_headers(client, "owner3@test.com", "password123")
-        r = client.patch(f"/api/vehicles/{verified_vehicle}", headers=headers, json={"color": "Blue"})
+        r = client.patch(
+            f"/api/vehicles/{verified_vehicle}", headers=headers, json={"color": "Blue"}
+        )
         assert r.status_code in (403, 404)
 
 
 class TestOwnerVehicles:
     def test_owner_can_list_own_vehicles(self, client, owner):
         headers, _ = owner
-        client.post("/api/vehicles/", headers=headers, json={
-            **VEHICLE_PAYLOAD, "registration_plate": "UAA 400A"
-        })
+        client.post(
+            "/api/vehicles/",
+            headers=headers,
+            json={**VEHICLE_PAYLOAD, "registration_plate": "UAA 400A"},
+        )
         r = client.get("/api/vehicles/mine", headers=headers)
         assert r.status_code == 200
         assert len(r.json()) >= 1
@@ -151,14 +179,18 @@ class TestOwnerVehicles:
 class TestDeleteVehicle:
     def test_owner_can_delete_pending_vehicle(self, client, owner):
         headers, _ = owner
-        create = client.post("/api/vehicles/", headers=headers, json={
-            **VEHICLE_PAYLOAD, "registration_plate": "UAA 500A"
-        })
+        create = client.post(
+            "/api/vehicles/",
+            headers=headers,
+            json={**VEHICLE_PAYLOAD, "registration_plate": "UAA 500A"},
+        )
         vid = create.json()["id"]
         r = client.delete(f"/api/vehicles/{vid}", headers=headers)
         assert r.status_code in (200, 204)
 
-    def test_owner_cannot_delete_verified_vehicle(self, client, owner, verified_vehicle):
+    def test_owner_cannot_delete_verified_vehicle(
+        self, client, owner, verified_vehicle
+    ):
         headers, _ = owner
         r = client.delete(f"/api/vehicles/{verified_vehicle}", headers=headers)
         assert r.status_code in (403, 400)

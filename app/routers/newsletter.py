@@ -31,9 +31,11 @@ def subscribe(
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
 ):
-    existing = db.query(NewsletterSubscriber).filter(
-        NewsletterSubscriber.email == payload.email
-    ).first()
+    existing = (
+        db.query(NewsletterSubscriber)
+        .filter(NewsletterSubscriber.email == payload.email)
+        .first()
+    )
 
     if existing:
         if existing.is_active:
@@ -52,14 +54,18 @@ def subscribe(
     db.add(subscriber)
     db.commit()
     background_tasks.add_task(_send_welcome, payload.email)
-    return {"message": "Thank you for subscribing! Check your inbox for a welcome email."}
+    return {
+        "message": "Thank you for subscribing! Check your inbox for a welcome email."
+    }
 
 
 @router.post("/unsubscribe")
 def unsubscribe(payload: SubscribeRequest, db: Session = Depends(get_db)):
-    sub = db.query(NewsletterSubscriber).filter(
-        NewsletterSubscriber.email == payload.email
-    ).first()
+    sub = (
+        db.query(NewsletterSubscriber)
+        .filter(NewsletterSubscriber.email == payload.email)
+        .first()
+    )
     if sub:
         sub.is_active = False
         db.commit()

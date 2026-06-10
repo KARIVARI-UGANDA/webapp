@@ -1,4 +1,5 @@
 from sqlalchemy import BIGINT, Column, Date, DateTime, Integer, String
+
 from .base import Base
 
 

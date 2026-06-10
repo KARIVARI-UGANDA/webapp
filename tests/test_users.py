@@ -1,5 +1,6 @@
 """Tests for /api/users/* endpoints."""
-from tests.conftest import _register, _auth_headers
+
+from tests.conftest import _auth_headers, _register
 
 
 class TestGetProfile:
@@ -19,19 +20,25 @@ class TestGetProfile:
 class TestUpdateProfile:
     def test_update_full_name(self, client, customer):
         headers, _ = customer
-        r = client.patch("/api/users/me", headers=headers, json={"full_name": "Updated Name"})
+        r = client.patch(
+            "/api/users/me", headers=headers, json={"full_name": "Updated Name"}
+        )
         assert r.status_code == 200
         assert r.json()["full_name"] == "Updated Name"
 
     def test_update_preferred_language(self, client, customer):
         headers, _ = customer
-        r = client.patch("/api/users/me", headers=headers, json={"preferred_language": "de"})
+        r = client.patch(
+            "/api/users/me", headers=headers, json={"preferred_language": "de"}
+        )
         assert r.status_code == 200
         assert r.json()["preferred_language"] == "de"
 
     def test_update_bio(self, client, customer):
         headers, _ = customer
-        r = client.patch("/api/users/me", headers=headers, json={"bio": "Safari enthusiast."})
+        r = client.patch(
+            "/api/users/me", headers=headers, json={"bio": "Safari enthusiast."}
+        )
         assert r.status_code == 200
         assert r.json()["bio"] == "Safari enthusiast."
 
@@ -50,32 +57,50 @@ class TestChangePassword:
     def test_change_password_success(self, client):
         _register(client, "changepw@test.com", "OldPass123", "PW User")
         headers = _auth_headers(client, "changepw@test.com", "OldPass123")
-        r = client.post("/api/users/me/change-password", headers=headers, json={
-            "current_password": "OldPass123",
-            "new_password": "NewPass456",
-        })
+        r = client.post(
+            "/api/users/me/change-password",
+            headers=headers,
+            json={
+                "current_password": "OldPass123",
+                "new_password": "NewPass456",
+            },
+        )
         assert r.status_code == 200
         # Old password no longer works
-        old = client.post("/api/auth/login", json={"email": "changepw@test.com", "password": "OldPass123"})
+        old = client.post(
+            "/api/auth/login",
+            json={"email": "changepw@test.com", "password": "OldPass123"},
+        )
         assert old.status_code == 401
         # New password works
-        new = client.post("/api/auth/login", json={"email": "changepw@test.com", "password": "NewPass456"})
+        new = client.post(
+            "/api/auth/login",
+            json={"email": "changepw@test.com", "password": "NewPass456"},
+        )
         assert new.status_code == 200
 
     def test_wrong_current_password_rejected(self, client, customer):
         headers, _ = customer
-        r = client.post("/api/users/me/change-password", headers=headers, json={
-            "current_password": "wrongpassword",
-            "new_password": "NewPass456",
-        })
+        r = client.post(
+            "/api/users/me/change-password",
+            headers=headers,
+            json={
+                "current_password": "wrongpassword",
+                "new_password": "NewPass456",
+            },
+        )
         assert r.status_code == 400
 
     def test_short_new_password_rejected(self, client, customer):
         headers, _ = customer
-        r = client.post("/api/users/me/change-password", headers=headers, json={
-            "current_password": "password123",
-            "new_password": "abc",
-        })
+        r = client.post(
+            "/api/users/me/change-password",
+            headers=headers,
+            json={
+                "current_password": "password123",
+                "new_password": "abc",
+            },
+        )
         assert r.status_code in (400, 422)
 
 

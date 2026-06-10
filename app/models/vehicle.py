@@ -1,4 +1,17 @@
-from sqlalchemy import BOOLEAN, BIGINT, Column, Date, DateTime, ForeignKey, LargeBinary, Numeric, SmallInteger, String, Text
+from sqlalchemy import (
+    BIGINT,
+    BOOLEAN,
+    Column,
+    Date,
+    DateTime,
+    ForeignKey,
+    LargeBinary,
+    Numeric,
+    SmallInteger,
+    String,
+    Text,
+)
+
 from .base import Base
 
 

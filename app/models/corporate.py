@@ -1,4 +1,5 @@
-from sqlalchemy import BIGINT, BOOLEAN, Column, ForeignKey, String, Text, DateTime
+from sqlalchemy import BIGINT, BOOLEAN, Column, DateTime, ForeignKey, String, Text
+
 from .base import Base
 
 

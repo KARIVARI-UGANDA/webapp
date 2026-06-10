@@ -11,12 +11,12 @@ from app.deps import get_current_user, require_role
 from app.models import Vehicle, VehiclePhoto
 from app.models.booking import Booking
 from app.schemas.vehicle import (
+    VehiclePhotoRead,
     VehicleRead,
     VehicleStatusUpdate,
     VehicleSubmit,
     VehicleUpdate,
     VehicleWithPhotos,
-    VehiclePhotoRead,
 )
 
 router = APIRouter(prefix="/vehicles", tags=["vehicles"])
@@ -43,6 +43,7 @@ def _get_own_vehicle(vehicle_id: str, current_user, db: Session) -> Vehicle:
 # Browse
 # ---------------------------------------------------------------------------
 
+
 @router.get("/", response_model=List[VehicleWithPhotos])
 def list_vehicles(
     location: Optional[str] = Query(None),
@@ -55,10 +56,14 @@ def list_vehicles(
 ):
     """Public browse — pending and verified vehicles (excludes rejected/suspended and actively booked)."""
     now = datetime.now(timezone.utc).replace(tzinfo=None)
-    booked_ids = db.query(Booking.vehicle_id).filter(
-        Booking.status == "confirmed",
-        Booking.end_datetime >= now,
-    ).subquery()
+    booked_ids = (
+        db.query(Booking.vehicle_id)
+        .filter(
+            Booking.status == "confirmed",
+            Booking.end_datetime >= now,
+        )
+        .subquery()
+    )
     q = db.query(Vehicle).filter(
         Vehicle.status.in_(["pending", "verified"]),
         ~Vehicle.id.in_(booked_ids),
@@ -116,6 +121,7 @@ def get_vehicle(vehicle_id: str, db: Session = Depends(get_db)):
 # Owner CRUD
 # ---------------------------------------------------------------------------
 
+
 @router.post("/", response_model=VehicleRead, status_code=status.HTTP_201_CREATED)
 def create_vehicle(
     payload: VehicleSubmit,
@@ -123,8 +129,14 @@ def create_vehicle(
     db: Session = Depends(get_db),
 ):
     # Duplicate plate check
-    if db.query(Vehicle).filter(Vehicle.registration_plate == payload.registration_plate).first():
-        raise HTTPException(status_code=400, detail="Registration plate already registered")
+    if (
+        db.query(Vehicle)
+        .filter(Vehicle.registration_plate == payload.registration_plate)
+        .first()
+    ):
+        raise HTTPException(
+            status_code=400, detail="Registration plate already registered"
+        )
 
     now = datetime.now(timezone.utc).replace(tzinfo=None)
     owner_id = current_user.id if current_user.role == "owner" else current_user.id
@@ -220,7 +232,10 @@ def delete_vehicle(
 ):
     v = _get_own_vehicle(vehicle_id, current_user, db)
     if v.status == "verified":
-        raise HTTPException(status_code=400, detail="Cannot delete a verified vehicle. Suspend it first.")
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot delete a verified vehicle. Suspend it first.",
+        )
     db.delete(v)
     db.commit()
 
@@ -228,6 +243,7 @@ def delete_vehicle(
 # ---------------------------------------------------------------------------
 # Photo upload
 # ---------------------------------------------------------------------------
+
 
 @router.post("/{vehicle_id}/photos", response_model=List[VehiclePhotoRead])
 async def upload_photos(
@@ -238,7 +254,9 @@ async def upload_photos(
 ):
     _get_own_vehicle(vehicle_id, current_user, db)
 
-    existing_count = db.query(VehiclePhoto).filter(VehiclePhoto.vehicle_id == vehicle_id).count()
+    existing_count = (
+        db.query(VehiclePhoto).filter(VehiclePhoto.vehicle_id == vehicle_id).count()
+    )
     if existing_count + len(files) > MAX_PHOTOS_PER_VEHICLE:
         raise HTTPException(
             status_code=400,
@@ -258,7 +276,9 @@ async def upload_photos(
 
         data = await f.read()
         if len(data) > MAX_PHOTO_SIZE_BYTES:
-            raise HTTPException(status_code=400, detail=f"File '{f.filename}' exceeds 10 MB limit")
+            raise HTTPException(
+                status_code=400, detail=f"File '{f.filename}' exceeds 10 MB limit"
+            )
 
         photo_id = str(uuid.uuid4())
         is_primary = existing_count == 0 and len(saved) == 0
@@ -286,6 +306,7 @@ async def upload_photos(
 # Photo management
 # ---------------------------------------------------------------------------
 
+
 @router.get("/{vehicle_id}/photos/{photo_id}/image")
 def serve_photo(
     vehicle_id: str,
@@ -293,10 +314,14 @@ def serve_photo(
     db: Session = Depends(get_db),
 ):
     """Serve a vehicle photo directly from the database."""
-    photo = db.query(VehiclePhoto).filter(
-        VehiclePhoto.id == photo_id,
-        VehiclePhoto.vehicle_id == vehicle_id,
-    ).first()
+    photo = (
+        db.query(VehiclePhoto)
+        .filter(
+            VehiclePhoto.id == photo_id,
+            VehiclePhoto.vehicle_id == vehicle_id,
+        )
+        .first()
+    )
     if not photo or not photo.photo_data:
         raise HTTPException(status_code=404, detail="Photo not found")
     return Response(
@@ -306,7 +331,9 @@ def serve_photo(
     )
 
 
-@router.delete("/{vehicle_id}/photos/{photo_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{vehicle_id}/photos/{photo_id}", status_code=status.HTTP_204_NO_CONTENT
+)
 def delete_photo(
     vehicle_id: str,
     photo_id: str,
@@ -314,10 +341,14 @@ def delete_photo(
     db: Session = Depends(get_db),
 ):
     _get_own_vehicle(vehicle_id, current_user, db)
-    photo = db.query(VehiclePhoto).filter(
-        VehiclePhoto.id == photo_id,
-        VehiclePhoto.vehicle_id == vehicle_id,
-    ).first()
+    photo = (
+        db.query(VehiclePhoto)
+        .filter(
+            VehiclePhoto.id == photo_id,
+            VehiclePhoto.vehicle_id == vehicle_id,
+        )
+        .first()
+    )
     if not photo:
         raise HTTPException(status_code=404, detail="Photo not found")
 
@@ -335,7 +366,9 @@ def delete_photo(
         db.commit()
 
 
-@router.patch("/{vehicle_id}/photos/{photo_id}/primary", response_model=VehiclePhotoRead)
+@router.patch(
+    "/{vehicle_id}/photos/{photo_id}/primary", response_model=VehiclePhotoRead
+)
 def set_primary_photo(
     vehicle_id: str,
     photo_id: str,
@@ -343,11 +376,17 @@ def set_primary_photo(
     db: Session = Depends(get_db),
 ):
     _get_own_vehicle(vehicle_id, current_user, db)
-    db.query(VehiclePhoto).filter(VehiclePhoto.vehicle_id == vehicle_id).update({"is_primary": False})
-    photo = db.query(VehiclePhoto).filter(
-        VehiclePhoto.id == photo_id,
-        VehiclePhoto.vehicle_id == vehicle_id,
-    ).first()
+    db.query(VehiclePhoto).filter(VehiclePhoto.vehicle_id == vehicle_id).update(
+        {"is_primary": False}
+    )
+    photo = (
+        db.query(VehiclePhoto)
+        .filter(
+            VehiclePhoto.id == photo_id,
+            VehiclePhoto.vehicle_id == vehicle_id,
+        )
+        .first()
+    )
     if not photo:
         raise HTTPException(status_code=404, detail="Photo not found")
     photo.is_primary = True
@@ -360,6 +399,7 @@ def set_primary_photo(
 # Availability check (stub — full overlap logic in Phase 6)
 # ---------------------------------------------------------------------------
 
+
 @router.get("/{vehicle_id}/availability")
 def get_availability(
     vehicle_id: str,
@@ -371,7 +411,11 @@ def get_availability(
     if not v:
         raise HTTPException(status_code=404, detail="Vehicle not found")
     # Full overlap query implemented in Phase 6
-    return {"vehicle_id": vehicle_id, "available": True, "note": "Full availability logic in Phase 6"}
+    return {
+        "vehicle_id": vehicle_id,
+        "available": True,
+        "note": "Full availability logic in Phase 6",
+    }
 
 
 @router.get("/{vehicle_id}/reviews")
@@ -406,15 +450,17 @@ def get_vehicle_reviews(vehicle_id: str, db: Session = Depends(get_db)):
     result = []
     for r in reviews:
         reviewer = db.query(User).filter(User.id == r.reviewer_id).first()
-        result.append({
-            "id": r.id,
-            "reviewer_name": reviewer.full_name if reviewer else "Anonymous",
-            "review_target": r.review_target,
-            "overall_rating": r.overall_rating,
-            "cleanliness_rating": r.cleanliness_rating,
-            "communication_rating": r.communication_rating,
-            "value_rating": r.value_rating,
-            "review_text": r.review_text,
-            "created_at": r.created_at.isoformat() if r.created_at else None,
-        })
+        result.append(
+            {
+                "id": r.id,
+                "reviewer_name": reviewer.full_name if reviewer else "Anonymous",
+                "review_target": r.review_target,
+                "overall_rating": r.overall_rating,
+                "cleanliness_rating": r.cleanliness_rating,
+                "communication_rating": r.communication_rating,
+                "value_rating": r.value_rating,
+                "review_text": r.review_text,
+                "created_at": r.created_at.isoformat() if r.created_at else None,
+            }
+        )
     return result

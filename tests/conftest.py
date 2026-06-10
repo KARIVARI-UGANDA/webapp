@@ -2,6 +2,7 @@
 Shared fixtures for all pytest tests.
 Each test gets a completely fresh in-memory SQLite database for full isolation.
 """
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -9,8 +10,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 import app.models as _orm_models  # registers all ORM classes with Base.metadata before create_all
-from app.main import app
 from app.database import get_db
+from app.main import app
 from app.models.base import Base
 
 
@@ -41,15 +42,19 @@ def client():
 
 # ── Reusable user helpers ────────────────────────────────────────────────────
 
+
 def _register(client, email, password, name, role="customer", phone=None):
     phone = phone or f"+256700{abs(hash(email)) % 1_000_000:06d}"
-    r = client.post("/api/auth/signup", json={
-        "email": email,
-        "password": password,
-        "full_name": name,
-        "phone_number": phone,
-        "role": role,
-    })
+    r = client.post(
+        "/api/auth/signup",
+        json={
+            "email": email,
+            "password": password,
+            "full_name": name,
+            "phone_number": phone,
+            "role": role,
+        },
+    )
     return r
 
 
@@ -97,25 +102,31 @@ def verified_vehicle(client, owner, admin):
     owner_headers, _ = owner
     admin_headers, _ = admin
 
-    r = client.post("/api/vehicles/", headers=owner_headers, json={
-        "make": "Toyota",
-        "model": "Land Cruiser",
-        "year": 2020,
-        "color": "White",
-        "registration_plate": "UAA 001A",
-        "vehicle_type": "safari",
-        "transmission": "automatic",
-        "fuel_type": "diesel",
-        "passenger_capacity": 7,
-        "has_ac": True,
-        "is_4wd": True,
-        "base_daily_rate_ugx": 850000,
-        "service_area": "Kampala",
-    })
+    r = client.post(
+        "/api/vehicles/",
+        headers=owner_headers,
+        json={
+            "make": "Toyota",
+            "model": "Land Cruiser",
+            "year": 2020,
+            "color": "White",
+            "registration_plate": "UAA 001A",
+            "vehicle_type": "safari",
+            "transmission": "automatic",
+            "fuel_type": "diesel",
+            "passenger_capacity": 7,
+            "has_ac": True,
+            "is_4wd": True,
+            "base_daily_rate_ugx": 850000,
+            "service_area": "Kampala",
+        },
+    )
     assert r.status_code == 201, r.text
     vehicle_id = r.json()["id"]
 
-    a = client.patch(f"/api/admin/verifications/{vehicle_id}/approve", headers=admin_headers)
+    a = client.patch(
+        f"/api/admin/verifications/{vehicle_id}/approve", headers=admin_headers
+    )
     assert a.status_code == 200, a.text
 
     return vehicle_id

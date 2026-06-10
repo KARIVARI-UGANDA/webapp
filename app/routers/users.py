@@ -39,7 +39,11 @@ def get_me(current_user: User = Depends(get_current_user)):
 
 
 @router.patch("/me", response_model=UserRead)
-def update_me(payload: UserUpdate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def update_me(
+    payload: UserUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     for field, value in payload.model_dump(exclude_none=True).items():
         setattr(current_user, field, value)
     current_user.updated_at = datetime.now(timezone.utc).replace(tzinfo=None)
@@ -58,7 +62,9 @@ def change_password(
     if not verify_password(payload.current_password, current_user.password_hash):
         raise HTTPException(status_code=400, detail="Current password is incorrect")
     if len(payload.new_password) < 8:
-        raise HTTPException(status_code=400, detail="New password must be at least 8 characters")
+        raise HTTPException(
+            status_code=400, detail="New password must be at least 8 characters"
+        )
     current_user.password_hash = hash_password(payload.new_password)
     current_user.updated_at = datetime.now(timezone.utc).replace(tzinfo=None)
     db.commit()
@@ -71,7 +77,9 @@ async def upload_document(
     current_user: User = Depends(get_current_user),
 ):
     if file.content_type not in ALLOWED_TYPES:
-        raise HTTPException(status_code=400, detail="File must be JPEG, PNG, WebP, or PDF")
+        raise HTTPException(
+            status_code=400, detail="File must be JPEG, PNG, WebP, or PDF"
+        )
     data = await file.read()
     if len(data) > MAX_SIZE:
         raise HTTPException(status_code=400, detail="File too large — max 10 MB")

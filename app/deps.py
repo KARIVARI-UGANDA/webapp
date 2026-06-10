@@ -12,7 +12,9 @@ bearer_scheme = HTTPBearer(auto_error=False)
 
 
 def get_current_user(
-    credentials: Annotated[Optional[HTTPAuthorizationCredentials], Depends(bearer_scheme)] = None,
+    credentials: Annotated[
+        Optional[HTTPAuthorizationCredentials], Depends(bearer_scheme)
+    ] = None,
     db: Session = Depends(get_db),
 ):
     from app.models import User
@@ -27,18 +29,26 @@ def get_current_user(
     payload = decode_token(credentials.credentials)
 
     if payload.get("type") != "access":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token type")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token type"
+        )
 
     user_id: str = payload.get("sub")
     if not user_id:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
+        )
 
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found"
+        )
 
     if not user.is_active:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Account suspended")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Account suspended"
+        )
 
     return user
 
@@ -58,4 +68,3 @@ def require_role(*roles: str):
 # Typed shorthands used in routers
 CurrentUser = Annotated[object, Depends(get_current_user)]
 DbSession = Annotated[Session, Depends(get_db)]
-

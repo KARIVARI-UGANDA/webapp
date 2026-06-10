@@ -1,4 +1,14 @@
-from sqlalchemy import BIGINT, BOOLEAN, Column, Date, DateTime, ForeignKey, Numeric, String
+from sqlalchemy import (
+    BIGINT,
+    BOOLEAN,
+    Column,
+    Date,
+    DateTime,
+    ForeignKey,
+    Numeric,
+    String,
+)
+
 from .base import Base
 
 

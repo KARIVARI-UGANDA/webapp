@@ -3,7 +3,6 @@ from typing import List, Optional
 
 from pydantic import BaseModel, field_validator
 
-
 ALLOWED_VEHICLE_TYPES = {"safari", "suv", "luxury", "minibus", "sedan", "other"}
 ALLOWED_STATUSES = {"pending", "verified", "rejected", "suspended"}
 ALLOWED_TRANSMISSIONS = {"manual", "automatic"}
@@ -12,6 +11,7 @@ ALLOWED_FUEL_TYPES = {"petrol", "diesel", "hybrid", "electric"}
 
 class VehicleSubmit(BaseModel):
     """Payload an owner sends when submitting a new vehicle."""
+
     make: str
     model: str
     year: int
@@ -92,6 +92,7 @@ class VehicleSubmit(BaseModel):
 
 class VehicleUpdate(BaseModel):
     """Fields an owner can patch on a pending vehicle."""
+
     make: Optional[str] = None
     model: Optional[str] = None
     year: Optional[int] = None
@@ -196,6 +197,7 @@ class VehicleStatusUpdate(BaseModel):
 
 
 # ---------- Admin ----------
+
 
 class VerificationDecision(BaseModel):
     reason: Optional[str] = None  # required on reject, optional on approve

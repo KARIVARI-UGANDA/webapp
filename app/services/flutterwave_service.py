@@ -15,6 +15,7 @@ Flow (direct charge):
 
 Docs: https://developer.flutterwave.com/reference/mobile-money
 """
+
 from typing import Literal
 
 import httpx
@@ -79,12 +80,12 @@ def verify_transaction(tx_ref: str) -> dict:
 
 def verify_webhook_signature(payload: bytes, signature: str) -> bool:
     """Verify Flutterwave webhook signature using the secret key."""
-    import hmac, hashlib
+    import hashlib
+    import hmac
+
     expected = hmac.new(
         settings.flutterwave_secret_key.encode("utf-8"),
         payload,
         hashlib.sha256,
     ).hexdigest()
     return hmac.compare_digest(expected, signature)
-
-
