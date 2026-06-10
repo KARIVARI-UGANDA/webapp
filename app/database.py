@@ -60,6 +60,10 @@ def run_migrations():
     migrations = [
         "ALTER TABLE vehicle_photos ADD COLUMN IF NOT EXISTS photo_data BYTEA",
         "ALTER TABLE vehicle_photos ADD COLUMN IF NOT EXISTS content_type VARCHAR(50)",
+        "ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS has_gps BOOLEAN NOT NULL DEFAULT FALSE",
+        "ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS has_bluetooth BOOLEAN NOT NULL DEFAULT FALSE",
+        "ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS has_usb_charger BOOLEAN NOT NULL DEFAULT FALSE",
+        "ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS is_pet_friendly BOOLEAN NOT NULL DEFAULT FALSE",
     ]
     with engine.connect() as conn:
         for sql in migrations:

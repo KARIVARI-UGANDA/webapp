@@ -1413,6 +1413,30 @@
                 <label class="form-check-label" for="feat_child">Child Seat</label>
               </div>
             </div>
+            <div class="col-6 col-sm-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="has_gps" id="feat_gps">
+                <label class="form-check-label" for="feat_gps">GPS Navigation</label>
+              </div>
+            </div>
+            <div class="col-6 col-sm-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="has_bluetooth" id="feat_bluetooth">
+                <label class="form-check-label" for="feat_bluetooth">Bluetooth</label>
+              </div>
+            </div>
+            <div class="col-6 col-sm-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="has_usb_charger" id="feat_usb">
+                <label class="form-check-label" for="feat_usb">USB Charger</label>
+              </div>
+            </div>
+            <div class="col-6 col-sm-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="is_pet_friendly" id="feat_pet">
+                <label class="form-check-label" for="feat_pet">Pet Friendly</label>
+              </div>
+            </div>
           </div>
 
           <!-- Pricing -->
@@ -1428,9 +1452,13 @@
                 <i class="bi bi-info-circle me-1"></i>
                 Set your desired daily earnings here. Karivari adds platform fees on top of your rate that go
                 entirely to Karivari — <strong>not deducted from your earnings</strong>.
-                Karivari retains a <strong>17% commission</strong> from your daily subtotal only.
+                Karivari retains an <strong>18% commission</strong> from your daily subtotal only.
                 You receive <strong>30%</strong> of your net (after commission) as a deposit immediately after payment,
                 and the remaining <strong>70%</strong> once the trip is completed.
+              </div>
+              <div class="form-text text-warning mt-1">
+                <i class="bi bi-fuel me-1"></i>
+                <strong>Important:</strong> Please include <strong>fuel costs</strong> in your daily rate — customers expect fuel to be covered for the duration of their trip.
               </div>
             </div>
           </div>
@@ -1910,11 +1938,15 @@
     set('service_area',       v.service_area);
     set('base_daily_rate_ugx', v.base_daily_rate_ugx);
     set('description',        v.description);
-    chk('has_ac',       v.has_ac);
-    chk('has_wifi',     v.has_wifi);
-    chk('is_4wd',       v.is_4wd);
+    chk('has_ac',         v.has_ac);
+    chk('has_wifi',       v.has_wifi);
+    chk('is_4wd',         v.is_4wd);
     chk('has_roof_rack',  v.has_roof_rack);
     chk('has_child_seat', v.has_child_seat);
+    chk('has_gps',        v.has_gps);
+    chk('has_bluetooth',  v.has_bluetooth);
+    chk('has_usb_charger', v.has_usb_charger);
+    chk('is_pet_friendly', v.is_pet_friendly);
 
     // Show note that plate cannot be changed
     const plateInput = f.querySelector('[name="registration_plate"]');

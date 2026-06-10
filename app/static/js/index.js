@@ -27,9 +27,13 @@ function buildVehicleCardHTML(v, sym, price) {
 		chip('person',           `<strong>${v.passenger_capacity}</strong> Seats`),
 		chip('settings',         `<strong>${toTitle(v.transmission)}</strong>`),
 		chip('local_gas_station',`<strong>${toTitle(v.fuel_type)}</strong>`),
-		v.has_ac   ? chip('ac_unit', 'A/C')  : '',
-		v.has_wifi ? chip('wifi',    'WiFi') : '',
-		v.is_4wd   ? chip('terrain', '4WD')  : '',
+		v.has_ac          ? chip('ac_unit',     'A/C')       : '',
+		v.has_wifi        ? chip('wifi',        'WiFi')      : '',
+		v.is_4wd          ? chip('terrain',     '4WD')       : '',
+		v.has_gps         ? chip('location_on', 'GPS')       : '',
+		v.has_bluetooth   ? chip('bluetooth',   'Bluetooth') : '',
+		v.has_usb_charger ? chip('usb',         'USB')       : '',
+		v.is_pet_friendly ? chip('pets',        'Pet OK')    : '',
 	].filter(Boolean).join('');
 
 	const statusBadge = v.status === 'verified'

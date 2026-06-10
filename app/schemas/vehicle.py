@@ -26,6 +26,10 @@ class VehicleSubmit(BaseModel):
     has_child_seat: bool = False
     has_roof_rack: bool = False
     is_4wd: bool = False
+    has_gps: bool = False
+    has_bluetooth: bool = False
+    has_usb_charger: bool = False
+    is_pet_friendly: bool = False
     description: Optional[str] = None
     base_daily_rate_ugx: int
     service_area: Optional[str] = None
@@ -101,6 +105,10 @@ class VehicleUpdate(BaseModel):
     has_child_seat: Optional[bool] = None
     has_roof_rack: Optional[bool] = None
     is_4wd: Optional[bool] = None
+    has_gps: Optional[bool] = None
+    has_bluetooth: Optional[bool] = None
+    has_usb_charger: Optional[bool] = None
+    is_pet_friendly: Optional[bool] = None
     description: Optional[str] = None
     base_daily_rate_ugx: Optional[int] = None
     service_area: Optional[str] = None
@@ -156,6 +164,10 @@ class VehicleRead(BaseModel):
     has_child_seat: bool
     has_roof_rack: bool
     is_4wd: bool
+    has_gps: bool
+    has_bluetooth: bool
+    has_usb_charger: bool
+    is_pet_friendly: bool
     description: Optional[str] = None
     base_daily_rate_ugx: int
     status: str

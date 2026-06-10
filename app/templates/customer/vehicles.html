@@ -210,6 +210,22 @@
           <input id="filter-child" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
           <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Child Seat</span>
         </label>
+        <label class="flex items-center gap-3 cursor-pointer group">
+          <input id="filter-gps" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+          <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">GPS Navigation</span>
+        </label>
+        <label class="flex items-center gap-3 cursor-pointer group">
+          <input id="filter-bluetooth" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+          <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Bluetooth</span>
+        </label>
+        <label class="flex items-center gap-3 cursor-pointer group">
+          <input id="filter-usb" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+          <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">USB Charger</span>
+        </label>
+        <label class="flex items-center gap-3 cursor-pointer group">
+          <input id="filter-pet" type="checkbox" class="rounded border-outline-variant text-safari-green focus:ring-safari-green w-5 h-5" onchange="applyFilters()">
+          <span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary">Pet Friendly</span>
+        </label>
       </div>
     </div>
 
@@ -239,7 +255,7 @@
 <!-- Main Results Area — full width now that sidebar is a drawer -->
 <section class="flex-grow">
 <!-- Sorting and Meta -->
-<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
 <div>
 <h1 class="font-headline-lg text-headline-lg text-on-background">Explore Uganda</h1>
 <p class="font-body-md text-body-md text-on-surface-variant" id="vehicleCount"></p>
@@ -260,8 +276,27 @@
   </div>
 </div>
 </div>
+
+<!-- Filter toggle bar -->
+<div class="flex items-center gap-3 mb-6 pb-4 border-b border-outline-variant/30 overflow-x-auto hide-scrollbar">
+  <button id="filterToggleBtn" onclick="openFilterDrawer()"
+          class="flex items-center gap-2 px-4 py-2 rounded-xl border border-outline-variant bg-surface-container-lowest hover:border-primary hover:text-primary transition-all text-label-sm font-label-sm flex-shrink-0">
+    <span class="material-symbols-outlined text-[18px]">tune</span>
+    <span>Filters</span>
+    <span id="filterCount" class="hidden bg-primary text-white text-[11px] font-bold w-5 h-5 rounded-full inline-flex items-center justify-center">0</span>
+  </button>
+  <!-- Quick-filter chips -->
+  <button onclick="quickFilter('has_ac')"      data-quick="has_ac"      class="quick-chip flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container-lowest hover:border-primary transition-all text-[12px] font-medium flex-shrink-0"><span class="material-symbols-outlined text-[14px]">ac_unit</span>A/C</button>
+  <button onclick="quickFilter('has_wifi')"    data-quick="has_wifi"    class="quick-chip flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container-lowest hover:border-primary transition-all text-[12px] font-medium flex-shrink-0"><span class="material-symbols-outlined text-[14px]">wifi</span>WiFi</button>
+  <button onclick="quickFilter('is_4wd')"      data-quick="is_4wd"      class="quick-chip flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container-lowest hover:border-primary transition-all text-[12px] font-medium flex-shrink-0"><span class="material-symbols-outlined text-[14px]">terrain</span>4WD</button>
+  <button onclick="quickFilter('has_gps')"     data-quick="has_gps"     class="quick-chip flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container-lowest hover:border-primary transition-all text-[12px] font-medium flex-shrink-0"><span class="material-symbols-outlined text-[14px]">location_on</span>GPS</button>
+  <button onclick="quickFilter('has_roof_rack')" data-quick="has_roof_rack" class="quick-chip flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container-lowest hover:border-primary transition-all text-[12px] font-medium flex-shrink-0"><span class="material-symbols-outlined text-[14px]">luggage</span>Roof Rack</button>
+  <button onclick="quickFilter('has_child_seat')" data-quick="has_child_seat" class="quick-chip flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container-lowest hover:border-primary transition-all text-[12px] font-medium flex-shrink-0"><span class="material-symbols-outlined text-[14px]">child_care</span>Child Seat</button>
+  <button onclick="quickFilter('is_pet_friendly')" data-quick="is_pet_friendly" class="quick-chip flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container-lowest hover:border-primary transition-all text-[12px] font-medium flex-shrink-0"><span class="material-symbols-outlined text-[14px]">pets</span>Pet Friendly</button>
+</div>
+
 <!-- Dynamic Vehicle Grid -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter" id="vehicleGrid"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="vehicleGrid"></div>
 </section>
 </div>
 </main>
@@ -307,6 +342,58 @@
 <span class="font-label-lg text-label-lg pr-2">Need Help?</span>
 </button>
 <script>
+// ── Filter drawer ────────────────────────────────────────────────────────────
+function openFilterDrawer() {
+  document.getElementById('filterDrawer').classList.remove('-translate-x-full');
+  document.getElementById('filterOverlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closeFilterDrawer() {
+  document.getElementById('filterDrawer').classList.add('-translate-x-full');
+  document.getElementById('filterOverlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+// Quick-filter chip state keyed by field name
+const _quickActive = {};
+const QUICK_MAP = {
+  has_ac:         'filter-ac',
+  has_wifi:       'filter-wifi',
+  is_4wd:         'filter-4wd',
+  has_gps:        'filter-gps',
+  has_roof_rack:  'filter-roof',
+  has_child_seat: 'filter-child',
+  is_pet_friendly:'filter-pet',
+};
+function quickFilter(field) {
+  _quickActive[field] = !_quickActive[field];
+  // Sync drawer checkbox
+  const cbId = QUICK_MAP[field];
+  if (cbId) document.getElementById(cbId).checked = !!_quickActive[field];
+  // Update chip style
+  document.querySelectorAll(`[data-quick="${field}"]`).forEach(btn => {
+    if (_quickActive[field]) {
+      btn.classList.add('bg-primary', 'text-white', 'border-primary');
+      btn.classList.remove('bg-surface-container-lowest', 'border-outline-variant');
+    } else {
+      btn.classList.remove('bg-primary', 'text-white', 'border-primary');
+      btn.classList.add('bg-surface-container-lowest', 'border-outline-variant');
+    }
+  });
+  updateFilterCount();
+  applyFilters();
+}
+function updateFilterCount() {
+  const active = Object.values(_quickActive).filter(Boolean).length;
+  const badge = document.getElementById('filterCount');
+  if (active > 0) {
+    badge.textContent = active;
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
 // ── Nav auth state ────────────────────────────────────────────────────────────
 (function() {
   const token = localStorage.getItem('access_token');
@@ -380,21 +467,29 @@ function buildTypeFilters(vehicles) {
 function applyFilters() {
   const maxPriceUSD = parseInt(document.getElementById('priceSlider').value);
   const typeChecks  = [...document.querySelectorAll('.filter-type:checked')].map(el => el.value);
-  const wantAC      = document.getElementById('filter-ac').checked;
-  const wantWifi    = document.getElementById('filter-wifi').checked;
-  const want4wd     = document.getElementById('filter-4wd').checked;
-  const wantRoof    = document.getElementById('filter-roof').checked;
-  const wantChild   = document.getElementById('filter-child').checked;
-  const activeFuels = [...document.querySelectorAll('.fuel-btn.active-fuel')].map(el => el.dataset.fuel);
+  const wantAC        = document.getElementById('filter-ac').checked;
+  const wantWifi      = document.getElementById('filter-wifi').checked;
+  const want4wd       = document.getElementById('filter-4wd').checked;
+  const wantRoof      = document.getElementById('filter-roof').checked;
+  const wantChild     = document.getElementById('filter-child').checked;
+  const wantGps       = document.getElementById('filter-gps').checked;
+  const wantBluetooth = document.getElementById('filter-bluetooth').checked;
+  const wantUsb       = document.getElementById('filter-usb').checked;
+  const wantPet       = document.getElementById('filter-pet').checked;
+  const activeFuels   = [...document.querySelectorAll('.fuel-btn.active-fuel')].map(el => el.dataset.fuel);
 
   const filtered = _vehicles.filter(v => {
     if (maxPriceUSD < 500 && v.base_daily_rate_ugx / RATES.USD > maxPriceUSD) return false;
     if (typeChecks.length > 0 && !typeChecks.includes(v.vehicle_type)) return false;
-    if (wantAC    && !v.has_ac)        return false;
-    if (wantWifi  && !v.has_wifi)      return false;
-    if (want4wd   && !v.is_4wd)        return false;
-    if (wantRoof  && !v.has_roof_rack) return false;
-    if (wantChild && !v.has_child_seat) return false;
+    if (wantAC        && !v.has_ac)          return false;
+    if (wantWifi      && !v.has_wifi)        return false;
+    if (want4wd       && !v.is_4wd)          return false;
+    if (wantRoof      && !v.has_roof_rack)   return false;
+    if (wantChild     && !v.has_child_seat)  return false;
+    if (wantGps       && !v.has_gps)         return false;
+    if (wantBluetooth && !v.has_bluetooth)   return false;
+    if (wantUsb       && !v.has_usb_charger) return false;
+    if (wantPet       && !v.is_pet_friendly) return false;
     if (activeFuels.length > 0 && !activeFuels.includes((v.fuel_type || '').toLowerCase())) return false;
     return true;
   });
@@ -406,13 +501,20 @@ function clearFilters() {
   document.getElementById('priceSlider').value = 500;
   updatePriceLabel(500);
   document.querySelectorAll('.filter-type').forEach(el => el.checked = false);
-  ['filter-ac','filter-wifi','filter-4wd','filter-roof','filter-child'].forEach(id => {
+  ['filter-ac','filter-wifi','filter-4wd','filter-roof','filter-child','filter-gps','filter-bluetooth','filter-usb','filter-pet'].forEach(id => {
     document.getElementById(id).checked = false;
   });
   document.querySelectorAll('.fuel-btn.active-fuel').forEach(btn => {
     btn.classList.remove('active-fuel', 'bg-primary', 'text-white', 'border-primary');
     btn.classList.add('border-outline-variant');
   });
+  // Reset quick chips
+  Object.keys(_quickActive).forEach(k => { _quickActive[k] = false; });
+  document.querySelectorAll('.quick-chip').forEach(btn => {
+    btn.classList.remove('bg-primary', 'text-white', 'border-primary');
+    btn.classList.add('bg-surface-container-lowest', 'border-outline-variant');
+  });
+  updateFilterCount();
   renderGrid(_vehicles);
 }
 
@@ -447,9 +549,13 @@ function vehicleCardHTML(v) {
     chip('person',            `<strong>${v.passenger_capacity}</strong> Seats`),
     chip('settings',          `<strong>${toTitle(v.transmission)}</strong>`),
     chip('local_gas_station', `<strong>${toTitle(v.fuel_type)}</strong>`),
-    v.has_ac   ? chip('ac_unit', 'A/C')  : '',
-    v.has_wifi ? chip('wifi',    'WiFi') : '',
-    v.is_4wd   ? chip('terrain', '4WD')  : '',
+    v.has_ac          ? chip('ac_unit',        'A/C')       : '',
+    v.has_wifi        ? chip('wifi',           'WiFi')      : '',
+    v.is_4wd          ? chip('terrain',        '4WD')       : '',
+    v.has_gps         ? chip('location_on',    'GPS')       : '',
+    v.has_bluetooth   ? chip('bluetooth',      'Bluetooth') : '',
+    v.has_usb_charger ? chip('usb',            'USB')       : '',
+    v.is_pet_friendly ? chip('pets',           'Pet OK')    : '',
   ].filter(Boolean).join('');
 
   const statusBadge = v.status === 'verified'

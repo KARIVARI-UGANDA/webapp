@@ -739,11 +739,15 @@ function setMainPhoto(src) {
 // ── Features ─────────────────────────────────────────────────────────────────
 function buildFeatures(v) {
   const features = [];
-  if (v.has_ac)        features.push({ icon: 'ac_unit',                    label: 'Air Conditioning',  sub: 'Climate Control' });
-  if (v.is_4wd)        features.push({ icon: 'terrain',                    label: '4WD Drivetrain',     sub: 'Off-road Ready' });
-  if (v.has_wifi)      features.push({ icon: 'wifi',                       label: 'WiFi',               sub: 'In-vehicle Hotspot' });
-  if (v.has_roof_rack) features.push({ icon: 'luggage',                    label: 'Roof Rack',          sub: 'Extra Cargo Space' });
-  if (v.has_child_seat)features.push({ icon: 'child_care',                 label: 'Child Seat',         sub: 'Safety Included' });
+  if (v.has_ac)          features.push({ icon: 'ac_unit',      label: 'Air Conditioning', sub: 'Climate Control' });
+  if (v.is_4wd)          features.push({ icon: 'terrain',      label: '4WD Drivetrain',   sub: 'Off-road Ready' });
+  if (v.has_wifi)        features.push({ icon: 'wifi',          label: 'WiFi',             sub: 'In-vehicle Hotspot' });
+  if (v.has_roof_rack)   features.push({ icon: 'luggage',       label: 'Roof Rack',        sub: 'Extra Cargo Space' });
+  if (v.has_child_seat)  features.push({ icon: 'child_care',    label: 'Child Seat',       sub: 'Safety Included' });
+  if (v.has_gps)         features.push({ icon: 'location_on',   label: 'GPS Navigation',   sub: 'Turn-by-turn Directions' });
+  if (v.has_bluetooth)   features.push({ icon: 'bluetooth',     label: 'Bluetooth',        sub: 'Wireless Audio' });
+  if (v.has_usb_charger) features.push({ icon: 'usb',           label: 'USB Charger',      sub: 'Keep Devices Charged' });
+  if (v.is_pet_friendly) features.push({ icon: 'pets',          label: 'Pet Friendly',     sub: 'Pets Welcome' });
   features.push({ icon: 'airline_seat_recline_extra', label: `${v.passenger_capacity} Seats`, sub: 'Passenger Capacity' });
   features.push({ icon: 'local_gas_station',          label: v.fuel_type,  sub: 'Fuel Type' });
   features.push({ icon: 'settings',                   label: v.transmission, sub: 'Gearbox' });
