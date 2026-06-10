@@ -9,7 +9,7 @@ on:
 jobs:
   # ── 1. Lint & format check ────────────────────────────────────────────────
   lint:
-    name: Lint (ruff)
+    name: Lint & format (ruff)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,8 +20,12 @@ jobs:
           cache: pip
 
       - run: pip install ruff
+
       - name: Check code style
         run: ruff check app/ tests/ --output-format=github
+
+      - name: Check code formatting
+        run: ruff format --check app/ tests/
 
   # ── 2. Security scan ──────────────────────────────────────────────────────
   security:
@@ -65,7 +69,7 @@ jobs:
 
       - name: Run tests with coverage
         env:
-          DATABASE_URL: sqlite:///:memory:
+          DATABASE_URL: "sqlite:///:memory:"
           SECRET_KEY: ci-test-secret-key-32-chars-long!
           ALGORITHM: HS256
           ACCESS_TOKEN_EXPIRE_MINUTES: "30"
@@ -73,12 +77,23 @@ jobs:
           RESEND_API_KEY: ""
           SMTP_HOST: ""
           SMTP_USERNAME: ""
+          SMTP_PASSWORD: ""
+          SMTP_PORT: "587"
         run: |
           pytest tests/ \
             --cov=app \
             --cov-report=term-missing \
             --cov-report=xml:coverage.xml \
+            --junitxml=test-results.xml \
             -v
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.python-version }}
+          path: test-results.xml
+          retention-days: 7
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
@@ -97,3 +112,11 @@ jobs:
           if rate < 50:
               raise SystemExit(f"Coverage {rate:.1f}% is below 50% threshold")
           EOF
+
+      - name: Annotate test failures on PR
+        uses: mikepenz/action-junit-report@v4
+        if: always()
+        with:
+          report_paths: test-results.xml
+          check_name: Test Results (Python ${{ matrix.python-version }})
+          fail_on_failure: true

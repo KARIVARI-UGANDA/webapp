@@ -1,10 +1,11 @@
 name: Deploy to Render
 
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
     branches: [main]
+    types: [completed]
 
-# Only deploy after CI passes
 concurrency:
   group: deploy-production
   cancel-in-progress: false
@@ -13,7 +14,8 @@ jobs:
   deploy:
     name: Trigger Render deploy
     runs-on: ubuntu-latest
-    needs: []          # runs independently but only on push to main (CI must pass first via branch protection)
+    # Only deploy when CI passed — not on failure or cancellation
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Trigger Render deploy hook
@@ -22,7 +24,7 @@ jobs:
             -o /dev/null \
             -w "HTTP status: %{http_code}\n"
 
-      - name: Wait for deploy to complete
+      - name: Deploy triggered
         run: |
           echo "Deploy triggered. Monitor progress at https://dashboard.render.com"
           echo "Live URL: https://webapp-01os.onrender.com"
