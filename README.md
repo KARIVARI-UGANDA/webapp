@@ -18,16 +18,20 @@ Click the **Open in GitHub Codespaces** badge above, wait ~2 minutes for setup t
 pip3 install -r requirements.txt && python run.py
 ```
 
-That's it. The app creates the database, seeds demo accounts, and starts the server automatically.
-
 ---
 
 ### ✅ Option 2 — Uvicorn (Local Python)
 
-Requires Python 3.11+. One command:
+Requires Python 3.11+:
 
 ```bash
-python run.py
+python -m venv venv && source venv/bin/activate && pip install -r requirements.txt && python run.py
+```
+
+Windows:
+
+```bash
+python -m venv venv && venv\Scripts\activate && pip install -r requirements.txt && python run.py
 ```
 
 No database setup needed — uses a local SQLite file automatically.
