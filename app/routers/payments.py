@@ -11,6 +11,7 @@ Endpoints:
 """
 import json
 import logging
+import threading
 import uuid
 from datetime import datetime, timezone
 from decimal import Decimal
@@ -486,43 +487,38 @@ def _mark_payment_completed_by_ref(
 
     db.commit()
 
-    # Send booking confirmation + invoice emails
-    try:
-        if booking and booking.customer_id:
+    # Send booking confirmation + invoice emails in a background thread
+    if booking and booking.customer_id:
+        try:
             _customer = db.query(User).filter(User.id == booking.customer_id).first()
             _vehicle  = db.query(Vehicle).filter(Vehicle.id == booking.vehicle_id).first()
             if _customer and _vehicle:
-                _vehicle_name = f"{_vehicle.make} {_vehicle.model}"
-                _pickup = booking.pickup_date.strftime("%d %b %Y") if booking.pickup_date else "—"
-                _ret    = booking.return_date.strftime("%d %b %Y") if booking.return_date else "—"
-                _amt    = int(payment.amount_ugx or 0)
-                _days   = booking.total_days or 1
-                _ref    = payment.gateway_reference or payment.id
-
-                email_service.send_booking_confirmation(
+                _kwargs = dict(
                     to_email=_customer.email,
                     full_name=_customer.full_name,
                     booking_ref=booking.id,
-                    vehicle_name=_vehicle_name,
-                    pickup_date=_pickup,
-                    return_date=_ret,
-                    total_days=_days,
-                    amount_ugx=_amt,
+                    vehicle_name=f"{_vehicle.make} {_vehicle.model}",
+                    pickup_date=booking.pickup_date.strftime("%d %b %Y") if booking.pickup_date else "—",
+                    return_date=booking.return_date.strftime("%d %b %Y") if booking.return_date else "—",
+                    total_days=booking.total_days or 1,
+                    amount_ugx=int(payment.amount_ugx or 0),
                 )
-                email_service.send_invoice(
-                    to_email=_customer.email,
-                    full_name=_customer.full_name,
-                    booking_ref=booking.id,
-                    vehicle_name=_vehicle_name,
-                    pickup_date=_pickup,
-                    return_date=_ret,
-                    total_days=_days,
-                    amount_ugx=_amt,
+                _inv_kwargs = dict(
+                    **_kwargs,
                     payment_method=payment.payment_method or "card",
-                    gateway_ref=_ref,
+                    gateway_ref=payment.gateway_reference or payment.id,
                 )
-    except Exception as exc:
-        logging.getLogger(__name__).error("Failed to send booking emails: %s", exc)
+
+                def _send_emails(kw: dict, inv_kw: dict) -> None:
+                    try:
+                        email_service.send_booking_confirmation(**kw)
+                        email_service.send_invoice(**inv_kw)
+                    except Exception as exc:
+                        logging.getLogger(__name__).error("Failed to send booking emails: %s", exc)
+
+                threading.Thread(target=_send_emails, args=(_kwargs, _inv_kwargs), daemon=True).start()
+        except Exception as exc:
+            logging.getLogger(__name__).error("Failed to prepare booking emails: %s", exc)
 
 
 def _mark_payment_failed_by_ref(db: Session, gateway_ref: str):

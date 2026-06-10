@@ -2,7 +2,7 @@ import secrets
 import uuid
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -179,7 +179,11 @@ def me(current_user: User = Depends(get_current_user)):
 
 
 @router.post("/forgot-password")
-def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
+def forgot_password(
+    payload: ForgotPasswordRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
     user = db.query(User).filter(User.email == payload.email).first()
     if not user:
         raise HTTPException(status_code=404, detail="No account found with that email address.")
@@ -195,10 +199,14 @@ def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db
     )
     db.add(prt)
     db.commit()
-    try:
-        email_service.send_password_reset(user.email, user.full_name, raw_token)
-    except Exception as exc:
-        logger.error("Failed to send password reset email to %s: %s", user.email, exc)
+
+    def _send(email: str, name: str, token: str) -> None:
+        try:
+            email_service.send_password_reset(email, name, token)
+        except Exception as exc:
+            logger.error("Failed to send password reset email to %s: %s", email, exc)
+
+    background_tasks.add_task(_send, user.email, user.full_name, raw_token)
     return {"message": "Reset link sent! Check your inbox."}
 
 
