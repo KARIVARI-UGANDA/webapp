@@ -1,11 +1,15 @@
 """
 Shared fixtures for all pytest tests.
-Each test gets a completely fresh in-memory SQLite database for full isolation.
+Uses DATABASE_URL from the environment when set (PostgreSQL in CI),
+otherwise falls back to an in-memory SQLite database for local runs.
 """
+
+import os
+from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -14,16 +18,39 @@ from app.database import get_db
 from app.main import app
 from app.models.base import Base
 
+# ── Stripe mock — prevents real API calls in all tests ──────────────────────
+_fake_intent = MagicMock()
+_fake_intent.id = "pi_test_fake"
+_fake_intent.client_secret = "pi_test_fake_secret_ci"
+_fake_intent.status = "succeeded"
+
+_stripe_patch = patch(
+    "app.services.stripe_service.stripe.PaymentIntent.create",
+    return_value=_fake_intent,
+)
+_stripe_patch.start()
+
+_TEST_DB_URL = os.environ.get("DATABASE_URL", "sqlite:///:memory:")
+_IS_SQLITE = _TEST_DB_URL.startswith("sqlite")
+
+
+def _make_engine():
+    if _IS_SQLITE:
+        return create_engine(
+            _TEST_DB_URL,
+            connect_args={"check_same_thread": False},
+            poolclass=StaticPool,
+        )
+    return create_engine(_TEST_DB_URL)
+
 
 @pytest.fixture()
 def client():
-    """Fresh in-memory database per test — fully isolated."""
-    engine = create_engine(
-        "sqlite:///:memory:",
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,  # all requests share the same in-memory connection
-    )
+    """Fresh database per test. Uses Postgres in CI, SQLite locally."""
+    engine = _make_engine()
     TestingLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+    Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
     def override_get_db():
