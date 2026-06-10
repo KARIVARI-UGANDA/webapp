@@ -48,6 +48,9 @@ class Settings:
     smtp_from_name: str = os.getenv("SMTP_FROM_NAME", "Kari Vari Uganda")
     smtp_use_tls: bool = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
 
+    # Resend (HTTP email API — required on Render, falls back to SMTP locally)
+    resend_api_key: str = os.getenv("RESEND_API_KEY", "")
+
     # App
     app_base_url: str = os.getenv("APP_BASE_URL", "http://localhost:8080")
 

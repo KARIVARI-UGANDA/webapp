@@ -27,8 +27,29 @@ def _ugx_to_display(amount_ugx: int) -> str:
 
 
 def _send(to_email: str, subject: str, html: str, attachments: list[tuple[str, bytes]] | None = None) -> None:
+    # ── Resend HTTP API (works on Render and any host that blocks SMTP) ────────
+    if settings.resend_api_key:
+        import base64
+        import resend
+        resend.api_key = settings.resend_api_key
+
+        params: dict = {
+            "from": f"{settings.smtp_from_name} <{settings.smtp_from_email}>",
+            "to": [to_email],
+            "subject": subject,
+            "html": html,
+        }
+        if attachments:
+            params["attachments"] = [
+                {"filename": name, "content": base64.b64encode(data).decode()}
+                for name, data in attachments
+            ]
+        resend.Emails.send(params)
+        return
+
+    # ── SMTP fallback (local dev) ──────────────────────────────────────────────
     if not settings.smtp_host or not settings.smtp_username:
-        logger.warning("Email not configured — skipping send to %s", to_email)
+        logger.warning("No email provider configured — skipping send to %s", to_email)
         return
 
     msg = MIMEMultipart("mixed")
@@ -36,12 +57,10 @@ def _send(to_email: str, subject: str, html: str, attachments: list[tuple[str, b
     msg["From"] = formataddr((settings.smtp_from_name, settings.smtp_from_email))
     msg["To"] = to_email
 
-    # HTML body
     alt = MIMEMultipart("alternative")
     alt.attach(MIMEText(html, "html"))
     msg.attach(alt)
 
-    # PDF attachments
     for filename, data in (attachments or []):
         part = MIMEApplication(data, _subtype="pdf")
         part.add_header("Content-Disposition", "attachment", filename=filename)
