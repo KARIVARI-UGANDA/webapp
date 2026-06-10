@@ -19,16 +19,31 @@ import uuid
 from datetime import datetime, timezone
 
 
-# ── Step 1: install dependencies ──────────────────────────────────────────────
+# ── Step 1: install dependencies (skip if already installed) ──────────────────
 def _install():
+    try:
+        import uvicorn  # already installed — skip
+        return
+    except ImportError:
+        pass
+
     req = os.path.join(os.path.dirname(__file__), "requirements.txt")
     if not os.path.exists(req):
         return
+
     print("[startup] Installing dependencies...")
-    subprocess.check_call(
-        [sys.executable, "-m", "pip", "install", "-r", req, "-q"],
-        stdout=subprocess.DEVNULL,
-    )
+    # Try pip3, then pip, then python -m pip
+    for cmd in (["pip3", "install", "-r", req, "-q"],
+                ["pip",  "install", "-r", req, "-q"],
+                [sys.executable, "-m", "pip", "install", "-r", req, "-q"]):
+        try:
+            subprocess.check_call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            return
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            continue
+
+    print("[startup] WARNING: could not auto-install dependencies.")
+    print(f"  Run manually:  pip install -r {req}")
 
 
 _install()
