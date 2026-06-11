@@ -22,8 +22,6 @@ python -m venv venv && source venv/bin/activate && pip install -r requirements.t
 
 ### 🐳 Option 2 — Docker
 
-Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/).
-
 Secrets are read from your Codespace environment automatically. Start the app:
 
 ```bash
@@ -36,19 +34,6 @@ Stop the services:
 Ctrl + C
 docker compose down
 ```
-
----
-
-## 📄 Pages & URLs
-
-| URL | Description |
-|-----|-------------|
-| `http://localhost:8000` | Home page |
-| `http://localhost:8000/vehicles` | Browse vehicles |
-| `http://localhost:8000/login` | Customer login |
-| `http://localhost:8000/owner/login` | Owner / Admin login |
-| `http://localhost:8000/api/docs` | Interactive API docs (Swagger UI) |
-| `http://localhost:8000/api/health` | Health check |
 
 ---
 
@@ -85,20 +70,6 @@ webapp/
 ├── docker-compose.yml   # App + Postgres (one command)
 └── requirements.txt     # Python dependencies
 ```
-
----
-
-## ⚙️ Environment Variables
-
-Set via Codespace secrets or a local `.env` file (see `.env.example`).
-
-| Variable | Description |
-|---|---|
-| `DATABASE_URL` | PostgreSQL connection URL (**required**) |
-| `SECRET_KEY` | JWT signing key — **change in production** (**required**) |
-| `STRIPE_SECRET_KEY` | Card payments — skipped if not set |
-| `FLUTTERWAVE_SECRET_KEY` | Mobile money — skipped if not set |
-| `SMTP_HOST` | Email sending — skipped if not set |
 
 ---
 
