@@ -166,7 +166,7 @@ git push origin v1.0.0
 | Backend | FastAPI (Python 3.11) |
 | Database | PostgreSQL 16 (Supabase) |
 | ORM | SQLAlchemy 2.0 |
-| Auth | JWT (python-jose) · bcrypt |
+| Auth | JWT (PyJWT) · bcrypt |
 | Payments | Stripe · Flutterwave · Paystack |
 | Email | Resend API · SMTP |
 | Frontend | Jinja2 · Tailwind CSS |

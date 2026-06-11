@@ -9,7 +9,8 @@ if not hasattr(_bcrypt_mod, "__about__"):
 from datetime import datetime, timedelta, timezone
 
 from fastapi import HTTPException, status
-from jose import JWTError, jwt
+import jwt
+from jwt import PyJWTError
 from passlib.context import CryptContext
 
 from app.config import settings
@@ -51,7 +52,7 @@ def decode_token(token: str) -> dict:
             token, settings.secret_key, algorithms=[settings.algorithm]
         )
         return payload
-    except JWTError:
+    except PyJWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",
