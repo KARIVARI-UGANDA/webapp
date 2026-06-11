@@ -1,6 +1,7 @@
 # 🌿 Kari Vari Uganda
 
-Premium 4×4 vehicle rental marketplace connecting customers with verified Ugandan car owners.
+> **The easiest way to rent a premium 4×4 in Uganda.**
+> We connect travellers with verified local car owners — fully online, fully trusted.
 
 [![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-webapp--01os.onrender.com-blue?style=for-the-badge)](https://webapp-01os.onrender.com/)
 [![CI](https://github.com/KARIVARI-UGANDA/webapp/actions/workflows/ci.yml/badge.svg)](https://github.com/KARIVARI-UGANDA/webapp/actions/workflows/ci.yml)
@@ -8,31 +9,60 @@ Premium 4×4 vehicle rental marketplace connecting customers with verified Ugand
 
 ---
 
+## 👥 Team
+
+| Name | Role |
+|---|---|
+| George Mutale | Backend |
+| Rhyan Lubega | Frontend |
+| Oscar Kyamuwendo | Business |
+| Boaz Onyango | Database · Security · Business |
+
+---
+
+## 🔗 Useful Links
+
+| Link | Description |
+|---|---|
+| [Live App](https://webapp-01os.onrender.com/) | Production deployment |
+| [Browse Vehicles](https://webapp-01os.onrender.com/vehicles) | See available 4×4s |
+| [Customer Login](https://webapp-01os.onrender.com/login) | Log in as a customer |
+| [Owner / Admin Login](https://webapp-01os.onrender.com/owner/login) | Log in as owner or admin |
+| [API Docs](https://webapp-01os.onrender.com/api/docs) | Interactive Swagger UI |
+| [Health Check](https://webapp-01os.onrender.com/api/health) | Server status |
+
+---
+
 ## 🚀 Running the App
 
-### ✅ Option 1 — GitHub Codespaces (nothing to install)
+### ✅ Option 1 — GitHub Codespaces
 
-Click the **Open in GitHub Codespaces** badge above and wait ~2 minutes for setup to finish, then run:
+Click the **Open in GitHub Codespaces** badge above and wait for setup to finish, then run:
 
 ```bash
 python -m venv venv && source venv/bin/activate && pip install -r requirements.txt && python run.py
 ```
 
----
-
-### 🐳 Option 2 — Docker
-
-Secrets are read from your Codespace environment automatically. Start the app:
+Or with Docker (Codespaces has Docker built in):
 
 ```bash
 docker compose up --build
 ```
 
-Stop the services:
+---
+
+### 💻 Option 2 — Local Python
+
+Requires Python 3.11+. Clone the repo, then:
 
 ```bash
-Ctrl + C
-docker compose down
+python -m venv venv && source venv/bin/activate && pip install -r requirements.txt && python run.py
+```
+
+Windows:
+
+```bash
+python -m venv venv && venv\Scripts\activate && pip install -r requirements.txt && python run.py
 ```
 
 ---
@@ -64,10 +94,9 @@ webapp/
 ├── tests/               # 121 automated tests (pytest)
 ├── static/              # CSS, JS, images
 ├── templates/           # HTML pages (Jinja2 + Tailwind CSS)
-├── .devcontainer/       # GitHub Codespaces configuration
 ├── run.py               # ← start here: python run.py
 ├── Dockerfile           # App container image
-├── docker-compose.yml   # App + Postgres (one command)
+├── docker-compose.yml   # One-command Docker setup
 └── requirements.txt     # Python dependencies
 ```
 
@@ -105,14 +134,3 @@ git push origin v1.0.0
 | Frontend | Jinja2 · Tailwind CSS |
 | Hosting | Render.com |
 | CI/CD | GitHub Actions |
-
----
-
-## 👥 Team
-
-| Name | Role |
-|---|---|
-| George Mutale | Backend |
-| Rhyan Lubega | Frontend |
-| Oscar Kyamuwendo | Business |
-| Boaz Onyango | Database · Security · Business |
