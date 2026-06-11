@@ -59,7 +59,12 @@ jobs:
 
       # ── Release assets ────────────────────────────────────────────────────────
       - name: Bundle static assets
-        run: zip -r static-assets.zip static/
+        run: |
+          if [ -d "static/" ] && [ "$(ls -A static/)" ]; then
+            zip -r static-assets.zip static/
+          else
+            touch static-assets.zip
+          fi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -86,7 +91,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
+          password: ${{ secrets.RENTAL }}
 
       - name: Extract Docker metadata
         id: meta
