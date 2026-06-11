@@ -24,13 +24,7 @@ python -m venv venv && source venv/bin/activate && python run.py
 
 Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
-Create a `.env` file from the example and fill in your values:
-
-```bash
-cp .env.example .env
-```
-
-Then start the app:
+Secrets are read from your Codespace environment automatically. Start the app:
 
 ```bash
 docker compose up --build
@@ -42,35 +36,6 @@ Stop the services:
 Ctrl + C
 docker compose down
 ```
-
----
-
-## 🔑 Demo Accounts
-
-These are created automatically when the app starts.
-
-**Super Admin**
-
-| Field | Value |
-|-------|-------|
-| Email | `george.mutale345@stud.th-deg.de` |
-| Password | `Administer01@#` |
-
-**Admin**
-
-| Field | Value |
-|-------|-------|
-| Email | `mutalegeorge367@gmail.com` |
-| Password | `Operator02@#` |
-
-**Customer**
-
-| Field | Value |
-|-------|-------|
-| Email | `george.mutale@stud.th-deg.de` |
-| Password | `Tourist01@#` |
-
-Login at `/owner/login` for admin accounts, `/login` for customers.
 
 ---
 
@@ -176,6 +141,7 @@ git push origin v1.0.0
 
 | Name | Role |
 |---|---|
-| George Mutale | Backend & DevOps |
-| Oscar Kyamuwendo | Frontend & UI |
-| Utman (Rhyan2) | Backend & Integration |
+| George Mutale | Backend |
+| Rhyan Lubega | Frontend |
+| Oscar Kyamuwendo | Business |
+| Boaz Onyango | Database · Security · Business |
