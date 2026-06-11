@@ -6,39 +6,26 @@ echo "=========================================="
 echo "  Setting up Kari Vari Uganda"
 echo "=========================================="
 
-# ── 1. Install Python dependencies ────────────────────────────────────────────
+# Write Codespace secrets to .env so docker-compose and run.py can read them
 echo ""
-echo "-> Installing Python dependencies..."
-# Use pip3 explicitly — works reliably in Codespaces
-pip3 install -r requirements.txt
-
+echo "-> Writing secrets to .env..."
+printenv | grep -E 'DATABASE_URL|SECRET_KEY|STRIPE|FLUTTERWAVE|PAYSTACK|SMTP|RESEND' > .env
 echo "   Done."
 
-# ── 2. Wait for PostgreSQL to be ready ────────────────────────────────────────
+# Set up venv and install dependencies
 echo ""
-echo "-> Waiting for PostgreSQL..."
-for i in $(seq 1 30); do
-  if pg_isready -U postgres -q 2>/dev/null; then
-    echo "   PostgreSQL is ready."
-    break
-  fi
-  echo "   Waiting... ($i/30)"
-  sleep 2
-done
-
-# ── 3. Create the database ────────────────────────────────────────────────────
-echo ""
-echo "-> Creating database 'karivari'..."
-psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'karivari'" \
-  | grep -q 1 || psql -U postgres -c "CREATE DATABASE karivari"
-echo "   Database ready."
+echo "-> Installing Python dependencies..."
+python -m venv venv && source venv/bin/activate && pip install -r requirements.txt
+echo "   Done."
 
 echo ""
 echo "=========================================="
 echo "  Setup complete! Run the app with:"
 echo ""
-echo "    python run.py"
+echo "    source venv/bin/activate && python run.py"
 echo ""
-echo "  Demo accounts will be created on first run."
+echo "  Or with Docker:"
+echo ""
+echo "    docker compose up --build"
 echo "=========================================="
 echo ""

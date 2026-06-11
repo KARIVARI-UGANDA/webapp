@@ -12,54 +12,38 @@ Premium 4×4 vehicle rental marketplace connecting customers with verified Ugand
 
 ### ✅ Option 1 — GitHub Codespaces (nothing to install)
 
-Click the **Open in GitHub Codespaces** badge above, wait ~2 minutes for setup to finish, then run:
+1. Add your secrets at **GitHub → Settings → Codespaces → Secrets**:
+   - `DATABASE_URL`, `SECRET_KEY`, and any payment/SMTP keys
+2. Click the **Open in GitHub Codespaces** badge above and wait ~2 minutes for setup to finish
+3. Run:
 
 ```bash
-pip3 install -r requirements.txt && python run.py
+source venv/bin/activate && python run.py
 ```
 
 ---
 
-### ✅ Option 2 — Uvicorn (Local Python)
+### 🐳 Option 2 — Docker
 
-Requires Python 3.11+:
+Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
-```bash
-python -m venv venv && source venv/bin/activate && pip install -r requirements.txt && python run.py
-```
-
-Windows:
+Create a `.env` file from the example and fill in your values:
 
 ```bash
-python -m venv venv && venv\Scripts\activate && pip install -r requirements.txt && python run.py
+cp .env.example .env
 ```
 
-No database setup needed — uses a local SQLite file automatically.
-
----
-
-### 🐳 Option 3 — Docker
-
-Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/). One command:
+Then start the app:
 
 ```bash
 docker compose up --build
 ```
-
-Starts PostgreSQL and the app together. Everything — database, tables, and demo accounts — is set up automatically.
 
 Stop the services:
 
 ```bash
 Ctrl + C
 docker compose down
-```
-
-Reset the database and start fresh:
-
-```bash
-docker compose down -v
-docker compose up --build
 ```
 
 ---
@@ -144,15 +128,15 @@ webapp/
 
 ## ⚙️ Environment Variables
 
-All optional — `run.py` sets safe defaults automatically. To override, create a `.env` file based on `.env.example`.
+Set via Codespace secrets or a local `.env` file (see `.env.example`).
 
-| Variable | Default | Description |
-|---|---|---|
-| `DATABASE_URL` | `sqlite:///./karivari.db` | PostgreSQL or SQLite URL |
-| `SECRET_KEY` | auto (dev only) | JWT signing key — **change in production** |
-| `STRIPE_SECRET_KEY` | *(empty)* | Card payments — skipped if not set |
-| `FLUTTERWAVE_SECRET_KEY` | *(empty)* | Mobile money — skipped if not set |
-| `SMTP_HOST` | *(empty)* | Email sending — skipped if not set |
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection URL (**required**) |
+| `SECRET_KEY` | JWT signing key — **change in production** (**required**) |
+| `STRIPE_SECRET_KEY` | Card payments — skipped if not set |
+| `FLUTTERWAVE_SECRET_KEY` | Mobile money — skipped if not set |
+| `SMTP_HOST` | Email sending — skipped if not set |
 
 ---
 
@@ -180,7 +164,7 @@ git push origin v1.0.0
 | Layer | Technology |
 |---|---|
 | Backend | FastAPI (Python 3.11) |
-| Database | PostgreSQL 16 (Docker / production) · SQLite (local) |
+| Database | PostgreSQL 16 (Supabase) |
 | ORM | SQLAlchemy 2.0 |
 | Auth | JWT (python-jose) · bcrypt |
 | Payments | Stripe · Flutterwave · Paystack |
