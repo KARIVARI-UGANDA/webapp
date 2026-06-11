@@ -15,7 +15,7 @@ Premium 4×4 vehicle rental marketplace connecting customers with verified Ugand
 Click the **Open in GitHub Codespaces** badge above and wait ~2 minutes for setup to finish, then run:
 
 ```bash
-python -m venv venv && source venv/bin/activate && python run.py
+python -m venv venv && source venv/bin/activate && pip install -r requirements.txt && python run.py
 ```
 
 ---
