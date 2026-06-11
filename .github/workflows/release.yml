@@ -57,15 +57,6 @@ jobs:
           echo "$LOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      # ── Release assets ────────────────────────────────────────────────────────
-      - name: Bundle static assets
-        run: |
-          if [ -d "static/" ] && [ "$(ls -A static/)" ]; then
-            zip -r static-assets.zip static/
-          else
-            touch static-assets.zip
-          fi
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -81,9 +72,7 @@ jobs:
             🐳 **Docker**: `docker pull ghcr.io/karivari-uganda/webapp:${{ github.ref_name }}`
           draft: false
           prerelease: ${{ contains(github.ref_name, '-beta') || contains(github.ref_name, '-rc') }}
-          files: |
-            requirements.txt
-            static-assets.zip
+          files: requirements.txt
 
       # ── Docker image → GHCR ───────────────────────────────────────────────────
       - name: Log in to GitHub Container Registry
