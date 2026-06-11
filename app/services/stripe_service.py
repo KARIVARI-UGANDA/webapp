@@ -7,7 +7,6 @@ Flow:
   3. Stripe calls POST /api/payments/webhook  → updates Payment row to "completed"
 """
 
-
 import stripe
 
 from app.config import settings

@@ -1,7 +1,6 @@
 """Tests for /api/kyc/* endpoints."""
 
 
-
 class TestKycStatus:
     def test_customer_can_get_kyc_status(self, client, customer):
         headers, _ = customer

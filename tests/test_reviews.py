@@ -1,5 +1,6 @@
 """Tests for /api/reviews/* endpoints."""
 
+
 class TestCreateReview:
     def _make_confirmed_booking(
         self, client, customer_headers, owner_headers, admin_headers
