@@ -3,21 +3,23 @@ name: Release
 on:
   push:
     tags:
-      - "v*.*.*"   # triggers on tags like v1.0.0, v2.3.1
+      - "v*.*.*"   # triggers on v1.0.0, v1.1.0-beta, v2.3.1-rc1
 
 permissions:
-  contents: write   # needed to create GitHub Releases
+  contents: write   # create GitHub Releases
+  packages: write   # push Docker image to GHCR
 
 jobs:
   release:
-    name: Create GitHub Release
+    name: Test, Release & Publish Docker Image
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # full history so we can generate a changelog
+          fetch-depth: 0   # full history for changelog
 
+      # ── Python tests ──────────────────────────────────────────────────────────
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -40,6 +42,7 @@ jobs:
           SMTP_PORT: "587"
         run: pytest tests/ -q
 
+      # ── Changelog ─────────────────────────────────────────────────────────────
       - name: Generate changelog from git log
         id: changelog
         run: |
@@ -54,6 +57,10 @@ jobs:
           echo "$LOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+      # ── Release assets ────────────────────────────────────────────────────────
+      - name: Bundle static assets
+        run: zip -r static-assets.zip static/
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -66,5 +73,35 @@ jobs:
 
             ---
             🌿 **Live app**: https://webapp-01os.onrender.com
+            🐳 **Docker**: `docker pull ghcr.io/karivari-uganda/webapp:${{ github.ref_name }}`
           draft: false
           prerelease: ${{ contains(github.ref_name, '-beta') || contains(github.ref_name, '-rc') }}
+          files: |
+            requirements.txt
+            static-assets.zip
+
+      # ── Docker image → GHCR ───────────────────────────────────────────────────
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/karivari-uganda/webapp
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable=${{ !contains(github.ref_name, '-beta') && !contains(github.ref_name, '-rc') }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
