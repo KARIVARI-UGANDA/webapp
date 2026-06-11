@@ -12,13 +12,10 @@ Premium 4×4 vehicle rental marketplace connecting customers with verified Ugand
 
 ### ✅ Option 1 — GitHub Codespaces (nothing to install)
 
-1. Add your secrets at **GitHub → Settings → Codespaces → Secrets**:
-   - `DATABASE_URL`, `SECRET_KEY`, and any payment/SMTP keys
-2. Click the **Open in GitHub Codespaces** badge above and wait ~2 minutes for setup to finish
-3. Run:
+Click the **Open in GitHub Codespaces** badge above and wait ~2 minutes for setup to finish, then run:
 
 ```bash
-source venv/bin/activate && python run.py
+python -m venv venv && source venv/bin/activate && python run.py
 ```
 
 ---
