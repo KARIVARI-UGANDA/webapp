@@ -9,6 +9,19 @@
 
 ---
 
+## 🔗 Useful Links
+
+| Link | Description |
+|---|---|
+| [Live App](https://webapp-01os.onrender.com/) | Production deployment |
+| [Browse Vehicles](https://webapp-01os.onrender.com/vehicles) | See available 4×4s |
+| [Customer Login](https://webapp-01os.onrender.com/login) | Log in as a customer — use the **Quick Access** button on the login page to enter without signing up |
+| [Owner / Admin Login](https://webapp-01os.onrender.com/owner/login) | Log in as owner or admin — use the **Quick Access** button to log in instantly |
+| [API Docs](https://webapp-01os.onrender.com/api/docs) | Interactive Swagger UI |
+| [Health Check](https://webapp-01os.onrender.com/api/health) | Server status |
+
+---
+
 ## 👥 Team
 
 | Name | Role |
@@ -17,19 +30,6 @@
 | Rhyan Lubega | Frontend |
 | Oscar Kyamuwendo | Business |
 | Boaz Onyango | Database · Security · Business |
-
----
-
-## 🔗 Useful Links
-
-| Link | Description |
-|---|---|
-| [Live App](https://webapp-01os.onrender.com/) | Production deployment |
-| [Browse Vehicles](https://webapp-01os.onrender.com/vehicles) | See available 4×4s |
-| [Customer Login](https://webapp-01os.onrender.com/login) | Log in as a customer |
-| [Owner / Admin Login](https://webapp-01os.onrender.com/owner/login) | Log in as owner or admin |
-| [API Docs](https://webapp-01os.onrender.com/api/docs) | Interactive Swagger UI |
-| [Health Check](https://webapp-01os.onrender.com/api/health) | Server status |
 
 ---
 
@@ -64,6 +64,44 @@ Windows:
 ```bash
 python -m venv venv && venv\Scripts\activate && pip install -r requirements.txt && python run.py
 ```
+
+---
+
+## 🌍 About Kari Vari Uganda
+
+Uganda is one of East Africa's most breathtaking destinations — from the gorillas of Bwindi to the shores of Lake Victoria and the savannahs of Queen Elizabeth National Park. But getting there in comfort and safety has always been a challenge.
+
+**Kari Vari Uganda** was built to change that. We are a marketplace that connects travellers directly with verified local 4×4 vehicle owners, cutting out middlemen and putting more money in the hands of Ugandan communities.
+
+**What makes us different:**
+- Every vehicle owner is verified before listing — ID, insurance, and vehicle inspection checks
+- Customers can browse, book, and pay entirely online with Stripe, Paystack, or Flutterwave
+- Transparent pricing — no hidden fees, no last-minute surprises
+- Built and maintained by a team of students at the Technische Hochschule Deggendorf, Uganda
+
+Whether you're planning a gorilla trekking safari, a cross-country road trip, or a weekend getaway, Kari Vari has the right vehicle for you.
+
+---
+
+## 🤝 Contribute & Work With Us
+
+We welcome contributions from developers, designers, and travel enthusiasts!
+
+- **Found a bug?** [Open an issue](https://github.com/KARIVARI-UGANDA/webapp/issues)
+- **Have an idea?** [Start a discussion](https://github.com/KARIVARI-UGANDA/webapp/discussions)
+- **Want to contribute?** Fork the repo, make your changes, and open a pull request — we review all PRs
+
+```bash
+# Fork on GitHub, then:
+git clone https://github.com/YOUR-USERNAME/webapp.git
+cd webapp
+git checkout -b your-feature-branch
+# make your changes
+git push origin your-feature-branch
+# open a Pull Request on GitHub
+```
+
+All skill levels welcome. If you're unsure where to start, check the [open issues](https://github.com/KARIVARI-UGANDA/webapp/issues) labelled `good first issue`.
 
 ---
 

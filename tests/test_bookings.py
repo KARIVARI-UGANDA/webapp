@@ -2,8 +2,6 @@
 
 from datetime import date, timedelta
 
-import pytest
-
 TODAY = date.today()
 PICKUP = (TODAY + timedelta(days=7)).isoformat()
 RETURN = (TODAY + timedelta(days=14)).isoformat()

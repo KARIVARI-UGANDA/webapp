@@ -1,16 +1,11 @@
 """Tests for /api/reviews/* endpoints."""
 
-import pytest
-
-
 class TestCreateReview:
     def _make_confirmed_booking(
         self, client, customer_headers, owner_headers, admin_headers
     ):
         """Helper: vehicle → approve → book → manually confirm booking status."""
         from datetime import date, timedelta
-
-        from tests.conftest import _auth_headers, _register
 
         # Create and approve vehicle
         r = client.post(

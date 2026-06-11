@@ -15,7 +15,6 @@ import logging
 import threading
 import uuid
 from datetime import datetime, timezone
-from decimal import Decimal
 from typing import Literal, Optional
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status

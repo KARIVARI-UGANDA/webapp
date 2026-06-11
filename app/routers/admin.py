@@ -1,8 +1,8 @@
 import uuid
 from datetime import datetime, timedelta, timezone
-from typing import List, Optional
+from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -90,8 +90,6 @@ def _write_audit(
     entity_id: str,
     details: dict | None = None,
 ):
-    import json
-
     db.add(
         AuditLog(
             id=str(uuid.uuid4()),
@@ -736,8 +734,6 @@ def analytics_bookings(
     current_user=Depends(_admin),
     db: Session = Depends(get_db),
 ):
-    from datetime import date
-
     from sqlalchemy import Date, cast, func
 
     from app.models import Booking

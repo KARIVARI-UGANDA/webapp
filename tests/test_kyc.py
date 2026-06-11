@@ -1,6 +1,5 @@
 """Tests for /api/kyc/* endpoints."""
 
-import pytest
 
 
 class TestKycStatus:

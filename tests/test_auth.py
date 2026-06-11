@@ -1,8 +1,6 @@
 """Tests for /api/auth/* endpoints."""
 
-import pytest
-
-from tests.conftest import _auth_headers, _login, _register
+from tests.conftest import _login, _register
 
 
 class TestSignup:

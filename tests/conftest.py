@@ -11,7 +11,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-import app.models as _orm_models  # registers all ORM classes with Base.metadata before create_all
+import app.models as _orm_models  # noqa: F401  registers all ORM classes with Base.metadata before create_all
 from app.database import get_db
 from app.main import app
 from app.models.base import Base

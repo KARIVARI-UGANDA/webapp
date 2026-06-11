@@ -1,7 +1,5 @@
 """Tests for /api/admin/* endpoints."""
 
-import pytest
-
 VEHICLE_PAYLOAD = {
     "make": "Nissan",
     "model": "Patrol",

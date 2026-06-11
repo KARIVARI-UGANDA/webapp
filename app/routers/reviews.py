@@ -181,7 +181,7 @@ def list_reviews(
     review_target: Optional[str] = None,
     db: Session = Depends(get_db),
 ):
-    q = db.query(Review).filter(Review.is_public == True, Review.is_flagged == False)
+    q = db.query(Review).filter(Review.is_public, ~Review.is_flagged)
     if reviewee_id:
         q = q.filter(Review.reviewee_id == reviewee_id)
     if review_target:

@@ -439,8 +439,8 @@ def get_vehicle_reviews(vehicle_id: str, db: Session = Depends(get_db)):
         .filter(
             Review.booking_id.in_(booking_ids),
             Review.review_target.in_(["vehicle", "trip"]),
-            Review.is_public == True,
-            Review.is_flagged == False,
+            Review.is_public,
+            ~Review.is_flagged,
         )
         .order_by(Review.created_at.desc())
         .limit(50)
