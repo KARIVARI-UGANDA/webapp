@@ -180,12 +180,6 @@ def update_vehicle(
 ):
     v = _get_own_vehicle(vehicle_id, current_user, db)
 
-    if v.status == "verified" and current_user.role != "admin":
-        raise HTTPException(
-            status_code=400,
-            detail="Verified vehicles cannot be edited. Contact support.",
-        )
-
     for field, value in payload.model_dump(exclude_none=True).items():
         setattr(v, field, value)
     v.updated_at = datetime.now(timezone.utc).replace(tzinfo=None)
