@@ -814,7 +814,8 @@
       if (countSpan) countSpan.textContent = '0 vehicles available';
       return;
     }
-    container.innerHTML = vehicles.map(v => vehicleCardHTML(v)).join('');
+    const displayed = vehicles.slice(0, 6);
+    container.innerHTML = displayed.map(v => vehicleCardHTML(v)).join('');
     if (countSpan) countSpan.textContent = `${vehicles.length} vehicle${vehicles.length !== 1 ? 's' : ''} available for your journey`;
   }
 
@@ -830,7 +831,7 @@
 
   async function loadVehicles() {
     const urlParams = new URLSearchParams(window.location.search);
-    const apiParams = new URLSearchParams({ page: 1, page_size: 100 });
+    const apiParams = new URLSearchParams({ page: 1, page_size: 6 });
     const initLoc = urlParams.get('location') || '';
     const initType = urlParams.get('vehicle_type') || '';
     const initSeats = urlParams.get('min_seats') || '';
